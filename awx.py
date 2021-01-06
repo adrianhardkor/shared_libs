@@ -73,6 +73,7 @@ class AWX():
 		if data['status'] == 'successful':
 			endpoint = data['related']['stdout']
 		else:
+			wc.jd(data['related'])
 			endpoint = data['related']['stderr']
 		return(json.loads(wc.REST_GET('http://' + self.IP + endpoint, user=self.user, pword=self.pword))['content'])
 		# ['related']['stdout']
