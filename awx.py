@@ -70,12 +70,7 @@ class AWX():
 			time.sleep(5)
 			data = json.loads(wc.REST_GET('http://' + self.IP + status_url, user=self.user, pword=self.pword))
 			print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
-		if data['status'] == 'successful':
-			endpoint = data['related']['stdout']
-		else:
-			wc.jd(data['related'])
-			endpoint = data['related']['stderr']
-		return(json.loads(wc.REST_GET('http://' + self.IP + endpoint, user=self.user, pword=self.pword))['content'])
+		return(json.loads(wc.REST_GET('http://' + self.IP + data['related']['stdout'], user=self.user, pword=self.pword))['content'])
 		# ['related']['stdout']
 		# POST https://your.tower.server/api/v2/job_templates/<your job template id>/launch/ with any required data gathered during the previous step(s). The variables that can be passed in the request data for this action include the following.
 		# extra_vars: A string that represents a JSON or YAML formatted dictionary (with escaped parentheses) which includes variables given by the user, including answers to survey questions
