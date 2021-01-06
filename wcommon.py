@@ -893,7 +893,8 @@ def load_argv():
         # pairprint(varname, varvalue)
 
 def load_env():
-	result = {}
+	global env_dict
+	env_dict = {}
 	if platform2()['os'].startswith('Windows'):
 		cmd = 'set'
 	else:
@@ -902,8 +903,8 @@ def load_env():
 	for line in exec2(cmd).split('\n'):
 		line = line.split('=')
 		index = line.pop(0)
-		result[index] = line
-	return(result)	
+		env_dict[index] = line
+	return()	
 
 def jenkins_header():
 	global argv_dict
