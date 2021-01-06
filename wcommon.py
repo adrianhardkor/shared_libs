@@ -903,8 +903,7 @@ def load_env():
 	for line in exec2(cmd).split('\n'):
 		line = line.split('=')
 		index = line.pop(0)
-		env_dict[index] = line
-		if len(line) == 1: env_dict[index] = line[0]
+		env_dict[index] = '='.join(line)
 	return()	
 
 def jenkins_header():
