@@ -35,6 +35,7 @@ except NameError:
     # python3
     basestring = str
 
+global env_dict
 global argv_dict
 global wow_time
 global clock_format
@@ -891,6 +892,19 @@ def load_argv():
         argv_dict[varname] = varvalue
         # pairprint(varname, varvalue)
 
+def load_env():
+	result = {}
+	if platform2()['os'].startswith('Windows'):
+		cmd = 'set'
+	else:
+		cmd = 'printenv'
+	out = exec2(cmd)
+	for line in exec2(cmd).split('\n'):
+		line = line.split('=')
+		index = line.pop(0)
+		result[index] = line
+	return(result)	
+
 def jenkins_header():
 	global argv_dict
 	global wcheader
@@ -917,5 +931,5 @@ wcheader['paths'] = {'pyVer': PyVersion(), 'pwd': what_path(), 'pyExec': sys.exe
 wcheader['packages'] = add_pkgs() 
 wcheader['platform'] = platform2()
 load_argv()
+load_env()
 wcheader['InitializingTime'] = fullRuntime()
-
