@@ -30,9 +30,9 @@ proc argv_array {} {
   array unset argv_array
   global argv
   foreach  {i v} $argv {
-    set argv_array([string trimleft $i "-"])  [split $v "=,"]
+    set argv_array([string trimleft $i "-"])  [split $v "="]
   }
-  echo_param [array get argv_array]
+  # echo_param [array get argv_array]
 }
 
 proc echo_param {paired_list} {
@@ -277,4 +277,3 @@ echo_param [list \
   "tcl_platform_platform" $tcl_platform(platform)]
 
 argv_array
-
