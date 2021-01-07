@@ -21,8 +21,16 @@ proc timer_index_since {index} {
   } 
 }
 
+proc mcsplit "str splitStr {mc {\x00}}" {
+    return [split [string map [list $splitStr $mc] $str] $mc]
+}
+
 proc argv_array {} {
+  array unset result
   global argv
+  foreach  {i v} $argv {
+    set result([string trimleft $i "-"])  [split $v "=,"] 
+  }
   echo_param $argv
 }
 
