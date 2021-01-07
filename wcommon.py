@@ -915,6 +915,7 @@ def jenkins_header():
 				wcheader['jenkins'] = {}
 			wcheader['jenkins'][inp] = env_dict[inp]
 		elif inp == 'User_Pass_Json':
+			wc.pairprint(inp,env_dict[inp])
 			wcheader[inp] = json.loads(env_dict[inp])
 		else:
 			wcheader[inp] = env_dict[inp]
