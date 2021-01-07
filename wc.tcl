@@ -36,6 +36,25 @@ proc argv_array {} {
   # echo_param [array get argv_array]
 }
 
+proc cred_array {argv_array} {
+  global cred
+  array unset cred
+  foreach type $argv_array(User_Pass_Json) {
+    set type [split $type ","]
+    switch -- [llength $type] {
+      2 {
+        set cred([lindex $type 0],user) [lindex $type 1]
+        set cred([lindex $type 0],pass) [lindex $type 2]
+      }
+      3 {
+        set cred([lindex $type 0],user) [lindex $type 1]
+        set cred([lindex $type 0],pass) [lindex $type 2]
+        set cred([lindex $type 0],pass15) [lindex $type 3]
+      }
+    }
+  }
+}
+
 proc echo_param {paired_list} {
   array set pl $paired_list
   # get colum-len
