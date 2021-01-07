@@ -55,7 +55,7 @@ class AWX():
 		# ASYNC BY DEFAULT
 		playbook_start = wc.timer_index_start()
 		if args != {}:
-			wc.pairprint('REST:extra_vars': list(args.keys()))
+			wc.pairprint('REST:extra_vars', list(args.keys()))
 			extra_vars = {'extra_vars':args}
 			args = json.dumps(extra_vars)
 		data = json.loads(wc.REST_POST('http://' + self.IP + '/api/v2/job_templates/' + playbook_name + '/launch/', user=self.user, pword=self.pword, args=args))
