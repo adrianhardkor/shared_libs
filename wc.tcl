@@ -30,7 +30,7 @@ proc argv_array {} {
   array unset argv_array
   global argv
   foreach  {i v} $argv {
-    set argv_array([string trimleft $i "-"])  [mcsplit $v "=,"] 
+    set argv_array([string trimleft $i "-"])  [split $v "=,"]
   }
   echo_param [array get argv_array]
 }
