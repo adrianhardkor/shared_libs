@@ -42,15 +42,16 @@ proc cred_array {varName} {
   array unset cred
   foreach type $argv_array_inside(User_Pass_Json) {
     set type [split $type ",/"]
+    set device [string trim [lindex $type 0]]
     switch -- [llength $type] {
       3 {
-        set cred([lindex $type 0],user) [lindex $type 1]
-        set cred([lindex $type 0],pass) [lindex $type 2]
+        set cred($device,user) [lindex $type 1]
+        set cred($device,pass) [lindex $type 2]
       }
       4 {
-        set cred([lindex $type 0],user) [lindex $type 1]
-        set cred([lindex $type 0],pass) [lindex $type 2]
-        set cred([lindex $type 0],pass15) [lindex $type 3]
+        set cred($device,user) [lindex $type 1]
+        set cred($device,pass) [lindex $type 2]
+        set cred($device,pass15) [lindex $type 3]
       }
     }
   }
