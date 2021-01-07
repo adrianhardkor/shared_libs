@@ -32,7 +32,9 @@ proc argv_array {} {
   foreach  {i v} $argv {
     set argv_array([string trimleft $i "-"])  [split $v "=,"] 
   }
-  parray_slow argv_array
+  for i [array names argv_array] {
+    puts "$i\t$argv_array($i)"
+  }
 }
 
 proc echo_param {paired_list} {
