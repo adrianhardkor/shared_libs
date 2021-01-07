@@ -25,7 +25,7 @@ proc mcsplit "str splitStr {mc {\x00}}" {
     return [split [string map [list $splitStr $mc] $str] $mc]
 }
 
-proc argv_array {} {
+proc argv_array_run {} {
   global argv_array
   array unset argv_array
   global argv
@@ -297,4 +297,5 @@ echo_param [list \
   "tcl_platform_osVersion" $tcl_platform(osVersion) \
   "tcl_platform_platform" $tcl_platform(platform)]
 
-argv_array
+global argv_array
+argv_array_run
