@@ -30,11 +30,9 @@ proc argv_array {} {
   array unset argv_array
   global argv
   foreach  {i v} $argv {
-    set argv_array([string trimleft $i "-"])  [split $v "=,"] 
+    set argv_array([string trimleft $i "-"])  [mcsplit $v "=,"] 
   }
-  foreach i [array names argv_array] {
-    puts "$i\t$argv_array($i)"
-  }
+  echo_param [array get argv_array]
 }
 
 proc echo_param {paired_list} {
