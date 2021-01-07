@@ -102,7 +102,6 @@ proc mrvTS_exit {} {
 }
 
 proc mrvTS_show {ts_ip ts_user ts_pass1 ts_pass2 ts_port} {
-   puts "MRVTS_SHOW_PORTS_START"
    log_user 0
    set timeout 30
    set commands [list "no pause" "show port async summary" "" "exit"]
@@ -144,7 +143,6 @@ proc mrvTS_show {ts_ip ts_user ts_pass1 ts_pass2 ts_port} {
         "isconnec" {
             append output $expect_out(buffer)
             log_user 1
-            puts "MRVTS_SHOW_PORTS_END"
             return $output
         }
         "re you sure you want to continue connectin" {send -- "yes\r";}
