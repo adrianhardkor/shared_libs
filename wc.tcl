@@ -31,7 +31,8 @@ proc argv_array {} {
   foreach  {i v} $argv {
     set result([string trimleft $i "-"])  [split $v "=,"] 
   }
-  echo_param $argv
+  parray_slow result
+  return $result
 }
 
 proc echo_param {paired_list} {
@@ -227,6 +228,38 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
     catch { mrvTS_exit }
   }
   return $output
+}
+
+proc parray_slow {array_name {outputme 1}} {
+  set result {}
+  upvar $array_name array_data
+  set maxlen 0
+  foreach index [array names array_data] {
+    set thislen [string length $index]
+    if {$thislen > $maxlen} {
+      set maxlen $thislen
+    }
+  }
+  set maxlen [expr 3+[string length $array_name]+$maxlen]
+  foreach index [lsort -dictionary [array names array_data]] {
+    if {$outputme == 1} {
+      puts -nonewline "[format "%-*s" $maxlen ${array_name}($index)]\="
+    }
+    append result "[format "%-*s" $maxlen ${array_name}($index)]\="
+    if {$array_data($index) == ""} {
+      if {$outputme == 1} {puts "\n"}
+      append result "\n"
+      after 2;
+    } else {
+      foreach line [split $array_data($index) "\n"] {
+        if {$outputme == 1} {puts "  $line\n"}
+        append result "  $line\n"
+        after 2;
+      }
+      after 1;
+    }
+  }
+  return $result
 }
 
 global tcl_platform
