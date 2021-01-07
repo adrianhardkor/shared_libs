@@ -8,7 +8,8 @@ from google.auth.transport.requests import Request
 
 
 class GCP():
-	def __init__(self, SAMPLE_SPREADSHEET_ID, SAMPLE_RANGE_NAME, SCOPES, PICKLE_TOKEN_FILE):
+	def __init__(self, SAMPLE_SPREADSHEET_ID, SAMPLE_RANGE_NAME, SCOPES, PICKLE_TOKEN_FILE,creds_json='credentials.json'):
+		self.creds_json = creds_json
 		self.SAMPLE_SPREADSHEET_ID = SAMPLE_SPREADSHEET_ID
 		self.SAMPLE_RANGE_NAME = SAMPLE_RANGE_NAME
 		self.SCOPES = SCOPES
@@ -25,7 +26,7 @@ class GCP():
 			if creds and creds.expired and creds.refresh_token:
 				creds.refresh(Request())
 			else:
-				flow = InstalledAppFlow.from_client_secrets_file('credentials.json', self.SCOPES)
+				flow = InstalledAppFlow.from_client_secrets_file(self.creds_json, self.SCOPES)
 				creds = flow.run_local_server(port=0)
 			# Save the credentials for the next run
 			with open(self.PICKLE_TOKEN_FILE, 'wb') as token:
