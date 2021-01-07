@@ -21,6 +21,12 @@ proc timer_index_since {index} {
   } 
 }
 
+proc argv_array {} {
+  global argv
+  echo_param $argv
+}
+argv_array
+
 proc echo_param {paired_list} {
   array set pl $paired_list
   # get colum-len
