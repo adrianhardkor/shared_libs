@@ -36,17 +36,18 @@ proc argv_array {} {
   # echo_param [array get argv_array]
 }
 
-proc cred_array {argv_array} {
+proc cred_array {varName} {
+  upvar 1 $varName argv_array_inside
   global cred
   array unset cred
-  foreach type $argv_array(User_Pass_Json) {
-    set type [split $type ","]
+  foreach type $argv_array_inside(User_Pass_Json) {
+    set type [split $type ",/"]
     switch -- [llength $type] {
-      2 {
+      3 {
         set cred([lindex $type 0],user) [lindex $type 1]
         set cred([lindex $type 0],pass) [lindex $type 2]
       }
-      3 {
+      4 {
         set cred([lindex $type 0],user) [lindex $type 1]
         set cred([lindex $type 0],pass) [lindex $type 2]
         set cred([lindex $type 0],pass15) [lindex $type 3]
