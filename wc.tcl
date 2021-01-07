@@ -216,7 +216,7 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
   return $output
 }
 
-
+global argv
 global tcl_platform
 echo_param [list \
   "Library" [info script] \
@@ -224,6 +224,7 @@ echo_param [list \
   "whoami" [exec whoami] \
   "nameofexe" [info nameofexe] \
   "pid" [pid] \
+  "argv" $argv \
   "timestamp" [clock format [clock seconds] -format {%a, %b %d %Y | %T %Z}] \
   "InitTime" "[timer_index_since SCRIPT] $timer(SCRIPT,def)" \
   "tcl_platform_machine" $tcl_platform(machine) \
