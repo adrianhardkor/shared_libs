@@ -907,15 +907,15 @@ def load_env():
 	return()	
 
 def jenkins_header():
-	global argv_dict
+	global env_dict
 	global wcheader
-	for inp in argv_dict.keys():
+	for inp in env_dict.keys():
 		if inp.startswith('jenkins_'):
 			if 'jenkins' not in wcheader.keys():
 				wcheader['jenkins'] = {}
-			wcheader['jenkins'][inp] = argv_dict[inp]
+			wcheader['jenkins'][inp] = env_dict[inp]
 		else:
-			wcheader[inp] = argv_dict[inp]
+			wcheader[inp] = env_dict[inp]
 
 wait_start()
 global current_time
