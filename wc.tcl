@@ -25,7 +25,6 @@ proc argv_array {} {
   global argv
   echo_param $argv
 }
-argv_array
 
 proc echo_param {paired_list} {
   array set pl $paired_list
@@ -235,3 +234,6 @@ echo_param [list \
   "tcl_platform_os" $tcl_platform(os) \
   "tcl_platform_osVersion" $tcl_platform(osVersion) \
   "tcl_platform_platform" $tcl_platform(platform)]
+
+argv_array
+
