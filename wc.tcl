@@ -26,13 +26,13 @@ proc mcsplit "str splitStr {mc {\x00}}" {
 }
 
 proc argv_array {} {
-  array unset result
+  global argv_array
+  array unset argv_array
   global argv
   foreach  {i v} $argv {
-    set result([string trimleft $i "-"])  [split $v "=,"] 
+    set argv_array([string trimleft $i "-"])  [split $v "=,"] 
   }
-  parray_slow result
-  return $result
+  parray_slow argv_array
 }
 
 proc echo_param {paired_list} {
