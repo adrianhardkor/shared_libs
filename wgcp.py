@@ -33,7 +33,7 @@ class GCP():
 				pickle.dump(creds, token)
 
 		service = build('sheets', 'v4', credentials=creds)
-		wc.pairprint('GCP:  Connect', str(wc.timer_index_since(connect)) + ' ms')
+		# wc.pairprint('GCP:  Connect', str(wc.timer_index_since(connect)) + ' ms')
 		# Call the Sheets API
 		return(service.spreadsheets().values())
 
@@ -41,7 +41,7 @@ class GCP():
 		getTime = wc.timer_index_start()
 		out = []
 		result = handle.get(spreadsheetId=self.SAMPLE_SPREADSHEET_ID, range=self.SAMPLE_RANGE_NAME).execute()
-		wc.pairprint('GCP:  GET', str(wc.timer_index_since(getTime)) + ' ms')
+		# wc.pairprint('GCP:  GET', str(wc.timer_index_since(getTime)) + ' ms')
 		return(result.get('values',[]))
 
 	def SET(self,handle,cell,value):
@@ -54,7 +54,7 @@ class GCP():
 			wc.pairprint(cell,value)
 		except Exception as err:
 			print('\n\n' + str(err))
-		wc.pairprint('GCP:  SET', str(wc.timer_index_since(setTime)) + ' ms')
+		# wc.pairprint('GCP:  SET', str(wc.timer_index_since(setTime)) + ' ms')
 		return()
 
 	def CONVERT_JSON_BY_HEADER(self,sheet,headIndex):
