@@ -30,7 +30,7 @@ proc argv_array {} {
   array unset argv_array
   global argv
   foreach  {i v} $argv {
-    set argv_array([string trimleft $i "-"])  [split $v "="]
+    set argv_array([string trimleft [string trim $i] "-"])  [split [string trim $v] "="]
     # puts "[string trimleft $i "-"]\t[split $v "="]"
   }
   # echo_param [array get argv_array]
@@ -70,7 +70,7 @@ proc echo_param {paired_list} {
   foreach index [lsort -dictionary [array names pl]] {
     puts -nonewline "[format "%-*s" $maxlen $index]\="
     if {$index == ""} {puts "\n"}
-    foreach line [split $pl($index) "\n"] {puts "  $line"}
+    foreach line [split $pl($index) "\n"] {puts "  '$line'"}
   }
   puts $header
 }
