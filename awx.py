@@ -72,8 +72,8 @@ class AWX():
 			time.sleep(4)
 			data = json.loads(wc.REST_GET('http://' + self.IP + status_url, user=self.user, pword=self.pword))
 			print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
-		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['stdout'], user=self.user, pword=self.pword))['content']
-		for line in raw.split('\n'):
+		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['stdout'], user=self.user, pword=self.pword))
+		for line in raw['content'].split('\n'):
 			print(line)
 		return(raw)
 		# ['related']['stdout']
