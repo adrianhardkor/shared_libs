@@ -60,12 +60,12 @@ class AWX():
 					print()
 				elif result['event_display'] == 'Host Started':
 					result['event_display'] = ' '.join([result['event_display'], result['host_name']])
-				wc.pairprint(i + '    ' + result['event_display'], result['event_data']['task_path'])
+				# wc.pairprint(i + '    ' + result['event_display'], result['event_data']['task_path'])
 				new[i] = {'event_display': result['event_display'], 'task_path':result['event_data']['task_path']}
 				if 'res' in result['event_data'].keys():
 					for dump in ['stdout_lines','stderr_lines']:
 						if dump in result['event_data']['res'].keys():
-							wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
+							# wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
 							new[i][dump] = result['event_data']['res'][dump]
 		return(new)
 	def RunPlaybook(self,playbook_name,args={}):
