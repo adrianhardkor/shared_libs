@@ -8,6 +8,13 @@ proc set_debug {num} {
   }
 }
 
+proc timer_index_start {index {definition seconds}} {
+    # 1st snapshot timer
+    global timer_start
+    set timer_start($index,definition) $definition
+    set timer_start($index) [clock $definition]
+}
+
 # START SCRIPT TIMER
 global timer
 set timer(SCRIPT,def) "milliseconds"
@@ -23,6 +30,47 @@ proc timer_index_since {index} {
 
 proc mcsplit "str splitStr {mc {\x00}}" {
     return [split [string map [list $splitStr $mc] $str] $mc]
+}
+
+proc grep {expression data} {
+  set result {}
+  foreach line [split $data "\n"] {
+    if {[regexp -- $expression $line]} {
+      lappend result $line
+    }
+  }
+  return [join $result "\n"]
+}
+
+proc cleanLine {line} {
+  return [lunique [split $line "\t "]]
+}
+
+proc lunique {input_list} {
+  set result {}
+  foreach element $input_list {
+    if {[lsearch -exact $result $element]==-1} {
+      lappend result $element
+    }
+  }
+  return $result
+}
+
+# mrvTS_getports $argv_array(lx_ip) $cred(LX,user) $cred(LX,pass) $cred(LX,pass15) $argv_array(lx_port)
+proc mrvTS_getports {lx_ip user pass pass15 lx_port} {
+  set result [list]
+  if {$lx_port == 0} {
+    foreach line [split [mrvTS_show $lx_ip $user $pass $pass15 ""] "\r\n"] {
+        set poten [lindex [cleanLine $line] 1]
+        if {[string is integer $poten] && $poten != ""} {
+          lappend result [lindex [cleanLine $line] 1]
+        }
+    }
+    puts $result
+    return $result
+  } else {
+    return [list $lx_port]
+  }
 }
 
 proc argv_array_run {} {
@@ -158,6 +206,7 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
   global spawn_id mrv0 mrv15 send_slow
   set mrv0 {([:]+[0-9\ ]+[>])}
   set mrv15 {>>}
+  set output ""
   if {[catch {spawn ssh -l $ts_user $ts_ip} err2]} {
     puts "SSH Failure"
     exit 5
@@ -185,8 +234,8 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           after 500
           send -s -- "connect port async $ts_port \r";
-          after 2000
-          expect -re ".*" {send -s -- "\r\r\r";}
+          after 1000
+          expect -re ".*" {send -s -- "\r \r \r \r \r"; append output $expect_out(buffer)}
           after 1750
           break
         }
@@ -216,9 +265,19 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
     set each 0
     while {$each <= 60} {
       expect {
+         "nable to connect to port " {
+          append output "\n\nBAREMETAL: MCC_LX_ERR\tUnable to connect to port\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+         }
+         "Pulse Policy Secure" {
+          append output "\n\nBAREMETAL: PULSE\tASCII_MENU\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+         }
          "mcc" {
           # JUNIPER
-          append output "\n\nBAREMETAL: MRV_MCC"
+          append output "\n\nBAREMETAL: MRV_MCC\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
@@ -246,27 +305,38 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
+        -re "{FreeBSD.*-re0|FreeBSD.*-re1}" {
+          # JUNIPER
+          append output "\n\nBAREMETAL: MX\tLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
         "root>" {
           # JUNIPER
           append output "\n\nBAREMETAL: JUNOS_CLI\tNOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
+        "Login:" {
+          append output "\n\nBAREMETAL: UNKNOWN\tLogin:\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
         -re  "OTHER" {
-          puts "\n\nBAREMETAL: OTHER"
+          append output "\n\nBAREMETAL: OTHER???\n"
           append output $expect_out(buffer)
-          break
-        }
+          return [mrvTS_Exit $output]
+         }
         "FreeBSD" {
-          puts "\n\nBAREMETAL:  bsd/linux"
+          append output "\n\nBAREMETAL: BSD/Linux\tUNKNOWN\n"
           append output $expect_out(buffer)
-          break;
-        }
+          return [mrvTS_Exit $output]
+         }
         "root@" {
-          puts "\n\nBAREMETAL:  root/linux"
+          append output "\n\nBAREMETAL: BSD/Linux\tNOLOGIN\n"
           append output $expect_out(buffer)
-          break;
-        }
+          return [mrvTS_Exit $output]
+         }
         -re ".*(\r|\n)" {
           after 2;
           append output $expect_out(buffer)
