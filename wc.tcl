@@ -102,7 +102,6 @@ proc mrvTS_exit {} {
 }
 
 proc mrvTS_show {ts_ip ts_user ts_pass1 ts_pass2 ts_port} {
-   log_user 0
    set timeout 30
    set commands [list "no pause" "show port async summary" "" "exit"]
    # no pause
@@ -142,7 +141,6 @@ proc mrvTS_show {ts_ip ts_user ts_pass1 ts_pass2 ts_port} {
         }
         "isconnec" {
             append output $expect_out(buffer)
-            log_user 1
             return $output
         }
         "re you sure you want to continue connectin" {send -- "yes\r";}
@@ -151,7 +149,6 @@ proc mrvTS_show {ts_ip ts_user ts_pass1 ts_pass2 ts_port} {
       sleep 1
       incr each
     }
-    log_user 1
     puts "MRVTS_SHOW_PORTS_END"
     return $output
   }
@@ -176,7 +173,7 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           after 500
           send -s -- "connect port async $ts_port \r";
-          after 2000
+          after 1000
           expect -re ".*" {send -s -- "\r\r\r";}
           after 1750
           break
@@ -184,7 +181,14 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
         -re $mrv0 {
           append output $expect_out(buffer)
           # logged-in
-          send -s -- "enable\r";
+          # send -s -- "enable\r";
+          append output $expect_out(buffer)
+          after 500
+          send -s -- "connect port async $ts_port \r";
+          after 2000
+          expect -re ".*" {send -s -- "\r\r\r";}
+          after 1750
+          break
         }
         "isconnec" {
             return $output
@@ -210,19 +214,48 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
     }
     # TS portion complete
     set each 0
-    while {$each <= 20} {
+    while {$each <= 60} {
       expect {
          "mcc" {
           # JUNIPER
-          puts "\n\nBAREMETAL: MRV_MCC"
+          append output "\n\nBAREMETAL: MRV_MCC"
           append output $expect_out(buffer)
-          break;
+          return [mrvTS_Exit $output]
         }
-        "ogin: " {
+        "{primary:node0}" {
           # JUNIPER
-          puts "\n\nBAREMETAL: JUNIPER"
+          append output "\n\nBAREMETAL: SRX\tNOLOGIN\n"
           append output $expect_out(buffer)
-          break;
+          return [mrvTS_Exit $output]
+        }
+        -re "{\{master\}|-re0>|-re1>}" {
+          # JUNIPER
+          append output "\n\nBAREMETAL: MX\tNOLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        -re "{\{master:0\}\[edit\]}" {
+          # JUNIPER
+          append output "\n\nBAREMETAL: MX\tCONFIG_MODE\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        "login: " {
+          # JUNIPER
+          append output "\n\nBAREMETAL: MX\tLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        "root>" {
+          # JUNIPER
+          append output "\n\nBAREMETAL: JUNOS_CLI\tNOLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        -re  "OTHER" {
+          puts "\n\nBAREMETAL: OTHER"
+          append output $expect_out(buffer)
+          break
         }
         "FreeBSD" {
           puts "\n\nBAREMETAL:  bsd/linux"
@@ -234,19 +267,23 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           break;
         }
-        -re  "OTHER" {
-          puts "\n\nBAREMETAL: OTHER"
+        -re ".*(\r|\n)" {
+          after 2;
           append output $expect_out(buffer)
-          break
-        }
-        timeout {
-          puts "\n\nBAREMETAL: EMPTY? -- $expect_out(buffer)"
-          break
+          exp_continue
         }
       }
+      incr each
     }
-    catch { mrvTS_exit }
+    append output "\n\nBAREMETAL: TIMEOUT // EMPTY? \n"
+    catch { append out $expect_out(bufer) }
+    return [mrvTS_Exit $output]
   }
+}
+
+proc mrvTS_Exit {output} {
+  catch { mrvTS_exit }
+  append output "\n\n"
   return $output
 }
 
