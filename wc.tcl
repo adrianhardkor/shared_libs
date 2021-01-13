@@ -8,6 +8,7 @@ proc set_debug {num} {
   }
 }
 
+
 proc timer_index_start {index {definition seconds}} {
     # 1st snapshot timer
     global timer_start
@@ -59,6 +60,7 @@ proc lunique {input_list} {
 # mrvTS_getports $argv_array(lx_ip) $cred(LX,user) $cred(LX,pass) $cred(LX,pass15) $argv_array(lx_port)
 proc mrvTS_getports {lx_ip user pass pass15 lx_port} {
   set result [list]
+  if {![is_pingable $lx_ip]} {puts "${lx_ip} NOT PINGABLE"; exit 5}
   if {$lx_port == 0} {
     foreach line [split [mrvTS_show $lx_ip $user $pass $pass15 ""] "\r\n"] {
         set poten [lindex [cleanLine $line] 1]
@@ -158,7 +160,7 @@ proc mrvTS_show {ts_ip ts_user ts_pass1 ts_pass2 ts_port} {
   global spawn_id mrv0 mrv15 send_slow
   set mrv0 {([:]+[0-9\ ]+[>])}
   if {[catch {spawn ssh -l $ts_user $ts_ip} err2]} {
-    puts "SSH Failure"
+    puts "SSH Failure: $err2"
     exit 5
   } else {
     # show port async summary
@@ -311,6 +313,11 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
+        -re {root@:RE:0%|root@:RE:1%} {
+          append output "\n\nBAREMETAL: PTX_MX\tJUNOS_CLI\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
         "login: " {
           # JUNIPER
           append output "\n\nBAREMETAL: MX\tLOGIN\n"
@@ -342,6 +349,12 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
         }
         "Enter the password for" {
           append output "\n\nBAREMETAL: NEXUS\tPASSWORD:\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        "Nokia" {
+          # accepts blank login == 7750
+          append output "\n\nBAREMETAL: NOKIA\tLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
@@ -383,6 +396,52 @@ proc mrvTS_Exit {output} {
   catch { mrvTS_exit }
   append output "\n\n"
   return $output
+}
+
+proc is_pingable {router {options none}} {
+     global ping_output
+     set log_user [log_user -info]
+     log_user 0
+      if {[catch {set ping_output [exec ping -c 3 $router]} err]} {set ping_output $err}
+     log_user $log_user
+      switch -glob -- $ping_output {
+        "* 0 received, *" -
+        "* 0 packets received, *" -
+        "* 1 packets received, *" -
+        "* 1 received, *" {return 0}
+        "* 5 packets received, *" -
+        "* 4 packets received, *" -
+        "* 3 packets received, *" -
+        "* 2 packets received, *" -
+        "* 5 received, *" -
+        "* 4 received, *" -
+        "* 3 received, *" -
+        "* 2 received, *" {
+          switch -- $options {
+            "output" -
+            "pingstats" {
+              if {$log_user == 1} {
+                send_user "\n\n[grep_until "ping statistics" "mdev" $ping_output]\n";
+              }
+            }
+            "none" -
+            default {}
+          }
+          return 1
+        }
+        default {
+          switch -glob -- $err {
+            "ping: unknown hos*" {return 0}
+            default {
+              if {$log_user == 1} {
+                send_user "proc checkrouterup: '$err', re-code \n"
+                send_user "\n\n '${ping_output}'\n";
+              }
+              return 0;
+            }
+          }
+        }
+      }
 }
 
 proc parray_slow {array_name {outputme 1}} {
