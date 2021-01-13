@@ -132,6 +132,7 @@ proc clrinbuff {} {
 }
 
 proc mrvTS_exit {} {
+  log_user 0
   global spawn_id mrv0 mrv15 send_slow
   send -s -- "\x1A";
   expect -- "exit";
