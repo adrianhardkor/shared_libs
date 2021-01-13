@@ -64,6 +64,7 @@ class AWX():
 				# wc.pairprint(i + '    ' + result['event_display'], result['event_data']['task_path'])
 				new[i] = {'event_display': result['event_display'], 'task_path':result['event_data']['task_path']}
 				if 'res' in result['event_data'].keys():
+					wc.jd(result['event_data']['res'])
 					for dump in ['stdout_lines','stderr_lines']:
 						if dump in result['event_data']['res'].keys():
 							wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
