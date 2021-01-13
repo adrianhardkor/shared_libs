@@ -770,6 +770,7 @@ def grep_until(begin, ending, data):
 def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword=''):
     # RETURNS JSON
     data = {}
+    # print('\t' + url)
     response = requests.get(url, auth=(user, pword), headers=headers, verify=False)
     if response.status_code != 200:
         data['url'] = url
