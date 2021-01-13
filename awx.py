@@ -68,7 +68,6 @@ class AWX():
 						if dump in result['event_data']['res'].keys():
 							wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
 							new[i][dump] = result['event_data']['res'][dump]
-		wc.jd(result)
 		return(new)
 	def RunPlaybook(self,playbook_name,args={}):
 		# ASYNC BY DEFAULT
@@ -93,6 +92,7 @@ class AWX():
 			if data['status'] != 'running':
 				print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
 		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['job_events'], user=self.user, pword=self.pword))
+		wc.pairprint('API','http://' + self.IP + data['related']['job_events'])
 		raw = AWX.awx_job_events_format(raw)
 		return(raw)
 		# ['related']['stdout']

@@ -264,7 +264,7 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
     }
     # TS portion complete
     set each 0
-    while {$each <= 60} {
+    while {$each <= 80} {
       expect {
          "nable to connect to port " {
           append output "\n\nBAREMETAL: MCC_LX_ERR\tUnable to connect to port\n"
@@ -326,6 +326,22 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
         -re {([a-zA-Z0-9]+[@]+[a-zA-Z0-9\.\-\_]+[>#%])} {
           # JUNIPER
           append output "\n\nBAREMETAL: JUNIPER\tNOLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        "POAP-2-POAP_INFO" {
+          # NEXUS - ISSUES WITH POAP
+          append output $expect_out(buffer)
+          # return [mrvTS_Exit $output]
+          send -s -- "\r \r \r \r";
+        }
+        -re {Power On Auto Provisioning] (yes/skip/no)|(yes/no)} {
+          append output $expect_out(buffer)
+          # return [mrvTS_Exit $output]
+          send -s -- "yes\r  \r";
+        }
+        "Enter the password for" {
+          append output "\n\nBAREMETAL: NEXUS\tPASSWORD:\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
