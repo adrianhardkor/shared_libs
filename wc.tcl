@@ -294,9 +294,20 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
-        -re "{\{master:0\}\[edit\]}" {
+        "TH1040S" {
+          append output "\n\nBAREMETAL: A10_THUNDER\tLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        "root>" {
           # JUNIPER
-          append output "\n\nBAREMETAL: MX\tCONFIG_MODE\n"
+          append output "\n\nBAREMETAL: JUNOS_CLI\tNOLOGIN\n"
+          append output $expect_out(buffer)
+          return [mrvTS_Exit $output]
+        }
+        -re "{master:0}" {
+          # JUNIPER
+          append output "\n\nBAREMETAL: JUNIPER\tCONFIG_MODE\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
@@ -312,9 +323,9 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
-        "root>" {
+        -re {([a-zA-Z0-9]+[@]+[a-zA-Z0-9\.\-\_]+[>#%])} {
           # JUNIPER
-          append output "\n\nBAREMETAL: JUNOS_CLI\tNOLOGIN\n"
+          append output "\n\nBAREMETAL: JUNIPER\tNOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
@@ -333,7 +344,7 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
          }
-        "root@" {
+        "SERVER" {
           append output "\n\nBAREMETAL: BSD/Linux\tNOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
