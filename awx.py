@@ -58,9 +58,10 @@ class AWX():
 			if 'task_path' in result['event_data']:
 				if result['event_display'].startswith('Task Started'):
 					print()
+					wc.pairprint(i + '    ' + result['event_display'], result['event_data']['task_path'])
 				elif result['event_display'] == 'Host Started':
 					result['event_display'] = ' '.join([result['event_display'], result['host_name']])
-				wc.pairprint(i + '    ' + result['event_display'], result['event_data']['task_path'])
+				# wc.pairprint(i + '    ' + result['event_display'], result['event_data']['task_path'])
 				new[i] = {'event_display': result['event_display'], 'task_path':result['event_data']['task_path']}
 				if 'res' in result['event_data'].keys():
 					for dump in ['stdout_lines','stderr_lines']:
