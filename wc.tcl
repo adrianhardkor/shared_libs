@@ -269,12 +269,12 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
     while {$each <= 80} {
       expect {
          "nable to connect to port " {
-          append output "\n\nBAREMETAL: MCC_LX_ERR\tUnable to connect to port\n"
+          append output "\n\nBAREMETAL: MCC_LX_ERR    Unable to connect to port\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
          }
          "Pulse Policy Secure" {
-          append output "\n\nBAREMETAL: PULSE\tASCII_MENU\n"
+          append output "\n\nBAREMETAL: PULSE    ASCII_MENU\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
          }
@@ -286,53 +286,53 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
         }
         "{primary:node0}" {
           # JUNIPER
-          append output "\n\nBAREMETAL: SRX\tNOLOGIN\n"
+          append output "\n\nBAREMETAL: SRX    NOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         -re "{\{master\}|-re0>|-re1>}" {
           # JUNIPER
-          append output "\n\nBAREMETAL: MX\tNOLOGIN\n"
+          append output "\n\nBAREMETAL: MX    NOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         "TH1040S" {
-          append output "\n\nBAREMETAL: A10_THUNDER\tLOGIN\n"
+          append output "\n\nBAREMETAL: A10_THUNDER    LOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         "root>" {
           # JUNIPER
-          append output "\n\nBAREMETAL: JUNOS_CLI\tNOLOGIN\n"
+          append output "\n\nBAREMETAL: JUNOS_CLI    NOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         -re "{master:0}" {
           # JUNIPER
-          append output "\n\nBAREMETAL: JUNIPER\tCONFIG_MODE\n"
+          append output "\n\nBAREMETAL: JUNIPER    CONFIG_MODE\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         -re {root@:RE:0%|root@:RE:1%} {
-          append output "\n\nBAREMETAL: PTX_MX\tJUNOS_CLI\n"
+          append output "\n\nBAREMETAL: PTX_MX    JUNOS_CLI\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         "login: " {
           # JUNIPER
-          append output "\n\nBAREMETAL: MX\tLOGIN\n"
+          append output "\n\nBAREMETAL: MX    LOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         -re "{FreeBSD.*-re0|FreeBSD.*-re1}" {
           # JUNIPER
-          append output "\n\nBAREMETAL: MX\tLOGIN\n"
+          append output "\n\nBAREMETAL: MX    LOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         -re {([a-zA-Z0-9]+[@]+[a-zA-Z0-9\.\-\_]+[>#%])} {
           # JUNIPER
-          append output "\n\nBAREMETAL: JUNIPER\tNOLOGIN\n"
+          append output "\n\nBAREMETAL: JUNIPER    NOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
@@ -348,18 +348,18 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           send -s -- "yes\r  \r";
         }
         "Enter the password for" {
-          append output "\n\nBAREMETAL: NEXUS\tPASSWORD:\n"
+          append output "\n\nBAREMETAL: NEXUS    PASSWORD:\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         "Nokia" {
           # accepts blank login == 7750
-          append output "\n\nBAREMETAL: NOKIA\tLOGIN\n"
+          append output "\n\nBAREMETAL: NOKIA    LOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
         "Login:" {
-          append output "\n\nBAREMETAL: UNKNOWN\tLogin:\n"
+          append output "\n\nBAREMETAL: UNKNOWN    Login:\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
         }
@@ -369,12 +369,12 @@ proc mrvTS {ts_ip ts_user ts_pass1 ts_pass2 ts_port {timeout 120}} {
           return [mrvTS_Exit $output]
          }
         "FreeBSD" {
-          append output "\n\nBAREMETAL: BSD/Linux\tUNKNOWN\n"
+          append output "\n\nBAREMETAL: BSD/Linux    UNKNOWN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
          }
         "SERVER" {
-          append output "\n\nBAREMETAL: BSD/Linux\tNOLOGIN\n"
+          append output "\n\nBAREMETAL: BSD/Linux    NOLOGIN\n"
           append output $expect_out(buffer)
           return [mrvTS_Exit $output]
          }
