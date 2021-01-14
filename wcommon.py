@@ -18,8 +18,10 @@ import getpass
 import binascii
 import requests
 import paramiko
-from urllib3.exceptions import InsecureRequestWarning
 import uuid
+import urllib3
+urllib3.disable_warnings()
+
 
 def import_or_install(package):
     import pip
@@ -58,6 +60,12 @@ def jd(mydict):
     pairprint('Timestamp',fullRuntime())
     print('\n')
     return(out)
+
+def listprint(d, l):
+	newl = []
+	for ll in l:
+		newl.append(str(ll))
+	print(d.join(newl))
 
 def timer_index_start():
     # timer sub-commands
@@ -767,11 +775,11 @@ def grep_until(begin, ending, data):
         # pairprint(each, flag)
     return(result)
 
-def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword=''):
+def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', verify=False, params={}):
     # RETURNS JSON
     data = {}
     # print('\t' + url)
-    response = requests.get(url, auth=(user, pword), headers=headers, verify=False)
+    response = requests.get(url, auth=(user, pword), headers=headers, verify=verify, params=params)
     if response.status_code != 200:
         data['url'] = url
         data['user'] = user
