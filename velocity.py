@@ -110,6 +110,6 @@ class VELOCITY():
 
 V = VELOCITY(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
 wc.jd(V.GetInventory())
-wc.jd(V.GetTopologies())
+# wc.jd(V.GetTopologies())
 exit(0)
 

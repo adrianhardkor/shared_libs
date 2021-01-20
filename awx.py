@@ -1,5 +1,12 @@
+#!/usr/bin/env python3
+import os
+import sys
 import wcommon as wc
+import json
+# wc.jenkins_header(); # load inputs from Jenkinsfile
+# wc.jd(wc.wcheader)
 import json,requests,ipaddress,time
+
 class AWX():
 	def __init__(self, IP, user, pword):
 		self.user = user
@@ -151,3 +158,11 @@ class AWX():
 					'facts':interestingfact}
 		wc.jd(_INV)
 		return()
+
+
+A = AWX(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
+wc.jd(A.GetInventory())
+exit(0)
+
+
+
