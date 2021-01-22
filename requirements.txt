@@ -1,4 +1,3 @@
-getopt
 setuptools
 datetime
 ipaddress
