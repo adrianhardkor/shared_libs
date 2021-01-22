@@ -21,6 +21,8 @@ class VELOCITY():
 		url = url + '?limit=200'
 		data = json.loads(wc.REST_GET(self.V + url, user=self.user, pword=self.pword, params=params))
 		return(data)
+	def GetScripts(self):
+		wc.jd(VELOCITY.REST_GET(self, '/repository/v4/assets'))
 	def GetUsers(self):
 		# /velocity/api/user/v9/profiles
 		out = {}
@@ -109,7 +111,8 @@ class VELOCITY():
 		return(out)
 
 V = VELOCITY(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-wc.jd(V.GetInventory())
+V.GetScripts()
+# wc.jd(V.GetInventory())
 # wc.jd(V.GetTopologies())
 exit(0)
 

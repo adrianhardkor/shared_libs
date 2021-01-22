@@ -26,6 +26,7 @@ class LEPTON():
 			l = json.loads(wc.REST_GET(self.IP + str(l['Url']), user=self.user, pword=self.pword))
 			for Port in l['Ports']:
 				PortProp = json.loads(wc.REST_GET(self.IP + '/chassis/linecards/%s/ports/%s' % (SLOTID, Port['Url'].split('/')[-1]), user=self.user, pword=self.pword))
+				wc.jd(PortProp)
 				if PortProp['Slot'] not in out['linecards'].keys():
 					out['linecards'][PortProp['Slot']] = {'Description': l['Description'], 'Model': l['Model'], 'Name': l['Name'], 'Ports':{}}
 				out['linecards'][PortProp['Slot']]['Ports'][PortProp['Id']] = PortProp
