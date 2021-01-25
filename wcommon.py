@@ -932,6 +932,7 @@ def print_vagent_header():
 	global wcheader
 	import velocity
 	jenkins_header()
+	reserved_topology_resources = {}
 	for inp in sorted(env_dict.keys()):
 		if inp.startswith('VELOCITY_PARAM_'):
 			pairprint('[INFO] ' + inp, env_dict[inp])
@@ -943,7 +944,16 @@ def print_vagent_header():
 		vEnv = V.GetAgentReservation(env_dict['VELOCITY_PARAM_RESERVATION_ID'])
 		pairprint('[INFO] creatorId', vEnv['activeRes']['creatorId'])
 		pairprint('[INFO] topologyName', vEnv['activeRes']['topologyName'])
-		pairprint('[INFO] ReservationStatus', vEnv['status'] 
+		pairprint('[INFO] reservationName', vEnv['name'])
+		pairprint('[INFO] reservationStatus', vEnv['activeRes']['status'] + ' until ' + vEnv['activeRes']['end'])
+		for resource in vEnv['resources'].keys():
+			if vEnv['resources'][resource]['parentId'] is None:
+				name = vEnv['resources'][resource]['name']; # devices
+			else:
+				name = vEnv['resources'][resource]['parentName'] + '||' + ['resources'][resource]['name']; # intfs
+			reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
+	reserved_topology_resources = sorted(reserved_topology_resources)
+	pairprint('[INFO] reserved_topology_resources', reserved_topology_resources)
 	print("Finished: PASSED")
 	return(V); # object-return
 
