@@ -927,12 +927,25 @@ def jenkins_header():
 			wcheader[inp] = env_dict[inp]
 
 def print_vagent_header():
+	# ASSUMES RUNNING ON VAGENT
 	global env_dict
 	global wcheader
+	import velocity
 	jenkins_header()
-	for inp in env_dict.keys():
-		pairprint('[INFO] ' + inp, env_dict[inp])
+	for inp in sorted(env_dict.keys()):
+		if inp.startswith('VELOCITY_PARAM_'):
+			pairprint('[INFO] ' + inp, env_dict[inp])
+	if 'VELOCITY_PARAM_RESERVATION_ID' in env_dict.keys():
+		# HAS TOPOLOGY
+		ip = env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1]
+		token = env_dict['VELOCITY_PARAM_VELOCITY_TOKEN']
+		V = velocity.VELOCITY(env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1], token=env_dict['VELOCITY_PARAM_VELOCITY_TOKEN'])
+		vEnv = V.GetAgentReservation(env_dict['VELOCITY_PARAM_RESERVATION_ID'])
+		pairprint('[INFO] creatorId', vEnv['activeRes']['creatorId'])
+		pairprint('[INFO] topologyName', vEnv['activeRes']['topologyName'])
+		pairprint('[INFO] ReservationStatus', vEnv['status'] 
 	print("Finished: PASSED")
+	return(V); # object-return
 
 wait_start()
 global current_time
