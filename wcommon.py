@@ -952,10 +952,9 @@ def print_vagent_header():
 			else:
 				name = vEnv['resources'][resource]['parentName'] + '_' + vEnv['resources'][resource]['name']; # intfs
 			reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
-	reserved_topology_resources = sorted(reserved_topology_resources)
-	pairprint('[INFO] reserved_topology_resources', reserved_topology_resources)
+	pairprint('[INFO] reserved_topology_resources', sorted(list(reserved_topology_resources.keys())))
 	print("Finished: PASSED")
-	return(V); # object-return
+	return(V,reserved_topology_resources); # object-return, dict(resources: uuid's)
 
 wait_start()
 global current_time
