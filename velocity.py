@@ -13,13 +13,16 @@ class VELOCITY():
 		self.pword = pword
 		self.V = 'https://%s/velocity/api' % str(IP)	
 		self.__name__ = 'VELOCITY'
+		self.TOKEN = json.loads(wc.REST_GET(self.V + '/auth/v2/token', user=self.user, pword=self.pword))['token']
 	def REST_GET(self, url, params={}):
 		# print('\t' + self.V + url)
 		# page = '1'
 		# while page is ''
 		# url = url + '?offset={offset}&limit={limit}&filter={filter}' == MAX 200 then OFFSET
 		url = url + '?limit=200'
-		data = json.loads(wc.REST_GET(self.V + url, user=self.user, pword=self.pword, params=params))
+		headers = {"X-Auth-Token": self.TOKEN}
+		headers['Content-Type'] = headers['Accept'] = 'application/json'
+		data = json.loads(wc.REST_GET(self.V + url, headers=headers, params=params))
 		return(data)
 	def GetScripts(self):
 		wc.jd(VELOCITY.REST_GET(self, '/repository/v4/assets'))
