@@ -950,7 +950,7 @@ def print_vagent_header():
 			if vEnv['resources'][resource]['parentId'] is None:
 				name = vEnv['resources'][resource]['name']; # devices
 			else:
-				name = vEnv['resources'][resource]['parentName'] + '||' + vEnv['resources'][resource]['name']; # intfs
+				name = vEnv['resources'][resource]['parentName'] + '_' + vEnv['resources'][resource]['name']; # intfs
 			reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
 	reserved_topology_resources = sorted(reserved_topology_resources)
 	pairprint('[INFO] reserved_topology_resources', reserved_topology_resources)
