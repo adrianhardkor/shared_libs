@@ -926,6 +926,13 @@ def jenkins_header():
 		else:
 			wcheader[inp] = env_dict[inp]
 
+def print_vagent_header():
+	global env_dict
+	global wcheader
+	jenkins_header()
+	for inp in env_dict.keys():
+		pairprint('[INFO] ' + inp, env_dict[inp])
+
 wait_start()
 global current_time
 current_time = time.time()
