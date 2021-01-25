@@ -932,6 +932,7 @@ def print_vagent_header():
 	jenkins_header()
 	for inp in env_dict.keys():
 		pairprint('[INFO] ' + inp, env_dict[inp])
+	print("Finished: PASSED")
 
 wait_start()
 global current_time
