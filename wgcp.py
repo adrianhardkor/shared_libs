@@ -71,6 +71,8 @@ class GCP():
 			i = 0
 			for colum in row:
 				# wc.pairprint('\t' + self.headers[i],colum)
+				if i not in self.headers:
+					wc.jd(sheet)
 				asset[ip][self.headers[i]] = colum
 				i += 1
 			r += 1
