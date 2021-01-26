@@ -72,7 +72,7 @@ class GCP():
 			i = 0
 			for colum in row:
 				# wc.pairprint('\t' + self.headers[i],colum)
-				if i in self.headers:
+				if wc.lindex_exists(self.headers, i):
 					asset[ip][self.headers[i]] = colum
 				else:
 					# no header for colum = __D__

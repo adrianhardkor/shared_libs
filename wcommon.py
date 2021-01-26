@@ -61,6 +61,9 @@ def jd(mydict):
     print('\n')
     return(out)
 
+def lindex_exists(ls, i):
+    return (0 <= i < len(ls)) or (-len(ls) <= i < 0)
+
 def listprint(d, l):
 	newl = []
 	for ll in l:
