@@ -1,5 +1,6 @@
 # Google Public Cloud
 import wcommon as wc
+import string
 import pickle
 import os.path
 from googleapiclient.discovery import build
@@ -71,7 +72,11 @@ class GCP():
 			i = 0
 			for colum in row:
 				# wc.pairprint('\t' + self.headers[i],colum)
-				asset[ip][self.headers[i]] = colum
+				if i in self.headers:
+					asset[ip][self.headers[i]] = colum
+				else:
+					# no header for colum = __D__
+					asset[ip]['__' + list(string.ascii_uppercase)[i] + '__'] = colum
 				i += 1
 			r += 1
 		return(asset)
