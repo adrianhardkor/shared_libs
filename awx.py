@@ -160,9 +160,9 @@ class AWX():
 		return()
 
 
-A = AWX(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-wc.jd(A.GetInventory())
-exit(0)
+# A = AWX(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
+# wc.jd(A.GetInventory())
+# exit(0)
 
 
 
