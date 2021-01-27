@@ -13,6 +13,8 @@ class AWX():
 		self.pword = pword
 		self.IP = IP
 		self.__name__ = 'AWX'
+	def REST_GET(self,api):
+		return(json.loads(wc.REST_GET('http://' + self.IP + api, user=self.user, pword=self.pword)))
 	def mcsplit(mystr, cc):
 		# handler for multiple splits
 		if type(cc) == str:
@@ -59,6 +61,7 @@ class AWX():
 			return({})
 		return({lst[i]: lst[i + 1] for i in range(0, len(lst), 2)})
 	def awx_job_events_format(je):
+		# GET STDOUTLINES FROM COMPLETED JOB AND FORMAT
 		new = {}
 		for result in je['results']:
 			i = result['url']
@@ -88,11 +91,12 @@ class AWX():
 		data['status'] = 'Running'
 		if 'job' not in data.keys():
 			# SOMETHING WENT WRONG
+			data['response.request.body'] = json.loads(data['response.request.body'])
 			wc.jd(data)
 			return('')
 		job = str(data['job'])
 		playbook = data['playbook']
-		inventory = str(data['inventory'])
+		inventory = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/inventories/' + str(data['inventory']), user=self.user, pword=self.pword))['name']
 		while data['status'] not in ['successful','failed']:
 			time.sleep(4)
 			data = json.loads(wc.REST_GET('http://' + self.IP + status_url, user=self.user, pword=self.pword))
@@ -101,7 +105,7 @@ class AWX():
 		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['job_events'], user=self.user, pword=self.pword))
 		wc.pairprint('API','http://' + self.IP + data['related']['job_events'])
 		raw = AWX.awx_job_events_format(raw)
-		return(raw)
+		return(data['status'],raw)
 		# ['related']['stdout']
 		# POST https://your.tower.server/api/v2/job_templates/<your job template id>/launch/ with any required data gathered during the previous step(s). The variables that can be passed in the request data for this action include the following.
 		# extra_vars: A string that represents a JSON or YAML formatted dictionary (with escaped parentheses) which includes variables given by the user, including answers to survey questions
@@ -109,6 +113,89 @@ class AWX():
 		# limit: A string that represents a comma-separated list of hosts or groups to operate on
 		# inventory: A integer value for the foreign key of an inventory to use in this job run
 		# credential: A integer value for the foreign key of a credential to use in this job run
+	def GetFacts2(self,result,raw):
+		# PAGED
+		result = {}
+		inventories = {}
+		for host in AWX.REST_GET(self,'/api/v2/hosts/')['results']:
+			try:
+				host['variables'] = json.loads(host['variables'])
+			except Exception:
+				host['variables'] = {'_': host['variables']}
+			# wc.jd(host); exit(0)
+			if 'ansible_host' in host['variables'].keys():
+				ip = host['variables']['ansible_host']
+				if ip not in result.keys():
+					result[ip] = {'pingable': wc.is_pingable(ip), 'hostnames':'', 'ids':{}}
+				result[ip]['hostnames'] += ' ' + host['name'].upper()
+				result[ip]['hostnames'] = ' '.join(sorted(wc.lunique(result[ip]['hostnames'].split(' ')))).strip()
+				if host['inventory'] not in inventories.keys():
+					inventories[host['inventory']] = AWX.REST_GET(self,host['related']['inventory'])['name']
+				result[ip]['ids'][host['id']] = {'inventory': inventories[host['inventory']]}
+				_FACTS = AWX.REST_GET(self, '/api/v2/hosts/%d/ansible_facts/' % host['id'])
+				result[ip]['ids'][host['id']]['facts_size'] = len(list(_FACTS.keys()))
+				# result[ip]['ids'][host['id']]['variables'] = host['variables']
+				if result[ip]['ids'][host['id']]['facts_size'] != 0:
+					if 'date_time' in _FACTS.keys():
+							result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['date_time']['date'] + ' ' + _FACTS['date_time']['time'] + ' ' + _FACTS['date_time']['tz']
+					elif 'net_routing_engines' in _FACTS.keys():
+						result[ip]['ids'][host['id']]['facts_timestamp'] = list(_FACTS['net_routing_engines'].keys())
+		for i in result.keys():
+				if ' ' in result[i]['hostnames']:
+					result[i]['hostnames'] = result[i]['hostnames'].split(' ')
+
+#FACTS AGE
+#['net_routing_engines']['1']
+#            "up_time": "67 days, 4 hours, 22 minutes, 6 seconds",
+#            "cpu_idle": "100",
+#            "cpu_user": "0",
+#            "cpu_system": "0",
+#            "start_time": "2020-11-19 18:09:51 UTC",
+
+
+
+
+		wc.jd(result)
+		exit(0)
+	def GetFacts(self,result,raw):
+		result = {}
+		run_facts = {}
+		for subtask in raw.keys():
+			# raw keys are subtask Endpoint - job_events
+			# "/api/v2/job_events/8509/":
+			subtask = json.loads(wc.REST_GET('http://' + self.IP + subtask, user=self.user, pword=self.pword))
+			facts = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/hosts/%s/ansible_facts/' % subtask['host'], user=self.user, pword=self.pword))
+			if subtask['host'] is None:
+				# parent task
+				continue
+			if '_ansible_facts_gathered' not in facts.keys():
+				wc.jd(subtask); exit(0)
+			nonfacts = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/hosts/%s/' % subtask['host'], user=self.user, pword=self.pword))
+			for added_nonfact in nonfacts.keys():
+				if added_nonfact == 'variables':
+					facts[added_nonfact] = json.loads(nonfacts[added_nonfact])
+				else:
+					facts[added_nonfact] = nonfacts[added_nonfact]
+				# wc.pairprint(added_nonfact, facts[added_nonfact])
+			run_facts[subtask['host']] = facts
+
+		# for each found host:
+		for hostId in run_facts.keys():
+			if run_facts[hostId]['_ansible_facts_gathered'] in ['missing']:
+				result[run_facts[hostId]['net_hostname']] = {'hostId': hostId, '.ansible_facts_gathered': facts['.ansible_facts_gathered']}
+				continue
+			interesting = {'_hostId': hostId}
+			for interest in ['_ansible_facts_gathered', 'ansible_net_gather_subset', 'ansible_net_hostname', 'ansible_net_interfaces', 'ansible_net_model', 'ansible_net_moel', 'ansible_net_serialnum', 'ansible_net_verison', 'velocity', 'net_hostname', 'net_interfaces', 'net_model', 'net_moel', 'net_serialnum', 'net_verison', 'default_ipv4', 'variables']:
+				if interest in run_facts[hostId].keys():
+					if 'net_interfaces' in interest:
+						interesting[interest] = str(sorted(list(run_facts[hostId][interest].keys())))
+					else:
+						interesting[interest] = run_facts[hostId][interest]
+				else:
+					interesting[interest] = 'missing'
+			result[hostId] = interesting
+		wc.jd(result)
+		exit(0)
 	def GetInventory(self):
 		_INV = {}
 		data = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/inventories', user=self.user, pword=self.pword))
