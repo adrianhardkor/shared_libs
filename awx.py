@@ -156,58 +156,7 @@ class AWX():
 				if ' ' in result[i]['hostnames']:
 					result[i]['hostnames'] = result[i]['hostnames'].split(' ')
 
-#FACTS AGE
-#['net_routing_engines']['1']
-#            "up_time": "67 days, 4 hours, 22 minutes, 6 seconds",
-#            "cpu_idle": "100",
-#            "cpu_user": "0",
-#            "cpu_system": "0",
-#            "start_time": "2020-11-19 18:09:51 UTC",
-
-
-
-
-		wc.jd(result)
-		exit(0)
-	def GetFacts(self,result,raw):
-		result = {}
-		run_facts = {}
-		for subtask in raw.keys():
-			# raw keys are subtask Endpoint - job_events
-			# "/api/v2/job_events/8509/":
-			subtask = json.loads(wc.REST_GET('http://' + self.IP + subtask, user=self.user, pword=self.pword))
-			facts = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/hosts/%s/ansible_facts/' % subtask['host'], user=self.user, pword=self.pword))
-			if subtask['host'] is None:
-				# parent task
-				continue
-			if '_ansible_facts_gathered' not in facts.keys():
-				wc.jd(subtask); exit(0)
-			nonfacts = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/hosts/%s/' % subtask['host'], user=self.user, pword=self.pword))
-			for added_nonfact in nonfacts.keys():
-				if added_nonfact == 'variables':
-					facts[added_nonfact] = json.loads(nonfacts[added_nonfact])
-				else:
-					facts[added_nonfact] = nonfacts[added_nonfact]
-				# wc.pairprint(added_nonfact, facts[added_nonfact])
-			run_facts[subtask['host']] = facts
-
-		# for each found host:
-		for hostId in run_facts.keys():
-			if run_facts[hostId]['_ansible_facts_gathered'] in ['missing']:
-				result[run_facts[hostId]['net_hostname']] = {'hostId': hostId, '.ansible_facts_gathered': facts['.ansible_facts_gathered']}
-				continue
-			interesting = {'_hostId': hostId}
-			for interest in ['_ansible_facts_gathered', 'ansible_net_gather_subset', 'ansible_net_hostname', 'ansible_net_interfaces', 'ansible_net_model', 'ansible_net_moel', 'ansible_net_serialnum', 'ansible_net_verison', 'velocity', 'net_hostname', 'net_interfaces', 'net_model', 'net_moel', 'net_serialnum', 'net_verison', 'default_ipv4', 'variables']:
-				if interest in run_facts[hostId].keys():
-					if 'net_interfaces' in interest:
-						interesting[interest] = str(sorted(list(run_facts[hostId][interest].keys())))
-					else:
-						interesting[interest] = run_facts[hostId][interest]
-				else:
-					interesting[interest] = 'missing'
-			result[hostId] = interesting
-		wc.jd(result)
-		exit(0)
+		return(result)
 	def GetInventory(self):
 		_INV = {}
 		data = json.loads(wc.REST_GET('http://' + self.IP + '/api/v2/inventories', user=self.user, pword=self.pword))
