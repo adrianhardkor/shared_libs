@@ -139,7 +139,19 @@ class AWX():
 					if 'date_time' in _FACTS.keys():
 							result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['date_time']['date'] + ' ' + _FACTS['date_time']['time'] + ' ' + _FACTS['date_time']['tz']
 					elif 'net_routing_engines' in _FACTS.keys():
-						result[ip]['ids'][host['id']]['facts_timestamp'] = list(_FACTS['net_routing_engines'].keys())
+						for re in _FACTS['net_routing_engines'].keys():
+							formatter = '%Y-%m-%d %H:%M:%S %Z'
+							start = int(time.mktime(time.strptime(_FACTS['net_routing_engines'][re]['start_time'], formatter)))
+							add = _FACTS['net_routing_engines'][re]['up_time'].split(' ')
+							add_sec = int(add[-2])
+							add_sec = add_sec + int(add[-4]) * 60
+							add_sec = add_sec + int(add[-6]) * 3600
+							add_sec = add_sec + int(add[-8]) * 86400
+							# wc.pairprint('add_sec', add_sec); exit(0)
+							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
+							break
+				else:
+					result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 		for i in result.keys():
 				if ' ' in result[i]['hostnames']:
 					result[i]['hostnames'] = result[i]['hostnames'].split(' ')
