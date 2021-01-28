@@ -524,14 +524,15 @@ def parray_slow(ary):
     print(border)
     return("")
 
-def sendmail(destinations, subject, data, source='arc-wopr@wowinc.com'):
+def sendmail(destinations, subject, data, source='wopr-sb@git.arc.ninjaneers.net'):
     if destinations == '': return()
     for dest in destinations.split(', '):
         print('\t'.join(['SENDMAIL:', subject, dest, send_email_single(dest, subject, data, source)]))
     return()
 
 
-def send_email_single(dest, subject, data, source='arc-wopr@wowinc.com'):
+def send_email_single(dest, subject, data, source='wopr-sb@git.arc.ninjaneers.net'):
+    start = timer_index_start()
     sendmail_location = "sendmail"
     p = os.popen("%s -t" % sendmail_location, "w")
     p.write("From: %s\n" % source)
@@ -546,7 +547,7 @@ def send_email_single(dest, subject, data, source='arc-wopr@wowinc.com'):
         p.write("\n")
     except ValueError:
         do_nothing()
-    if str(status) == 'None': status = 'Success'
+    if str(status) == 'None': status = 'Success, took %s' % str(timer_index_since(start))
     return(status)
 
 
