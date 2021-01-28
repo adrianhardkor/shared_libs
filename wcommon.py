@@ -527,9 +527,8 @@ def parray_slow(ary):
 def sendmail(destinations, subject, data, source='wopr-sb@arc.ninjaneers.net'):
     if destinations == '': return()
     data = str(data).replace("'","").replace('\t','    ').replace('\\t','    ')
-    for dest in mcsplit(destinations, ', '):
-        if dest != '':
-            print('\t'.join(['SENDMAIL:', subject, dest.strip(), send_email_single(dest, subject, data.replace("'",""), source)]))
+    dest = ','.join(mcsplit(destinations, ', '))
+    print('\t'.join(['SENDMAIL:', subject, dest.strip(), send_email_single(dest, subject, data.replace("'",""), source)]))
     return()
 
 
