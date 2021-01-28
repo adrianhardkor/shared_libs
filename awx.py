@@ -117,20 +117,29 @@ class AWX():
 		# PAGED
 		result = {}
 		inventories = {}
-		for host in AWX.REST_GET(self,'/api/v2/hosts/')['results']:
+		all_hosts = AWX.REST_GET(self,'/api/v2/hosts/')['results']
+		wc.pairprint('all_hosts_count', len(all_hosts))
+		for host in all_hosts:
 			try:
-				host['variables'] = json.loads(host['variables'])
+				host['variables'] = json.loads(host['variables'].replace("'",'"'))
 			except Exception:
 				host['variables'] = {'_': host['variables']}
+			# wc.pairprint('\t' + str(host['variables']), host['name'] + '\t' + str(host['id']))
 			# wc.jd(host); exit(0)
+
+			if host['inventory'] not in inventories.keys():
+				inventories[host['inventory']] = AWX.REST_GET(self,host['related']['inventory'])['name']
+
+			# FOR IP ADDRESS HOST_VAR === CHANGE TO DNS???
 			if 'ansible_host' in host['variables'].keys():
 				ip = host['variables']['ansible_host']
+				if ip == '':
+					wc.pairprint('\tEXPECTED_FAIL_NO_CONNECTIVITY\t' + str(host['variables']), host['name'] + '\t' + str(host['id']))
 				if ip not in result.keys():
-					result[ip] = {'pingable': wc.is_pingable(ip), 'hostnames':'', 'ids':{}}
+					result[ip] = {'hostnames':'', 'ids':{}}
+					# result[ip]['pingable'] = wc.is_pingable(ip)
 				result[ip]['hostnames'] += ' ' + host['name'].upper()
 				result[ip]['hostnames'] = ' '.join(sorted(wc.lunique(result[ip]['hostnames'].split(' ')))).strip()
-				if host['inventory'] not in inventories.keys():
-					inventories[host['inventory']] = AWX.REST_GET(self,host['related']['inventory'])['name']
 				result[ip]['ids'][host['id']] = {'inventory': inventories[host['inventory']]}
 				_FACTS = AWX.REST_GET(self, '/api/v2/hosts/%d/ansible_facts/' % host['id'])
 				result[ip]['ids'][host['id']]['facts_size'] = len(list(_FACTS.keys()))
@@ -150,8 +159,49 @@ class AWX():
 							# wc.pairprint('add_sec', add_sec); exit(0)
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
+					result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
+					interesting = {}
+					if 'ansible_net_system' in _FACTS.keys():
+						vendor = _FACTS['ansible_net_system']
+					elif 'ansible_devices' in _FACTS.keys():
+						vendor = 'linux'
+					if vendor == 'linux':
+						# linux
+						if 'ens224' in _FACTS.keys():
+							del _FACTS['ens224']['features']
+						for factoid in ['ens224', 'ansible_memory_mb', 'ansible_distribution', 'ansible_userspace_architecture', 'ansible_hostname', 'ansible_user_dir']:
+							if factoid in _FACTS.keys():
+								interesting[factoid] = _FACTS[factoid]
+							else:
+								interesting[factoid] = '_missing'
+						if 'ansible_processor' in _FACTS.keys():
+							interesting['ansible_processor'] = wc.lsearchAllInline2('.* CPU .*', _FACTS['ansible_processor'])
+						for ad in _FACTS['ansible_devices'].keys():
+							interesting['ansible_devices_' + ad] = {}
+							interesting['ansible_devices_' + ad]['model'] = _FACTS['ansible_devices'][ad]['model']
+							interesting['ansible_devices_' + ad]['vendor'] = _FACTS['ansible_devices'][ad]['vendor']
+						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
+					elif vendor == 'junos':
+						# junos
+						for ansible_attr in ['ansible_net_has_2RE', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb', 'ansible_net_model', 'ansible_net_serialnum', 'ansible_net_system', 'ansible_net_version', 'ansible_net_hostname', 'ansible_net_routing_engines']:
+							if ansible_attr in _FACTS.keys():
+								interesting[ansible_attr] = _FACTS[ansible_attr]
+							else:
+								interesting[ansible_attr] = '_missing'
+						interesting['ansible_net_interfaces'] = len(list(_FACTS['ansible_net_interfaces'].keys()))
+						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
+							#interesting[ansible_attr] = _FACTS[ansible_attr]
+					result[ip]['ids'][host['id']]['facts'] = interesting
 				else:
+					# NO FACTS
 					result[ip]['ids'][host['id']]['facts_timestamp'] = ''
+					result[ip]['ids'][host['id']]['facts_gathered'] = ''
+			else:
+				# NO IP INFO -- DNS INFO?
+				wc.pairprint('\tEXPECTED_FAIL_NO_CONNECTIVITY\t' + str(host['variables']), host['name'] + '\t' + str(host['id']))
+				if '' not in result.keys():
+					result[''] = {'ids': {}, 'hostnames':''}
+				result['']['ids'][host['id']] = {'inventory': inventories[host['inventory']] + '_ButNotReachable', 'hostname':host['name']}
 		for i in result.keys():
 				if ' ' in result[i]['hostnames']:
 					result[i]['hostnames'] = result[i]['hostnames'].split(' ')
