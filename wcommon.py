@@ -529,7 +529,7 @@ def sendmail(destinations, subject, data, source='wopr-sb@arc.ninjaneers.net'):
     data = str(data).replace("'","").replace('\t','    ').replace('\\t','    ')
     for dest in mcsplit(destinations, ', '):
         if dest != '':
-            print('\t'.join(['SENDMAIL:', subject, dest, send_email_single(dest, subject, data.replace("'",""), source)]))
+            print('\t'.join(['SENDMAIL:', subject, dest.strip(), send_email_single(dest, subject, data.replace("'",""), source)]))
     return()
 
 
