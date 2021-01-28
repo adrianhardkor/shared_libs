@@ -11,4 +11,4 @@ import re
 # print(hostname)
 
 import wcommon as wc
-wc.sendmail('adrian.krygowski@wowinc.com', 'test1', 'data1')
+wc.sendmail('adrian.krygowski@wowinc.com', 'test1', '12')
