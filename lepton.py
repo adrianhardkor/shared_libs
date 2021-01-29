@@ -26,7 +26,7 @@ class LEPTON():
 			l = json.loads(wc.REST_GET(self.IP + str(l['Url']), user=self.user, pword=self.pword))
 			for Port in l['Ports']:
 				PortProp = json.loads(wc.REST_GET(self.IP + '/chassis/linecards/%s/ports/%s' % (SLOTID, Port['Url'].split('/')[-1]), user=self.user, pword=self.pword))
-				wc.jd(PortProp)
+				# wc.jd(PortProp)
 				if PortProp['Slot'] not in out['linecards'].keys():
 					out['linecards'][PortProp['Slot']] = {'Description': l['Description'], 'Model': l['Model'], 'Name': l['Name'], 'Ports':{}}
 				out['linecards'][PortProp['Slot']]['Ports'][PortProp['Id']] = PortProp
@@ -43,6 +43,8 @@ class LEPTON():
 					wc.pairprint(str(card) + '.' + str(port) + '\t' + finit['linecards'][card]['Model'], str(finit['linecards'][card]['Ports'][port]['Protocol']) + '\t' + str(finit['linecards'][card]['Ports'][port]['PhyLink']))
 # wc.jd(finit)
 
-LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-LEP.PrintStatus(LEP.GetStatus())
+# LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
+# status = LEP.GetStatus()
+# LEP.PrintStatus(status)
+# wc.jd(status)
 
