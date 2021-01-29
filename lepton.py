@@ -87,5 +87,8 @@ class LEPTON():
 
 LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
 status = LEP.GetStatus()
-wc.jd(status)
+if 'port' in wc.argv_dict.keys():
+	wc.jd(status['ports'][wc.argv_dict['port']])
+else:
+	wc.jd(status)
 
