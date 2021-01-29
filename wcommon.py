@@ -813,11 +813,13 @@ def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "app
     else: data = response.json()
     return(json.dumps(data))
 
-def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={}):
+def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={},verify=False,convert_args=False):
     # RETURNS JSON
     dd = {}
-    response = requests.post(url, auth=(user, pword), headers=headers, data=args)
-    if response.status_code != 201:
+    if convert_args:
+        args = json.dumps(args)
+    response = requests.post(url, auth=(user, pword), headers=headers, data=args, verify=verify)
+    if response.status_code not in [201, 200]:
         dd['url'] = url
         dd['user'] = user
         dd['response.status_code'] = str(response.status_code)
@@ -825,6 +827,7 @@ def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "appli
         for h in response.headers:
             dd['Headers'][h] = response.headers[h]
         dd['response.request.body'] = str(response.request.body)
+        dd['response.body'] = str(response.content)
         dd['Response'] = str(response)
     else: dd = response.json()
     return(json.dumps(dd))
