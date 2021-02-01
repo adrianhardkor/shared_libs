@@ -128,19 +128,29 @@ class VELOCITY():
 				if pg['id'] != None:
 					ports = {}
 					# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
-					pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])))
+					pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
 					for p in pp['ports']:
-						# wc.pairprint(device['name'], p['name'] + '\t' + pg['name'])
+						# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
+						# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
+						# wc.jd(template)
 						ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
+						for PortProp in p['properties']:
+							ports[p['name']][PortProp['name']] = PortProp['value']
 						if p['isLocked']:
 							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
 						# wc.pairprint(p['name'], pg['ports'][p['name']])
 					out[device['name']]['ports'] = ports
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
-# wc.jd(V.GetInventory()); # ipAddress 
+INV = V.GetInventory(); # device ipAddress
+wc.jd(INV)
 # wc.jd(V.GetTopologies())
+# https://10.88.48.31/velocity/inventory/resources/14a1dc9b-3347-4396-bb38-eb4ede1a30c4/ports/6ae2b408-7b9f-42d3-800d-a3cb23d7d70e/properties
+
+# page 51-52 on 8.3.0 api ref -- create port (DRIVER)
+# 59 to edit: body {'properties': [{'definitionId':prop_uuid,'value':value}]}
+
 
