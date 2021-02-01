@@ -117,7 +117,7 @@ def getPhysicalHuman(physical):
 		print('	'.join([chassis + '/' + SerialNum,PartNum,FirmwareVersion,firmwareStatus,Status]))
 		for slot in physical[chassis]['slots'].keys():
 			for port in physical[chassis]['slots'][slot]['ports'].keys():
-				out = [port]
+				out = ['[INFO]',port]
 				out.append(physical[chassis]['slots'][slot]['ports'][port]['Active'] + '/' + physical[chassis]['slots'][slot]['ports'][port]['Enabled'])
 				out.append(physical[chassis]['slots'][slot]['ports'][port]['OwnerUser'] + '/' + physical[chassis]['slots'][slot]['ports'][port]['OwnershipState'])
 				out.append(physical[chassis]['slots'][slot]['ports'][port]['Status'])
