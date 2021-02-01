@@ -967,7 +967,7 @@ def print_vagent_header():
 def vagent_getStcResource(top):
 	# dns-naming right now, IP?
 	for t in top.keys():
-		if t.lower().startswith('stc'):
+		if t.lower().startswith('stc') and '_' not in t:
 			return(t)
 
 wait_start()
