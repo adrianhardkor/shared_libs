@@ -37,8 +37,7 @@ class VELOCITY():
 		INV = VELOCITY.GetTopologies(self)
 		for r in VELOCITY.REST_GET(self, '/velocity/api/reservation/v16/reservations', params={'filter': 'status::ACTIVE'})['items']:
 			if r['id'] == resvId:
-				wc.jd(r)
-				return(INV[r['topologyId']])
+				return(INV[r['topologyName']])
 	def GetScripts(self):
 		for script in VELOCITY.REST_GET(self, '/ito/repository/v1/scripts')['content']:
 			if not script['driver']:
