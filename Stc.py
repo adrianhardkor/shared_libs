@@ -6,7 +6,7 @@ def init(project_name):
 	global hPhysical
 	global Project_1
 	if 'Project_1' in locals() or 'Project_1' in globals():
-		# print("Already Found Project")
+		# print("[INFO] Already Found Project")
 		return('system1',Project_1)
 	system_time = wc.timer_index_start()
 	system1 = "system1"
@@ -19,7 +19,7 @@ def init(project_name):
 		Active='TRUE', \
 		LocalActive='TRUE', \
 		Name='StcSystem 1')
-	wc.pairprint('\n\nBuilt System', wc.timer_index_since(system_time))
+	wc.pairprint('[INFO] Built System', wc.timer_index_since(system_time))
 	project_time = wc.timer_index_start()
 	wc.jd(stc.get('system1'))
 	Project_1 = stc.create('Project', \
@@ -29,7 +29,7 @@ def init(project_name):
 		Active='TRUE', \
 		LocalActive='TRUE', \
 		Name=project_name)
-	wc.pairprint('\n\nBuilt Project: ' + project_name, wc.timer_index_since(project_time))
+	wc.pairprint('[INFO] Built Project: ' + project_name, wc.timer_index_since(project_time))
 	wc.jd(stc.get(Project_1))
 	return(system1,Project_1)
 
@@ -38,7 +38,7 @@ def getChassisList():
 	return(stc.get(hMgr,'children-PhysicalChassis').split())
 
 def disconnectChassis():
-	print('DISCONNECTING FROM ALL STC CHASSIS')
+	print('[INFO] DISCONNECTING FROM ALL STC CHASSIS')
 	stc.perform("ChassisDisconnectAll")
 
 def connectChassis(ip):
@@ -47,7 +47,7 @@ def connectChassis(ip):
 	result = stc.connect(ip)
 	stc.apply()
 	hPhysical = stc.create('PhysicalChassisManager', under='system1')
-	wc.pairprint('\n\nConnect to CHASSIS: ' + ip, wc.timer_index_since(connect_time))
+	wc.pairprint('[INFO] Connect to CHASSIS: ' + ip, wc.timer_index_since(connect_time))
 	wc.jd(stc.get(hPhysical))
 	return(result)
 
@@ -67,7 +67,7 @@ def port_config(hProject, portname):
 		Active='TRUE', \
 		LocalActive='TRUE', \
 		Name="Port @ ' + portname")
-	wc.pairprint('\n\nBuilt Port: ' + portname, wc.timer_index_since(portbuild_time))
+	wc.pairprint('[INFO] Built Port: ' + portname, wc.timer_index_since(portbuild_time))
 	return(Port_1)
 
 def getConnectedChassisPhysical(szChassisIpList):
@@ -114,7 +114,7 @@ def getPhysicalHuman(physical):
 		firmwareStatus = physical[chassis]['FirmwareInstallStatus']
 		Status = physical[chassis]['Status']
 		SerialNum = physical[chassis]['SerialNum']
-		print('	'.join([chassis + '/' + SerialNum,PartNum,FirmwareVersion,firmwareStatus,Status]))
+		print('	'.join(['[INFO]', chassis + '/' + SerialNum,PartNum,FirmwareVersion,firmwareStatus,Status]))
 		for slot in physical[chassis]['slots'].keys():
 			for port in physical[chassis]['slots'][slot]['ports'].keys():
 				out = ['[INFO]',port]
