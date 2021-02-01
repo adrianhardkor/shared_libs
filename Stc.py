@@ -120,8 +120,8 @@ def getPhysicalHuman(physical, topology_ports=[]):
 				if topology_ports != []:
 					# VELOCITY
 					_CHASSIS_NAME = physical[chassis]['VELOCITY_NAME']
-					if _CHASSIS_NAME + "_" + slot + '/' + port not in topology_ports:
-						wc.pairprint('[OK] ', _CHASSIS_NAME + "_" + slot + '/' + port)
+					sp = port.split('/')
+					if _CHASSIS_NAME + "_" + '/'.join([sp[-2],sp[-1]]) not in topology_ports:
 						continue
 				out = ['[INFO]',port]
 				out.append(physical[chassis]['slots'][slot]['ports'][port]['Active'] + '/' + physical[chassis]['slots'][slot]['ports'][port]['Enabled'])
