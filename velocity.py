@@ -140,6 +140,6 @@ class VELOCITY():
 # V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
-# wc.jd(V.GetInventory())
+# wc.jd(V.GetInventory()); # ipAddress 
 # wc.jd(V.GetTopologies())
 

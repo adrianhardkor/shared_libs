@@ -964,12 +964,11 @@ def print_vagent_header():
 	print("Finished: PASSED")
 	return(V,reserved_topology_resources); # object-return, dict(resources: uuid's)
 
-def vagent_getStcResource(top):
-	# dns-naming right now, IP?
-	for t in top.keys():
+def vagent_getStcResource(resources, master_topology):
+	# INV: dns-naming right now, IP?
+	for t in resources.keys():
 		if t.lower().startswith('stc') and '_' not in t:
-			jd(top[t])
-			return(t)
+			return(master_topology[t]['ipAddress'])
 
 wait_start()
 global current_time
