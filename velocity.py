@@ -153,4 +153,37 @@ wc.jd(INV)
 # page 51-52 on 8.3.0 api ref -- create port (DRIVER)
 # 59 to edit: body {'properties': [{'definitionId':prop_uuid,'value':value}]}
 
+  "properties": [
+    {
+      "availableValues": null,
+      "definitionId": "b395be08-5628-4f68-b069-42d6cf7ec466",
+      "description": "System port number. Example: 1.1.1",
+      "groupName": "System Identification",
+      "isRequired": true,
+      "name": "portNumber",
+      "type": "TEXT",
+      "value": "1/7"
+    },
+    {
+      "availableValues": null,
+      "definitionId": "f828c9cd-e6db-4f93-b147-386dccd95e98",
+      "description": "Unit of Measure:  Mbps",
+      "groupName": "System Identification",
+      "isRequired": false,
+      "name": "Port Speed",
+      "type": "INTEGER",
+      "value": "100000"
+    },
+    {
+      "availableValues": null,
+      "definitionId": "52b1cb81-9a4b-44aa-83d2-3320fb10d12c",
+      "description": "Example: Ethernet, Fast Ethernet, Copper..., etc",
+      "groupName": "System Identification",
+      "isRequired": false,
+      "name": "Port Type",
+      "type": "TEXT",
+      "value": "Ethernet"
+    }
+  ],
+
 
