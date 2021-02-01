@@ -106,8 +106,8 @@ def getConnectedChassisPhysical(szChassisIpList):
 
 	return(chassisInfoDict)
 
-
-def getPhysicalHuman(physical):
+# '['cmts01', 'stc01', 'stc01_1/1', 'stc01_1/2', 'stc01_1/3', 'stc01_1/4']'
+def getPhysicalHuman(physical, topology_ports=[]):
 	for chassis in physical.keys():
 		PartNum = physical[chassis]['PartNum']
 		FirmwareVersion = physical[chassis]['FirmwareVersion']
@@ -117,6 +117,11 @@ def getPhysicalHuman(physical):
 		print('	'.join(['[INFO]', chassis + '/' + SerialNum,PartNum,FirmwareVersion,firmwareStatus,Status]))
 		for slot in physical[chassis]['slots'].keys():
 			for port in physical[chassis]['slots'][slot]['ports'].keys():
+				if topology_ports != []:
+					# VELOCITY
+					_CHASSIS_NAME = physical[chassis]['VELOCITY_NAME']
+					if _CHASSIS_NAME + "_" + slot + '/' + port not in topology_ports:
+						continue
 				out = ['[INFO]',port]
 				out.append(physical[chassis]['slots'][slot]['ports'][port]['Active'] + '/' + physical[chassis]['slots'][slot]['ports'][port]['Enabled'])
 				out.append(physical[chassis]['slots'][slot]['ports'][port]['OwnerUser'] + '/' + physical[chassis]['slots'][slot]['ports'][port]['OwnershipState'])

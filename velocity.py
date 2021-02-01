@@ -40,6 +40,7 @@ class VELOCITY():
 				return(INV[r['topologyName']])
 	def GetScripts(self):
 		for script in VELOCITY.REST_GET(self, '/ito/repository/v1/scripts')['content']:
+			wc.jd(script)
 			if not script['driver']:
 				wc.pairprint(script['fullPath'], script['guid'])
 	def GetUsers(self):
