@@ -21,7 +21,7 @@ def init(project_name):
 		Name='StcSystem 1')
 	wc.pairprint('[INFO] Built System', wc.timer_index_since(system_time))
 	project_time = wc.timer_index_start()
-	wc.jd(stc.get('system1'))
+	# wc.jd(stc.get('system1'))
 	Project_1 = stc.create('Project', \
 		TableViewData='', \
 		TestMode='L2L3', \
@@ -30,7 +30,7 @@ def init(project_name):
 		LocalActive='TRUE', \
 		Name=project_name)
 	wc.pairprint('[INFO] Built Project: ' + project_name, wc.timer_index_since(project_time))
-	wc.jd(stc.get(Project_1))
+	# wc.jd(stc.get(Project_1))
 	return(system1,Project_1)
 
 def getChassisList():
@@ -48,7 +48,7 @@ def connectChassis(ip):
 	stc.apply()
 	hPhysical = stc.create('PhysicalChassisManager', under='system1')
 	wc.pairprint('[INFO] Connect to CHASSIS: ' + ip, wc.timer_index_since(connect_time))
-	wc.jd(stc.get(hPhysical))
+	# wc.jd(stc.get(hPhysical))
 	return(result)
 
 def port_config(hProject, portname):
