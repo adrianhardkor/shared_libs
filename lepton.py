@@ -40,7 +40,10 @@ class LEPTON():
 			for Port in l['Ports']:
 				url = '/chassis/linecards/%s/ports/%s' % (SLOTID, Port['Url'].split('/')[-1])
 				PortProp = LEPTON.REST_GET(self, url)
-				_PORT = '.'.join([str(PortProp['Slot']),str(PortProp['Id'])])
+				if len(str(PortProp['Id'])) == 1:
+					_PORT = '.'.join([str(PortProp['Slot']),'0' + str(PortProp['Id'])])
+				else:
+					_PORT = '.'.join([str(PortProp['Slot']),str(PortProp['Id'])])
 				_DO_SHOW_FLOW_PORTS.append(_PORT)
 				out['ports'][_PORT] = {'url': url, 'linecard': linecard}
 				for pp in PortProp.keys():
