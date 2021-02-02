@@ -131,7 +131,9 @@ class VELOCITY():
 		out = {}
 		top = VELOCITY.GetTopologies(self)
 		data = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/devices', params={'includeProperties':True, 'includePortGroups': True})
+		# wc.jd(data)
 		for device in data['devices']:
+			ports = {}
 			if device['id'] not in out.keys():
 				out[device['name']] = {'ports': {}}
 			out[device['name']]['id'] = device['id']
@@ -139,7 +141,6 @@ class VELOCITY():
 				out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
 			for pg in device['portGroups']:
 				if pg['id'] != None:
-					ports = {}
 					# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
 					pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
 					for p in pp['ports']:
