@@ -35,7 +35,7 @@ class VELOCITY():
 		url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
-		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headersv, convert_args=False)))
+		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=False)))
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
