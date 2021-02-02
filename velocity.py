@@ -155,11 +155,11 @@ class VELOCITY():
 					out[device['name']]['ports'] = ports
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
-INV = V.GetInventory(); # device ipAddress
-wc.jd(INV)
+# INV = V.GetInventory(); # device ipAddress
+# wc.jd(INV)
 # wc.jd(V.GetTopologies())
 # https://10.88.48.31/velocity/inventory/resources/14a1dc9b-3347-4396-bb38-eb4ede1a30c4/ports/6ae2b408-7b9f-42d3-800d-a3cb23d7d70e/properties
 
