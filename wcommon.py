@@ -845,7 +845,7 @@ def REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "applic
         dd['Headers'] = {}
         for h in response.headers:
             dd['Headers'][h] = response.headers[h]
-        dd['response.request.body'] = str(response.request.body)
+        dd['response.request.body'] = bytes_str(response.request.body)
         dd['response.body'] = str(response.content)
         dd['Response'] = str(response)
     else: dd = response.json()
