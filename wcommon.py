@@ -832,6 +832,25 @@ def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "appli
     else: dd = response.json()
     return(json.dumps(dd))
 
+def REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={},verify=False,convert_args=False):
+    # RETURNS JSON
+    dd = {}
+    if convert_args:
+        args = json.dumps(args)
+    response = requests.put(url, auth=(user, pword), headers=headers, data=args, verify=verify)
+    if response.status_code not in [201, 200]:
+        dd['url'] = url
+        dd['user'] = user
+        dd['response.status_code'] = str(response.status_code)
+        dd['Headers'] = {}
+        for h in response.headers:
+            dd['Headers'][h] = response.headers[h]
+        dd['response.request.body'] = str(response.request.body)
+        dd['response.body'] = str(response.content)
+        dd['Response'] = str(response)
+    else: dd = response.json()
+    return(json.dumps(dd))
+
 def time_epoch_human(myTime):
     # epoch = [10, 6, 3, 2]
     day = myTime // (24 * 3600)

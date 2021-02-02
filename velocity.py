@@ -31,6 +31,11 @@ class VELOCITY():
 		# print(headers)
 		data = json.loads(wc.REST_GET(self.V + url, headers=headers, params=params))
 		return(data)
+	def REST_POST(self, url, args={}, verify=False):
+		url = url + '?limit=200'
+		headers = {"X-Auth-Token": self.TOKEN}
+		headers['Content-Type'] = headers['Accept'] = 'application/json'	
+		return(json.loads(wc.REST_POST(self.IP + url, verify=verify, args=args, headers=headersv, convert_args=False)))
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
@@ -114,6 +119,11 @@ class VELOCITY():
 						# reserved device and port exists
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
+	def ChangeDevicePortProp(self, INV, device_name, port_name, index, value):
+		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
+		# find port and uuid
+		data = VELOCITY.REST_POST(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (port['parentId'], port['id']), args={'properties': ['definitionId':get_current(index),value=value]})
+		# URL: /velocity/api/inventory/v13/device/{deviceId}/port/{portId}
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
@@ -123,7 +133,7 @@ class VELOCITY():
 				out[device['name']] = {'ports': {}}
 			out[device['name']]['id'] = device['id']
 			for prop in device['properties']:
-				out[device['name']][prop['name']] = prop['value']
+				out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
 			for pg in device['portGroups']:
 				if pg['id'] != None:
 					ports = {}
@@ -135,7 +145,7 @@ class VELOCITY():
 						# wc.jd(template)
 						ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 						for PortProp in p['properties']:
-							ports[p['name']][PortProp['name']] = PortProp['value']
+							ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
 						if p['isLocked']:
 							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
 						# wc.pairprint(p['name'], pg['ports'][p['name']])
@@ -152,38 +162,4 @@ wc.jd(INV)
 
 # page 51-52 on 8.3.0 api ref -- create port (DRIVER)
 # 59 to edit: body {'properties': [{'definitionId':prop_uuid,'value':value}]}
-
-  "properties": [
-    {
-      "availableValues": null,
-      "definitionId": "b395be08-5628-4f68-b069-42d6cf7ec466",
-      "description": "System port number. Example: 1.1.1",
-      "groupName": "System Identification",
-      "isRequired": true,
-      "name": "portNumber",
-      "type": "TEXT",
-      "value": "1/7"
-    },
-    {
-      "availableValues": null,
-      "definitionId": "f828c9cd-e6db-4f93-b147-386dccd95e98",
-      "description": "Unit of Measure:  Mbps",
-      "groupName": "System Identification",
-      "isRequired": false,
-      "name": "Port Speed",
-      "type": "INTEGER",
-      "value": "100000"
-    },
-    {
-      "availableValues": null,
-      "definitionId": "52b1cb81-9a4b-44aa-83d2-3320fb10d12c",
-      "description": "Example: Ethernet, Fast Ethernet, Copper..., etc",
-      "groupName": "System Identification",
-      "isRequired": false,
-      "name": "Port Type",
-      "type": "TEXT",
-      "value": "Ethernet"
-    }
-  ],
-
 
