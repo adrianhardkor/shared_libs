@@ -165,5 +165,3 @@ class VELOCITY():
 
 # page 51-52 on 8.3.0 api ref -- create port (DRIVER)
 # 59 to edit: body {'properties': [{'definitionId':prop_uuid,'value':value}]}
-
-u
