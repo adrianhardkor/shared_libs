@@ -968,7 +968,9 @@ def print_vagent_header():
 		ip = env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1]
 		token = env_dict['VELOCITY_PARAM_VELOCITY_TOKEN']
 		V = velocity.VELOCITY(env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1], token=env_dict['VELOCITY_PARAM_VELOCITY_TOKEN'])
-		vEnv = V.GetAgentReservation(env_dict['VELOCITY_PARAM_RESERVATION_ID'])
+		vEnv = {'resources':{}}
+		if 'VELOCITY_PARAM_RESERVATION_ID' in env_dict.keys():
+			vEnv = V.GetAgentReservation(env_dict['VELOCITY_PARAM_RESERVATION_ID'])
 		pairprint('[INFO] creatorId', vEnv['activeRes']['creatorId'])
 		pairprint('[INFO] topologyName', vEnv['activeRes']['topologyName'])
 		pairprint('[INFO] reservationName', vEnv['name'])
