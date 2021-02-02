@@ -965,7 +965,7 @@ def print_vagent_header():
 		if inp.startswith('VELOCITY_PARAM_'):
 			pairprint('[INFO] ' + inp, env_dict[inp])
 	jd(env_dict)
-	if 'VELOCITY_PARAM_RESERVATION_ID' in env_dict.keys():
+	if 'VELOCITY_PARAM_VELOCITY_TOKEN' in env_dict.keys():
 		# HAS TOPOLOGY
 		ip = env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1]
 		token = env_dict['VELOCITY_PARAM_VELOCITY_TOKEN']
