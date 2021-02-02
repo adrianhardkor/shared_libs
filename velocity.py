@@ -120,13 +120,11 @@ class VELOCITY():
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, value):
-		port = INV[device_name]['ports'][port_name]
-		wc.jd(port)
+		# port = INV[device_name]['ports'][port_name]
 		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
-		# find port and uuid
-		# data = VELOCITY.REST_POST(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (port['parentId'], port['id']), args={'properties': ['definitionId':get_current(index),value=value]})
-		# URL: /velocity/api/inventory/v13/device/{deviceId}/port/{portId}
-		pass
+		args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
+		data = VELOCITY.REST_POST(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
+		wc.pairprint(port_name, index + '  ' + value)
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
