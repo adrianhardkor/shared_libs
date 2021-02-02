@@ -968,19 +968,18 @@ def print_vagent_header():
 		ip = env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1]
 		token = env_dict['VELOCITY_PARAM_VELOCITY_TOKEN']
 		V = velocity.VELOCITY(env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1], token=env_dict['VELOCITY_PARAM_VELOCITY_TOKEN'])
-		vEnv = {'resources':{}}
 		if 'VELOCITY_PARAM_RESERVATION_ID' in env_dict.keys():
 			vEnv = V.GetAgentReservation(env_dict['VELOCITY_PARAM_RESERVATION_ID'])
-		pairprint('[INFO] creatorId', vEnv['activeRes']['creatorId'])
-		pairprint('[INFO] topologyName', vEnv['activeRes']['topologyName'])
-		pairprint('[INFO] reservationName', vEnv['name'])
-		pairprint('[INFO] reservationStatus', vEnv['activeRes']['status'] + ' until ' + vEnv['activeRes']['end'])
-		for resource in vEnv['resources'].keys():
-			if vEnv['resources'][resource]['parentId'] is None:
-				name = vEnv['resources'][resource]['name']; # devices
-			else:
-				name = vEnv['resources'][resource]['parentName'] + '_' + vEnv['resources'][resource]['name']; # intfs
-			reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
+			pairprint('[INFO] creatorId', vEnv['activeRes']['creatorId'])
+			pairprint('[INFO] topologyName', vEnv['activeRes']['topologyName'])
+			pairprint('[INFO] reservationName', vEnv['name'])
+			pairprint('[INFO] reservationStatus', vEnv['activeRes']['status'] + ' until ' + vEnv['activeRes']['end'])
+			for resource in vEnv['resources'].keys():
+				if vEnv['resources'][resource]['parentId'] is None:
+					name = vEnv['resources'][resource]['name']; # devices
+				else:
+					name = vEnv['resources'][resource]['parentName'] + '_' + vEnv['resources'][resource]['name']; # intfs
+				reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
 	pairprint('[INFO] reserved_topology_resources', sorted(list(reserved_topology_resources.keys())))
 	return(V,reserved_topology_resources); # object-return, dict(resources: uuid's)
 
