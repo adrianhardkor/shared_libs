@@ -955,6 +955,7 @@ def jenkins_header():
 
 def print_vagent_header():
 	# ASSUMES RUNNING ON VAGENT
+	V = None
 	global env_dict
 	global wcheader
 	import velocity
