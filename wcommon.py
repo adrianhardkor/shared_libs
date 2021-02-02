@@ -964,9 +964,7 @@ def print_vagent_header():
 	for inp in sorted(env_dict.keys()):
 		if inp.startswith('VELOCITY_PARAM_'):
 			pairprint('[INFO] ' + inp, env_dict[inp])
-	jd(env_dict)
 	if 'VELOCITY_PARAM_VELOCITY_TOKEN' in env_dict.keys():
-		# HAS TOPOLOGY
 		ip = env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1]
 		token = env_dict['VELOCITY_PARAM_VELOCITY_TOKEN']
 		V = velocity.VELOCITY(env_dict['VELOCITY_PARAM_VELOCITY_API_ROOT'].split('/')[-1], token=env_dict['VELOCITY_PARAM_VELOCITY_TOKEN'])
@@ -982,7 +980,6 @@ def print_vagent_header():
 				name = vEnv['resources'][resource]['parentName'] + '_' + vEnv['resources'][resource]['name']; # intfs
 			reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
 	pairprint('[INFO] reserved_topology_resources', sorted(list(reserved_topology_resources.keys())))
-	print("Finished: PASSED")
 	return(V,reserved_topology_resources); # object-return, dict(resources: uuid's)
 
 def vagent_getStcResource(resources, master_topology):
