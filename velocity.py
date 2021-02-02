@@ -119,7 +119,7 @@ class VELOCITY():
 						# reserved device and port exists
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
-	def ChangeDevicePortProp(self, INV, device_name, port_name, index, value):
+	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
 		# port = INV[device_name]['ports'][port_name]
 		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
 		args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
