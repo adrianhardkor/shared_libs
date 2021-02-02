@@ -45,15 +45,15 @@ class LEPTON():
 				out['ports'][_PORT] = {'url': url, 'linecard': linecard}
 				for pp in PortProp.keys():
 					if type(PortProp[pp]) == list:
-						out['ports'][_PORT][pp] = str(PortProp[pp])
+						out['ports'][_PORT][pp] = PortProp[pp]
 					elif type(PortProp[pp]) == dict:
 						out['ports'][_PORT][pp] = {}
 						for ppp in PortProp[pp].keys():
-							if type(PortProp[pp][ppp]) == list:
-								out['ports'][_PORT][pp][ppp] = str(PortProp[pp][ppp])
-							else:
-								# wc.pairprint(str(pp) + '\t' + str(ppp),PortProp[pp][ppp])
-								out['ports'][_PORT][pp][ppp] = str(PortProp[pp][ppp])
+#							if type(PortProp[pp][ppp]) == list:
+#								out['ports'][_PORT][pp][ppp] = str(PortProp[pp][ppp])
+#							else:
+#								# wc.pairprint(str(pp) + '\t' + str(ppp),PortProp[pp][ppp])
+							out['ports'][_PORT][pp][ppp] = PortProp[pp][ppp]
 					else:
 						out['ports'][_PORT][pp] = PortProp[pp]
 			SLOTID += 1
@@ -86,4 +86,12 @@ class LEPTON():
 
 # LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
 # status = LEP.GetStatus()
-# wc.jd(status)
+# 
+# # Apply LEPTON class to VELOCITY-INVENTORY-LEPTON
+# for port in status['ports'].keys():
+# 	speed = wc.lunique(status['ports'][port]['Speed'])
+# 	if len(speed) == 1:
+# 		speed = speed[0]
+# 	else:
+# 		speed = ' '.join(speed)
+# 	wc.pairprint(port,speed)
