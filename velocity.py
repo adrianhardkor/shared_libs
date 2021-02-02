@@ -122,8 +122,9 @@ class VELOCITY():
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, value):
 		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
 		# find port and uuid
-		data = VELOCITY.REST_POST(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (port['parentId'], port['id']), args={'properties': ['definitionId':get_current(index),value=value]})
+		# data = VELOCITY.REST_POST(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (port['parentId'], port['id']), args={'properties': ['definitionId':get_current(index),value=value]})
 		# URL: /velocity/api/inventory/v13/device/{deviceId}/port/{portId}
+		pass
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
