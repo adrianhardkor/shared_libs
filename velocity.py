@@ -124,8 +124,8 @@ class VELOCITY():
 		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
 		args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
-		wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
-		wc.pairprint('  '.join([port_name,index,str(new_value)]), data)
+		# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
+		# wc.pairprint('  '.join([port_name,index,str(new_value)]), data)
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
