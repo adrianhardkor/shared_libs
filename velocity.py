@@ -31,11 +31,11 @@ class VELOCITY():
 		# print(headers)
 		data = json.loads(wc.REST_GET(self.V + url, headers=headers, params=params))
 		return(data)
-	def REST_POST(self, url, args={}, verify=False):
+	def REST_PUT(self, url, args={}, verify=False):
 		url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
-		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=False)))
+		return(json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=False)))
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
@@ -123,7 +123,7 @@ class VELOCITY():
 		# port = INV[device_name]['ports'][port_name]
 		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
 		args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
-		data = VELOCITY.REST_POST(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
+		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
 		wc.pairprint('  '.join([port_name,index,str(new_value)]), data)
 	def GetInventory(self):
 		out = {}
