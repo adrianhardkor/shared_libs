@@ -163,7 +163,7 @@ class VELOCITY():
 			wc.pairprint('  '.join(['[INFO] Updated:', port_name,index,str(new_value)]), data[index])
 		else:
 			# error
-			wc.pairprint('  '.join(['[INFO] Updated:', port_name,index,str(new_value)]), data['response.body'])
+			wc.pairprint('  '.join(['[INFO] Updated:', port_name,index,str(new_value)]), data)
 	def UpdatePort(self, INV, device_name, slot_name, port_name, index, value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if device_name not in INV.keys():
