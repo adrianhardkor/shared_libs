@@ -197,18 +197,19 @@ class VELOCITY():
 						# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
 						# wc.jd(template)
 						ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
+						ports[p['name']]['isLocked'] = p['isLocked']
+						ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
+						ports[p['name']]['linkChecked'] = p['linkChecked']
+						ports[p['name']]['lastModified'] = p['lastModified']
 						for PortProp in p['properties']:
 							ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
-						# for conditional in ['description']:
-							# properties based on templates
-						#	if conditional in p.keys():
-						#		ports[p['name']][PortProp['name']][conditional] = p[conditional]
 						if p['isLocked']:
 							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
 						# wc.pairprint(p['name'], pg['ports'][p['name']])
 					out[device['name']]['ports'] = ports
 		return(out)
 
+# ['isLocked', 'isReportedByDriver', 'linkChecked', 'lastModified']
 # V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
