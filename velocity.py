@@ -148,7 +148,7 @@ class VELOCITY():
 			args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
 			if INV[device_name]['ports'][port_name][index]['value'] == new_value:
 				return()
-		elif type(INV[device_name]['ports'][port_name][index]) == str:
+		else:
 			if index in ['pgName', 'pgId']:
 				#  pgName and pgId:  port_group
 				raise('portgroup changes not coded yet')
