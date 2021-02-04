@@ -36,6 +36,11 @@ class VELOCITY():
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
+	def REST_POST(self, url, args={}, verify=False):
+		url = url + '?limit=200'
+		headers = {"X-Auth-Token": self.TOKEN}
+		headers['Content-Type'] = headers['Accept'] = 'application/json'	
+		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
@@ -120,12 +125,30 @@ class VELOCITY():
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
-		# port = INV[device_name]['ports'][port_name]
-		# {'properties': [{'definitionId':prop_uuid,'value':value}]}
-		args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
+		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
+		if type(INV[device_name]['ports'][port_name][index]) == dict:
+			# dict = property with uuid
+			args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
+		elif type(INV[device_name]['ports'][port_name][index]) == str:
+			# pgName and pgId:  port_group
+			if index in ['pgName', 'pgId']:
+				raise('portgroup changes not coded yet')
+			args = {index: new_value}
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
+		# CHANGE PORGROUP: /device/{deviceId}/port_group/{portGroupId}
+		#  CHANGE/PUT PORTLIST: /velocity/api/inventory/v13/device/{deviceId}/ports
 		# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
 		# wc.pairprint('  '.join([port_name,index,str(new_value)]), data)
+	def UpdatePort(self, INV, device_name, slot_name, port_name, index, value):
+		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
+		if device_name not in INV.keys():
+			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
+		if port_name not in INV[device_name]['ports'].keys():
+			# POST / create
+			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/ports' % INV[device_name]['id'], args={ports:[port_name]})
+			wc.jd(new_port)
+			# if portgroup/slot doesnt exist for port, POST+PUT
+			# PUT: for each attribute, update port
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
