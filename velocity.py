@@ -140,6 +140,8 @@ class VELOCITY():
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), data)		
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
+		if index not in INV[device_name]['ports'][port_name].keys():
+			wc.jd(INV[device_name]['ports'][port_name]) 
 		if type(INV[device_name]['ports'][port_name][index]) == dict:
 			# dict = property with uuid
 			args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
