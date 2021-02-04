@@ -107,7 +107,7 @@ def getConnectedChassisPhysical(szChassisIpList):
 							child = stc.get(pProps['children'])
 							wc.pairprint('[INFO] <class Stc.py>' + portLocation, child)
 							for iPortChildProp in child.keys():
-								chassisInfoDict[chassisLocation]['slots'][tmLocation]['ports'][portLocation][iPortChildProp] = child[iPortChildProp]
+								chassisInfoDict[chassisLocation]['slots'][tmLocation]['ports'][portLocation]['child_' + iPortChildProp] = child[iPortChildProp]
 
 	return(chassisInfoDict)
 
