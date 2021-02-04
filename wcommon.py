@@ -980,7 +980,7 @@ def print_vagent_header():
 				else:
 					name = vEnv['resources'][resource]['parentName'] + '_' + vEnv['resources'][resource]['name']; # intfs
 				reserved_topology_resources[name] = vEnv['resources'][resource]['id'] 
-	pairprint('[INFO] reserved_topology_resources', sorted(list(reserved_topology_resources.keys())))
+	pairprint('[INFO] reserved_topology_resources, ' + str(V), sorted(list(reserved_topology_resources.keys())))
 	return(V,reserved_topology_resources); # object-return, dict(resources: uuid's)
 
 def vagent_getStcResource(resources, master_topology):
