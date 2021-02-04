@@ -166,7 +166,7 @@ class VELOCITY():
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/ports' % INV[device_name]['id'], args={ports:[port_name]})
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			wc.jd(new_port)
-			if slot_name not is INV[device_name]['ports'][port_name]['pgName']:
+			if slot_name is not INV[device_name]['ports'][port_name]['pgName']:
 				# if portgroup/slot doesnt exist for port, POST+PUT
 				raise('UpdatePort: ' + slot_name + ' not in Port:pgName, needs coding')
 		else:
