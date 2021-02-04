@@ -130,25 +130,33 @@ class VELOCITY():
 		if type(INV[device_name][index]) == dict:
 			# property
 			args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
+			if INV[device_name][index]['value'] == new_value:
+				return()	
 		elif type(INV[device_name][index]) == str:
 			args = {index: new_value}
+			if INV[device_name][index] == new_value:
+				return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
-		wc.pairprint('  '.join(['[INFO]', device_name,index,str(new_value)]), data)		
+		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), data)		
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if type(INV[device_name]['ports'][port_name][index]) == dict:
 			# dict = property with uuid
 			args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
+			if INV[device_name]['ports'][port_name][index]['value'] == new_value:
+				return()
 		elif type(INV[device_name]['ports'][port_name][index]) == str:
 			if index in ['pgName', 'pgId']:
 				#  pgName and pgId:  port_group
 				raise('portgroup changes not coded yet')
 			args = {index: new_value}
+			if INV[device_name]['ports'][port_name][index] == new_value:
+				return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
 		# CHANGE PORGROUP: /device/{deviceId}/port_group/{portGroupId}
 		#  CHANGE/PUT PORTLIST: /velocity/api/inventory/v13/device/{deviceId}/ports
 		# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
-		wc.pairprint('  '.join(['[INFO]', port_name,index,str(new_value)]), data)
+		wc.pairprint('  '.join(['[INFO] Updated:', port_name,index,str(new_value)]), data)
 	def UpdatePort(self, INV, device_name, slot_name, port_name, index, value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if device_name not in INV.keys():
