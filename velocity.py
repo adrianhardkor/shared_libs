@@ -124,14 +124,24 @@ class VELOCITY():
 						# reserved device and port exists
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
+	def UpdateDevice(self, INV, device_name, index, new_value):
+		if device_name not in INV.keys():
+			raise('UpdateDevice: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
+		if type(INV[device_name][index]) == dict:
+			# property
+			args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
+		elif type(INV[device_name][index]) == str:
+			args = {index: new_value}
+		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
+		wc.pairprint('  '.join(['[INFO]', device_name,index,str(new_value)]), data)		
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if type(INV[device_name]['ports'][port_name][index]) == dict:
 			# dict = property with uuid
 			args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
 		elif type(INV[device_name]['ports'][port_name][index]) == str:
-			# pgName and pgId:  port_group
 			if index in ['pgName', 'pgId']:
+				#  pgName and pgId:  port_group
 				raise('portgroup changes not coded yet')
 			args = {index: new_value}
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
