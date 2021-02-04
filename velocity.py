@@ -199,10 +199,10 @@ class VELOCITY():
 						ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 						for PortProp in p['properties']:
 							ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
-						for conditional in ['description']:
+						# for conditional in ['description']:
 							# properties based on templates
-							if conditional in p.keys():
-								ports[p['name']][PortProp['name']][conditional] = p[conditional]
+						#	if conditional in p.keys():
+						#		ports[p['name']][PortProp['name']][conditional] = p[conditional]
 						if p['isLocked']:
 							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
 						# wc.pairprint(p['name'], pg['ports'][p['name']])
