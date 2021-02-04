@@ -138,7 +138,7 @@ class VELOCITY():
 		# CHANGE PORGROUP: /device/{deviceId}/port_group/{portGroupId}
 		#  CHANGE/PUT PORTLIST: /velocity/api/inventory/v13/device/{deviceId}/ports
 		# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
-		# wc.pairprint('  '.join([port_name,index,str(new_value)]), data)
+		wc.pairprint('  '.join(['[INFO]', port_name,index,str(new_value)]), data)
 	def UpdatePort(self, INV, device_name, slot_name, port_name, index, value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if device_name not in INV.keys():
@@ -146,9 +146,16 @@ class VELOCITY():
 		if port_name not in INV[device_name]['ports'].keys():
 			# POST / create
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/ports' % INV[device_name]['id'], args={ports:[port_name]})
+			wc.pairprint('[INFO] ' + port_name, 'created')
 			wc.jd(new_port)
-			# if portgroup/slot doesnt exist for port, POST+PUT
-			# PUT: for each attribute, update port
+			if slot_name not is INV[device_name]['ports'][port_name]['pgName']:
+				# if portgroup/slot doesnt exist for port, POST+PUT
+				raise('UpdatePort: ' + slot_name + ' not in Port:pgName, needs coding')
+		else:
+			# if port exists, assume pg exists
+			pass
+		# PUT: for each attribute, update port
+		self.ChangeDevicePortProp(INV, device_name, port_name, index, value)
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
