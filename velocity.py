@@ -264,10 +264,11 @@ class VELOCITY():
 					out[device['name']]['ports'] = ports
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-INV = V.GetInventory(); # device ipAddress
-data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
-print(data['html_report'])
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# INV = V.GetInventory(); # device ipAddress
+# data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
+# print(data['html_report'])
+
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
 # INV = V.GetInventory(); # device ipAddress
