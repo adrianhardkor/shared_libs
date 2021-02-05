@@ -20,6 +20,7 @@ import requests
 import paramiko
 import uuid
 import urllib3
+from bs4 import BeautifulSoup
 urllib3.disable_warnings()
 
 
@@ -794,7 +795,11 @@ def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "applic
             data['Headers'][h] = response.headers[h]
         data['response.request.body'] = str(response.request.body)
         data['Response'] = str(response)
-    else: data = response.json()
+    else:
+        try:
+            data = response.json()
+        except Exception:
+            data = {'text':response.text}
     return(json.dumps(data))
 
 def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword=''):

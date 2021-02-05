@@ -20,16 +20,17 @@ class VELOCITY():
 		else:
 			print('Failed: VELOCITY No U/P or TOKEN provided!')
 			exit(5)
-	def REST_GET(self, url, params={}):
+		self.headers = {"X-Auth-Token": self.TOKEN}
+	def REST_GET(self, url, params={}, limit='?limit=200'):
 		# print('\t' + self.V + url)
 		# page = '1'
 		# while page is ''
 		# url = url + '?offset={offset}&limit={limit}&filter={filter}' == MAX 200 then OFFSET
-		url = url + '?limit=200'
-		headers = {"X-Auth-Token": self.TOKEN}
-		headers['Content-Type'] = headers['Accept'] = 'application/json'
+		if '?' not in url:
+			url = url + limit
+		self.headers['Content-Type'] = self.headers['Accept'] = 'application/json'
 		# print(headers)
-		data = json.loads(wc.REST_GET(self.V + url, headers=headers, params=params))
+		data = json.loads(wc.REST_GET(self.V + url, headers=self.headers, params=params))
 		return(data)
 	def REST_PUT(self, url, args={}, verify=False):
 		url = url + '?limit=200'
@@ -48,11 +49,55 @@ class VELOCITY():
 		for r in VELOCITY.REST_GET(self, '/velocity/api/reservation/v16/reservations', params={'filter': 'status::ACTIVE'})['items']:
 			if r['id'] == resvId:
 				return(INV[r['topologyName']])
+	def VelocityReportParse(self, html_data):
+		if type(html_data) == dict:
+			# failed?
+			if 'response.body' in html_data.keys():
+				return({'response.body':html_data['response.body']})
+		out = []
+		from bs4 import BeautifulSoup
+		parsed = BeautifulSoup(html_data, features="html.parser")
+		flag = 0
+		for line in parsed.find_all('span'):
+			if line.text.startswith('['): flag = 1
+			if flag:
+				out.append(line.text)
+		return('\n'.join(out))
+	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
+		timer = wc.timer_index_start()
+		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
+		data = self.REST_POST('/ito/executions/v1/executions', args=args)
+		if 'executionState' not in data.keys():
+			data['html_report'] = wc.bytes_str(data['response.body'])
+			data['script'] = self.GetScripts()[testPath]
+			return(data)
+		while data['executionState'] != 'COMPLETED':
+			time.sleep(4)
+			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
+			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
+		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))['text']
+		data['html_report'] = self.VelocityReportParse(html_report) 
+		# wc.jd(data)
+		if HTML_FNAME != '':
+			if not HTML_FNAME.lower().endswith('.html'):
+				HTML_FNAME = HTML_FNAME + '.html'
+			wc.log_fname(html_report, HTML_FNAME)
+		return(data)
+		# wc.jd(self.REST_GET('/ito/reporting/v1/reports/' + data['reportID']))
+		# wc.jd(self.REST_GET('/ito/reporting/v1/reports/' + data['executionID']))
+		# wc.jd(self.REST_GET('/ito/reporting/v1/reports?filter=parentReport::%s' % data['executionID']))
+		# HTML Report
+		# data = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))['text']
+		# wc.log_fname(data,testPath.split('/')[-1] + '.html')
 	def GetScripts(self):
-		for script in VELOCITY.REST_GET(self, '/ito/repository/v1/scripts')['content']:
-			wc.jd(script)
+		scripts = self.REST_GET( '/ito/repository/v1/scripts')['content']
+		out = {}
+		for script in scripts:
 			if not script['driver']:
-				wc.pairprint(script['fullPath'], script['guid'])
+				# wc.pairprint(script['fullPath'], script['guid'])
+				# wc.pairprint(script['fullPath'], script['executionMessages'])
+				out[script['fullPath']] = script
+		return(out)
 	def GetUsers(self):
 		# /velocity/api/user/v9/profiles
 		out = {}
@@ -160,10 +205,15 @@ class VELOCITY():
 		#  CHANGE/PUT PORTLIST: /velocity/api/inventory/v13/device/{deviceId}/ports
 		# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
 		if index in data.keys():
-			wc.pairprint('  '.join(['[INFO] Updated:', port_name,index,str(new_value)]), data[index])
+			wc.pairprint('  '.join(['[INFO] Updated1:', port_name,index,str(new_value)]), data[index])
+		elif 'properties' in data.keys():
+			for p in data['properties']:
+				if p['name'] == index:
+					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index,str(new_value)]), p)
+					break
 		else:
 			# error
-			wc.pairprint('  '.join(['[INFO] Updated:', port_name,index,str(new_value)]), data)
+			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
 	def UpdatePort(self, INV, device_name, slot_name, port_name, index, value):
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if device_name not in INV.keys():
@@ -214,8 +264,10 @@ class VELOCITY():
 					out[device['name']]['ports'] = ports
 		return(out)
 
-# ['isLocked', 'isReportedByDriver', 'linkChecked', 'lastModified']
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+INV = V.GetInventory(); # device ipAddress
+data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
+print(data['html_report'])
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
 # INV = V.GetInventory(); # device ipAddress

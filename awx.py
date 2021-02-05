@@ -57,7 +57,7 @@ class AWX():
 			out.append(str(l))
 		print(deli.join(out))
 	def list2dict(lst):
-		if lst == [] or lst == [''] or lst == ['---']:
+		if lst == [] or lst == [''] or lst == ['---'] or lst == ['{}']:
 			return({})
 		return({lst[i]: lst[i + 1] for i in range(0, len(lst), 2)})
 	def awx_job_events_format(je):
@@ -239,10 +239,11 @@ class AWX():
 					interestingfact['intf'] = {}
 					for intf in facts['ansible_net_interfaces'].keys():
 						interestingfact['intf'][intf] = '/'.join([facts['ansible_net_interfaces'][intf]['oper-status'],facts['ansible_net_interfaces'][intf]['admin-status']])
-					for n in facts['ansible_network_resources']['l3_interfaces']:
-						if 'ipv4' in n.keys():
-							for block in n['ipv4']:
-								interestingfact['networks'].append(block['address'])
+					if 'l3_interfaces' in facts['ansible_network_resources'].keys():
+						for n in facts['ansible_network_resources']['l3_interfaces']:
+							if 'ipv4' in n.keys():
+								for block in n['ipv4']:
+									interestingfact['networks'].append(block['address'])
 				elif 'ansible_devices' in facts.keys():
 					# LINUX
 					interestingfact['ansible_devices'] = list(facts['ansible_devices'].keys())
@@ -255,11 +256,11 @@ class AWX():
 					'Variables':host['variables'],
 					'facts':interestingfact}
 		wc.jd(_INV)
-		return()
+		return(_INV)
 
 
 # A = AWX(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-# wc.jd(A.GetInventory())
+# wc.jd(A.GetFacts2())
 # exit(0)
 
 
