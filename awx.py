@@ -127,6 +127,8 @@ class AWX():
 				for group in data[a]['children'].keys():
 					for market in data[a]['children'][group]['children'].keys():
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
+							if type(data[a]['children'][group]['children'][market]['children'][service]) is None:
+								continue
 							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
 								print()
 								valid_host = wc.validateHostname(hostname)
