@@ -147,8 +147,8 @@ class AWX():
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = valid_host
 								if valid_path != []:
-									out[pathname]['ready'] = False
-									out[pathname]['inventoryPathing'] = valid_path
+									out[hostname]['ready'] = False
+									out[hostname]['inventoryPathing'] = valid_path
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
 							# if service not in wc.services
@@ -164,8 +164,8 @@ class AWX():
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = valid_host
 								if valid_path != []:
-									out[pathname]['ready'] = False
-									out[pathname]['inventoryPathing'] = valid_path
+									out[hostname]['ready'] = False
+									out[hostname]['inventoryPathing'] = valid_path
 									for d in facts.keys():
 										if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
 											out[hostname]['ip'].append(d)
