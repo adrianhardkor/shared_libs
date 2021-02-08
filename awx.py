@@ -218,6 +218,9 @@ class AWX():
 							# wc.pairprint('add_sec', add_sec); exit(0)
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
+					if '_ansible_facts_gathered' not in _FACTS.keys():
+						wc.pairprint(host, ip)
+						wc.jd(_FACTS)
 					result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
 					interesting = {}
 					if 'ansible_net_system' in _FACTS.keys():
