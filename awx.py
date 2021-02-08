@@ -120,7 +120,9 @@ class AWX():
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
 			inventory_file = path + inventory_file
 			print('\n' + inventory_file)
-			wc.jd(wc.read_yaml(inventory_file))
+			data = wc.read_yaml(inventory_file)
+			wc.jd(data)
+			print(wc.log_yaml(data, 'new.yml'))
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}
