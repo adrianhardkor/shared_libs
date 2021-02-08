@@ -169,6 +169,8 @@ class AWX():
 									for d in facts.keys():
 										if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
 											out[hostname]['ip'].append(d)
+										elif type(facts[d]['hostnames']) == list and hostname in facts[d]['hostnames']:
+											out[hostname]['ip'].append(d)
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
