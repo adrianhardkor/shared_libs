@@ -979,11 +979,11 @@ def validateHostname(hostname):
     if re.search('..', components['iteration']) is False: INVALID.append(components['iteration'])
     components['INVALID'] = INVALID
     if INVALID == []:
-        # wc.pairprint('Valid',hostname)
+        # pairprint('Valid',hostname)
         # print(json.dumps(components, indent=2))
         pass
     else:
-        wc.pairprint('Invalid: ' + hostname, INVALID)
+        pairprint('Invalid: ' + hostname, INVALID)
     return(components)
 
 def jenkins_header():
