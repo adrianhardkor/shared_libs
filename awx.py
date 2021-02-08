@@ -146,7 +146,7 @@ class AWX():
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = valid_host
-								if valid_path['INVALID'] != []:
+								if valid_path != []:
 									out[pathname]['ready'] = False
 									out[pathname]['inventoryPathing'] = valid_path
 							continue
@@ -163,7 +163,7 @@ class AWX():
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = valid_host
-								if valid_path['INVALID'] != []:
+								if valid_path != []:
 									out[pathname]['ready'] = False
 									out[pathname]['inventoryPathing'] = valid_path
 									for d in facts.keys():
