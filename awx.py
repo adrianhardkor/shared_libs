@@ -113,7 +113,7 @@ class AWX():
 		# limit: A string that represents a comma-separated list of hosts or groups to operate on
 		# inventory: A integer value for the foreign key of an inventory to use in this job run
 		# credential: A integer value for the foreign key of a credential to use in this job run
-	def GetScaffolding(self):
+	def GetScaffolding(self, facts):
 		def hostname_path_compare(validation, gmsList):
 			invalid = []
 			# ARCUAT1K8WRK01 = '{'lab': 'ARC', 'market': 'UAT1', 'service': 'K8W', 'function': 'RK0', 'iteration': '1', 'INVALID': ['RK0']}'
@@ -122,6 +122,7 @@ class AWX():
 				if validation[gms] != gmsList[gms]:
 					invalid.append({'path':gmsList[gms],'hostnameSnippet':validation[gms]}) 
 			return(invalid)
+		
 		out = {}
 		path = './inventories/'
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
@@ -305,10 +306,6 @@ class AWX():
 		wc.jd(_INV)
 		return(_INV)
 
-
-# A = AWX(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-# wc.jd(A.GetFacts2())
-# exit(0)
 
 
 
