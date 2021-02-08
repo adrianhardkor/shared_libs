@@ -114,6 +114,15 @@ class AWX():
 		# inventory: A integer value for the foreign key of an inventory to use in this job run
 		# credential: A integer value for the foreign key of a credential to use in this job run
 	def GetScaffolding(self):
+		def hostname_path_compare(validation, gmsList):
+			invalid = []
+			# ARCUAT1K8WRK01 = '{'lab': 'ARC', 'market': 'UAT1', 'service': 'K8W', 'function': 'RK0', 'iteration': '1', 'INVALID': ['RK0']}'
+			for gms in ['lab','market','service']:
+				if gmsList[gms] == '': continue
+				if validation[gms] != gmsList[gms]:
+					invalid.append({'path':gmsList[gms],'hostnameSnippet':validation[gms]}) 
+			return(invalid)
+		out = {}
 		path = './inventories/'
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
 			if not inventory_file.endswith('yml') and not inventory_file.endswith('yaml'):
@@ -131,6 +140,7 @@ class AWX():
 								print(); # market_hosts
 								valid_host = wc.validateHostname(hostname)
 								wc.pairprint(hostname, valid_host)
+								wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''}))
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
@@ -140,6 +150,7 @@ class AWX():
 								print()
 								valid_host = wc.validateHostname(hostname)
 								wc.pairprint(hostname, valid_host)
+								wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}
