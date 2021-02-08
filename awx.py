@@ -127,7 +127,8 @@ class AWX():
 				for group in data[a]['children'].keys():
 					for market in data[a]['children'][group]['children'].keys():
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
-							if type(data[a]['children'][group]['children'][market]['children'][service]) is None: continue
+							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
+							data[a]['children'][group]['children'][market]['children'][service] is None: continue
 							if 'hosts' not in data[a]['children'][group]['children'][market]['children'][service].keys(): continue
 							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
 								print()
