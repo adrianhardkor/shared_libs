@@ -69,7 +69,8 @@ def read_yaml(fname):
 def log_yaml(data, fname):
     with open(fname, 'w') as file:
         doc = yaml.dump(data, file, sort_keys=True)
-        print(doc)
+    return(read_file(fname))
+
 
 def lindex_exists(ls, i):
     return (0 <= i < len(ls)) or (-len(ls) <= i < 0)
