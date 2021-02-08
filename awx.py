@@ -137,20 +137,24 @@ class AWX():
 					for market in data[a]['children'][group]['children'].keys():
 						if 'hosts' in data[a]['children'][group]['children'][market].keys():
 							for hostname in data[a]['children'][group]['children'][market]['hosts'].keys():
-								print(); # market_hosts
 								valid_host = wc.validateHostname(hostname)
-								wc.pairprint(hostname, valid_host)
-								wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''}))
+								if valid_host['INVALID'] != [] or hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}) != []:
+									# device not ready for sync
+									print('\nDEVICE HOSTNAME NOT READY FOR SYNC:')
+									wc.pairprint(hostname, valid_host)
+									wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
 							data[a]['children'][group]['children'][market]['children'][service] is None: continue
 							if 'hosts' not in data[a]['children'][group]['children'][market]['children'][service].keys(): continue
 							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
-								print()
 								valid_host = wc.validateHostname(hostname)
-								wc.pairprint(hostname, valid_host)
-								wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
+								if valid_host['INVALID'] != [] or hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}) != []:
+									# device not ready for sync
+									print('\nDEVICE HOSTNAME NOT READY FOR SYNC:')
+									wc.pairprint(hostname, valid_host)
+									wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}

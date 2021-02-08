@@ -961,7 +961,7 @@ def validateHostname(hostname):
     hostname = hostname.replace(' ','').replace('-','')
     # print(hostname)
     labs = ['ARC']
-    markets = ['UAT1', 'UAT2', 'VDC1', 'MDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS']
+    markets = ['UAT1', 'UAT2', 'VDC1', 'EDGE', 'MDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS']
     # services = '%s%s%s'
     functions = ['BBR', 'EPR', 'VAR', 'DAR', 'DRR', 'CMR', 'MSR', 'AGS', 'SWI', 'POD', 'BAR', 'OTN', 'CMT', 'VCE', 'FRW', 'TRM', 'L1S', 'TST', 'STS', 'W1S']
     # iterations = '%d%d'
