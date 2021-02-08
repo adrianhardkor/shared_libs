@@ -143,6 +143,8 @@ class AWX():
 									print('\nDEVICE HOSTNAME NOT READY FOR SYNC:')
 									wc.pairprint(hostname, valid_host)
 									wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
+								else:
+									out[hostname] = {}
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
@@ -155,6 +157,9 @@ class AWX():
 									print('\nDEVICE HOSTNAME NOT READY FOR SYNC:')
 									wc.pairprint(hostname, valid_host)
 									wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
+									wc.pairprint('Did You Mean?', ''.join([group,market,service,valid_host['function'],'dd']))
+								out[hostname] = {}
+		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}
