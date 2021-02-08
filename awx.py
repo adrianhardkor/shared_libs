@@ -142,7 +142,7 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''})
 								if hostname not in out.keys():
-									out[hostname] = {'ready':True,ip:[]}
+									out[hostname] = {'ready':True,'ip':[]}
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = valid_host
@@ -159,7 +159,7 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
 								if hostname not in out.keys():
-									out[hostname] = {'ready':True,ip:[]}
+									out[hostname] = {'ready':True,'ip':[]}
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = valid_host
@@ -168,7 +168,7 @@ class AWX():
 									out[pathname]['inventoryPathing'] = valid_path
 									for d in facts.keys():
 										if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
-											out[hostname][ip].append(d)
+											out[hostname]['ip'].append(d)
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
