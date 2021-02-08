@@ -114,15 +114,21 @@ class AWX():
 		# inventory: A integer value for the foreign key of an inventory to use in this job run
 		# credential: A integer value for the foreign key of a credential to use in this job run
 	def GetScaffolding(self):
-		# wc.read_yaml(fname):
-		# wc.log_yaml(data, fname)
 		path = './inventories/'
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
 			inventory_file = path + inventory_file
 			print('\n' + inventory_file)
 			data = wc.read_yaml(inventory_file)
-			wc.jd(data)
-			print(wc.log_yaml(data, 'new.yml'))
+			# wc.jd(data)
+			# print(wc.log_yaml(data, 'new.yml'))
+			for a in data.keys():
+				for group in data[a]['children'].keys():
+					for market in data[a]['children'][group]['children'].keys():
+						for service in data[a]['children'][group]['children'][market]['children'].keys():
+							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
+								print()
+								valid_host = wc.validateHostname(hostname)
+								wc.pairprint(hostname, valid_host)
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}
