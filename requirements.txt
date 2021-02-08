@@ -17,3 +17,4 @@ jsonschema
 PyHamcrest
 beautifulsoup4
 behave-py3
+pyyaml
