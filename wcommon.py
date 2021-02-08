@@ -960,6 +960,9 @@ def load_env():
 def validateHostname(hostname):
     hostname = hostname.replace(' ','').replace('-','')
     # print(hostname)
+    global labs
+    global markets
+    # global services
     labs = ['ARC']
     markets = ['UAT1', 'UAT2', 'VDC1', 'EDGE', 'MDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS']
     # services = '%s%s%s'
