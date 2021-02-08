@@ -136,30 +136,39 @@ class AWX():
 			for a in data.keys():
 				for group in data[a]['children'].keys():
 					for market in data[a]['children'][group]['children'].keys():
+						# if market not in wc.markets
 						if 'hosts' in data[a]['children'][group]['children'][market].keys():
 							for hostname in data[a]['children'][group]['children'][market]['hosts'].keys():
 								valid_host = wc.validateHostname(hostname)
-								if valid_host['INVALID'] != [] or hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}) != []:
-									# device not ready for sync
-									print('\nDEVICE HOSTNAME NOT READY FOR SYNC:')
-									wc.pairprint(hostname, valid_host)
-									wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
-								else:
-									out[hostname] = {}
+								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''})
+								if hostname not in out.keys():
+									out[hostname] = {'ready':True,ip:[]}
+								if valid_host['INVALID'] != []:
+									out[hostname]['ready'] = False
+									out[hostname]['namingStandard'] = valid_host
+								if valid_path['INVALID'] != []:
+									out[pathname]['ready'] = False
+									out[pathname]['inventoryPathing'] = valid_path
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
+							# if service not in wc.services
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
 							data[a]['children'][group]['children'][market]['children'][service] is None: continue
 							if 'hosts' not in data[a]['children'][group]['children'][market]['children'][service].keys(): continue
 							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
 								valid_host = wc.validateHostname(hostname)
-								if valid_host['INVALID'] != [] or hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}) != []:
-									# device not ready for sync
-									print('\nDEVICE HOSTNAME NOT READY FOR SYNC:')
-									wc.pairprint(hostname, valid_host)
-									wc.pairprint(hostname, hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service}))
-									wc.pairprint('Did You Mean?', ''.join([group,market,service,valid_host['function'],'dd']))
-								out[hostname] = {}
+								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
+								if hostname not in out.keys():
+									out[hostname] = {'ready':True,ip:[]}
+								if valid_host['INVALID'] != []:
+									out[hostname]['ready'] = False
+									out[hostname]['namingStandard'] = valid_host
+								if valid_path['INVALID'] != []:
+									out[pathname]['ready'] = False
+									out[pathname]['inventoryPathing'] = valid_path
+									for d in facts.keys():
+										if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
+											out[hostname][ip].append(d)
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
