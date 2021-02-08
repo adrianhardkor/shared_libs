@@ -131,6 +131,7 @@ class AWX():
 								print(); # market_hosts
 								valid_host = wc.validateHostname(hostname)
 								wc.pairprint(hostname, valid_host)
+							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
 							data[a]['children'][group]['children'][market]['children'][service] is None: continue
