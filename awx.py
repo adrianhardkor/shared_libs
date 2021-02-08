@@ -116,6 +116,8 @@ class AWX():
 	def GetScaffolding(self):
 		path = './inventories/'
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
+			if not inventory_file.endswith('yml') and not inventory_file.endswith('yaml'):
+				continue
 			inventory_file = path + inventory_file
 			print('\n' + inventory_file)
 			data = wc.read_yaml(inventory_file)
