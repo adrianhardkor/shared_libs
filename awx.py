@@ -113,6 +113,14 @@ class AWX():
 		# limit: A string that represents a comma-separated list of hosts or groups to operate on
 		# inventory: A integer value for the foreign key of an inventory to use in this job run
 		# credential: A integer value for the foreign key of a credential to use in this job run
+	def GetScaffolding(self):
+		# wc.read_yaml(fname):
+		# wc.log_yaml(data, fname)
+		path = './inventories/'
+		for inventory_file in wc.exec2('ls ' + path).split('\n'):
+			inventory_file = path + inventory_file
+			print(inventory_file)
+			print(wc.read_yaml(inventory_file))
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}
