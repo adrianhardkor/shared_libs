@@ -222,6 +222,8 @@ class AWX():
 							break
 					interesting = {}
 					if 'ansible_env' in _FACTS.keys():
+						if 'SSH_CONNECTION' not in _FACTS['ansible_env'].keys():
+							wc.jd(_FACTS['ansible_env'])
 						interesting['SSH_CONNECTION'] = ":".join(_FACTS['ansible_env']['SSH_CONNECTION'].split(' ')[2:])
 						interesting['USER'] = _FACTS['ansible_env']['USER']
 					if 'ansible_net_system' in _FACTS.keys():
@@ -264,9 +266,10 @@ class AWX():
 						else:
 							result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['gather_subset']
 					else:
-						wc.pairprint('_ansible_facts_gathered: False',str(host['id']) + '  ' + host['name'])
-						wc.jd(_FACTS)
-						print('\n\n\n')
+						# wc.pairprint('_ansible_facts_gathered: False',str(host['id']) + '  ' + host['name'])
+						# print(_FACTS)
+						# print('\n')
+						result[ip]['ids'][host['id']]['facts_gathered'] = False
 					result[ip]['ids'][host['id']]['facts'] = interesting
 				else:
 					# NO FACTS
