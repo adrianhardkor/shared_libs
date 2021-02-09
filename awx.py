@@ -223,7 +223,7 @@ class AWX():
 					interesting = {}
 					if 'ansible_env' in _FACTS.keys():
 						for attr in ['SSH_CONNECTION', 'USER']:
-							if atr in _FACTS['ansible_env'].keys():
+							if attr in _FACTS['ansible_env'].keys():
 								interesting[attr] = _FACTS['ansible_env'][attr]
 					if 'ansible_net_system' in _FACTS.keys():
 						vendor = _FACTS['ansible_net_system']
