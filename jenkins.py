@@ -54,10 +54,10 @@ class JENKINS():
 		# print('\n\n\n')
 		from bs4 import BeautifulSoup
 		parsed = BeautifulSoup(html_data, features="html.parser")
-		for line in parsed.find_all('span')
+		for line in parsed.find_all('span'):
 			# find_all('span')
-			print(line.text)
 			out.append(line.text)
+		out.append(line)
 		return('\n'.join(out))
 	def RunPipeline(self,PipelineName='',parameters={}):
 		Parameters = []
@@ -67,7 +67,7 @@ class JENKINS():
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
 		time.sleep(3)
-		self.ConsoleFormat(self.REST_GET('/job/ARC2/lastCompletedBuild/console'))
+		print(self.ConsoleFormat(self.REST_GET('/job/ARC2/lastCompletedBuild/console')['text']))
 
 
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
