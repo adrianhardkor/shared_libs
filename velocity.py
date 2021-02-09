@@ -231,6 +231,11 @@ class VELOCITY():
 			pass
 		# PUT: for each attribute, update port
 		self.ChangeDevicePortProp(INV, device_name, port_name, index, value)
+	def FindAnsibleHost(self, ansible_host, INV):
+		for d in INV.keys():
+			if INV[d]['ipAddress'] == ansible_host:
+				return(INV[d])
+		return({})
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
