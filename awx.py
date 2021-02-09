@@ -238,7 +238,7 @@ class AWX():
 						if 'ansible_devices' in _FACTS.keys():
 							for ad in _FACTS['ansible_devices'].keys():
 								interesting['ansible_devices_' + ad] = {'model':_FACTS['ansible_devices'][ad]['model'],'vendor':_FACTS['ansible_devices'][ad]['vendor']}
-						for ad in wc.lsearchAllInline(list(_FACTS.keys()), 'ansible_devices_'):
+						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
 					elif vendor == 'junos':
