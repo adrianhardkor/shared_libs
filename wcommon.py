@@ -812,10 +812,10 @@ def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "applic
             data = {'text':response.text}
     return(json.dumps(data))
 
-def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword=''):
+def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, args={}, user='', pword='', verify=False):
     # RETURNS JSON
     data = {}
-    response = requests.delete(url, auth=(user, pword), headers=headers)
+    response = requests.delete(url, auth=(user, pword), headers=headers, verify=verify, data=args)
     if response.status_code != 200:
         data['url'] = url
         data['user'] = user
