@@ -803,7 +803,7 @@ def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "applic
         data['Headers'] = {}
         for h in response.headers:
             data['Headers'][h] = response.headers[h]
-        data['response.request.body'] = str(response.request.body)
+        data['response.request.body'] = bytes_str(response.request.body)
         data['Response'] = str(response)
     else:
         try:
@@ -823,10 +823,23 @@ def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "app
         data['Headers'] = {}
         for h in response.headers:
             data['Headers'][h] = response.headers[h]
-        data['response.request.body'] = str(response.request.body)
+        data['response.request.body'] = bytes_str(response.request.body)
         data['Response'] = str(response)
     else: data = response.json()
     return(json.dumps(data))
+
+def REST_responseHandler(response, url, user):
+    dd = {}
+    dd['url'] = url
+    dd['user'] = user
+    dd['response.status_code'] = str(response.status_code)
+    dd['Headers'] = {}
+    for h in response.headers:
+        dd['Headers'][h] = response.headers[h]
+    dd['response.request.body'] = bytes_str(response.request.body)
+    dd['response.body'] = str(response.content)
+    dd['Response'] = str(response)
+    return(dd)
 
 def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={},verify=False,convert_args=False):
     # RETURNS JSON
@@ -835,16 +848,13 @@ def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "appli
         args = json.dumps(args)
     response = requests.post(url, auth=(user, pword), headers=headers, data=args, verify=verify)
     if response.status_code not in [201, 200]:
-        dd['url'] = url
-        dd['user'] = user
-        dd['response.status_code'] = str(response.status_code)
-        dd['Headers'] = {}
-        for h in response.headers:
-            dd['Headers'][h] = response.headers[h]
-        dd['response.request.body'] = str(response.request.body)
-        dd['response.body'] = str(response.content)
-        dd['Response'] = str(response)
-    else: dd = response.json()
+        dd = REST_responseHandler(response, url, user)
+    else:
+        # 200 or 201 = success
+        try:
+            dd = response.json()
+        except Exception:
+            dd = REST_responseHandler(response, url, user)  
     return(json.dumps(dd))
 
 def REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={},verify=False,convert_args=False):
