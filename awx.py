@@ -247,11 +247,9 @@ class AWX():
 								interesting['ansible_devices_' + ad] = {'model':_FACTS['ansible_devices'][ad]['model'],'vendor':_FACTS['ansible_devices'][ad]['vendor']}
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
-						if 'ansible_hostname' in _FACTS.keys():
-							interesting['ansible_net_hostname'] = interesting['ansible_hostname']
 					elif vendor == 'junos':
 						# junos
-						for ansible_attr in ['ansible_net_has_2RE', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb', 'ansible_net_model', 'ansible_net_serialnum', 'ansible_net_system', 'ansible_net_version', 'ansible_net_hostname', 'ansible_net_routing_engines']:
+						for ansible_attr in ['ansible_net_has_2RE', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb', 'ansible_net_model', 'ansible_net_serialnum', 'ansible_net_system', 'ansible_net_version', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_routing_engines']:
 							if ansible_attr in _FACTS.keys():
 								interesting[ansible_attr] = _FACTS[ansible_attr]
 							else:
@@ -260,6 +258,8 @@ class AWX():
 						interesting['ansible_net_interfaces'] = len(list(_FACTS['ansible_net_interfaces'].keys()))
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
+					if 'ansible_hostname' in _FACTS.keys():
+						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
 					if '_ansible_facts_gathered' in _FACTS.keys():
 						result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
 					elif 'gather_subset' in _FACTS.keys():
