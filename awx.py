@@ -187,7 +187,7 @@ class AWX():
 					if idDict[hostId]['facts_size'] not in [0,1]:
 						# if any deviceId has facts then out
 						out[a2v]['out'] = True
-			if len(iDict['ip']) == 1: iDict['ip'] = iDict['ip'][0]
+			if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
 			if out[a2v]['out']:
 				wc.pairprint('out', a2v)
