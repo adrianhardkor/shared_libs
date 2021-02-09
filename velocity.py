@@ -42,6 +42,10 @@ class VELOCITY():
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
+	def REST_DELETE(self, url, args={}, verify=False):
+		headers = {"X-Auth-Token": self.TOKEN}
+		headers['Content-Type'] = headers['Accept'] = 'application/json'	
+		return(json.loads(wc.REST_DELETE(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
@@ -176,9 +180,8 @@ class VELOCITY():
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
-			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
-			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % device_new['id'], args={'type':'discover'})
 			INV = self.FormatInventory(INV, device_new)
+			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
 		else:
 			# self.REST_DELETE(' /velocity/api/inventory/v13/device/{deviceId}/port/%s')
 			pass
@@ -192,6 +195,9 @@ class VELOCITY():
 			if INV[device_name][index] == new_value:
 				return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
+		if index == 'ipAddress':
+			# updated DEVICE IP ADDRESS - RE DISCOVER
+			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % device_new['id'], args={'type':'discover'})
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		return(INV)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
