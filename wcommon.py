@@ -827,7 +827,11 @@ def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "app
             data['Headers'][h] = response.headers[h]
         data['response.request.body'] = bytes_str(response.request.body)
         data['Response'] = str(response)
-    else: data = response.json()
+    else: 
+        try:
+            data = response.json()
+        except Exception:
+            data = {'text':response.text}
     return(json.dumps(data))
 
 def REST_responseHandler(response, url, user):
