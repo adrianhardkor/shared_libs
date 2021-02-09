@@ -360,7 +360,7 @@ class AWX():
 					'facts':interestingfact}
 		wc.jd(_INV)
 		return(_INV)
-	def ComplianceReport(self, out2):
+	def ComplianceReport(self, out2, result):
 		# JENKINS
 		for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
 			if param not in wc.wcheader.keys() and param not in wc.argv_dict.keys():
