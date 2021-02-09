@@ -48,7 +48,7 @@ class JENKINS():
 		return(json.loads(wc.REST_POST(self.IP + url, user=self.user, pword=self.pword, verify=False, args=args, headers=headers, convert_args=True)))
 	def REST_GET(self, url):
 		return(json.loads(wc.REST_GET(self.IP + url, user=self.user, pword=self.pword,verify=False)))
-	def ConsoleFormat(self):
+	def ConsoleFormat(self, html_data):
 		from bs4 import BeautifulSoup
 		parsed = BeautifulSoup(html_data, features="html.parser")
 		for line in parsed.get_text():
