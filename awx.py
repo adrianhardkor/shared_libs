@@ -238,7 +238,8 @@ class AWX():
 							if factoid in _FACTS.keys():
 								interesting[factoid] = _FACTS[factoid]
 							else:
-								interesting[factoid] = '_missing'
+								# interesting[factoid] = '_missing'
+								pass
 						if 'ansible_processor' in _FACTS.keys():
 							interesting['ansible_processor'] = wc.lsearchAllInline2('.* CPU .*', _FACTS['ansible_processor'])
 						if 'ansible_devices' in _FACTS.keys():
@@ -253,7 +254,8 @@ class AWX():
 							if ansible_attr in _FACTS.keys():
 								interesting[ansible_attr] = _FACTS[ansible_attr]
 							else:
-								interesting[ansible_attr] = '_missing'
+								# interesting[ansible_attr] = '_missing'
+								pass
 						interesting['ansible_net_interfaces'] = len(list(_FACTS['ansible_net_interfaces'].keys()))
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
