@@ -278,13 +278,13 @@ class VELOCITY():
 					for PortProp in p['properties']:
 						ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
 					if p['isLocked']:
-						out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
+						out,ports = VELOCITY.ApplyReservationTopology(self.top, out, pg, ports, p, device)
 					# wc.pairprint(p['name'], pg['ports'][p['name']])
 				out[device['name']]['ports'] = ports
 		return(out)
 	def GetInventory(self):
 		out = {}
-		top = VELOCITY.GetTopologies(self)
+		self.top = VELOCITY.GetTopologies(self)
 		data = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/devices', params={'includeProperties':True, 'includePortGroups': True})
 		# wc.jd(data)
 		for device in data['devices']:
