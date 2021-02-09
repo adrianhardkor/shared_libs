@@ -222,10 +222,9 @@ class AWX():
 							break
 					interesting = {}
 					if 'ansible_env' in _FACTS.keys():
-						if 'SSH_CONNECTION' not in _FACTS['ansible_env'].keys():
-							wc.jd(_FACTS['ansible_env'])
-						interesting['SSH_CONNECTION'] = ":".join(_FACTS['ansible_env']['SSH_CONNECTION'].split(' ')[2:])
-						interesting['USER'] = _FACTS['ansible_env']['USER']
+						for attr in ['SSH_CONNECTION', 'USER']:
+							if atr in _FACTS['ansible_env'].keys():
+								interesting[attr] = _FACTS['ansible_env'][attr]
 					if 'ansible_net_system' in _FACTS.keys():
 						vendor = _FACTS['ansible_net_system']
 					elif 'ansible_devices' in _FACTS.keys():
