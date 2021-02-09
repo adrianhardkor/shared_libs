@@ -177,7 +177,7 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
 			data = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			wc.jd(data)
-			raise('UpdateDevice: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
+			raise('UpdateDevice: ' + device_name + ' not in Inventory, cant update port yet: ' + device_name)
 		if type(INV[device_name][index]) == dict:
 			# property
 			args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
