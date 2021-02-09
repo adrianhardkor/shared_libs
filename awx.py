@@ -205,7 +205,9 @@ class AWX():
 				# result[ip]['ids'][host['id']]['variables'] = host['variables']
 				if result[ip]['ids'][host['id']]['facts_size'] != 0:
 					if 'date_time' in _FACTS.keys():
-							result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['date_time']['date'] + ' ' + _FACTS['date_time']['time'] + ' ' + _FACTS['date_time']['tz']
+						result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['date_time']['date'] + ' ' + _FACTS['date_time']['time'] + ' ' + _FACTS['date_time']['tz']
+					elif 'ansible_date_time' in _FACTS.keys():
+						result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['ansible_date_time']['date'] + ' ' + _FACTS['ansible_date_time']['time'] + ' ' + _FACTS['ansible_date_time']['tz']
 					elif 'net_routing_engines' in _FACTS.keys():
 						for re in _FACTS['net_routing_engines'].keys():
 							formatter = '%Y-%m-%d %H:%M:%S %Z'
@@ -218,7 +220,12 @@ class AWX():
 							# wc.pairprint('add_sec', add_sec); exit(0)
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
+					if 'ansible_env' in _FACTS.keys():
+						
 					interesting = {}
+					if 'ansible_env' in _FACTS.keys():
+						interesting['SSH_CONNECTION'] = ":".join(_FACTS['ansible_env']['SSH_CONNECTION'].split(' ')[2:])
+						interesting['USER'] = _FACTS['ansible_env']['USER']
 					if 'ansible_net_system' in _FACTS.keys():
 						vendor = _FACTS['ansible_net_system']
 					elif 'ansible_devices' in _FACTS.keys():
@@ -228,7 +235,7 @@ class AWX():
 						for ens in ['ens224', 'ansible_ens224']:
 							if ens in _FACTS.keys():
 								del _FACTS[ens]['features']
-						for factoid in ['ens224', 'ansible_ens224', 'ansible_memory_mb', 'ansible_distribution', 'ansible_userspace_architecture', 'ansible_hostname', 'ansible_user_dir']:
+						for factoid in ['ens224', 'ansible_ens224', 'ansible_os_family', 'ansible_memory_mb', 'ansible_distribution', 'ansible_userspace_architecture', 'ansible_hostname', 'ansible_user_dir', 'ansible_cmdline']:
 							if factoid in _FACTS.keys():
 								interesting[factoid] = _FACTS[factoid]
 							else:
@@ -251,12 +258,17 @@ class AWX():
 						interesting['ansible_net_interfaces'] = len(list(_FACTS['ansible_net_interfaces'].keys()))
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
-					if '_ansible_facts_gathered' not in _FACTS.keys():
-						wc.pairprint('_ansible_facts_gathered: False',host['id'])
+					if '_ansible_facts_gathered' in _FACTS.keys():
+						result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
+					elif 'gather_subset' in _FACTS.keys():
+						if _FACTS['gather_subset'] == ['all']:
+							result[ip]['ids'][host['id']]['facts_gathered'] = True
+						else:
+							result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['gather_subset']
+					else:
+						wc.pairprint('_ansible_facts_gathered: False',str(host['id']) + '  ' + host['name'])
 						wc.jd(_FACTS)
 						print('\n\n\n')
-					else:
-						result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
 					result[ip]['ids'][host['id']]['facts'] = interesting
 				else:
 					# NO FACTS
