@@ -23,6 +23,6 @@ def create_new_jenkins_job(j_url, j_port, new_job_name, j_user, j_pass):
 	auth    = (j_user, j_pass)
 	payload = '<project><builders/><publishers/><buildWrappers/></project>'
 	headers = {"Content-Type" : "application/xml"}
-	return(wc.REST_POST(url, user=j_user, pword=j_pass,  headers={"Content-Type" : "application/xml"}, args=payload, verify=False))
+	return(json.loads(wc.REST_POST(url, user=j_user, pword=j_pass,  headers={"Content-Type" : "application/xml"}, args=payload, verify=False)))
 
-print(create_new_jenkins_job('http://%s' % wc.argv_dict['IP'], '8080', 'ARC2', wc.argv_dict['user'], wc.argv_dict['pass']))
+wc.jd(create_new_jenkins_job('http://%s' % wc.argv_dict['IP'], '8080', 'ARC2', wc.argv_dict['user'], wc.argv_dict['pass']))
