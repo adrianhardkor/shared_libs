@@ -818,7 +818,7 @@ def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "app
     if convert_args:
         args = json.dumps(args)
     response = requests.delete(url, auth=(user, pword), headers=headers, verify=verify, data=args)
-    if response.status_code != 200:
+    if response.status_code not in [200, 201]:
         data['url'] = url
         data['user'] = user
         data['response.status_code'] = str(response.status_code)

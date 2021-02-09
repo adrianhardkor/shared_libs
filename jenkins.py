@@ -57,7 +57,7 @@ class JENKINS():
 		for line in parsed.find_all('span'):
 			# find_all('span')
 			out.append(line.text)
-		out.append(line)
+		out.append(str(line))
 		return('\n'.join(out))
 	def RunPipeline(self,PipelineName='',parameters={}):
 		Parameters = []
