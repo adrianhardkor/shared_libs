@@ -260,6 +260,8 @@ class AWX():
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					if 'ansible_hostname' in _FACTS.keys():
 						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
+					elif 'ansible_hostname' in _FACTS.keys() and 'ansible_hostname' in _FACTS.keys():
+						wc.pairprint('\n\nNO HOSTNAME IN FACTS???', host['name'] + '  ' + str(host['id']))
 					if '_ansible_facts_gathered' in _FACTS.keys():
 						result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
 					elif 'gather_subset' in _FACTS.keys():
