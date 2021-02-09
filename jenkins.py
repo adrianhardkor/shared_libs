@@ -48,6 +48,12 @@ class JENKINS():
 		return(json.loads(wc.REST_POST(self.IP + url, user=self.user, pword=self.pword, verify=False, args=args, headers=headers, convert_args=True)))
 	def REST_GET(self, url):
 		return(json.loads(wc.REST_GET(self.IP + url, user=self.user, pword=self.pword,verify=False)))
+	def ConsoleFormat(self):
+		from bs4 import BeautifulSoup
+		parsed = BeautifulSoup(html_data, features="html.parser")
+		for line in parsed.get_text():
+			# find_all('span')
+			print(line.text)
 	def RunPipeline(self,PipelineName='',parameters={}):
 		Parameters = []
 		parameters_url = []
@@ -55,8 +61,9 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
-		time.sleep(2)
-		print(self.REST_GET('/job/ARC2/lastCompletedBuild/console'))
+		time.sleep(3)
+		self.ConsoleFormat(console = self.REST_GET('/job/ARC2/lastCompletedBuild/console'))
+
 
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
