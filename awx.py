@@ -220,8 +220,6 @@ class AWX():
 							# wc.pairprint('add_sec', add_sec); exit(0)
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
-					if 'ansible_env' in _FACTS.keys():
-						
 					interesting = {}
 					if 'ansible_env' in _FACTS.keys():
 						interesting['SSH_CONNECTION'] = ":".join(_FACTS['ansible_env']['SSH_CONNECTION'].split(' ')[2:])
