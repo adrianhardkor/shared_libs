@@ -56,7 +56,7 @@ class JENKINS():
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
 		time.sleep(2)
-		print(self.REST_GET('http://10.88.48.21:8080/job/ARC2/lastCompletedBuild/console'))
+		print(self.REST_GET('/job/ARC2/lastCompletedBuild/console'))
 
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
