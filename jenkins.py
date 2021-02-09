@@ -56,8 +56,7 @@ class JENKINS():
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
 		time.sleep(2)
-		wc.jd(self.REST_GET('/overallLoad/api/python?pretty=true'))
-		wc.jd(self.REST_GET('/job/ARC2/lastSuccessfulBuild'))
+		wc.jd(self.REST_GET('/jenkins/api/json?tree=jobs[displayName,lastBuild[number]]&xpath=/hudson/job&includes=/hudson/job/displayName[contains(.,%27myjobnamefilter%27)]&wrapper=job_names&pretty=true'))
 
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
