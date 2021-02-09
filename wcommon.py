@@ -1013,6 +1013,13 @@ def jenkins_header():
 		else:
 			wcheader[inp] = env_dict[inp]
 
+def FindAnsibleHost(ansible_host, INV):
+	for d in INV.keys():
+		# pairprint(d,INV[d])
+		if INV[d]['ipAddress']['value'] == ansible_host:
+			return(INV[d])
+	return({})
+
 def print_vagent_header():
 	# ASSUMES RUNNING ON VAGENT
 	V = None

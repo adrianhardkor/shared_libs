@@ -169,8 +169,14 @@ class VELOCITY():
 						# reserved device and port exists
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
-	def UpdateDevice(self, INV, device_name, index, new_value):
+	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible'):
+		# API PageId = 48
 		if device_name not in INV.keys():
+			args = {}
+			args['name'] = device_name
+			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
+			data = self.REST_POST('/velocity/api/inventory/v13/device' args=args)
+			wc.jd(data)
 			raise('UpdateDevice: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
 		if type(INV[device_name][index]) == dict:
 			# property
@@ -183,7 +189,9 @@ class VELOCITY():
 				return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), data[index])
+		return(INV)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
+		# WILL NOT CREATE PORT IF DOESNT EXIST = SEE V.UpdatePort
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if index not in INV[device_name]['ports'][port_name].keys():
 			wc.jd(INV[device_name]['ports'][port_name]) 
@@ -215,6 +223,7 @@ class VELOCITY():
 			# error
 			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
 	def UpdatePort(self, INV, device_name, slot_name, port_name, index, value):
+		# WILL CREATE IF NOT FOUND
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if device_name not in INV.keys():
 			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
@@ -231,11 +240,19 @@ class VELOCITY():
 			pass
 		# PUT: for each attribute, update port
 		self.ChangeDevicePortProp(INV, device_name, port_name, index, value)
-	def FindAnsibleHost(self, ansible_host, INV):
-		for d in INV.keys():
-			if INV[d]['ipAddress'] == ansible_host:
-				return(INV[d])
-		return({})
+		return(INV)
+	def GetDeviceName(self, uuid):
+		# converted to name for reservation-resource sync (per name)
+		return(self.REST_GET('/velocity/api/inventory/v13/device/' + uuid)['name'])
+	def GetTemplates(self, templateName=''):
+		# /velocity/api/inventory/v13/templates
+		data = self.REST_GET('/velocity/api/inventory/v13/templates')['templates']
+		out = {}
+		for d in data:
+		 	out[d['name']] = out[d['id']] = d
+		if templateName != '':
+			return(out[templateName])
+		return(out)
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
@@ -244,7 +261,7 @@ class VELOCITY():
 		for device in data['devices']:
 			ports = {}
 			if device['id'] not in out.keys():
-				out[device['name']] = {'ports': {}}
+				out[device['name']] = {'ports': {}, 'name':device['name']}
 			out[device['name']]['id'] = device['id']
 			for prop in device['properties']:
 				out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
@@ -267,10 +284,13 @@ class VELOCITY():
 							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
 						# wc.pairprint(p['name'], pg['ports'][p['name']])
 					out[device['name']]['ports'] = ports
+		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-# INV = V.GetInventory(); # device ipAddress
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+INV = V.GetInventory(); # device ipAddress
+wc.jd(wc.FindAnsibleHost('10.88.240.41', INV))
+
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
 # print(data['html_report'])
 
