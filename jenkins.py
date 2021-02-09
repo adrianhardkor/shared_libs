@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import time
 import os
 import sys
 import wcommon as wc
@@ -53,8 +54,10 @@ class JENKINS():
 		for p in parameters.keys():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
-		print(self.REST_GET('http://jenkins_url/api/xml?tree=jobs[name,builds[actions[parameters[name,value]]]]&xpath=/hudson/job[build/action/parameter[name="GIT_COMMIT_PARAM"]]/name&wrapper=job_names&pretty=true'))
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
+		time.sleep(2)
+		wc.jd(self.REST_GET('/overallLoad/api/python?pretty=true'))
+		wc.jd(self.REST_GET('/job/ARC2/lastSuccessfulBuild'))
 
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})

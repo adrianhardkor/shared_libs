@@ -1015,7 +1015,7 @@ def jenkins_header():
 
 def FindAnsibleHost(ansible_host, INV):
 	for d in INV.keys():
-		pairprint(d,INV[d]['ipAddress'])
+		# pairprint(d,INV[d]['ipAddress'])
 		if INV[d]['ipAddress']['value'] == ansible_host:
 			return(INV[d])
 	return({})
