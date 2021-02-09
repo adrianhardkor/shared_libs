@@ -986,7 +986,8 @@ def validateHostname(hostname):
         # print(json.dumps(components, indent=2))
         pass
     else:
-        pairprint('Invalid: ' + hostname, INVALID)
+        # pairprint('Invalid: ' + hostname, INVALID)
+        pass
     return(components)
 
 def jenkins_header():

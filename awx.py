@@ -146,7 +146,7 @@ class AWX():
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
-								if valid_path != []:
+								if valid_path != [] and group == 'ARC':
 									out[hostname]['ready'] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
 							continue
@@ -163,14 +163,14 @@ class AWX():
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
-								if valid_path != []:
+								if valid_path != [] and group == 'ARC':
 									out[hostname]['ready'] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
-									for d in facts.keys():
-										if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
-											out[hostname]['ip'].append(d)
-										elif type(facts[d]['hostnames']) == list and hostname in facts[d]['hostnames']:
-											out[hostname]['ip'].append(d)
+								for d in facts.keys():
+									if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
+										out[hostname]['ip'].append(d)
+									elif type(facts[d]['hostnames']) == list and hostname in facts[d]['hostnames']:
+										out[hostname]['ip'].append(d)
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
@@ -252,6 +252,7 @@ class AWX():
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					if '_ansible_facts_gathered' not in _FACTS.keys():
+						wc.pairprint('_ansible_facts_gathered: False',host['id'])
 						wc.jd(interesting)
 					else:
 						result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
