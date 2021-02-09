@@ -235,10 +235,11 @@ class AWX():
 								interesting[factoid] = '_missing'
 						if 'ansible_processor' in _FACTS.keys():
 							interesting['ansible_processor'] = wc.lsearchAllInline2('.* CPU .*', _FACTS['ansible_processor'])
-						for ad in _FACTS['ansible_devices'].keys():
-							interesting['ansible_devices_' + ad] = {}
-							interesting['ansible_devices_' + ad]['model'] = _FACTS['ansible_devices'][ad]['model']
-							interesting['ansible_devices_' + ad]['vendor'] = _FACTS['ansible_devices'][ad]['vendor']
+						if 'ansible_devices' in _FACTS.keys():
+							for ad in _FACTS['ansible_devices'].keys():
+								interesting['ansible_devices_' + ad] = {'model':_FACTS['ansible_devices'][ad]['model'],'vendor':_FACTS['ansible_devices'][ad]['vendor']}
+						for ad in wc.lsearchAllInline(list(_FACTS.keys()), 'ansible_devices_'):
+							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
 					elif vendor == 'junos':
 						# junos
