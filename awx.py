@@ -191,7 +191,7 @@ class AWX():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
 			if out[a2v]['out']:
-				wc.pairprint('out', a2v)
+				wc.pairprint('ready', a2v)
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
