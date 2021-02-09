@@ -176,9 +176,12 @@ class VELOCITY():
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
-			discover = self.REST_POST(' /velocity/api/inventory/v13/device/%s/action' % device_new['id'], args={'type':'discover'})
 			wc.pairprint('  '.join(['[INFO] Created:', device_name, device_new['id']]))
+			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % device_new['id'], args={'type':'discover'})
 			INV = self.FormatInventory(INV, device_new)
+		else:
+			# self.REST_DELETE(' /velocity/api/inventory/v13/device/{deviceId}/port/%s')
+			pass
 		if type(INV[device_name][index]) == dict:
 			# property
 			args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
