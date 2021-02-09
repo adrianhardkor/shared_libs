@@ -964,9 +964,10 @@ def validateHostname(hostname):
     global markets
     # global services
     labs = ['ARC']
-    markets = ['UAT1', 'UAT2', 'VDC1', 'EDGE', 'MDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS']
+    markets = ['UAT1', 'UAT2', 'VDC1', 'MDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS']
+    services = ['UAT', 'EDG', 'HUB', 'HUA', 'HUC', 'HUH', 'VCD']
     # services = '%s%s%s'
-    functions = ['BBR', 'EPR', 'VAR', 'DAR', 'DRR', 'CMR', 'MSR', 'AGS', 'SWI', 'POD', 'BAR', 'OTN', 'CMT', 'VCE', 'FRW', 'TRM', 'L1S', 'TST', 'STS', 'W1S']
+    functions = ['BBR', 'EPR', 'VAR', 'DAR', 'DRR', 'CMR', 'MSR', 'AGS', 'SWI', 'POD', 'BAR', 'OTN', 'CMT', 'VCE', 'FRW', 'TRM', 'L1S', 'TST', 'STC', 'W1S', 'VEL', 'AWX', 'DNS', 'K8M', 'K8W']
     # iterations = '%d%d'
     INVALID = []
     components = {}
@@ -975,7 +976,8 @@ def validateHostname(hostname):
     components['market'] = hostname[3:7].upper()
     if components['market'] not in markets: INVALID.append(components['market'])
     components['service'] = hostname[7:10].upper()
-    if re.search('...', components['service']) is False: INVALID.append(components['service'])
+    if components['service'] not in services: INVALID.append(components['service'])
+    # if re.search('...', components['service']) is False: INVALID.append(components['service'])
     components['function'] = hostname[10:13].upper()
     if components['function'] not in functions: INVALID.append(components['function'])
     components['iteration'] = hostname[13:].upper()
