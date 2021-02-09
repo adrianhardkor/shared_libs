@@ -176,9 +176,9 @@ class VELOCITY():
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
 			data = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
-			wc.jd(data)
-			print('UpdateDevice: ' + device_name + ' not in Inventory, cant update port yet: ' + device_name); # exit(0)
-			INV[device_name] = {'name': data['name'], 'ip':data['id'],index:{}}
+			# wc.jd(data)
+			INV = self.FormatInventory(INV, data)
+			wc.pairprint('  '.join(['[INFO] Created:', device_name, data['id']]))
 		if type(INV[device_name][index]) == dict:
 			# property
 			args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
@@ -254,37 +254,65 @@ class VELOCITY():
 		if templateName != '':
 			return(out[templateName])
 		return(out)
+	def FormatInventory(self, out, device):
+		ports = {}
+		if device['id'] not in out.keys():
+			out[device['name']] = {'ports': {}, 'name':device['name']}
+		out[device['name']]['id'] = device['id']
+		for prop in device['properties']:
+			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
+		for pg in device['portGroups']:
+			if pg['id'] != None:
+				# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
+				pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
+				for p in pp['ports']:
+					# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
+					# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
+					# wc.jd(template)
+					ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
+					ports[p['name']]['isLocked'] = p['isLocked']
+					ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
+					ports[p['name']]['linkChecked'] = p['linkChecked']
+					ports[p['name']]['lastModified'] = p['lastModified']
+					for PortProp in p['properties']:
+						ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
+					if p['isLocked']:
+						out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
+					# wc.pairprint(p['name'], pg['ports'][p['name']])
+				out[device['name']]['ports'] = ports
+		return(out)
 	def GetInventory(self):
 		out = {}
 		top = VELOCITY.GetTopologies(self)
 		data = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/devices', params={'includeProperties':True, 'includePortGroups': True})
 		# wc.jd(data)
 		for device in data['devices']:
-			ports = {}
-			if device['id'] not in out.keys():
-				out[device['name']] = {'ports': {}, 'name':device['name']}
-			out[device['name']]['id'] = device['id']
-			for prop in device['properties']:
-				out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
-			for pg in device['portGroups']:
-				if pg['id'] != None:
-					# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
-					pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
-					for p in pp['ports']:
-						# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
-						# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
-						# wc.jd(template)
-						ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
-						ports[p['name']]['isLocked'] = p['isLocked']
-						ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
-						ports[p['name']]['linkChecked'] = p['linkChecked']
-						ports[p['name']]['lastModified'] = p['lastModified']
-						for PortProp in p['properties']:
-							ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
-						if p['isLocked']:
-							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
-						# wc.pairprint(p['name'], pg['ports'][p['name']])
-					out[device['name']]['ports'] = ports
+			out = self.FormatInventory(out, device)
+#			ports = {}
+#			if device['id'] not in out.keys():
+#				out[device['name']] = {'ports': {}, 'name':device['name']}
+#			out[device['name']]['id'] = device['id']
+#			for prop in device['properties']:
+#				out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
+#			for pg in device['portGroups']:
+#				if pg['id'] != None:
+#					# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
+#					pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
+#					for p in pp['ports']:
+#						# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
+#						# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
+#						# wc.jd(template)
+#						ports[p['name']] = {'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
+#						ports[p['name']]['isLocked'] = p['isLocked']
+#						ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
+#						ports[p['name']]['linkChecked'] = p['linkChecked']
+#						ports[p['name']]['lastModified'] = p['lastModified']
+#						for PortProp in p['properties']:
+#							ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
+#						if p['isLocked']:
+#							out,ports = VELOCITY.ApplyReservationTopology(top, out, pg, ports, p, device)
+#						# wc.pairprint(p['name'], pg['ports'][p['name']])
+#					out[device['name']]['ports'] = ports
 		self.INV = out
 		return(out)
 
