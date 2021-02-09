@@ -253,7 +253,8 @@ class AWX():
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					if '_ansible_facts_gathered' not in _FACTS.keys():
 						wc.pairprint('_ansible_facts_gathered: False',host['id'])
-						wc.jd(interesting)
+						wc.jd(_FACTS)
+						print('\n\n\n')
 					else:
 						result[ip]['ids'][host['id']]['facts_gathered'] = _FACTS['_ansible_facts_gathered']
 					result[ip]['ids'][host['id']]['facts'] = interesting
