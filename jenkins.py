@@ -62,7 +62,7 @@ class JENKINS():
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
 		time.sleep(3)
-		self.ConsoleFormat(console = self.REST_GET('/job/ARC2/lastCompletedBuild/console'))
+		self.ConsoleFormat(self.REST_GET('/job/ARC2/lastCompletedBuild/console'))
 
 
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
