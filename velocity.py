@@ -177,9 +177,8 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			discover = self.REST_POST(' /velocity/api/inventory/v13/device/%s/action' % device_new['id'], args={'type':'discover'})
-			# wc.jd(device_new)
-			INV = self.FormatInventory(INV, device_new)
 			wc.pairprint('  '.join(['[INFO] Created:', device_name, device_new['id']]))
+			INV = self.FormatInventory(INV, device_new)
 		if type(INV[device_name][index]) == dict:
 			# property
 			args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
