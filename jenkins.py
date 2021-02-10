@@ -62,7 +62,7 @@ class JENKINS():
 	def GetBuildResults(self, name):
 		from bs4 import BeautifulSoup
 		text = ['']
-		while 'Finished: ' not in text[-1]:
+		while '[Pipeline] End of Pipeline\n' not in text[-7:]:
 			try:
 				print(text[-5:])
 			except Exception:
