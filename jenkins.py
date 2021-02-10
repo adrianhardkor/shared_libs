@@ -41,11 +41,13 @@ class JENKINS():
 			if build['building']: 
 				flag = True
 				runId = build['id']
-			if flag and build['building'] is False and build['result'] in ['SUCCESS', 'FAIL']:
+			if flag and build['building'] is False and build['result'] in ['SUCCESS', 'FAILURE']:
 				# if jobStarted, jobComplete, and jobHasResult:
 				running = False
-			print(sorted(list(build.keys())))
-			print('  '.join([str(build['building']),str(build['id']),str(build['result'])]))
+			if flag:
+				print('  '.join(['RUNNING', str(build['building']),str(build['id']),str(build['result'])]))
+			else:
+				print('  '.join(['STARTED', str(build['building'])]))
 			time.sleep(1)
 			text = []
 		# GET CONSOLE (NON-API)
