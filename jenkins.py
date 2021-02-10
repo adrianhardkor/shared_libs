@@ -43,8 +43,7 @@ class JENKINS():
 			if flag and build['building'] is False and build['result'] in ['SUCCESS', 'FAIL']:
 				# if jobStarted, jobComplete, and jobHasResult:
 				running = False
-			if 'result' not in build.keys(): build['result'] = "<missing>"
-			if type(build['result']) == None: build['result'] = "<missing>"
+			print(sorted(list(build.keys())))
 			print('  '.join([str(build['building']),build['id'],build['result']]))
 			time.sleep(1)
 			text = []
