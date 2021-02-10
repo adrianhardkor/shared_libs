@@ -194,7 +194,7 @@ class AWX():
 
 
 			# FINAL SUMMARY
-			summ[a2v] = {'ready':True, 'readys': wc.lsearchAllInline('ready.', list(out[a2v].keys()))}
+			summ[a2v] = {'ready':True, 'readys': list(out[a2v].keys())}
 			for i in wc.lsearchAllInline('ready.', list(out[a2v].keys())):
 				if out[a2v][i] == False:  summ[a2v]['ready'] = False
 				summ[a2v][i] = summ[a2v][i]
