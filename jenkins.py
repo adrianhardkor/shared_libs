@@ -63,7 +63,10 @@ class JENKINS():
 		from bs4 import BeautifulSoup
 		text = ['']
 		while 'Finished: ' not in text[-1]:
-			print(text[-1])
+			try:
+				print(text[-5:])
+			except Exception:
+				pass
 			time.sleep(3)
 			text = []
 			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
