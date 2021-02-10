@@ -173,7 +173,8 @@ class AWX():
 										out[hostname]['ip'].append(d)
 		# check if scaffolding has working GetFacts
 		for a2v in out.keys():
-			out[a2v]['out'] = False
+			if 'ready' not in out[a2v].keys():
+				out[a2v]['ready'] = False
 			if out[a2v]['ip'] == []:
 				# no ip = not out
 				out[a2v]['no_ip'] = True
@@ -186,11 +187,11 @@ class AWX():
 					idDict[hostId] = facts[ip]['ids'][hostId]
 					if idDict[hostId]['facts_size'] not in [0,1]:
 						# if any deviceId has facts then out
-						out[a2v]['out'] = True
+						out[a2v]['ready'] = True
 			if 'ip' in idDict.keys():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
-			if out[a2v]['out']:
+			if out[a2v]['ready']:
 				wc.pairprint('ready', a2v)
 		return(out)
 	def GetFacts2(self,result,raw):

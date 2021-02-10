@@ -201,6 +201,8 @@ class VELOCITY():
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			time.sleep(5); # wait 5s after applying ipAddress
+			# DISCOVERY HAPPENS IN BATCHES OF 4 // ANY 1of4 CAN DELAY(Ping Timeout) THE BATCH ONLINE STATUS
+			# DISCOVERY COULD TAKE UP TO TIMEOUT * 4-DEVICES
 			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
 			print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		return(INV)
