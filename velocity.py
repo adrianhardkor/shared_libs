@@ -176,20 +176,20 @@ class VELOCITY():
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
 	def BuildDevicePropertyArgs(self, device_name, index, new_value, append=False):
-		if type(INV[device_name][index]) == dict:
+		if type(self.INV[device_name][index]) == dict:
 			# property
 			if not append:
-				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
-				if INV[device_name][index]['value'] == new_value: args = {}
+				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new_value}]}
+				if self.INV[device_name][index]['value'] == new_value: args = {}
 			else:
 				new = self.INV[device_name][index]['value'].split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
-				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new}]}
-		elif type(INV[device_name][index]) == str:
+				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new}]}
+		elif type(self.INV[device_name][index]) == str:
 			if not append:
 				args = {index: new_value}
-				if INV[device_name][index] == new_value: return({})
+				if self.INV[device_name][index] == new_value: return({})
 			else:
 				new = self.INV[device_name][index].split(' ')
 				new.append(new_value)
