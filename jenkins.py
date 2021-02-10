@@ -60,12 +60,15 @@ class JENKINS():
 		out.append(str(line))
 		return('\n'.join(out))
 	def GetBuildResults(self, name):
-		print(self.REST_GET('/overallLoad/api/json'))
+		# print(self.REST_GET('/overallLoad/api/json'))
 		from bs4 import BeautifulSoup
+		build = self.REST_GET('/job/ARC2/lastBuild/api/json')
+		print('  '.join([build['building'],build['id'],build['result']]))
 		text = ['']
 		while '[Pipeline] End of Pipeline\n' not in text[-7:]:
-			print(self.REST_GET('/overallLoad/api/json'))
-			time.sleep(10)
+			build = self.REST_GET('/job/ARC2/lastBuild/api/json')
+			print('  '.join([build['building'],build['id'],build['result']]))
+			time.sleep(1)
 			text = []
 			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
 			if 'text' in text1.keys(): text1 = text1['text']
@@ -81,7 +84,6 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
-
 		output = self.GetBuildResults(PipelineName)
 		print(output)
 		print(wc.grep('.*lete Build.*', output))
