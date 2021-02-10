@@ -66,7 +66,7 @@ class JENKINS():
 			print(text[-1])
 			time.sleep(3)
 			text = []
-			text1 = self.REST_GET('/job/%s/lastBuild/console') % name
+			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
 			if 'text' in text1.keys(): text1 = text1['text']
 			else: wc.jd(text1)
 			for line in BeautifulSoup(text1, features="html.parser").find_all('span'):
