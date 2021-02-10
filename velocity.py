@@ -43,7 +43,7 @@ class VELOCITY():
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
 	def REST_DELETE(self, url, args={}, verify=False):
-		wc.pairprint('[INFO] ', 'REST_DELETE: ' + url)
+		# wc.pairprint('[INFO] ', 'REST_DELETE: ' + url)
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_DELETE(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
@@ -198,7 +198,7 @@ class VELOCITY():
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
-			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % device_new['id'], args={'type':'discover'})
+			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % INV[device_name]['id'], args={'type':'discover'})
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		return(INV)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
