@@ -70,6 +70,6 @@ class JENKINS():
 		runId,output = self.GetBuildResults(PipelineName)
 		print(output)
 	
-J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
-J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
+J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
+J.RunPipeline(wc.argv_dict['Pipe'], {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
 
