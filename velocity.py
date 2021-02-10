@@ -201,6 +201,7 @@ class VELOCITY():
 				args = {index:new}
 		return(args)
 	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible', append=False):
+		new_value = str(new_value)
 		# API PageId = 48
 		if device_name not in INV.keys():
 			# CreateDevice (POST)
