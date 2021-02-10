@@ -126,7 +126,7 @@ class AWX():
 		out = {}
 		path = './inventories/'
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
-			if not inventory_file.endswith('yml') and not inventory_file.endswith('yaml'):
+			if not inventory_file.lower().endswith('yml') and not inventory_file.lower().endswith('yaml'):
 				continue
 			inventory_file = path + inventory_file
 			print('\n' + inventory_file)
@@ -188,7 +188,7 @@ class AWX():
 			for ip in wc.lunique(out[a2v]['ip']):
 				for hostId in facts[ip]['ids'].keys():
 					facts[ip]['ids'][hostId]['ip'] = ip
-					idDict[hostId] = facts[ip]['ids'][hostId]
+					idDict[hostId] = facts[ip]['ids'][hostId]; # 'facts'
 					if idDict[hostId]['facts_size'] not in [0,1,'0','1']:
 						# if any deviceId has facts then out
 						out[a2v]['ready3'] = True
@@ -314,6 +314,7 @@ class AWX():
 					# NO FACTS
 					result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 					result[ip]['ids'][host['id']]['facts_gathered'] = ''
+					result[ip]['ids'][host['id']]['host_vars'] = host
 			else:
 				# NO IP INFO -- DNS INFO?
 				wc.pairprint('\tEXPECTED_FAIL_NO_CONNECTIVITY\t' + str(host['variables']), host['name'] + '\t' + str(host['id']))
