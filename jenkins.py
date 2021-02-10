@@ -63,11 +63,11 @@ class JENKINS():
 		# print(self.REST_GET('/overallLoad/api/json'))
 		from bs4 import BeautifulSoup
 		build = self.REST_GET('/job/ARC2/lastBuild/api/json')
-		print('  '.join([build['building'],build['id'],build['result']]))
+		print('  '.join([str(build['building']),build['id'],build['result']]))
 		text = ['']
 		while '[Pipeline] End of Pipeline\n' not in text[-7:]:
 			build = self.REST_GET('/job/ARC2/lastBuild/api/json')
-			print('  '.join([build['building'],build['id'],build['result']]))
+			print('  '.join([str(build['building']),build['id'],build['result']]))
 			time.sleep(1)
 			text = []
 			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)

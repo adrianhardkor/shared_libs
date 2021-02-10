@@ -38,7 +38,8 @@ class VELOCITY():
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
 	def REST_POST(self, url, args={}, verify=False):
-		url = url + '?limit=200'
+		if '?' not in url:
+			url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
@@ -198,7 +199,7 @@ class VELOCITY():
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
-			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % INV[device_name]['id'], args={'type':'discover'})
+			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
 			print('  '.join(['[INFO] *ACTION*:', device_name,index,'discover',str(discover)]))
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		return(INV)
