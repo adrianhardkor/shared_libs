@@ -43,6 +43,7 @@ class VELOCITY():
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
 	def REST_DELETE(self, url, args={}, verify=False):
+		wc.pairprint('[INFO] ', 'REST_DELETE: ' + url)
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_DELETE(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))

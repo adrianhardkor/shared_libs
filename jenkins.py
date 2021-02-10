@@ -59,6 +59,17 @@ class JENKINS():
 			out.append(line.text)
 		out.append(str(line))
 		return('\n'.join(out))
+	def GetBuildResults(self, name):
+		from bs4 import BeautifulSoup
+		text = ['']
+		while 'Finished: ' not in text[-1]:
+			time.sleep(3)
+			text = []
+			text1 = self.REST_GET('/job/%s/lastCompletedBuild/console')['text'] % name
+			for line in BeautifulSoup(text1, features="html.parser").find_all('span'):
+				text.append(line.text)
+			text.append(str(line))
+		return('\n'.join(text))
 	def RunPipeline(self,PipelineName='',parameters={}):
 		Parameters = []
 		parameters_url = []
@@ -66,10 +77,8 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
-		time.sleep(3)
-		print(self.ConsoleFormat(self.REST_GET('/job/ARC2/lastCompletedBuild/console')['text']))
-
-
+		print(self.GetBuildResults(PipelineName))
+	
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
 
