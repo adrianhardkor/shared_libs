@@ -190,10 +190,11 @@ class AWX():
 			if 'ip' in idDict.keys():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
+			if 'ready1' not in out[a2v].keys() or 'ready2' not in out[a2v].keys():
+				wc.jd(out[a2v])
 			if out[a2v]['ready1'] and out[a2v]['ready2'] and out[a2v]['ready3']:
 				out[a2v]['ready'] = True
 			else: out[a2v]['ready'] = False
-				
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED

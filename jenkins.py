@@ -34,7 +34,7 @@ class JENKINS():
 		flag = False
 		running = True
 		build = self.REST_GET('/job/%s/lastBuild/api/json' % name)
-		wc.jd(build)
+		# wc.jd(build)
 		if build['building']: flag = True
 		while running:
 			build = self.REST_GET('/job/%s/lastBuild/api/json' % name)
