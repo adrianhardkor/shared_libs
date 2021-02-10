@@ -60,7 +60,7 @@ class JENKINS():
 		out.append(str(line))
 		return('\n'.join(out))
 	def GetBuildResults(self, name):
-		queue = json.loads(self.REST_GET('/queue/api/python'))
+		queue = self.REST_GET('/queue/api/python')
 		wc.jd(queue)
 		from bs4 import BeautifulSoup
 		text = ['']
