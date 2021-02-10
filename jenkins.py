@@ -60,6 +60,8 @@ class JENKINS():
 		out.append(str(line))
 		return('\n'.join(out))
 	def GetBuildResults(self, name):
+		queue = json.loads(self.REST_GET('/queue/api/python'))
+		wc.jd(queue)
 		from bs4 import BeautifulSoup
 		text = ['']
 		while '[Pipeline] End of Pipeline\n' not in text[-7:]:
@@ -67,7 +69,7 @@ class JENKINS():
 				print(text[-5:])
 			except Exception:
 				pass
-			time.sleep(3)
+			time.sleep(5)
 			text = []
 			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
 			if 'text' in text1.keys(): text1 = text1['text']
@@ -83,7 +85,10 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
-		print(self.GetBuildResults(PipelineName))
+
+		output = self.GetBuildResults(PipelineName)
+		print(output)
+		print(wc.grep('.*lete Build.*', output))
 	
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})

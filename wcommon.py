@@ -809,7 +809,8 @@ def REST_GET(url, headers={"Content-Type": "application/json", "Accept": "applic
         try:
             data = response.json()
         except Exception:
-            data = {'text':response.text}
+            data = REST_responseHandler(response, url, user)
+            data['text'] = response.text
     return(json.dumps(data))
 
 def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, args={}, user='', pword='', verify=False, convert_args=False):
@@ -831,7 +832,8 @@ def REST_DELETE(url, headers={"Content-Type": "application/json", "Accept": "app
         try:
             data = response.json()
         except Exception:
-            data = {'text':response.text}
+            data = REST_responseHandler(response, url, user)
+            data['text'] = response.text
     return(json.dumps(data))
 
 def REST_responseHandler(response, url, user):
@@ -861,6 +863,7 @@ def REST_POST(url, headers={"Content-Type": "application/json", "Accept": "appli
             dd = response.json()
         except Exception:
             dd = REST_responseHandler(response, url, user)  
+            dd['text'] = response.text
     return(json.dumps(dd))
 
 def REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={},verify=False,convert_args=False):
@@ -879,7 +882,13 @@ def REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "applic
         dd['response.request.body'] = bytes_str(response.request.body)
         dd['response.body'] = str(response.content)
         dd['Response'] = str(response)
-    else: dd = response.json()
+    else:
+        # 200 or 201 = success
+        try:
+            dd = response.json()
+        except Exception:
+            dd = REST_responseHandler(response, url, user)  
+            dd['text'] = response.text
     return(json.dumps(dd))
 
 def time_epoch_human(myTime):
