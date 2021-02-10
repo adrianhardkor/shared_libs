@@ -142,12 +142,12 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''})
 								if hostname not in out.keys():
-									out[hostname] = {'ready':True,'ip':[]}
+									out[hostname] = {'ready1':True,'ip':[]}
 								if valid_host['INVALID'] != []:
-									out[hostname]['ready'] = False
+									out[hostname]['ready1'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
 								if valid_path != [] and group == 'ARC':
-									out[hostname]['ready'] = False
+									out[hostname]['ready1'] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
@@ -159,12 +159,12 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
 								if hostname not in out.keys():
-									out[hostname] = {'ready':True,'ip':[]}
+									out[hostname] = {'ready2':True,'ip':[]}
 								if valid_host['INVALID'] != []:
-									out[hostname]['ready'] = False
+									out[hostname]['ready2'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
 								if valid_path != [] and group == 'ARC':
-									out[hostname]['ready'] = False
+									out[hostname]['ready2'] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
 								for d in facts.keys():
 									if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
@@ -173,7 +173,7 @@ class AWX():
 										out[hostname]['ip'].append(d)
 		# check if scaffolding has working GetFacts
 		for a2v in out.keys():
-			out[a2v]['ready'] = False
+			out[a2v]['ready3'] = False
 			if out[a2v]['ip'] == []:
 				# no ip = not out
 				out[a2v]['no_ip'] = True
@@ -186,11 +186,14 @@ class AWX():
 					idDict[hostId] = facts[ip]['ids'][hostId]
 					if idDict[hostId]['facts_size'] not in [0,1,'0','1']:
 						# if any deviceId has facts then out
-						wc.pairprint('ready', a2v + '  ' + str(hostId))
-						out[a2v]['ready'] = True
+						out[a2v]['ready3'] = True
 			if 'ip' in idDict.keys():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
+			if out[a2v]['ready1'] and out[a2v]['ready2'] and out[a2v]['ready3']:
+				out[a2v]['ready'] = True
+			else: out[a2v]['ready'] = False
+				
 		return(out)
 	def GetFacts2(self,result,raw):
 		# PAGED
