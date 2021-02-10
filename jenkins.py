@@ -45,7 +45,7 @@ class JENKINS():
 				# if jobStarted, jobComplete, and jobHasResult:
 				running = False
 			if flag:
-				print('  '.join(['RUNNING', str(build['building']),str(build['id']),str(build['result'])]))
+				print('  '.join(['RUNNING', str(build['building']),str(build['id']),str(build['result']), str(wc.timer_index_since(self.runTimer))]))
 			else:
 				print('  '.join(['STARTED', str(build['building'])]))
 			time.sleep(1)
@@ -64,6 +64,7 @@ class JENKINS():
 		for p in parameters.keys():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
+		self.runTimer = wc.timer_index_start()
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
 		runId,output = self.GetBuildResults(PipelineName)
 		print(output)
