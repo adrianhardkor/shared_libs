@@ -197,11 +197,12 @@ class VELOCITY():
 			if INV[device_name][index] == new_value:
 				return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
+		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
+			time.sleep(5); # wait 5s after applying ipAddress
 			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
-			print('  '.join(['[INFO] *ACTION*:', device_name,index,'discover',str(discover)]))
-		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
+			print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		return(INV)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
 		# WILL NOT CREATE PORT IF DOESNT EXIST = SEE V.UpdatePort
