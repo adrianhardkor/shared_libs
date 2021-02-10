@@ -60,16 +60,12 @@ class JENKINS():
 		out.append(str(line))
 		return('\n'.join(out))
 	def GetBuildResults(self, name):
-		queue = self.REST_GET('/queue/api/python')
-		wc.jd(queue)
+		print(self.REST_GET('/overallLoad/api/json'))
 		from bs4 import BeautifulSoup
 		text = ['']
 		while '[Pipeline] End of Pipeline\n' not in text[-7:]:
-			try:
-				print(text[-5:])
-			except Exception:
-				pass
-			time.sleep(5)
+			print(self.REST_GET('/overallLoad/api/json'))
+			time.sleep(10)
 			text = []
 			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
 			if 'text' in text1.keys(): text1 = text1['text']
