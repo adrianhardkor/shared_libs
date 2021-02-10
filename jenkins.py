@@ -65,7 +65,9 @@ class JENKINS():
 		while 'Finished: ' not in text[-1]:
 			time.sleep(3)
 			text = []
-			text1 = self.REST_GET('/job/%s/lastBuild/console')['text'] % name
+			text1 = self.REST_GET('/job/%s/lastBuild/console') % name
+			if 'text' in text1.keys(): text1 = text1['text']
+			else: wc.jd(text1)
 			for line in BeautifulSoup(text1, features="html.parser").find_all('span'):
 				text.append(line.text)
 			text.append(str(line))
