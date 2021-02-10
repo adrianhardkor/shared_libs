@@ -209,20 +209,15 @@ class AWX():
 		inventories = {}
 		all_hosts = AWX.REST_GET(self,'/api/v2/hosts/')['results']
 		wc.pairprint('all_hosts_count', len(all_hosts))
+		scm_data = {}
 		for host in all_hosts:
 			try:
 				host['variables'] = json.loads(host['variables'].replace("'",'"'))
 			except Exception:
 				host['variables'] = {'_': host['variables']}
 			for scm_source in self.REST_GET(host['related']['inventory'] + 'inventory_sources/')['results']:
-				# http://10.88.48.33/api/v2/inventories/4/inventory_sources/
-				scm_data = self.REST_GET(scm_source['related']['source_project'])
-				del scm_data['summary_fields']
-				del scm_data['related']
-				host['summary_fields']['inventory'][scm_data['id']] = scm_data
-			
+				host['summary_fields']['inventory']['url'] = self.REST_GET(scm_source['related']['source_project'])
 			# wc.pairprint('\t' + str(host['variables']), host['name'] + '\t' + str(host['id']))
-			# wc.jd(host); exit(0)
 
 			if host['inventory'] not in inventories.keys():
 				inventories[host['inventory']] = AWX.REST_GET(self,host['related']['inventory'])['name']
