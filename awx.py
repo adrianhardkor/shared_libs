@@ -196,7 +196,7 @@ class AWX():
 			summ[a2v] = {}
 			for i in [match for match in list(out[a2v].keys()) if "ready" in match]:
 				if out[a2v][i] == False:  summ[a2v]['ready'] = False
-				summ[a2v][i] = summ[a2v][i]
+				summ[a2v][i] = out[a2v][i]
 			if 'ready' not in summ[a2v].keys(): summ[a2v]['ready'] = True
 		return(out,summ)
 	def GetFacts2(self,result,raw):
