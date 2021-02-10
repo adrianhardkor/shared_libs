@@ -182,6 +182,8 @@ class VELOCITY():
 				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new_value}]}
 				if self.INV[device_name][index]['value'] == new_value: args = {}
 			else:
+				if self.INV[device_name][index]['value'] == None:
+					self.INV[device_name][index]['value'] = ''
 				new = self.INV[device_name][index]['value'].split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
@@ -191,6 +193,8 @@ class VELOCITY():
 				args = {index: new_value}
 				if self.INV[device_name][index] == new_value: args = {}
 			else:
+				if self.INV[device_name][index] == None:
+					self.INV[device_name][index] = ''
 				new = self.INV[device_name][index].split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
