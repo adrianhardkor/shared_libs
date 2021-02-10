@@ -34,6 +34,7 @@ class JENKINS():
 		flag = False
 		running = True
 		build = self.REST_GET('/job/%s/lastBuild/api/json' % name)
+		wc.jd(build)
 		if build['building']: flag = True
 		while running:
 			build = self.REST_GET('/job/%s/lastBuild/api/json' % name)
@@ -44,7 +45,7 @@ class JENKINS():
 				# if jobStarted, jobComplete, and jobHasResult:
 				running = False
 			print(sorted(list(build.keys())))
-			print('  '.join([str(build['building']),build['id'],build['result']]))
+			print('  '.join([str(build['building']),str(build['id']),str(build['result'])]))
 			time.sleep(1)
 			text = []
 		# GET CONSOLE (NON-API)
