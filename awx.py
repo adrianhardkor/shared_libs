@@ -192,9 +192,8 @@ class AWX():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
 
-
 			# FINAL SUMMARY
-			summ[a2v] = {'ready':True, 'readys': wc.lsearchAllInline('ready.*', list(out[a2v].keys()))}
+			summ[a2v] = {'ready':True, 'readys': [match for match in list(out[a2v].keys()) if "ready" in match]}
 			for i in wc.lsearchAllInline('ready.', list(out[a2v].keys())):
 				if out[a2v][i] == False:  summ[a2v]['ready'] = False
 				summ[a2v][i] = summ[a2v][i]
