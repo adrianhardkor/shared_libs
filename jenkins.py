@@ -6,37 +6,6 @@ import wcommon as wc
 import json
 import re
 
-__author__ = 'wehappyfew'
-
-import requests
-
-def create_new_jenkins_job(j_url, j_port, new_job_name, j_user, j_pass):
-	"""
-	Create a new jenkins job
-	:param j_url: eg http://mysite.com
-	:param j_port: eg 8686 [8080 is jenkin's default]
-	:param new_job_name: eg "NEW_JOB"
-	:param j_user: Sauron
-	:param j_pass: i_c_u
-	:return:
-	"""
-	url     = '{0}:{1}/createItem?name={2}'.format(j_url, j_port, new_job_name)
-	auth    = (j_user, j_pass)
-	payload = '<project><builders/><publishers/><buildWrappers/></project>'
-	headers = {"Content-Type" : "application/xml"}
-	return(json.loads(wc.REST_POST(url, user=j_user, pword=j_pass,  headers={"Content-Type" : "application/xml"}, args=payload, verify=False)))
-
-# wc.jd(create_new_jenkins_job('http://%s' % wc.argv_dict['IP'], '8080', 'ARC2', wc.argv_dict['user'], wc.argv_dict['pass']))
-
-
-
-
-
-# curl -X POST http://localhost:8080/job/job1/build  \
-#  -jenkins:f1499cc9852c899d327a1f644e61a64d \
-#  --data-urlencode json='{"parameter": [{"name":"id", "value":"100"}, {"name":"loglevel", "value":"high"}]}'
-
-
 class JENKINS():
 	def __init__(self, IP, user, token):
 		self.user = user
@@ -62,21 +31,30 @@ class JENKINS():
 	def GetBuildResults(self, name):
 		# print(self.REST_GET('/overallLoad/api/json'))
 		from bs4 import BeautifulSoup
-		build = self.REST_GET('/job/ARC2/lastBuild/api/json')
-		print('  '.join([str(build['building']),build['id'],build['result']]))
-		text = ['']
-		while '[Pipeline] End of Pipeline\n' not in text[-7:]:
-			build = self.REST_GET('/job/ARC2/lastBuild/api/json')
+		flag = False
+		running = True
+		build = self.REST_GET('/job/%s/lastBuild/api/json' % name)
+		if build['building']: flag = True
+		while running:
+			build = self.REST_GET('/job/%s/lastBuild/api/json' % name)
+			if build['building']: 
+				flag = True
+				runId = build['id']
+			if flag and build['building'] is False and build['result'] in ['SUCCESS', 'FAIL']:
+				# if jobStarted, jobComplete, and jobHasResult:
+				running = False
+		
 			print('  '.join([str(build['building']),build['id'],build['result']]))
 			time.sleep(1)
 			text = []
-			text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
-			if 'text' in text1.keys(): text1 = text1['text']
-			else: wc.jd(text1)
-			for line in BeautifulSoup(text1, features="html.parser").find_all('span'):
-				text.append(line.text)
-			text.append(str(line))
-		return('\n'.join(text))
+		# GET CONSOLE (NON-API)
+		text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
+		if 'text' in text1.keys(): text1 = text1['text']
+		else: wc.jd(text1)
+		for line in BeautifulSoup(text1, features="html.parser").find_all('span'):
+			text.append(line.text)
+		text.append(str(line))
+		return(runId,'\n'.join(text))
 	def RunPipeline(self,PipelineName='',parameters={}):
 		Parameters = []
 		parameters_url = []
@@ -84,9 +62,8 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		wc.jd(self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters))
-		output = self.GetBuildResults(PipelineName)
+		runId,output = self.GetBuildResults(PipelineName)
 		print(output)
-		print(wc.grep('.*lete Build.*', output))
 	
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['token'])
 J.RunPipeline('ARC2', {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
