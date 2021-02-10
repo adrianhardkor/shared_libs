@@ -46,9 +46,10 @@ class JENKINS():
 				running = False
 			if flag:
 				print('  '.join(['RUNNING', str(build['building']),str(build['id']),str(build['result']), str(wc.timer_index_since(self.runTimer))]))
+				time.sleep(3)
 			else:
 				print('  '.join(['STARTED', str(build['building'])]))
-			time.sleep(1)
+				time.sleep(2)
 			text = []
 		# GET CONSOLE (NON-API)
 		text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
