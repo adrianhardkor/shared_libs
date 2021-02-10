@@ -175,32 +175,32 @@ class VELOCITY():
 						# reserved device and port exists
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
-	def BuildDevicePropertyArgs(self, device_name, index, new_value, append=False):
-		if type(self.INV[device_name][index]) == dict:
+	def BuildDevicePropertyArgs(self, INV, device_name, index, new_value, append=False):
+		if type(INV[device_name][index]) == dict:
 			# property
 			if not append:
-				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new_value}]}
-				if self.INV[device_name][index]['value'] == new_value: args = {}
+				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
+				if INV[device_name][index]['value'] == new_value: args = {}
 			else:
-				if self.INV[device_name][index]['value'] == None:
-					self.INV[device_name][index]['value'] = ''
-				new = self.INV[device_name][index]['value'].split(' ')
+				if INV[device_name][index]['value'] == None:
+					INV[device_name][index]['value'] = ''
+				new = INV[device_name][index]['value'].split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
-				wc.pairprint(self.INV[device_name][index]['value'].split(' '), new)
-				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new}]}
-		elif type(self.INV[device_name][index]) == str:
+				wc.pairprint(INV[device_name][index]['value'].split(' '), new)
+				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new}]}
+		elif type(INV[device_name][index]) == str:
 			if not append:
 				args = {index: new_value}
-				if self.INV[device_name][index] == new_value: args = {}
+				if INV[device_name][index] == new_value: args = {}
 			else:
-				if self.INV[device_name][index] == None:
-					self.INV[device_name][index] = ''
-				new = self.INV[device_name][index].split(' ')
+				if INV[device_name][index] == None:
+					INV[device_name][index] = ''
+				new = INV[device_name][index].split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
 				args = {index:new}
-				wc.pairprint(self.INV[device_name][index].split(' '), new)
+				wc.pairprint(INV[device_name][index].split(' '), new)
 		return(args)
 	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible', append=False):
 		new_value = str(new_value)
@@ -213,7 +213,7 @@ class VELOCITY():
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			INV = self.FormatInventory(INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
-		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append)
+		args = self.BuildDevicePropertyArgs(INV, device_name, index, new_value, append=append)
 		if args == {}: return(INV)
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
