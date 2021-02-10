@@ -844,7 +844,10 @@ def REST_responseHandler(response, url, user):
     dd['Headers'] = {}
     for h in response.headers:
         dd['Headers'][h] = response.headers[h]
-    dd['response.request.body'] = json.loads(bytes_str(response.request.body))
+    try:
+        dd['response.request.body'] = json.loads(bytes_str(response.request.body))
+    except Exception:
+        dd['response.request.body'] = bytes_str(response.request.body)
     dd['response.body'] = str(response.content)
     dd['Response'] = str(response)
     return(dd)
