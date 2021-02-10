@@ -187,6 +187,7 @@ class VELOCITY():
 				new = self.INV[device_name][index]['value'].split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
+				wc.pairprint(self.INV[device_name][index]['value'].split(' '), new)
 				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new}]}
 		elif type(self.INV[device_name][index]) == str:
 			if not append:
@@ -199,6 +200,7 @@ class VELOCITY():
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new)))
 				args = {index:new}
+				wc.pairprint(self.INV[device_name][index].split(' '), new)
 		return(args)
 	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible', append=False):
 		new_value = str(new_value)
