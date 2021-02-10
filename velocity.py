@@ -196,7 +196,7 @@ class VELOCITY():
 				new = ' '.join(sorted(wc.lunique(new)))
 				args = {index:new}
 		return(args)
-	def UpdateDevice(self, INV, device_name, index, new_value, append=False, TEMPLATENAME='WoW_Ansible'):
+	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible', append=False):
 		# API PageId = 48
 		if device_name not in INV.keys():
 			# CreateDevice (POST)
@@ -206,7 +206,7 @@ class VELOCITY():
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			INV = self.FormatInventory(INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
-		args = self.BuildDevicePropertyArgs(self, device_name, index, new_value, append=append)
+		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append)
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		if index == 'ipAddress':
