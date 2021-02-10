@@ -189,7 +189,7 @@ class VELOCITY():
 		elif type(self.INV[device_name][index]) == str:
 			if not append:
 				args = {index: new_value}
-				if self.INV[device_name][index] == new_value: return({})
+				if self.INV[device_name][index] == new_value: args = {}
 			else:
 				new = self.INV[device_name][index].split(' ')
 				new.append(new_value)
@@ -207,6 +207,7 @@ class VELOCITY():
 			INV = self.FormatInventory(INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
 		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append)
+		if args == {}: return(INV)
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		if index == 'ipAddress':
