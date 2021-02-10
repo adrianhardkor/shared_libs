@@ -199,6 +199,7 @@ class VELOCITY():
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action' % INV[device_name]['id'], args={'type':'discover'})
+			wc.pairprint('  '.join(['[INFO] *ACTION*:', device_name,index,'discover',str(discover)]))
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		return(INV)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
