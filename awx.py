@@ -138,11 +138,13 @@ class AWX():
 					for market in data[a]['children'][group]['children'].keys():
 						# if market not in wc.markets
 						if 'hosts' in data[a]['children'][group]['children'][market].keys():
+							# 'hosts' means no service/function groupings/scaffolding = OS/SERVICE
 							for hostname in data[a]['children'][group]['children'][market]['hosts'].keys():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''})
 								if hostname not in out.keys():
 									out[hostname] = {'ready1':True,'ip':[]}
+									out[hostname]['groups'] = [valid_host['lab'],valid_host['market'],valid_host['service'],valid_host['function']]
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready1'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
@@ -151,15 +153,17 @@ class AWX():
 									out[hostname]['inventoryPathing'] = str(valid_path)
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
-							# if service not in wc.services
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
-							data[a]['children'][group]['children'][market]['children'][service] is None: continue
+							data[a]['children'][group]['children'][market]['children'][service] is None: 
+								# if service not in wc.services??
+								continue
 							if 'hosts' not in data[a]['children'][group]['children'][market]['children'][service].keys(): continue
 							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
 								if hostname not in out.keys():
 									out[hostname] = {'ready2':True,'ip':[]}
+									out[hostname]['groups'] = [valid_host['lab'],valid_host['market'],valid_host['service'],valid_host['function']]
 								if valid_host['INVALID'] != []:
 									out[hostname]['ready2'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
@@ -256,6 +260,7 @@ class AWX():
 						vendor = _FACTS['ansible_net_system']
 					elif 'ansible_devices' in _FACTS.keys():
 						vendor = 'linux'
+					interesting['ansible_net_system'] = vendor
 					if vendor == 'linux':
 						# linux
 						for ens in ['ens224', 'ansible_ens224']:
@@ -301,6 +306,9 @@ class AWX():
 						# print(_FACTS)
 						# print('\n')
 						result[ip]['ids'][host['id']]['facts_gathered'] = False
+					for required in ['ssh_key_loc']:
+						if required not in interesting.keys():
+							intresting[required] = '<class awx.py>: Missing'
 					result[ip]['ids'][host['id']]['facts'] = interesting
 				else:
 					# NO FACTS
