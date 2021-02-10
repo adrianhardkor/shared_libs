@@ -281,7 +281,7 @@ class AWX():
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 					elif vendor == 'junos':
 						# junos
-						for ansible_attr in ['ansible_net_has_2RE', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb', 'ansible_net_model', 'ansible_net_serialnum', 'ansible_net_system', 'ansible_net_version', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_routing_engines']:
+						for ansible_attr in ['ansible_net_has_2RE', 'ansible_user_dir', 'net_api', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb', 'ansible_net_model', 'ansible_net_serialnum', 'ansible_net_system', 'ansible_net_version', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_routing_engines']:
 							if ansible_attr in _FACTS.keys():
 								interesting[ansible_attr] = _FACTS[ansible_attr]
 							else:
@@ -306,10 +306,8 @@ class AWX():
 						# print(_FACTS)
 						# print('\n')
 						result[ip]['ids'][host['id']]['facts_gathered'] = False
-					for required in ['ssh_key_loc']:
-						if required not in interesting.keys():
-							intresting[required] = '<class awx.py>: Missing'
 					result[ip]['ids'][host['id']]['facts'] = interesting
+					result[ip]['ids'][host['id']]['host_vars'] = host
 				else:
 					# NO FACTS
 					result[ip]['ids'][host['id']]['facts_timestamp'] = ''
