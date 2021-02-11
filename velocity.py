@@ -303,7 +303,7 @@ class VELOCITY():
 		if templateName != '':
 			return(out[templateName])
 		return(out)
-	def FormatPorts(self, out, pg, p, ports):
+	def FormatPorts(self, out, device, pg, p, ports):
 		# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
 		# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
 		# wc.jd(template)
@@ -332,7 +332,7 @@ class VELOCITY():
 				# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
 				pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
 				for p in pp['ports']:
-					out,ports = self.FormatPorts(out, pg, p, ports)
+					out,ports = self.FormatPorts(out, device, pg, p, ports)
 					# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
 					# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
 					# wc.jd(template)
