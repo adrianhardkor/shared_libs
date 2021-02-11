@@ -188,7 +188,7 @@ class VELOCITY():
 				new = INV[device_name][index]['value'].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
-				wc.pairprint(INV[device_name][index]['value'].split(' '), new)
+				# wc.pairprint(INV[device_name][index]['value'].split(' '), new)
 				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new}]}
 				if new in INV[device_name][index]['value'].split(' '):
 					args = {}; # already exists
@@ -207,7 +207,7 @@ class VELOCITY():
 				args = {index:new}
 				if new in INV[device_name][index].split(' '):
 					args = {}; # already exists
-				wc.pairprint(INV[device_name][index].split(' '), new)
+				# wc.pairprint(INV[device_name][index].split(' '), new)
 			INV[device_name][index] = new
 		return(args,INV)
 	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible', append=False):
