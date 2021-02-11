@@ -185,9 +185,9 @@ class VELOCITY():
 			else:
 				if INV[device_name][index]['value'] == None:
 					INV[device_name][index]['value'] = ''
-				new = INV[device_name][index]['value'].split(' ')
+				new = INV[device_name][index]['value'].strip(' ').split(' ')
 				new.append(new_value)
-				new = ' '.join(sorted(wc.lunique(new)))
+				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				wc.pairprint(INV[device_name][index]['value'].split(' '), new)
 				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new}]}
 				if new in INV[device_name][index]['value'].split(' '):
@@ -201,9 +201,9 @@ class VELOCITY():
 			else:
 				if INV[device_name][index] == None:
 					INV[device_name][index] = ''
-				new = INV[device_name][index].split(' ')
+				new = INV[device_name][index].strip(' ').split(' ')
 				new.append(new_value)
-				new = ' '.join(sorted(wc.lunique(new)))
+				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {index:new}
 				if new in INV[device_name][index].split(' '):
 					args = {}; # already exists

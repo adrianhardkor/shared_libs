@@ -1076,10 +1076,12 @@ def vagent_getStcResource(resources, master_topology):
 
 def ComplianceReport(ansibleIPs, result1):
 	# JENKINS
+	global argv_dict
+	global wcheader
 	for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
-		if param not in wc.wcheader.keys() and param not in wc.argv_dict.keys():
+		if param not in wcheader.keys() and param not in argv_dict.keys():
 			raise('awx.ComplianceReport can only run on Jenkins')
-	result = {'BUILD_TAG': wc.wcheader['BUILD_TAG'], 'Runtime': wc.wcheader['Runtime'], '':'', 'unique HOSTS Found': len(ansibleIPs.keys())}
+	result = {'BUILD_TAG': wcheader['BUILD_TAG'], 'Runtime': wcheader['Runtime'], '':'', 'unique HOSTS Found': len(ansibleIPs.keys())}
 	noncompliant = []
 
 	# ANSIBLE
@@ -1098,7 +1100,7 @@ def ComplianceReport(ansibleIPs, result1):
 					result['noncompliant for ARC GetFacts ' + str(ii)] =  "    ".join([h,str(ii),str(ansibleIPs[h]['ids'][ii])])
 			else:
 				result['noncompliant for ARC GetFacts ' + str(i)] = "    ".join([h,str(i),ansibleIPs[h]['ids'][i]['inventory']])
-	result['Playbook ' + wc.argv_dict['Playbook'] + ' Task Result'] = result1
+	result['Playbook ' + argv_dict['Playbook'] + ' Task Result'] = result1
 
 
 	# VELOCITY
@@ -1108,8 +1110,8 @@ def ComplianceReport(ansibleIPs, result1):
 	for vDevice in INV.keys():
 		if not INV[vDevice]['isOnline']:
 			result['VELOCITY_OFFLINE'][vDevice] = INV[vDevice]['ipAddress']['value']
-	result['fullruntime'] = wc.fullRuntime()
-	result['_SUBJECT'] = wc.wcheader['BUILD_TAG'] + '    ' + wc.wcheader['Playbook']
+	result['fullruntime'] = fullRuntime()
+	result['_SUBJECT'] = wcheader['BUILD_TAG'] + '    ' + wcheader['Playbook']
 	return(result)
 
 wait_start()
