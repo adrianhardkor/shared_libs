@@ -54,7 +54,7 @@ class JENKINS():
 				time.sleep(2)
 			text = []
 		# GET CONSOLE (NON-API)
-		text1 = self.REST_GET('/job/%s/lastBuild/console' % name)
+		text1 = self.REST_GET('/job/%s/lastBuild/consoleFull' % name)
 		if 'text' in text1.keys(): text1 = text1['text']
 		else: wc.jd(text1)
 		for line in BeautifulSoup(text1, features="html.parser").find_all('span'):

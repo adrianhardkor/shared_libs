@@ -210,14 +210,14 @@ class VELOCITY():
 				# wc.pairprint(INV[device_name][index].split(' '), new)
 			INV[device_name][index] = new
 		return(args,INV)
-	def UpdateDevice(self, INV, device_name, index, new_value, TEMPLATENAME='WoW_Ansible', append=False):
+	def UpdateDevice(self, INV, device_name, index, new_value, templateName='', append=False):
 		new_value = str(new_value)
 		# API PageId = 48
 		if device_name not in INV.keys():
 			# CreateDevice (POST)
 			args = {}
 			args['name'] = device_name
-			args['templateId'] = self.GetTemplates(templateName=TEMPLATENAME)['id']
+			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			INV = self.FormatInventory(INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
@@ -265,17 +265,22 @@ class VELOCITY():
 		else:
 			# error
 			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
-	def UpdatePort(self, INV, device_name, pgName, port_name, index, value):
+	def UpdatePort(self, INV, device_name, pgName, port_name, index, value, templateName="Network Port"):
 		# WILL CREATE IF NOT FOUND
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		# slotname = portgroup, portname = portname
+
+		# if device is Network then Port is Network
 		if device_name not in INV.keys():
 			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
 		if pgName not in self.GetDevicePGs(INV[device_name['id']]).keys():
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/{deviceId}/port_group', args={'name':pgName})
 		if port_name not in INV[device_name]['ports'].keys():
 			# POST / create
-			args = {'name':port_name, 'templateId':self.GetTemplates(templateName='Network Port'), 'groupId': pg['id']}
+			if INV[device_name]['templateName'] = 'Server': templateName = 'Server Port'
+			else: templateName = 'Network Port'
+			templateName = INV[device_name][
+			args = {'name':port_name, 'templateId':self.GetTemplates(templateName=templateName), 'groupId': pg['id']}
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			# wc.jd(new_port)
@@ -323,7 +328,7 @@ class VELOCITY():
 	def FormatInventory(self, out, device):
 		ports = {}
 		if device['id'] not in out.keys():
-			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline']}
+			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':device['templateName'], 'Tags':device['Tags']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
 			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}

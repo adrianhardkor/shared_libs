@@ -320,6 +320,7 @@ def qcp(element):
 
 def str_int_split(raw):
     # ge-1/0/8 = ['ge', '-1/0/8']
+    # Gigabit0/1 = ['Gigabit', '0/1']
     strings = []
     integers = []
     for r in list(raw):
@@ -1180,6 +1181,11 @@ def ComplianceReport(ansibleIPs, result1):
 	result['fullruntime'] = fullRuntime()
 	result['_SUBJECT'] = wcheader['BUILD_TAG'] + '    ' + wcheader['Playbook']
 	return(result)
+
+def GetTemplatenameByModel(Model):
+	if Model == 'Red Hat': return('Server')
+	elif Model.lower() == 'mx960': return('Router')
+	else: raise('wc.GetTemplatenameByModel Model not coded')
 
 wait_start()
 global current_time
