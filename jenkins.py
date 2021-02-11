@@ -14,8 +14,10 @@ class JENKINS():
 		self.__name__ = 'JENKINS'
 	def REST_POST(self, url, args={}, verify=False):
 		headers = {'Content-Type':'application/json', 'Accept':'application/json'}
+		print('\t' + url)
 		return(json.loads(wc.REST_POST(self.IP + url, user=self.user, pword=self.pword, verify=False, args=args, headers=headers, convert_args=True)))
 	def REST_GET(self, url):
+		print('\t' + url)
 		return(json.loads(wc.REST_GET(self.IP + url, user=self.user, pword=self.pword,verify=False)))
 	def ConsoleFormat(self, html_data):
 		out = []
@@ -66,6 +68,7 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		self.runTimer = wc.timer_index_start()
+		wc.jd(Parameters)
 		result = self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters)
 		if result['response.status_code'] != "201":
 			# FAIL KICKOFF
