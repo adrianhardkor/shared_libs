@@ -1074,32 +1074,43 @@ def vagent_getStcResource(resources, master_topology):
 		if t.lower().startswith('stc') and '_' not in t:
 			return(master_topology[t]['ipAddress']['value'],t)
 
-def ComplianceReport(self, out2, result):
+def ComplianceReport(self, ansibleIPs, result):
 	# JENKINS
 	for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
 		if param not in wc.wcheader.keys() and param not in wc.argv_dict.keys():
 			raise('awx.ComplianceReport can only run on Jenkins')
-	OUT222 = {'BUILD_TAG': wc.wcheader['BUILD_TAG'], 'Runtime': wc.wcheader['Runtime'], '':'', 'unique HOSTS Found': len(out2.keys())}
+	result = {'BUILD_TAG': wc.wcheader['BUILD_TAG'], 'Runtime': wc.wcheader['Runtime'], '':'', 'unique HOSTS Found': len(ansibleIPs.keys())}
 	noncompliant = []
-	for h in out2.keys():
+
+	# ANSIBLE
+	for h in ansibleIPs.keys():
 		inventories = []
-		for i in out2[h]['ids'].keys():
-			inventories.append(out2[h]['ids'][i]['inventory'])
-			if 'facts' in out2[h]['ids'][i].keys():
-				if 'ansible_net_hostname' not in out2[h]['ids'][i]['facts'].keys():
-					OUT222['device-hostname mismatch inventory-hostname'] =  '    '.join(['<missing>', str(out2[h]['hostnames']).upper()])
-				elif out2[h]['ids'][i]['facts']['ansible_net_hostname'].upper() != str(out2[h]['hostnames']).upper():
-					OUT222['device-hostname mismatch inventory-hostname'] =  '    '.join([out2[h]['ids'][i]['facts']['ansible_net_hostname'].upper(), str(out2[h]['hostnames']).upper()])
+		for i in ansibleIPs[h]['ids'].keys():
+			inventories.append(ansibleIPs[h]['ids'][i]['inventory'])
+			if 'facts' in ansibleIPs[h]['ids'][i].keys():
+				if 'ansible_net_hostname' not in ansibleIPs[h]['ids'][i]['facts'].keys():
+					result['device-hostname mismatch inventory-hostname'] =  '    '.join(['<missing>', str(ansibleIPs[h]['hostnames']).upper()])
+				elif ansibleIPs[h]['ids'][i]['facts']['ansible_net_hostname'].upper() != str(ansibleIPs[h]['hostnames']).upper():
+					result['device-hostname mismatch inventory-hostname'] =  '    '.join([ansibleIPs[h]['ids'][i]['facts']['ansible_net_hostname'].upper(), str(ansibleIPs[h]['hostnames']).upper()])
 		if 'ARC' not in inventories:
 			if h == '':
-				for ii in out2[h]['ids'].keys():
-					OUT222['noncompliant for ARC GetFacts ' + str(ii)] =  "    ".join([h,str(ii),str(out2[h]['ids'][ii])])
+				for ii in ansibleIPs[h]['ids'].keys():
+					result['noncompliant for ARC GetFacts ' + str(ii)] =  "    ".join([h,str(ii),str(ansibleIPs[h]['ids'][ii])])
 			else:
-				OUT222['noncompliant for ARC GetFacts ' + str(i)] = "    ".join([h,str(i),out2[h]['ids'][i]['inventory']])
-	OUT222['Playbook ' + wc.argv_dict['Playbook'] + ' Task Result'] = result
-	OUT222['fullruntime'] = wc.fullRuntime()
-	OUT222['_SUBJECT'] = wc.wcheader['BUILD_TAG'] + '    ' + wc.wcheader['Playbook'] + ': '
-	return(OUT222)
+				result['noncompliant for ARC GetFacts ' + str(i)] = "    ".join([h,str(i),ansibleIPs[h]['ids'][i]['inventory']])
+	result['Playbook ' + wc.argv_dict['Playbook'] + ' Task Result'] = result
+
+
+	# VELOCITY
+	result['VELOCITY_OFFLINE'] = {}
+	V = velocity.VELOCITY(os.environ['VEL_IP'], user=os.environ['VEL_USER'], pword=os.environ['VEL_PASS'])
+	INV = V.GetInventory()
+	for vDevice in INV.keys():
+		if not INV[vDevice]['isOnline']:
+			result['VELOCITY_OFFLINE'][vDevice] = INV[vDevice]['ipAddress']['value']
+	result['fullruntime'] = wc.fullRuntime()
+	result['_SUBJECT'] = wc.wcheader['BUILD_TAG'] + '    ' + wc.wcheader['Playbook'] + ': '
+	return(result)
 
 wait_start()
 global current_time
