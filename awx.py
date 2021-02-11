@@ -282,6 +282,8 @@ class AWX():
 						if 'ansible_interfaces' in _FACTS.keys():
 							interesting['ansible_net_interfaces'] = {}
 							for intf in _FACTS['ansible_interfaces']:
+								if 'features' in  _FACTS['ansible_' + intf].keys():
+									del  _FACTS['ansible_' + intf]['features']
 								interesting['ansible_net_interfaces'][intf] = _FACTS['ansible_' + intf]
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}

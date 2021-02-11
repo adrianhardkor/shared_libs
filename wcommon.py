@@ -1105,6 +1105,7 @@ def ComplianceReport(ansibleIPs, result1):
 
 	# VELOCITY
 	result['VELOCITY_OFFLINE'] = {}
+	import velocity
 	V = velocity.VELOCITY(os.environ['VEL_IP'], user=os.environ['VEL_USER'], pword=os.environ['VEL_PASS'])
 	INV = V.GetInventory()
 	for vDevice in INV.keys():
