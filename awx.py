@@ -380,29 +380,4 @@ class AWX():
 					'facts':interestingfact}
 		wc.jd(_INV)
 		return(_INV)
-	def ComplianceReport(self, out2, result):
-		# JENKINS
-		for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
-			if param not in wc.wcheader.keys() and param not in wc.argv_dict.keys():
-				raise('awx.ComplianceReport can only run on Jenkins')
-		OUT222 = {'BUILD_TAG': wc.wcheader['BUILD_TAG'], 'Runtime': wc.wcheader['Runtime'], '':'', 'unique HOSTS Found': len(out2.keys())}
-		noncompliant = []
-		for h in out2.keys():
-			inventories = []
-			for i in out2[h]['ids'].keys():
-				inventories.append(out2[h]['ids'][i]['inventory'])
-				if 'facts' in out2[h]['ids'][i].keys():
-					if 'ansible_net_hostname' not in out2[h]['ids'][i]['facts'].keys(): 
-						OUT222['device-hostname mismatch inventory-hostname'] =  '    '.join(['<missing>', str(out2[h]['hostnames']).upper()])
-					elif out2[h]['ids'][i]['facts']['ansible_net_hostname'].upper() != str(out2[h]['hostnames']).upper():
-						OUT222['device-hostname mismatch inventory-hostname'] =  '    '.join([out2[h]['ids'][i]['facts']['ansible_net_hostname'].upper(), str(out2[h]['hostnames']).upper()])
-			if 'ARC' not in inventories:
-				if h == '':
-					for ii in out2[h]['ids'].keys():
-						OUT222['noncompliant for ARC GetFacts ' + str(ii)] =  "    ".join([h,str(ii),str(out2[h]['ids'][ii])])
-				else:
-					OUT222['noncompliant for ARC GetFacts ' + str(i)] = "    ".join([h,str(i),out2[h]['ids'][i]['inventory']])
-		OUT222['Playbook ' + wc.argv_dict['Playbook'] + ' Task Result'] = result
-		OUT222['fullruntime'] = wc.fullRuntime()
-		OUT222['_SUBJECT'] = wc.wcheader['BUILD_TAG'] + '    ' + wc.wcheader['Playbook'] + ': '
-		return(OUT222)
+
