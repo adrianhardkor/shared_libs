@@ -289,7 +289,8 @@ class AWX():
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 					elif vendor == 'junos':
 						# junos
-						interesting['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
+						_FACTS['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
+						interesting['ansible_net_interfaces_config'] = _FACTS['ansible_net_config']['interfaces']['interface']
 						for ansible_attr in ['ansible_net_has_2RE', 'ansible_user_dir', 'net_api', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb', 'ansible_net_model', 'ansible_net_serialnum', 'ansible_net_system', 'ansible_net_version', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_routing_engines']:
 							if ansible_attr in _FACTS.keys():
 								interesting[ansible_attr] = _FACTS[ansible_attr]
