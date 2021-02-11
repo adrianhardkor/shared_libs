@@ -1074,7 +1074,7 @@ def vagent_getStcResource(resources, master_topology):
 		if t.lower().startswith('stc') and '_' not in t:
 			return(master_topology[t]['ipAddress']['value'],t)
 
-def ComplianceReport(self, ansibleIPs, result):
+def ComplianceReport(self, ansibleIPs, result1):
 	# JENKINS
 	for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
 		if param not in wc.wcheader.keys() and param not in wc.argv_dict.keys():
@@ -1098,7 +1098,7 @@ def ComplianceReport(self, ansibleIPs, result):
 					result['noncompliant for ARC GetFacts ' + str(ii)] =  "    ".join([h,str(ii),str(ansibleIPs[h]['ids'][ii])])
 			else:
 				result['noncompliant for ARC GetFacts ' + str(i)] = "    ".join([h,str(i),ansibleIPs[h]['ids'][i]['inventory']])
-	result['Playbook ' + wc.argv_dict['Playbook'] + ' Task Result'] = result
+	result['Playbook ' + wc.argv_dict['Playbook'] + ' Task Result'] = result1
 
 
 	# VELOCITY
@@ -1109,7 +1109,7 @@ def ComplianceReport(self, ansibleIPs, result):
 		if not INV[vDevice]['isOnline']:
 			result['VELOCITY_OFFLINE'][vDevice] = INV[vDevice]['ipAddress']['value']
 	result['fullruntime'] = wc.fullRuntime()
-	result['_SUBJECT'] = wc.wcheader['BUILD_TAG'] + '    ' + wc.wcheader['Playbook'] + ': '
+	result['_SUBJECT'] = wc.wcheader['BUILD_TAG'] + '    ' + wc.wcheader['Playbook']
 	return(result)
 
 wait_start()
