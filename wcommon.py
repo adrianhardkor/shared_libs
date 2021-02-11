@@ -1074,7 +1074,7 @@ def vagent_getStcResource(resources, master_topology):
 		if t.lower().startswith('stc') and '_' not in t:
 			return(master_topology[t]['ipAddress']['value'],t)
 
-def ComplianceReport(self, ansibleIPs, result1):
+def ComplianceReport(ansibleIPs, result1):
 	# JENKINS
 	for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
 		if param not in wc.wcheader.keys() and param not in wc.argv_dict.keys():
