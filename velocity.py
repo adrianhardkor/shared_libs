@@ -295,7 +295,7 @@ class VELOCITY():
 	def FormatInventory(self, out, device):
 		ports = {}
 		if device['id'] not in out.keys():
-			out[device['name']] = {'ports': {}, 'name':device['name']}
+			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
 			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}

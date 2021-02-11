@@ -279,6 +279,10 @@ class AWX():
 						if 'ansible_devices' in _FACTS.keys():
 							for ad in _FACTS['ansible_devices'].keys():
 								interesting['ansible_devices_' + ad] = {'model':_FACTS['ansible_devices'][ad]['model'],'vendor':_FACTS['ansible_devices'][ad]['vendor']}
+						if 'ansible_interfaces' in _FACTS.keys():
+							interesting['ansible_net_interfaces'] = {}
+							for intf in _FACTS['ansible_interfaces']:
+								interesting['ansible_net_interfaces'][intf] = _FACTS['ansible_' + intf]
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 					elif vendor == 'junos':
@@ -289,7 +293,7 @@ class AWX():
 							else:
 								# interesting[ansible_attr] = '_missing'
 								pass
-						interesting['ansible_net_interfaces'] = len(list(_FACTS['ansible_net_interfaces'].keys()))
+						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					if 'ansible_hostname' in _FACTS.keys():
