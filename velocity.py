@@ -279,8 +279,10 @@ class VELOCITY():
 			# POST / create
 			if INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
 			else: templateName = 'Network Port'
-			templateName = INV[device_name][
-			args = {'name':port_name, 'templateId':self.GetTemplates(templateName=templateName), 'groupId': pg['id']}
+			args = {}
+			args['name'] = port_name
+			args['templateId'] = self.GetTemplates(templateName=templateName)['name']
+			args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			# wc.jd(new_port)
