@@ -232,7 +232,7 @@ class VELOCITY():
 			# DISCOVERY COULD TAKE UP TO TIMEOUT * 4-DEVICES
 			self.Discover(INV[device_name]['id'])
 		return(INV)
-	def Discover(deviceId):
+	def Discover(self, deviceId):
 		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
 		print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		time.sleep(2)
