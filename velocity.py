@@ -238,7 +238,7 @@ class VELOCITY():
 		time.sleep(2)
 		data = self.REST_GET('/ito/executions/v1/executions')
 		wc.jd(data)
-	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value, append=False):
+	def ChangeDevicePortProp(self, device_name, port_name, index, new_value, append=False):
 		args = {}
 		# WILL NOT CREATE PORT IF DOESNT EXIST = SEE V.UpdatePort
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
@@ -295,7 +295,7 @@ class VELOCITY():
 		else:
 			# error
 			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
-	def UpdatePort(self, INV, device_name, pgName, port_name, index, value, templateName="Network Port", append=False):
+	def UpdatePort(self, device_name, pgName, port_name, index, value, templateName="Network Port", append=False):
 		# WILL CREATE IF NOT FOUND
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		# slotname = portgroup, portname = portname
@@ -321,16 +321,16 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
-			wc.pairprint('[INFO] ' + port_name, 'created')
-			# Re-Apply inventory for ChangeDevicePortProp to use
 			out,ports = self.FormatPorts(INV, {}, pg, new_port, {})
+			wc.pairprint('[INFO] ' + port_name, 'created:' + str(ports[port_name]))
+			# Re-Apply inventory for ChangeDevicePortProp to use
 			self.INV[device_name]['ports'][port_name] = ports[port_name]
 			wc.pairprint('ports_' + port_name, ports[port_name]['id'])
 		else:
 			# if port exists, assume pg exists
 			pass
 		# PUT: for each attribute, update port
-		self.ChangeDevicePortProp(self.INV, device_name, port_name, index, value, append=append)
+		self.ChangeDevicePortProp(device_name, port_name, index, value, append=append)
 	def GetDevicePGs(self, deviceId):
 		out = {}
 		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)['portGroups']
