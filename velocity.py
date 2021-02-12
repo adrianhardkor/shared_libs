@@ -273,6 +273,7 @@ class VELOCITY():
 		# if device is Network then Port is Network
 		if device_name not in INV.keys():
 			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
+		
 		if pgName not in self.GetDevicePGs(INV[device_name['id']]).keys():
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/{deviceId}/port_group', args={'name':pgName})
 		if port_name not in INV[device_name]['ports'].keys():
@@ -295,7 +296,9 @@ class VELOCITY():
 		return(INV)
 	def GetDevicePGs(self, deviceId):
 		out = {}
-		for blah in self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId):
+		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)
+		wc.jd(raw)
+		for blah in raw:
 			out[blah['name']] = blah
 		return(out)
 	def GetDeviceName(self, uuid):
