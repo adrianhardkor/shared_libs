@@ -221,7 +221,7 @@ class VELOCITY():
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			self.INV = self.FormatInventory(self.INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
-		args = self.BuildDevicePropertyArgs(self.INV, device_name, index, new_value, append=append); # updates self.INV
+		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append); # updates self.INV
 		if args == {}: return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % self.INV[device_name]['id'], args=args)
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
