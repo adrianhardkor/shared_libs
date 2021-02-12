@@ -299,14 +299,14 @@ class VELOCITY():
 		if device_name not in INV.keys():
 			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
 
+		# if pg doesnt exist, create and create port underneath pg
 		PGs = self.GetDevicePGs(INV[device_name]['id'])
 		if pgName not in PGs.keys():
 			# pg doesnt exist on device yet
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/%s/port_group' % INV[device_name]['id'], args={'name':pgName})
 			# wc.jd(pg)
-			pgId = pg['id']
 		else:
-			pgId = PGs[pgName]['id']
+			pg = PGs[pgName]
 		if port_name not in INV[device_name]['ports'].keys():
 			# POST / create
 			if INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
@@ -314,11 +314,11 @@ class VELOCITY():
 			args = {}
 			args['name'] = port_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
-			if pgId != None: args['groupId'] = pgId
+			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			# Re-Apply inventory for ChangeDevicePortProp to use
-			out,ports = self.FormatPorts(INV, new_port, {})
+			out,ports = self.FormatPorts(INV, {}, pg, new_port, {})
 			INV[device_name]['ports'][port_name] = ports[port_name]
 		else:
 			# if port exists, assume pg exists
