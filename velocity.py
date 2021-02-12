@@ -288,12 +288,11 @@ class VELOCITY():
 			else: templateName = 'Network Port'
 			args = {}
 			args['name'] = port_name
-			args['templateId'] = self.GetTemplates(templateName=templateName)['name']
+			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pgId != None: args['groupId'] = pgId
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
 			wc.jd(new_port); # INV[device_name]['ports'][new_port] = new_port
 			wc.pairprint('[INFO] ' + port_name, 'created')
-			# wc.jd(new_port)
 			# out,ports = self.FormatPorts(INV, new_port, {})
 		else:
 			# if port exists, assume pg exists
