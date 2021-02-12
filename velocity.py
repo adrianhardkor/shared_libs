@@ -233,39 +233,64 @@ class VELOCITY():
 			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
 			print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		return(INV)
-	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value):
+	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value, append=False):
+		args = {}
 		# WILL NOT CREATE PORT IF DOESNT EXIST = SEE V.UpdatePort
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		if index not in INV[device_name]['ports'][port_name].keys():
 			wc.jd(INV[device_name]['ports'][port_name]) 
 		# wc.pairprint(index, type(INV[device_name]['ports'][port_name][index]))
 		if type(INV[device_name]['ports'][port_name][index]) == dict:
-			# dict = property with uuid
-			args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
-			if INV[device_name]['ports'][port_name][index]['value'] == new_value:
-				return()
+			# property = 'value'
+			if not append:
+				# dict = property with uuid
+				new = new_value
+				args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
+				if INV[device_name]['ports'][port_name][index]['value'] == new_value:
+					return(INV)
+			else:
+				if INV[device_name]['ports'][port_name][index]['value'] == None:
+					INV[device_name]['ports'][port_name][index]['value'] = ''
+				new = INV[device_name]['ports'][port_name][index]['value'].strip(' ').split(' ')
+				new.append(new_value)
+				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
+				args = {index:new}
+				if new in INV[device_name]['ports'][port_name][index]['value'].split(' '):
+					return(INV); # already exists
 		else:
+			# Not property = [index]
 			if index in ['pgName', 'pgId']:
-				#  pgName and pgId:  port_group
-				raise('portgroup changes not coded yet')
-			args = {index: new_value}
+				# CHANGE PORGROUP: /device/{deviceId}/port_group/{portGroupId}
+				# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
+				raise('portgroup changes not coded yet'); # pgName and pgId:  port_group
 			if INV[device_name]['ports'][port_name][index] == new_value:
-				return()
+				return(INV)
+			if not append:
+				new = new_value
+				args = {index: new_value}
+			else:
+				new = INV[device_name]['ports'][port_name][index].strip(' ').split(' ')
+				new.append(new_value)
+				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
+				args = {index:new}
+				if new in INV[device_name]['ports'][port_name][index].split(' '):
+					return(INV); # already exists			
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
-		# CHANGE PORGROUP: /device/{deviceId}/port_group/{portGroupId}
-		#  CHANGE/PUT PORTLIST: /velocity/api/inventory/v13/device/{deviceId}/ports
-		# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
+		# NOTIFY PORT PROP CHANGE
 		if index in data.keys():
 			wc.pairprint('  '.join(['[INFO] Updated1:', port_name,index,str(new_value)]), data[index])
+			INV[device_name]['ports'][port_name][index] = new
 		elif 'properties' in data.keys():
 			for p in data['properties']:
 				if p['name'] == index:
+					INV[device_name]['ports'][port_name][index]['value'] = new
 					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index,str(new_value)]), p)
 					break
 		else:
 			# error
 			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
-	def UpdatePort(self, INV, device_name, pgName, port_name, index, value, templateName="Network Port"):
+		return(INV)
+	def UpdatePort(self, INV, device_name, pgName, port_name, index, value, templateName="Network Port", append=False):
 		# WILL CREATE IF NOT FOUND
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		# slotname = portgroup, portname = portname
@@ -299,7 +324,7 @@ class VELOCITY():
 			# if port exists, assume pg exists
 			pass
 		# PUT: for each attribute, update port
-		self.ChangeDevicePortProp(INV, device_name, port_name, index, value)
+		INV = self.ChangeDevicePortProp(INV, device_name, port_name, index, value, append=append)
 		return(INV)
 	def GetDevicePGs(self, deviceId):
 		out = {}
