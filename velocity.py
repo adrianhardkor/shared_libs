@@ -376,7 +376,9 @@ class VELOCITY():
 		else:
 			# print('    '.join([device['name'], p['name']]))
 			if p['groupId'] not in pg.keys():
+				wc.jd(pg)
 				wc.jd(p)
+				wc.pairprint(device['name'], p['name'])
 			pg = pg[p['groupId']]
 		ports[p['name']] = {'Description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
