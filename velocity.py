@@ -350,6 +350,8 @@ class VELOCITY():
 		# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
 		# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
 		# wc.jd(template)
+		if 'description' not in p.keys():
+			wc.jd(p)
 		ports[p['name']] = {'Description': p['description'], 'pgName': pg['name'], 'pgId': pg['id'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
