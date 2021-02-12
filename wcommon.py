@@ -1188,7 +1188,7 @@ def GetTemplatenameByModel(Model):
 	else: print('wc.GetTemplatenameByModel Model not coded: ' + Model); exit(5)
 
 def AnsibleToVelocitSpeedConvert(ansibleSpeed):
-	ansibleSpeed = str_int(ansibleSpeed)
+	ansibleSpeed = str_int_split(ansibleSpeed)
 	if ansibleSpeed.lower() == 'mbps': return(ansibleSpeed[0])
 	elif ansibleSpeed.lower() == 'gbps': return(ansibleSpeed[0])
 	else: print('wc.AnsibleToVelocitSpeedConvert Speed not coded: ' + Speed); exit(5)
