@@ -375,7 +375,7 @@ class VELOCITY():
 		if p['groupId'] == None:
 			pg = {'name': 'No Group', 'id':None}
 		else:
-			print('    '.join([device['name'], p['name']))
+			print('    '.join([device['name'], p['name']]))
 			pg = pg[p['groupId']]
 		ports[p['name']] = {'Description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
