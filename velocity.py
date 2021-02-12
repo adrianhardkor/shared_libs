@@ -175,63 +175,63 @@ class VELOCITY():
 						# reserved device and port exists
 						out[p['connectedPortParentName']]['ports'][p['connectedPortName']]['activeRes'] = activeRes
 		return(out,ports)
-	def BuildDevicePropertyArgs(self, INV, device_name, index, new_value, append=False):
-		if type(INV[device_name][index]) == dict:
+	def BuildDevicePropertyArgs(self, device_name, index, new_value, append=False):
+		if type(self.INV[device_name][index]) == dict:
 			# property
 			if not append:
 				new = new_value
-				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new_value}]}
-				if INV[device_name][index]['value'] == new_value: args = {}
+				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new_value}]}
+				if self.INV[device_name][index]['value'] == new_value: args = {}
 			else:
-				if INV[device_name][index]['value'] == None:
-					INV[device_name][index]['value'] = ''
-				new = INV[device_name][index]['value'].strip(' ').split(' ')
+				if self.INV[device_name][index]['value'] == None:
+					self.INV[device_name][index]['value'] = ''
+				new = self.INV[device_name][index]['value'].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
-				# wc.pairprint(INV[device_name][index]['value'].split(' '), new)
-				args = {'properties': [{'definitionId':INV[device_name][index]['definitionId'], 'value': new}]}
-				if new in INV[device_name][index]['value'].split(' '):
+				# wc.pairprint(self.INV[device_name][index]['value'].split(' '), new)
+				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new}]}
+				if new in self.INV[device_name][index]['value'].split(' '):
 					args = {}; # already exists
-			INV[device_name][index]['value'] = new; # same definitionId
-		elif type(INV[device_name][index]) == str:
+			self.INV[device_name][index]['value'] = new; # same definitionId
+		elif type(self.INV[device_name][index]) == str:
 			if not append:
 				new = new_value
 				args = {index: new}
-				if INV[device_name][index] == new_value: args = {}
+				if self.INV[device_name][index] == new_value: args = {}
 			else:
-				if INV[device_name][index] == None:
-					INV[device_name][index] = ''
-				new = INV[device_name][index].strip(' ').split(' ')
+				if self.INV[device_name][index] == None:
+					self.INV[device_name][index] = ''
+				new = self.INV[device_name][index].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {index:new}
-				if new in INV[device_name][index].split(' '):
+				if new in self.INV[device_name][index].split(' '):
 					args = {}; # already exists
-				# wc.pairprint(INV[device_name][index].split(' '), new)
-			INV[device_name][index] = new
-		return(args,INV)
-	def UpdateDevice(self, INV, device_name, index, new_value, templateName='', append=False):
+				# wc.pairprint(self.INV[device_name][index].split(' '), new)
+			self.INV[device_name][index] = new
+		return(args)
+	def UpdateDevice(self, device_name, index, new_value, templateName='', append=False):
 		new_value = str(new_value)
 		# API PageId = 48
-		if device_name not in INV.keys():
+		if device_name not in self.INV.keys():
 			# CreateDevice (POST)
 			args = {}
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
-			INV = self.FormatInventory(INV, device_new)
+			self.INV = self.FormatInventory(self.INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
-		args,INV = self.BuildDevicePropertyArgs(INV, device_name, index, new_value, append=append)
-		if args == {}: return(INV)
-		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % INV[device_name]['id'], args=args)
+		args = self.BuildDevicePropertyArgs(self.INV, device_name, index, new_value, append=append); # updates self.INV
+		if args == {}: return()
+		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % self.INV[device_name]['id'], args=args)
 		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			time.sleep(5); # wait 5s after applying ipAddress
 			# DISCOVERY HAPPENS IN BATCHES OF 4 // ANY 1of4 CAN DELAY(Ping Timeout) THE BATCH ONLINE STATUS
 			# DISCOVERY COULD TAKE UP TO TIMEOUT * 4-DEVICES
-			self.Discover(INV[device_name]['id'])
-		return(INV)
+			self.Discover(self.INV[device_name]['id'])
+		return()
 	def Discover(self, deviceId):
 		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
 		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
