@@ -1185,6 +1185,7 @@ def ComplianceReport(ansibleIPs, result1):
 def GetTemplatenameByModel(Model):
 	if Model.lower() in ['redhat', 'red hat']: return('Server')
 	elif Model.lower().startswith('mx'): return('Router')
+	elif Model.lower().startswith('mx'): return('Switch')
 	else: print('wc.GetTemplatenameByModel Model not coded: ' + Model); exit(5)
 
 def AnsibleToVelocitSpeedConvert(ansibleSpeed):
