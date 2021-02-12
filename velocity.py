@@ -230,9 +230,14 @@ class VELOCITY():
 			time.sleep(5); # wait 5s after applying ipAddress
 			# DISCOVERY HAPPENS IN BATCHES OF 4 // ANY 1of4 CAN DELAY(Ping Timeout) THE BATCH ONLINE STATUS
 			# DISCOVERY COULD TAKE UP TO TIMEOUT * 4-DEVICES
-			discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
-			print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
+			self.Discover(INV[device_name]['id'])
 		return(INV)
+	def Discover(deviceId):
+		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
+		print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
+		time.sleep(2)
+		data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=Type::Driver')
+		wc.jd(data)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value, append=False):
 		args = {}
 		# WILL NOT CREATE PORT IF DOESNT EXIST = SEE V.UpdatePort
@@ -254,7 +259,7 @@ class VELOCITY():
 				new = INV[device_name]['ports'][port_name][index]['value'].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
-				args = {index:new}
+				args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new}]}
 				if new in INV[device_name]['ports'][port_name][index]['value'].split(' '):
 					return(INV); # already exists
 		else:
