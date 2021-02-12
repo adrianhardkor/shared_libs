@@ -243,6 +243,7 @@ class VELOCITY():
 			# executionID
 			# parametersList
 			# testPath
+			wc.jd(data)
 			data['parametersList']= wc.lsearchAllInline('property_', data['parametersList'])
 			print('    '.join([data['testPath'],data['parametersList']]))
 		return()
