@@ -321,7 +321,7 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
-			out,ports = self.FormatPorts(INV, {}, pg, new_port, {})
+			out,ports = self.FormatPorts(self.INV, {}, pg, new_port, {})
 			wc.pairprint('[INFO] ' + port_name, 'created:' + str(ports[port_name]))
 			# Re-Apply inventory for ChangeDevicePortProp to use
 			self.INV[device_name]['ports'][port_name] = ports[port_name]
