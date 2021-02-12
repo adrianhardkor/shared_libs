@@ -296,9 +296,7 @@ class VELOCITY():
 		return(INV)
 	def GetDevicePGs(self, deviceId):
 		out = {}
-		# print('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)
-		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)
-		wc.jd(raw)
+		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)['portGroups']
 		for blah in raw:
 			out[blah['name']] = blah
 		return(out)
