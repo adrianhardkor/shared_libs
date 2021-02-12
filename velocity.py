@@ -291,9 +291,10 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pgId != None: args['groupId'] = pgId
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
-			wc.jd(new_port); # INV[device_name]['ports'][new_port] = new_port
 			wc.pairprint('[INFO] ' + port_name, 'created')
-			# out,ports = self.FormatPorts(INV, new_port, {})
+			# Re-Apply inventory for ChangeDevicePortProp to use
+			out,ports = self.FormatPorts(INV, new_port, {})
+			INV[device_name]['ports'][port_name] = ports[port_name]
 		else:
 			# if port exists, assume pg exists
 			pass
