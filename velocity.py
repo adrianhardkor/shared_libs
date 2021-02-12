@@ -275,7 +275,12 @@ class VELOCITY():
 			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
 
 		if pgName not in self.GetDevicePGs(INV[device_name]['id']).keys():
+			# pg doesnt exist on device yet
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/{deviceId}/port_group', args={'name':pgName})
+			pgId = pg['id']
+		else:
+			# from self.FormatPorts
+			pgId = p['pgId'] 
 		if port_name not in INV[device_name]['ports'].keys():
 			# POST / create
 			if INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
@@ -283,7 +288,7 @@ class VELOCITY():
 			args = {}
 			args['name'] = port_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['name']
-			if pg['id'] != None: args['groupId'] = pg['id']
+			if pgId != None: args['groupId'] = pgId
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			# wc.jd(new_port)
