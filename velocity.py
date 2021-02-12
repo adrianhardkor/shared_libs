@@ -348,6 +348,7 @@ class VELOCITY():
 	def GetDevicePGs(self, deviceId):
 		out = {}
 		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)['portGroups']
+		wc.jd(raw)
 		for blah in raw:
 			out[blah['name']] = blah
 			out[blah['id']] = blah
@@ -398,7 +399,6 @@ class VELOCITY():
 		all_ports = self.REST_GET('/velocity/api/inventory/v13/device/%s/ports' % device['id'], params={'includeProperties':True})['ports']
 		out[device['name']]['ports'] = {}
 		PGs = self.GetDevicePGs(device['id'])
-		wc.jd(PGs)
 		for p in all_ports:
 			out,ports = self.FormatPorts(out, device, PGs, p, ports)
 			out[device['name']]['ports'][p['name']] = ports[p['name']]
