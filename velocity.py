@@ -277,7 +277,7 @@ class VELOCITY():
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/{deviceId}/port_group', args={'name':pgName})
 		if port_name not in INV[device_name]['ports'].keys():
 			# POST / create
-			if INV[device_name]['templateName'] = 'Server': templateName = 'Server Port'
+			if INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
 			else: templateName = 'Network Port'
 			templateName = INV[device_name][
 			args = {'name':port_name, 'templateId':self.GetTemplates(templateName=templateName), 'groupId': pg['id']}
