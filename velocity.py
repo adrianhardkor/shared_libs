@@ -210,7 +210,7 @@ class VELOCITY():
 				# wc.pairprint(self.INV[device_name][index].split(' '), new)
 			self.INV[device_name][index] = new
 		return(args)
-	def UpdateDevice(self, device_name, index, new_value, templateName='', append=False):
+	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
 		new_value = str(new_value)
 		# API PageId = 48
 		if device_name not in self.INV.keys():
