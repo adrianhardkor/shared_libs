@@ -392,8 +392,10 @@ class VELOCITY():
 		for pg in device['portGroups']:
 			if pg['id'] != None:
 				# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
-				pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})
-				for p in pp['ports']:
+				pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})['ports']
+				for tpp in self.REST_GET('/velocity/api/inventory/v13/template/{templateId}')['portGroups']:
+					pp.append(tpp)
+				for p in pp:
 					out,ports = self.FormatPorts(out, device, pg, p, ports)
 					# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
 					# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
