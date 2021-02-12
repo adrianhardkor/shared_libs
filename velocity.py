@@ -233,8 +233,8 @@ class VELOCITY():
 			self.Discover(INV[device_name]['id'])
 		return(INV)
 	def Discover(self, deviceId):
-		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % INV[device_name]['id'])
-		print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
+		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
+		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		time.sleep(2)
 		data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=Type::Driver')
 		wc.jd(data)
