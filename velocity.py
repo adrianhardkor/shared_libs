@@ -393,8 +393,9 @@ class VELOCITY():
 			if pg['id'] != None:
 				# wc.pairprint(device['id'], device['name'] + '\t' + str(pg['id']))
 				pp = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/device/%s/port_group/%s' % (str(device['id']), str(pg['id'])), params={'includeProperties':True})['ports']
-				for tpp in self.REST_GET('/velocity/api/inventory/v13/template/{templateId}')['portGroups']:
-					pp.append(tpp)
+				for tpp in self.REST_GET('/velocity/api/inventory/v13/template/' + device['templateId'])['portGroups']:
+					if tpp['portCount'] != 0: pp.append(tpp)
+					if device['name'] == 'ARCPODSUATDNS01': wc.jd(tpp)
 				for p in pp:
 					out,ports = self.FormatPorts(out, device, pg, p, ports)
 					# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
@@ -447,8 +448,9 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-# INV = V.GetInventory(); # device ipAddress
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+INV = V.GetInventory(); # device ipAddress
+wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
