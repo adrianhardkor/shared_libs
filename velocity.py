@@ -235,17 +235,18 @@ class VELOCITY():
 	def Discover(self, deviceId):
 		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
 		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
-		time.sleep(2)
-		data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::IN_PROGRESS')['content']
-		for not_begun in self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::NOT_BEGUN')['content']:
-			data.append(not_begun)
+		data = ['init']
 		while data != []:
 			# executionID
 			# parametersList
 			# testPath
-			wc.jd(data)
-			data['parametersList']= wc.lsearchAllInline('property_', data['parametersList'])
-			print('    '.join([data['testPath'],data['parametersList']]))
+			time.sleep(2)
+			data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::IN_PROGRESS')['content']
+			for not_begun in self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::NOT_BEGUN')['content']:
+				data.append(not_begun)
+			for d in data:
+				d['parametersList']= wc.lsearchAllInline('property_', d['parametersList'])
+				print('    '.join([data['testPath'],data['parametersList']]))
 		return()
 	def ChangeDevicePortProp(self, device_name, port_name, index, new_value, append=False):
 		args = {}
