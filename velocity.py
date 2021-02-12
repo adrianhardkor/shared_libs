@@ -306,10 +306,11 @@ class VELOCITY():
 		data = self.REST_GET('/velocity/api/inventory/v13/templates')['templates']
 		out = {}
 		for d in data:
-		 	out[d['name']] = out[d['id']] = d
-			if d['id'] == templateId: return({d['name']:d})
+			out[d['name']] = out[d['id']] = d
+			if d['id'] == templateId:
+				return({d['name']:d})
 		if templateName != '':
-			return(out[templateName])
+				return(out[templateName])
 		return(out)
 	def FormatPorts(self, out, device, pg, p, ports):
 		# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
