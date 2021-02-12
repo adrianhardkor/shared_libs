@@ -281,7 +281,7 @@ class VELOCITY():
 			pgId = pg['id']
 		else:
 			# from self.FormatPorts
-			pgId = p['pgId'] 
+			pgId = INV[device_name]['ports'][port_name]['pgId']
 		if port_name not in INV[device_name]['ports'].keys():
 			# POST / create
 			if INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
