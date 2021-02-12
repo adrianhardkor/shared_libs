@@ -1185,7 +1185,7 @@ def ComplianceReport(ansibleIPs, result1):
 def GetTemplatenameByModel(Model):
 	if Model == 'Red Hat': return('Server')
 	elif Model.lower() == 'mx960': return('Router')
-	else: raise('wc.GetTemplatenameByModel Model not coded')
+	else: print('wc.GetTemplatenameByModel Model not coded'); exit(5)
 
 wait_start()
 global current_time

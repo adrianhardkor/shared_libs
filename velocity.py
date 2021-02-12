@@ -332,7 +332,7 @@ class VELOCITY():
 	def FormatInventory(self, out, device):
 		ports = {}
 		if device['id'] not in out.keys():
-			wc.jd(device)
+			# wc.jd(device)
 			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'Tags':device['tags']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
