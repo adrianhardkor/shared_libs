@@ -308,7 +308,7 @@ class VELOCITY():
 		for d in data:
 			out[d['name']] = out[d['id']] = d
 			if d['id'] == templateId:
-				return({d['name']:d})
+				return(d)
 		if templateName != '':
 				return(out[templateName])
 		return(out)

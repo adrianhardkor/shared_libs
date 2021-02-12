@@ -80,5 +80,7 @@ class JENKINS():
 		print(output)
 	
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
-J.RunPipeline(wc.argv_dict['Pipe'], {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'})
+param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'}
+param['dryrun'] = 'dryrun'
+J.RunPipeline(wc.argv_dict['Pipe'], param)
 
