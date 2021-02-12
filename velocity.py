@@ -236,7 +236,7 @@ class VELOCITY():
 		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
 		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		time.sleep(2)
-		data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=Type::Driver')
+		data = self.REST_GET('/ito/executions/v1/executions')
 		wc.jd(data)
 	def ChangeDevicePortProp(self, INV, device_name, port_name, index, new_value, append=False):
 		args = {}
@@ -289,7 +289,8 @@ class VELOCITY():
 			for p in data['properties']:
 				if p['name'] == index:
 					INV[device_name]['ports'][port_name][index]['value'] = new
-					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),str(p))
+					# Add confirmation here to verify value, otherwise didnt take
+					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),str(new))
 					break
 		else:
 			# error
