@@ -236,7 +236,7 @@ class VELOCITY():
 		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
 		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		time.sleep(2)
-		data = self.REST_GET('/ito/executions/v1/executions')
+		data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=testCategory::DRIVER_EXECUTION')
 		wc.jd(data)
 	def ChangeDevicePortProp(self, device_name, port_name, index, new_value, append=False):
 		args = {}
@@ -314,7 +314,7 @@ class VELOCITY():
 			pg = PGs[pgName]
 		if port_name not in self.INV[device_name]['ports'].keys():
 			gi = self.GetInventory()
-			print(gi[device_name]); # force re-Inventory grab if necessary
+			print(gi[device_name].keys()); # force re-Inventory grab if necessary
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# POST / create
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
