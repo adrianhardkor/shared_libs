@@ -14,7 +14,7 @@ class JENKINS():
 		self.__name__ = 'JENKINS'
 	def REST_POST(self, url, args={}, verify=False):
 		headers = {'Content-Type':'application/json', 'Accept':'application/json'}
-		# print('\t' + url)
+		print('\t' + url)
 		return(json.loads(wc.REST_POST(self.IP + url, user=self.user, pword=self.pword, verify=False, args=args, headers=headers, convert_args=True)))
 	def REST_GET(self, url):
 		# print('\t' + url)
