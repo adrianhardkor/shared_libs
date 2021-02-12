@@ -1183,7 +1183,7 @@ def ComplianceReport(ansibleIPs, result1):
 	return(result)
 
 def GetTemplatenameByModel(Model):
-	if Model == 'Red Hat': return('Server')
+	if Model.lower() in ['redhat', 'red hat']: return('Server')
 	elif Model.lower().startswith('mx'): return('Router')
 	else: print('wc.GetTemplatenameByModel Model not coded: ' + Model); exit(5)
 
