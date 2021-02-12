@@ -283,7 +283,7 @@ class VELOCITY():
 			args = {}
 			args['name'] = port_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['name']
-			args['groupId'] = pg['id']
+			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			# wc.jd(new_port)
