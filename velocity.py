@@ -290,7 +290,7 @@ class VELOCITY():
 				if p['name'] == index:
 					self.INV[device_name]['ports'][port_name][index]['value'] = new
 					# Add confirmation here to verify value, otherwise didnt take
-					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),str(new))
+					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),p['value'])
 					break
 		else:
 			# error
@@ -369,7 +369,6 @@ class VELOCITY():
 		# wc.pairprint(p['name'], pg['ports'][p['name']])
 		# out[device['name']]['ports'] = ports
 		return(out,ports)
-
 	def FormatInventory(self, out, device):
 		ports = {}
 		if device['id'] not in out.keys():
