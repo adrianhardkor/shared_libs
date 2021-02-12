@@ -301,12 +301,13 @@ class VELOCITY():
 	def GetDeviceName(self, uuid):
 		# converted to name for reservation-resource sync (per name)
 		return(self.REST_GET('/velocity/api/inventory/v13/device/' + uuid)['name'])
-	def GetTemplates(self, templateName=''):
+	def GetTemplates(self, templateName='', templateId=''):
 		# /velocity/api/inventory/v13/templates
 		data = self.REST_GET('/velocity/api/inventory/v13/templates')['templates']
 		out = {}
 		for d in data:
 		 	out[d['name']] = out[d['id']] = d
+			if d['id'] == templateId: return({d['name']:d})
 		if templateName != '':
 			return(out[templateName])
 		return(out)
@@ -331,7 +332,7 @@ class VELOCITY():
 		ports = {}
 		if device['id'] not in out.keys():
 			wc.jd(device)
-			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':device['templateName'], 'Tags':device['Tags']}
+			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'Tags':device['tags']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
 			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
