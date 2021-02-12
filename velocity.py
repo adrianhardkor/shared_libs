@@ -370,12 +370,9 @@ class VELOCITY():
 		# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
 		# template = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/template/%s/ports' % p['templateId'])
 		# wc.jd(template)
-		if 'description' not in p.keys():
-			wc.jd(p)
 		if p['groupId'] == None:
 			pg = {'name': 'No Group', 'id':None}
 		else:
-			wc.pairprint(device['name'] + '  ' + p['name'], pg.keys())
 			pg = pg[p['groupId']]
 		ports[p['name']] = {'Description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
@@ -401,6 +398,7 @@ class VELOCITY():
 		all_ports = self.REST_GET('/velocity/api/inventory/v13/device/%s/ports' % device['id'], params={'includeProperties':True})['ports']
 		out[device['name']]['ports'] = {}
 		PGs = self.GetDevicePGs(device['id'])
+		wc.jd(PGs)
 		for p in all_ports:
 			out,ports = self.FormatPorts(out, device, PGs, p, ports)
 			out[device['name']]['ports'][p['name']] = ports[p['name']]
