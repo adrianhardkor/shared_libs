@@ -68,7 +68,7 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		self.runTimer = wc.timer_index_start()
-		wc.jd(Parameters)
+		wc.pairprint('Parameters', Parameters)
 		result = self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters)
 		if result['response.status_code'] != "201":
 			# FAIL KICKOFF

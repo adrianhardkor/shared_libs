@@ -349,10 +349,9 @@ class VELOCITY():
 		out = {}
 		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)['portGroups']
 		for blah in raw:
-			wc.jd(blah)
+			if blah['id'] == None: blah['id'] = 'null'
 			out[blah['name']] = blah
 			out[blah['id']] = blah
-		wc.jd(out)
 		return(out)
 	def GetDeviceName(self, uuid):
 		# converted to name for reservation-resource sync (per name)
