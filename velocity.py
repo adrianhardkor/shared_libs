@@ -242,96 +242,94 @@ class VELOCITY():
 		args = {}
 		# WILL NOT CREATE PORT IF DOESNT EXIST = SEE V.UpdatePort
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
-		if index not in INV[device_name]['ports'][port_name].keys():
-			wc.jd(INV[device_name]['ports'][port_name]) 
-		# wc.pairprint(index, type(INV[device_name]['ports'][port_name][index]))
-		if type(INV[device_name]['ports'][port_name][index]) == dict:
+		if index not in self.INV[device_name]['ports'][port_name].keys():
+			wc.jd(self.INV[device_name]['ports'][port_name]) 
+		# wc.pairprint(index, type(self.INV[device_name]['ports'][port_name][index]))
+		if type(self.INV[device_name]['ports'][port_name][index]) == dict:
 			# property = 'value'
 			if not append:
 				# dict = property with uuid
 				new = new_value
-				args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
-				if INV[device_name]['ports'][port_name][index]['value'] == new_value:
-					return(INV)
+				args = {'properties': [{'definitionId':self.INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
+				if self.INV[device_name]['ports'][port_name][index]['value'] == new_value:
+					return(self.INV)
 			else:
-				if INV[device_name]['ports'][port_name][index]['value'] == None:
-					INV[device_name]['ports'][port_name][index]['value'] = ''
-				new = INV[device_name]['ports'][port_name][index]['value'].strip(' ').split(' ')
+				if self.INV[device_name]['ports'][port_name][index]['value'] == None:
+					self.INV[device_name]['ports'][port_name][index]['value'] = ''
+				new = self.INV[device_name]['ports'][port_name][index]['value'].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
-				args = {'properties': [{'definitionId':INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new}]}
-				if new in INV[device_name]['ports'][port_name][index]['value'].split(' '):
-					return(INV); # already exists
+				args = {'properties': [{'definitionId':self.INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new}]}
+				if new in self.INV[device_name]['ports'][port_name][index]['value'].split(' '):
+					return(self.INV); # already exists
 		else:
 			# Not property = [index]
 			if index in ['pgName', 'pgId']:
 				# CHANGE PORGROUP: /device/{deviceId}/port_group/{portGroupId}
-				# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args)
+				# wc.pairprint('/velocity/api/inventory/v13/device/%s/port/%s' % (self.INV[device_name]['id'], self.INV[device_name]['ports'][port_name]['id']), args)
 				raise('portgroup changes not coded yet'); # pgName and pgId:  port_group
-			if INV[device_name]['ports'][port_name][index] == new_value:
-				return(INV)
+			if self.INV[device_name]['ports'][port_name][index] == new_value:
+				return(self.INV)
 			if not append:
 				new = new_value
 				args = {index: new_value}
 			else:
-				new = INV[device_name]['ports'][port_name][index].strip(' ').split(' ')
+				new = self.INV[device_name]['ports'][port_name][index].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {index:new}
-				if new in INV[device_name]['ports'][port_name][index].split(' '):
-					return(INV); # already exists			
-		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (INV[device_name]['id'], INV[device_name]['ports'][port_name]['id']), args=args)
+				if new in self.INV[device_name]['ports'][port_name][index].split(' '):
+					return(self.INV); # already exists			
+		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (self.INV[device_name]['id'], self.INV[device_name]['ports'][port_name]['id']), args=args)
 		# NOTIFY PORT PROP CHANGE
 		if index in data.keys():
 			wc.pairprint('  '.join(['[INFO] Updated1:', port_name,index,str(new_value)]), data[index])
-			INV[device_name]['ports'][port_name][index] = new
+			self.INV[device_name]['ports'][port_name][index] = new
 		elif 'properties' in data.keys():
 			for p in data['properties']:
 				if p['name'] == index:
-					INV[device_name]['ports'][port_name][index]['value'] = new
+					self.INV[device_name]['ports'][port_name][index]['value'] = new
 					# Add confirmation here to verify value, otherwise didnt take
 					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),str(new))
 					break
 		else:
 			# error
 			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
-		return(INV)
 	def UpdatePort(self, INV, device_name, pgName, port_name, index, value, templateName="Network Port", append=False):
 		# WILL CREATE IF NOT FOUND
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
 		# slotname = portgroup, portname = portname
 
 		# if device is Network then Port is Network
-		if device_name not in INV.keys():
+		if device_name not in self.INV.keys():
 			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
 
 		# if pg doesnt exist, create and create port underneath pg
-		PGs = self.GetDevicePGs(INV[device_name]['id'])
+		PGs = self.GetDevicePGs(self.INV[device_name]['id'])
 		if pgName not in PGs.keys():
 			# pg doesnt exist on device yet
-			pg = self.REST_POST('/velocity/api/inventory/v13/device/%s/port_group' % INV[device_name]['id'], args={'name':pgName})
+			pg = self.REST_POST('/velocity/api/inventory/v13/device/%s/port_group' % self.INV[device_name]['id'], args={'name':pgName})
 			# wc.jd(pg)
 		else:
 			pg = PGs[pgName]
-		if port_name not in INV[device_name]['ports'].keys():
+		if port_name not in self.INV[device_name]['ports'].keys():
 			# POST / create
-			if INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
+			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
 			else: templateName = 'Network Port'
 			args = {}
 			args['name'] = port_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
-			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % INV[device_name]['id'], args=args)
+			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
 			wc.pairprint('[INFO] ' + port_name, 'created')
 			# Re-Apply inventory for ChangeDevicePortProp to use
-			out,ports = self.FormatPorts(INV, {}, pg, new_port, {})
-			INV[device_name]['ports'][port_name] = ports[port_name]
+			out,ports = self.FormatPorts(self.INV, {}, pg, new_port, {})
+			self.INV[device_name]['ports'][port_name] = ports[port_name]
 		else:
 			# if port exists, assume pg exists
 			pass
 		# PUT: for each attribute, update port
-		INV = self.ChangeDevicePortProp(INV, device_name, port_name, index, value, append=append)
-		return(INV)
+		self.ChangeDevicePortProp(self.INV, device_name, port_name, index, value, append=append)
 	def GetDevicePGs(self, deviceId):
 		out = {}
 		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)['portGroups']
