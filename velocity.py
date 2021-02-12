@@ -313,9 +313,8 @@ class VELOCITY():
 		else:
 			pg = PGs[pgName]
 		if port_name not in self.INV[device_name]['ports'].keys():
-			two = self.GetInventory()
-			wc.jd(self.INV[device_name])
-			wc.jd(two[device_name])
+			gi = self.GetInventory()
+			print(gi); # force re-Inventory grab if necessary
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# POST / create
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
