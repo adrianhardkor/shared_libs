@@ -1187,6 +1187,12 @@ def GetTemplatenameByModel(Model):
 	elif Model.lower().startswith('mx'): return('Router')
 	else: print('wc.GetTemplatenameByModel Model not coded: ' + Model); exit(5)
 
+def AnsibleToVelocitSpeedConvert(ansibleSpeed):
+	ansibleSpeed = str_int(ansibleSpeed)
+	if ansibleSpeed.lower() == 'mbps': return(ansibleSpeed[0])
+	elif ansibleSpeed.lower() == 'gbps': return(ansibleSpeed[0])
+	else: print('wc.AnsibleToVelocitSpeedConvert Speed not coded: ' + Speed); exit(5)
+
 wait_start()
 global current_time
 current_time = time.time()
