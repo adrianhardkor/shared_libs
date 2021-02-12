@@ -284,7 +284,7 @@ class VELOCITY():
 			for p in data['properties']:
 				if p['name'] == index:
 					INV[device_name]['ports'][port_name][index]['value'] = new
-					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),str(new_value))
+					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),str(p))
 					break
 		else:
 			# error
