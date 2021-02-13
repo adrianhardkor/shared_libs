@@ -230,23 +230,26 @@ class VELOCITY():
 			time.sleep(5); # wait 5s after applying ipAddress
 			# DISCOVERY HAPPENS IN BATCHES OF 4 // ANY 1of4 CAN DELAY(Ping Timeout) THE BATCH ONLINE STATUS
 			# DISCOVERY COULD TAKE UP TO TIMEOUT * 4-DEVICES
-			self.Discover(self.INV[device_name]['id'])
+			self.Discover(self.INV[device_name]['id'],driver='ping')
 		return()
-	def Discover(self, deviceId):
-		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=refresh' % deviceId)
+	def Discover(self, deviceId, driver=''):
+		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
 		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		data = ['init']
 		while data != []:
 			# executionID
 			# parametersList
 			# testPath
-			time.sleep(2)
-			data = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::IN_PROGRESS')['content']
+			raw = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::IN_PROGRESS')['content']
 			for not_begun in self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::NOT_BEGUN')['content']:
-				data.append(not_begun)
-			for d in data:
+				raw.append(not_begun)
+			data = []
+			for d in raw:
 				d['parametersList']= wc.lsearchAllInline('property_', d['parametersList'])
-				print('    '.join([d['testPath'],str(d['parametersList'])]))
+				if driver != '' and driver in d['testPath']:
+					data.append('    '.join([d['testPath'], str(d['parametersList']), d['executionState']]))
+			print(data)
+			time.sleep(1)
 		return()
 	def ChangeDevicePortProp(self, device_name, port_name, index, new_value, append=False):
 		args = {}
@@ -419,9 +422,9 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-INV = V.GetInventory(); # device ipAddress
-V.Discover(INV['ARCBKBNEDGEPR02']['id'])
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# INV = V.GetInventory(); # device ipAddress
+# V.Discover(INV['ARCBKBNEDGEPR02']['id'], driver='ping')
 # wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
