@@ -335,7 +335,7 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
-			out,ports = self.FormatPorts(self.INV, self.INV[device_name], pg, new_port, {})
+			out,ports = self.FormatPorts(self.INV, self.INV[device_name], PGs, new_port, {})
 			wc.pairprint('[INFO] ' + port_name, 'created:' + str(ports[port_name]))
 			# Re-Apply inventory for ChangeDevicePortProp to use
 			self.INV[device_name]['ports'][port_name] = ports[port_name]
@@ -418,9 +418,9 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-# INV = V.GetInventory(); # device ipAddress
-# wc.jd(INV)
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+INV = V.GetInventory(); # device ipAddress
+wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
