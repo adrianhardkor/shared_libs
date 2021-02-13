@@ -83,4 +83,5 @@ J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
 param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'jenkinsAuto'}
 param['dryrun'] = 'dryrun'
 J.RunPipeline(wc.argv_dict['Pipe'], param)
+# curl -X POST http://jenkinUser:jenkinAPIToken@yourJenkinsURl.com/job/theJob/[11-1717]/doDelete
 

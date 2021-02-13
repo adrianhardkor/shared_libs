@@ -233,7 +233,7 @@ class VELOCITY():
 			self.Discover(self.INV[device_name]['id'])
 		return()
 	def Discover(self, deviceId):
-		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
+		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=refresh' % deviceId)
 		# print('  '.join(['[INFO] *ACTION*:', device_name,new_value,'discover',discover['Response']]))
 		data = ['init']
 		while data != []:
@@ -246,7 +246,7 @@ class VELOCITY():
 				data.append(not_begun)
 			for d in data:
 				d['parametersList']= wc.lsearchAllInline('property_', d['parametersList'])
-				print('    '.join([data['testPath'],data['parametersList']]))
+				print('    '.join([d['testPath'],str(d['parametersList'])]))
 		return()
 	def ChangeDevicePortProp(self, device_name, port_name, index, new_value, append=False):
 		args = {}
@@ -419,8 +419,9 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-# INV = V.GetInventory(); # device ipAddress
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+INV = V.GetInventory(); # device ipAddress
+V.Discover(INV['ARCBKBNEDGEPR02']['id'])
 # wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
