@@ -273,7 +273,7 @@ class VELOCITY():
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {'properties': [{'definitionId':self.INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new}]}
-				if new in self.INV[device_name]['ports'][port_name][index]['value'].split(' '):
+				if new_value in self.INV[device_name]['ports'][port_name][index]['value'].split(' '):
 					return(self.INV); # already exists
 		else:
 			# Not property = [index]
@@ -286,12 +286,14 @@ class VELOCITY():
 			if not append:
 				new = new_value
 				args = {index: new_value}
+				if self.INV[device_name]['ports'][port_name][index] == new_value:
+					return(self.INV)
 			else:
 				new = self.INV[device_name]['ports'][port_name][index].strip(' ').split(' ')
 				new.append(new_value)
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {index:new}
-				if new in self.INV[device_name]['ports'][port_name][index].split(' '):
+				if new_value in self.INV[device_name]['ports'][port_name][index].split(' '):
 					return(self.INV); # already exists			
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (self.INV[device_name]['id'], self.INV[device_name]['ports'][port_name]['id']), args=args)
 		# NOTIFY PORT PROP CHANGE
