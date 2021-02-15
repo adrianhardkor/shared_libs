@@ -1147,7 +1147,7 @@ def ComplianceReport(ansibleIPs, result1):
 	global wcheader
 	for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
 		if param not in wcheader.keys() and param not in argv_dict.keys():
-			raise('awx.ComplianceReport can only run on Jenkins')
+			print('awx.ComplianceReport can only run on Jenkins'); exit(5)
 	result = {'BUILD_TAG': wcheader['BUILD_TAG'], 'Runtime': wcheader['Runtime'], '':'', 'unique HOSTS Found': len(ansibleIPs.keys())}
 	noncompliant = []
 
