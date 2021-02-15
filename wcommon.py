@@ -109,7 +109,8 @@ class XmlDictConfig(dict):
 def xml_loads(xml_string):
 	from xml.etree import cElementTree as ElementTree
 	root = ElementTree.XML(xml_string)
-	return(XmlDictConfig(root))
+	xml = XmlDictConfig(root)
+	return(json.loads(json.dumps(xml)))
 
 def bdd_bool_inp(inp2):
 	if str(inp2).lower() == 'true':
