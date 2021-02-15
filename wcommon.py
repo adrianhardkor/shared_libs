@@ -1099,6 +1099,7 @@ def jenkins_header():
 			wcheader[inp] = env_dict[inp]
 
 def FindAnsibleHost(ansible_host, INV):
+	# Could be used for multiple repos?
 	for d in INV.keys():
 		# pairprint(d,INV[d]['ipAddress'])
 		if INV[d]['ipAddress']['value'] == ansible_host:
@@ -1140,64 +1141,6 @@ def vagent_getStcResource(resources, master_topology):
 	for t in resources.keys():
 		if t.lower().startswith('stc') and '_' not in t:
 			return(master_topology[t]['ipAddress']['value'],t)
-
-def ComplianceReport(ansibleIPs, result1):
-	# JENKINS
-	global argv_dict
-	global wcheader
-	for param in ['sendmail', 'BUILD_URL', 'Runtime', 'Playbook', 'BUILD_TAG']:
-		if param not in wcheader.keys() and param not in argv_dict.keys():
-			print('awx.ComplianceReport can only run on Jenkins'); exit(5)
-	result = {'BUILD_TAG': wcheader['BUILD_TAG'], 'Runtime': wcheader['Runtime'], '':'', 'unique HOSTS Found': len(ansibleIPs.keys())}
-	noncompliant = []
-
-	# ANSIBLE
-	for h in ansibleIPs.keys():
-		inventories = []
-		for i in ansibleIPs[h]['ids'].keys():
-			inventories.append(ansibleIPs[h]['ids'][i]['inventory'])
-			if 'facts' in ansibleIPs[h]['ids'][i].keys():
-				if 'ansible_net_hostname' not in ansibleIPs[h]['ids'][i]['facts'].keys():
-					result['device-hostname mismatch inventory-hostname'] =  '    '.join(['<missing>', str(ansibleIPs[h]['hostnames']).upper()])
-				elif ansibleIPs[h]['ids'][i]['facts']['ansible_net_hostname'].upper() != str(ansibleIPs[h]['hostnames']).upper():
-					result['device-hostname mismatch inventory-hostname'] =  '    '.join([ansibleIPs[h]['ids'][i]['facts']['ansible_net_hostname'].upper(), str(ansibleIPs[h]['hostnames']).upper()])
-		if 'ARC' not in inventories:
-			if h == '':
-				for ii in ansibleIPs[h]['ids'].keys():
-					result['noncompliant for ARC GetFacts ' + str(ii)] =  "    ".join([h,str(ii),str(ansibleIPs[h]['ids'][ii])])
-			else:
-				result['noncompliant for ARC GetFacts ' + str(i)] = "    ".join([h,str(i),ansibleIPs[h]['ids'][i]['inventory']])
-	result['Playbook ' + argv_dict['Playbook'] + ' Task Result'] = result1
-
-
-	# VELOCITY
-	result['VELOCITY_OFFLINE'] = {}
-	import velocity
-	V = velocity.VELOCITY(os.environ['VEL_IP'], user=os.environ['VEL_USER'], pword=os.environ['VEL_PASS'])
-	INV = V.GetInventory()
-	for vDevice in INV.keys():
-		if not INV[vDevice]['isOnline']:
-			result['VELOCITY_OFFLINE'][vDevice] = INV[vDevice]['ipAddress']['value']
-	result['fullruntime'] = fullRuntime()
-	result['_SUBJECT'] = wcheader['BUILD_TAG'] + '    ' + wcheader['Playbook']
-	return(result)
-
-def GetTemplatenameByModel(Model):
-	if Model.lower() in ['redhat', 'red hat']: return('Server')
-	elif Model.lower().startswith('mx'): return('Router')
-	elif Model.lower().startswith('ex'): return('Router')
-	else: print('wc.GetTemplatenameByModel Model not coded: ' + Model); exit(5)
-
-def AnsibleToVelocitSpeedConvert(ansibleSpeed):
-	try:
-		blah = int(ansibleSpeed)
-		return(blah); # if int then assume MB
-	except Exception:
-		pass
-	ansibleSpeed = str_int_split(ansibleSpeed)
-	if ansibleSpeed[0].lower() == 'mbps': return(int(ansibleSpeed[1]))
-	elif ansibleSpeed[0].lower() == 'gbps': return(int(ansibleSpeed[1]) * 1000)
-	else: print('wc.AnsibleToVelocitSpeedConvert Speed not coded: ' + str(ansibleSpeed)); exit(5)
 
 wait_start()
 global current_time
