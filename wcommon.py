@@ -512,12 +512,6 @@ def mcsplit(mystr, cc):
         mystr = mystr.replace(c, ',')
     return(mystr.split(','))
 
-def mcstrip(mystr, cc):
-	subb = ''
-	for c in cc:
-		subb.append('\\' + c)
-	return(re.sub('[' + subb + ']', '', mystr))
-
 def execPy(command):
     # exec via os.system
     out = os.system(command)
