@@ -303,7 +303,8 @@ class AWX():
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
-					if 'ansible_hostname' in _FACTS.keys():
+					if 'ansible_hostname' in _FACTS.keys() and 'ansible_net_hostname' not in _FACTS.keys():
+						# if no net_hostname then get ansible_hostname (might be ans.self.hostname?)
 						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
 					elif 'ansible_hostname' in _FACTS.keys() and 'ansible_hostname' in _FACTS.keys():
 						wc.pairprint('\n\nNO HOSTNAME IN FACTS???', host['name'] + '  ' + str(host['id']))
