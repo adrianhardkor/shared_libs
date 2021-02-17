@@ -393,7 +393,7 @@ class VELOCITY():
 				wc.jd(p)
 				wc.pairprint(device['name'], p['name'])
 			pg = pg[p['groupId']]
-		ports[p['name']] = {'Description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
+		ports[p['name']] = {'description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
 		ports[p['name']]['linkChecked'] = p['linkChecked']
