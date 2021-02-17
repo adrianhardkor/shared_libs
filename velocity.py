@@ -266,6 +266,7 @@ class VELOCITY():
 				args = {'properties': [{'definitionId':self.INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
 				if self.INV[device_name]['ports'][port_name][index]['value'] == new_value:
 					return(self.INV)
+				print('  '.join(['',str(self.INV[device_name]['ports'][port_name][index]['value']),str(type(self.INV[device_name]['ports'][port_name][index]['value'])),'',str(new_value),str(type(new_value))]))
 			else:
 				if self.INV[device_name]['ports'][port_name][index]['value'] == None:
 					self.INV[device_name]['ports'][port_name][index]['value'] = ''
