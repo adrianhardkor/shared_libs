@@ -219,12 +219,18 @@ class VELOCITY():
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
+			# re-up GetInventory
 			self.INV = self.FormatInventory(self.INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
 		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append); # updates self.INV
 		if args == {}: return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % self.INV[device_name]['id'], args=args)
-		wc.pairprint('  '.join(['[INFO] Updated:', device_name,index,str(new_value)]), index + ':  ' + new_value)
+		if 'definitionId' in str(args):
+			for p in data['properties']:
+				if p['name'] == index:
+					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str(new_value)]), index + ':  ' + p['value'])
+		else:
+			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(new_value)]), index + ':  ' + data[index])
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			time.sleep(5); # wait 5s after applying ipAddress
@@ -301,7 +307,7 @@ class VELOCITY():
 		if index in data.keys():
 			wc.pairprint('  '.join(['[INFO] Updated1:', port_name,index,str(new_value)]), data[index])
 			self.INV[device_name]['ports'][port_name][index] = new
-		elif 'properties' in data.keys():
+		elif 'definitionId' in str(args):
 			for p in data['properties']:
 				if p['name'] == index:
 					self.INV[device_name]['ports'][port_name][index]['value'] = new
