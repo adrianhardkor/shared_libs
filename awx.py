@@ -60,7 +60,7 @@ class AWX():
 		if lst == [] or lst == [''] or lst == ['---'] or lst == ['{}']:
 			return({})
 		return({lst[i]: lst[i + 1] for i in range(0, len(lst), 2)})
-	def awx_job_events_format(je):
+	def awx_job_events_format(self, je):
 		# GET STDOUTLINES FROM COMPLETED JOB AND FORMAT
 		new = {'stdout':[]}
 		for result in je['results']:
@@ -83,6 +83,7 @@ class AWX():
 			else:
 				new['stdout'].append(str(i) + '\t' + str(result['stdout']))
 				new[i] = {'failed': result['failed']}
+			wc.jd(json.loads(wc.REST_GET('http://' + self.IP + result['related']['children'], user=self.user, pword=self.pword)))
 		return(new)
 	def RunPlaybook(self,playbook_name,args={}):
 		# ASYNC BY DEFAULT
@@ -90,13 +91,13 @@ class AWX():
 		if args != {}:
 			# wc.pairprint('REST:extra_vars', list(args.keys()))
 			extra_vars = {'extra_vars':args}
-			wc.jd(extra_vars)
 			# args = json.dumps(extra_vars)
-		data = json.loads(wc.REST_POST('http://' + self.IP + '/api/v2/job_templates/' + playbook_name + '/launch/', user=self.user, pword=self.pword, args=args))
+		data = json.loads(wc.REST_POST('http://' + self.IP + '/api/v2/job_templates/' + playbook_name + '/launch/', user=self.user, pword=self.pword, args=args, convert_args=True))
 		status_url = data['url']
 		data['status'] = 'Running'
 		if 'job' not in data.keys():
 			# SOMETHING WENT WRONG
+			print(data)
 			data['response.request.body'] = json.loads(data['response.request.body'])
 			wc.jd(data)
 			return('')
@@ -110,7 +111,7 @@ class AWX():
 				print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
 		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['job_events'], user=self.user, pword=self.pword))
 		wc.pairprint('API','http://' + self.IP + data['related']['job_events'])
-		raw = AWX.awx_job_events_format(raw)
+		raw = AWX.awx_job_events_format(self, raw)
 		return(data['status'],raw)
 		# ['related']['stdout']
 		# POST https://your.tower.server/api/v2/job_templates/<your job template id>/launch/ with any required data gathered during the previous step(s). The variables that can be passed in the request data for this action include the following.
