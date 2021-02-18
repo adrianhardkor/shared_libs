@@ -48,7 +48,7 @@ class JENKINS():
 				running = False
 			if flag:
 				print('  '.join(['RUNNING', str(build['building']),str(build['id']),str(build['result']), str(wc.timer_index_since(self.runTimer))]))
-				time.sleep(3)
+				time.sleep(7)
 			else:
 				print('  '.join(['STARTED', str(build['building'])]))
 				time.sleep(2)
