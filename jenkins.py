@@ -30,6 +30,10 @@ class JENKINS():
 			out.append(line.text)
 		out.append(str(line))
 		return('\n'.join(out))
+	def PurgePipeline(self, name):
+		# http://HOST/job/JOBNAME/doDelete
+		wc.jd(self.REST_GET('/job/%s/%s/doDelete' % (name)))
+		# curl -X POST http://jenkinUser:jenkinAPIToken@yourJenkinsURl.com/job/theJob/[11-1717]/doDelete
 	def GetBuildResults(self, name):
 		# print(self.REST_GET('/overallLoad/api/json'))
 		from bs4 import BeautifulSoup

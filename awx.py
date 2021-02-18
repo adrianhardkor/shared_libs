@@ -78,6 +78,8 @@ class AWX():
 						if dump in result['event_data']['res'].keys():
 							wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
 							new[i][dump] = result['event_data']['res'][dump]
+			else:
+				new[i] = {'stdout': wc.bytes_str(result['stdout'])}
 		return(new)
 	def RunPlaybook(self,playbook_name,args={}):
 		# ASYNC BY DEFAULT
