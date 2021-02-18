@@ -15,6 +15,8 @@ import velocity
 
 import awx
 ansible = awx.AWX(os.environ['AWX_IP'], os.environ['AWX_USER'], os.environ['AWX_PASS'])
-result,GetFactRunIds = ansible.RunPlaybook('SetFacts',args={'hostName':'ARCBKBNEDGDRR01','index':'_adrianI','value':'_adrianV'})
-wc.jd(GetFactRunIds)
+data = json.loads(wc.REST_GET('http://' + ansible.IP + '/api/v2/job_templates/' + 'SetFacts' + '/launch/', user=ansible.user, pword=ansible.pword))
+wc.jd(data)
+# result,GetFactRunIds = ansible.RunPlaybook('SetFacts',args={'hostName':'ARCBKBNEDGDRR01','index':'_adrianI','value':'_adrianV'})
+# wc.jd(GetFactRunIds)
 
