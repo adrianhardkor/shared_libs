@@ -15,6 +15,6 @@ import velocity
 
 import awx
 ansible = awx.AWX(os.environ['AWX_IP'], os.environ['AWX_USER'], os.environ['AWX_PASS'])
-result,GetFactRunIds = ansible.RunPlaybook('SetFact',args={'hostName':'ARCBKBNEDGDRR01','index':'_adrianI','value':'_adrianV'})
+result,GetFactRunIds = ansible.RunPlaybook('SetFacts',args={'hostName':'ARCBKBNEDGDRR01','index':'_adrianI','value':'_adrianV'})
 wc.jd(GetFactRunIds)
 

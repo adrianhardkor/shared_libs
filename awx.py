@@ -83,7 +83,7 @@ class AWX():
 			else:
 				new['stdout'].append(str(i) + '\t' + str(result['stdout']))
 				new[i] = {'failed': result['failed']}
-			wc.jd(json.loads(wc.REST_GET('http://' + self.IP + result['related']['children'], user=self.user, pword=self.pword)))
+			# wc.jd(json.loads(wc.REST_GET('http://' + self.IP + result['related']['children'], user=self.user, pword=self.pword)))
 		return(new)
 	def RunPlaybook(self,playbook_name,args={}):
 		# ASYNC BY DEFAULT
@@ -110,6 +110,7 @@ class AWX():
 			if data['status'] != 'running':
 				print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
 		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['job_events'], user=self.user, pword=self.pword))
+		# wc.jd(raw)
 		wc.pairprint('API','http://' + self.IP + data['related']['job_events'])
 		raw = AWX.awx_job_events_format(self, raw)
 		return(data['status'],raw)
@@ -393,6 +394,6 @@ class AWX():
 					'Enabled':host['enabled'],
 					'Variables':host['variables'],
 					'facts':interestingfact}
-		wc.jd(_INV)
+		# wc.jd(_INV)
 		return(_INV)
 
