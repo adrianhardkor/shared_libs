@@ -92,8 +92,8 @@ class AWX():
 			# wc.pairprint('REST:extra_vars', list(args.keys()))
 			extra_vars = {'extra_vars':args}
 			# args = json.dumps(extra_vars)
-		global data
 		data = json.loads(wc.REST_POST('http://' + self.IP + '/api/v2/job_templates/' + playbook_name + '/launch/', user=self.user, pword=self.pword, args=args, convert_args=True))
+		self.data = data
 		status_url = data['url']
 		data['status'] = 'Running'
 		if 'job' not in data.keys():
