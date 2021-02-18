@@ -62,7 +62,7 @@ class AWX():
 		return({lst[i]: lst[i + 1] for i in range(0, len(lst), 2)})
 	def awx_job_events_format(je):
 		# GET STDOUTLINES FROM COMPLETED JOB AND FORMAT
-		new = {}
+		new = {'stdout':[]}
 		for result in je['results']:
 			i = result['url']
 			if 'task_path' in result['event_data']:
@@ -78,8 +78,11 @@ class AWX():
 						if dump in result['event_data']['res'].keys():
 							wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
 							new[i][dump] = result['event_data']['res'][dump]
+			elif 'res' in result['event_data']:
+				new[i] = result['event_data']['res']
 			else:
-				new[i] = {'stdout': wc.bytes_str(result['stdout'])}
+				new['stdout'].append(str(i) + '\t' + str(result['stdout']))
+				new[i] = {'failed': result['failed']}
 		return(new)
 	def RunPlaybook(self,playbook_name,args={}):
 		# ASYNC BY DEFAULT
@@ -87,7 +90,8 @@ class AWX():
 		if args != {}:
 			# wc.pairprint('REST:extra_vars', list(args.keys()))
 			extra_vars = {'extra_vars':args}
-			args = json.dumps(extra_vars)
+			wc.jd(extra_vars)
+			# args = json.dumps(extra_vars)
 		data = json.loads(wc.REST_POST('http://' + self.IP + '/api/v2/job_templates/' + playbook_name + '/launch/', user=self.user, pword=self.pword, args=args))
 		status_url = data['url']
 		data['status'] = 'Running'
