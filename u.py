@@ -5,7 +5,7 @@ import wcommon as wc
 import json
 import re
 
-import velocity
+# import velocity
 # V = velocity.VELOCITY('10.88.48.31', 'akrygows', wc.argv_dict['p'])
 # INV = V.GetInventory(); # device ipAddress
 # wc.jd(INV)
@@ -13,10 +13,10 @@ import velocity
 # /velocity/api/inventory/v13/template/{templateId}/sessions/{sessionId}?merge= <NO/INVENTORY/FULL>
 # /ito/executions/v1/agents
 
-import awx
-ansible = awx.AWX(os.environ['AWX_IP'], os.environ['AWX_USER'], os.environ['AWX_PASS'])
-# data = json.loads(wc.REST_GET('http://' + ansible.IP + '/api/v2/job_templates/' + 'SetFacts' + '/launch/', user=ansible.user, pword=ansible.pword))
-# wc.jd(data)
-result,GetFactRunIds = ansible.RunPlaybook('SetFacts',args={'hostName':'ARCBKBNEDGDRR01','index':'_adrianI','value':'try2'})
-wc.jd(GetFactRunIds)
+
+
+J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
+param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
+param['dryrun'] = 'dryrun'
+J.RunPipeline('ARC2', param)
 
