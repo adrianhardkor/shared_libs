@@ -36,6 +36,7 @@ class JENKINS():
 		# curl -X POST http://jenkinUser:jenkinAPIToken@yourJenkinsURl.com/job/theJob/[11-1717]/doDelete
 	def GetBuildResults(self, name):
 		# print(self.REST_GET('/overallLoad/api/json'))
+		out = {'results':[]}
 		from bs4 import BeautifulSoup
 		flag = False
 		running = True
@@ -51,10 +52,10 @@ class JENKINS():
 				# if jobStarted, jobComplete, and jobHasResult:
 				running = False
 			if flag:
-				print('  '.join(['RUNNING', str(build['building']),str(build['id']),str(build['result']), str(wc.timer_index_since(self.runTimer))]))
+				out[str(wc.timer_index_since(self.runTimer)] = {'status':'RUNNING','building':build['building'],'id':build['id'],'result':build['result']}
 				time.sleep(7)
 			else:
-				print('  '.join(['STARTED', str(build['building'])]))
+				out[str(wc.timer_index_since(self.runTimer)] = {'status':'STARTED','building':build['building'],'id':build['id'],'result':build['result']}
 				time.sleep(2)
 			text = []
 		# GET CONSOLE (NON-API)
@@ -62,9 +63,9 @@ class JENKINS():
 		if 'text' in text1.keys(): text1 = text1['text']
 		else: wc.jd(text1)
 		for line in BeautifulSoup(text1, features="html.parser").find_all('span'):
-			text.append(line.text)
-		text.append(str(line))
-		return(runId,'\n'.join(text))
+			out['results'].append(line.text)
+		out['results'] = '\n'.join(out['results'])
+		return(runId,out)
 	def RunPipeline(self,PipelineName='',parameters={}):
 		Parameters = []
 		parameters_url = []
@@ -72,16 +73,16 @@ class JENKINS():
 			Parameters.append({'name':p,'value':parameters[p]})
 			parameters_url.append(p + '=' + parameters[p])
 		self.runTimer = wc.timer_index_start()
-		wc.pairprint('Parameters', Parameters)
+		# wc.pairprint('Parameters', Parameters)
 		result = self.REST_POST('/job/%s/buildWithParameters%s' % (PipelineName, '?' + '&'.join(parameters_url)), Parameters)
 		if result['response.status_code'] != "201":
 			# FAIL KICKOFF
 			wc.jd(result); exit(5)
 		else:
 			# SUCCESS KICKOFF
-			wc.pairprint(result['Response'], result['response.request.body'])
+			# wc.pairprint(result['Response'], result['response.request.body'])
 		runId,output = self.GetBuildResults(PipelineName)
-		print(output)
+		wc.jd(output)
 	
 J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
 param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
