@@ -173,7 +173,7 @@ def expand(unformatted):
     while start <= int(unformatted[1]):
         result.append(start)
         start += 1
-    pairprint(unformatted, result)
+    # pairprint(unformatted, result)
     return(result)
 
 
