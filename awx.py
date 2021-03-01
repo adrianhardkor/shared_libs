@@ -263,7 +263,12 @@ class AWX():
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
 					interesting = {}
-					if 'ansible_env' in _FACTS.keys():
+					if 'network_os' in _FACTS.keys():
+						if _FACTS['network_os'] == 'icx': vendor = 'ruckus'
+						else:
+							wc.pairprint('awx.GetFacts2', 'network_os %s not coded' % _FACTS['network_os'])
+							exit(5)
+					elif 'ansible_env' in _FACTS.keys():
 						for attr in ['SSH_CONNECTION', 'USER']:
 							if attr in _FACTS['ansible_env'].keys():
 								interesting[attr] = _FACTS['ansible_env'][attr]
