@@ -245,7 +245,7 @@ class AWX():
 				_FACTS = AWX.REST_GET(self, '/api/v2/hosts/%d/ansible_facts/' % host['id'])
 				result[ip]['ids'][host['id']]['facts_size'] = len(list(_FACTS.keys()))
 				# result[ip]['ids'][host['id']]['variables'] = host['variables']
-				if result[ip]['ids'][host['id']]['facts_size'] != 0:
+				if result[ip]['ids'][host['id']]['facts_size'] != 0 and result[ip]['ids'][host['id']]['facts']['network_os'] != 'none':
 					if 'date_time' in _FACTS.keys():
 						result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['date_time']['date'] + ' ' + _FACTS['date_time']['time'] + ' ' + _FACTS['date_time']['tz']
 					elif 'ansible_date_time' in _FACTS.keys():
@@ -315,9 +315,9 @@ class AWX():
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					elif vendor == 'none':
-						wc.jd(_FACTS)
-						wc.pairprint(host['id'],host['name'])
-						exit(5)
+						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
+						result[ip]['ids'][host['id']]['facts_gathered'] = ''
+						result[ip]['ids'][host['id']]['host_vars'] = host
 					else:
 						wc.pairprint('awx.GetFacts2 ', 'vendor %s not coded' % vendor)
 						exit(5)
