@@ -52,10 +52,10 @@ class JENKINS():
 				# if jobStarted, jobComplete, and jobHasResult:
 				running = False
 			if flag:
-				out[str(wc.timer_index_since(self.runTimer)] = {'status':'RUNNING','building':build['building'],'id':build['id'],'result':build['result']}
+				out[str(wc.timer_index_since(self.runTimer))] = {'status':'RUNNING','building':build['building'],'id':build['id'],'result':build['result']}
 				time.sleep(7)
 			else:
-				out[str(wc.timer_index_since(self.runTimer)] = {'status':'STARTED','building':build['building'],'id':build['id'],'result':build['result']}
+				out[str(wc.timer_index_since(self.runTimer))] = {'status':'STARTED','building':build['building'],'id':build['id'],'result':build['result']}
 				time.sleep(2)
 			text = []
 		# GET CONSOLE (NON-API)
@@ -81,6 +81,7 @@ class JENKINS():
 		else:
 			# SUCCESS KICKOFF
 			# wc.pairprint(result['Response'], result['response.request.body'])
+			pass
 		runId,output = self.GetBuildResults(PipelineName)
 		wc.jd(output)
 	

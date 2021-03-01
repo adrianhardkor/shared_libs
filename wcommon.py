@@ -108,7 +108,7 @@ class XmlDictConfig(dict):
 
 def xml_loads(xml_string):
 	from xml.etree import cElementTree as ElementTree
-	root = ElementTree.XML(xml_string)
+	root = ElementTree.XML(xml_string.replace('\n',''))
 	xml = XmlDictConfig(root)
 	return(json.loads(json.dumps(xml)))
 
