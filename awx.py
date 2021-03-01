@@ -265,6 +265,7 @@ class AWX():
 					interesting = {}
 					if 'network_os' in _FACTS.keys():
 						if _FACTS['network_os'] == 'icx': vendor = 'ruckus'
+						elif 'junos' in _FACTS['network_os']: vendor = 'junos'
 						else:
 							wc.pairprint('awx.GetFacts2', 'network_os %s not coded' % _FACTS['network_os'])
 							exit(5)
