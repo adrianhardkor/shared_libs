@@ -796,6 +796,32 @@ def IP_DNS(ID):
         return('IP')
     else: return('DNS')
 
+def is_int(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+def expand_slash_ports(port):
+        result = []
+        if type(port) == str:
+                port = port.split('/')
+                channels = wc.expand(port.pop(-1))
+        elif type(port) == list:
+                # expand_e6k_channels = '['12/0/0-30', ['32']]'
+                sOne = port[0].split('/')
+                # print(sOne)
+                channels = wc.expand(sOne[2])
+                for p in port[1]:
+                        channels.append(p)
+                port = [sOne[0],sOne[1]]
+        for channel in channels:
+                result.append('/'.join([port[0],port[1],str(channel)]))
+        return(result)
+
+
+
 def is_pingable(IP):
     global matcher
     if IP == '': return(False)

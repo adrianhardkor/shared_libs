@@ -314,6 +314,58 @@ class AWX():
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
+					elif vendor == 'icx':
+						intf_locs = {}
+						def icx_intf_format(raw):
+							# first int of char+
+							i = 0
+							for char in raw:
+								if wc.is_int(char): return(raw[i::])
+								i = i + 1
+							return('') 
+
+						for parent in ['ansible_net_model', 'network_os', 'ansible_net_image', 'ansible_net_interfaces', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_version', 'ansible_net_serialnum', 'ansible_net_interfaces', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb']:
+							if parent in _FACTS.keys():
+								interesting[parent] = _FACTS[parent]
+								if parent == 'ansible_net_interfaces':
+									for intf in interesting[parent].keys(): intf_locs[icx_intf_format[intf]] = intf
+						interesting['ansible_net_config'] = _FACTS['ansible_net_config'].split('\n')
+						interesting['ansible_net_interfaces_config'] = {}
+						for cfgLine in interesting['ansible_net_config']:
+							clean = wc.cleanLine(cfgLine)
+							if cfgLine.startswith('stack unit'):
+								parentLine = cfgLine
+								intf_config = {cfgLine: []}
+							elif cfgLine.startswith('  module'): intf_config[parentLine].append(cfgLine)
+							elif cfgLine.startswith('  stack-port'):
+								clean[-1] = icx_intf_format[clean[-1]]
+								# intf_config[parentLine].append(' '.join(clean))
+								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
+									interesting['ansible_net_interfaces_config'][clean[-1]] = []
+								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
+							elif 'vlan' in clean and 'by' in clean and 'port' in clean:
+								parentLine = cfgLine
+								intf_config = {cfgLine: {'config':[], 'vlan': clean[1]}
+								if 'name' in clean: intf_config['name'] = clean[3]
+							elif cfgLine.startswith(' tagged ') or cfgLine.startswith(' untagged '):
+								if 'to' not in clean: ports = [icx_intf_format[clean[-1]]]
+								else:
+									# tagged ethe 1/2/1 to 1/2/8
+									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])									
+								for port in ports:
+									if port not in interesting['ansible_net_interfaces_config'].keys(): 
+										interesting['ansible_net_interfaces_config'][port] = []
+									interesting['ansible_net_interfaces_config'][port].append(intf_config)
+									
+							elif clean[0] == 'interface':
+								clean[-1] = icx_intf_format[clean[-1]]
+								parentLine = cfgLine
+								intf_config = {cfgLine: []}
+							elif 'ip' in clean and 'address' in clean:
+								intf_config['ip'] = ' '.join(clean[2:4])
+								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
+									interesting['ansible_net_interfaces_config'][clean[-1]] = []
+								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
 					elif vendor == 'none':
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
