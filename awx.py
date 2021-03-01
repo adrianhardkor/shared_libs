@@ -264,11 +264,8 @@ class AWX():
 							break
 					interesting = {}
 					if 'network_os' in _FACTS.keys():
-						if _FACTS['network_os'] == 'icx': vendor = 'ruckus'
-						elif 'junos' in _FACTS['network_os']: vendor = 'junos'
-						else:
-							wc.pairprint('awx.GetFacts2', 'network_os %s not coded' % _FACTS['network_os'])
-							exit(5)
+						if 'junos' in _FACTS['network_os']: vendor = 'junos'
+						else: vendor = _FACTS['network_os'].lower()
 					elif 'ansible_env' in _FACTS.keys():
 						for attr in ['SSH_CONNECTION', 'USER']:
 							if attr in _FACTS['ansible_env'].keys():
@@ -319,6 +316,9 @@ class AWX():
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
+					else:
+						wc.pairprint('awx.GetFacts2 ', 'vendor %s not coded' % vendor)
+						exit(5)
 					if 'ansible_hostname' in _FACTS.keys() and 'ansible_net_hostname' not in _FACTS.keys():
 						# if no net_hostname then get ansible_hostname (might be ans.self.hostname?)
 						interesting['ansible_net_hostname'] = interesting['ansible_hostname']
