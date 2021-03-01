@@ -345,7 +345,7 @@ class AWX():
 								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
 							elif 'vlan' in clean and 'by' in clean and 'port' in clean:
 								parentLine = cfgLine
-								intf_config = {cfgLine: {'config':[], 'vlan': clean[1]}
+								intf_config = {cfgLine: {'config':[], 'vlan': clean[1]}}
 								if 'name' in clean: intf_config['name'] = clean[3]
 							elif cfgLine.startswith(' tagged ') or cfgLine.startswith(' untagged '):
 								if 'to' not in clean: ports = [icx_intf_format[clean[-1]]]
