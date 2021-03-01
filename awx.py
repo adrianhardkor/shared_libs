@@ -314,6 +314,10 @@ class AWX():
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
+					elif vendor == 'none':
+						wc.jd(_FACTS)
+						wc.pairprint(host['id'],host['name'])
+						exit(5)
 					else:
 						wc.pairprint('awx.GetFacts2 ', 'vendor %s not coded' % vendor)
 						exit(5)
