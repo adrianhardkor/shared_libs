@@ -264,8 +264,7 @@ class AWX():
 							break
 					interesting = {}
 					if 'network_os' in _FACTS.keys():
-						if 'junos' in _FACTS['network_os']: vendor = 'junos'
-						else: vendor = _FACTS['network_os'].lower()
+						vendor = _FACTS['network_os'].lower()
 					elif 'ansible_env' in _FACTS.keys():
 						for attr in ['SSH_CONNECTION', 'USER']:
 							if attr in _FACTS['ansible_env'].keys():
@@ -299,8 +298,7 @@ class AWX():
 								interesting['ansible_net_interfaces'][intf] = _FACTS['ansible_' + intf]
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
-					elif vendor == 'junos':
-						# junos
+					elif vendor == 'junipernetworks.junos.junos':
 						wc.pairprint('debug\t' + host['name'], host['id'])
 						_FACTS['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
 						interesting['ansible_net_interfaces_config'] = {}
