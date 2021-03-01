@@ -245,7 +245,7 @@ class AWX():
 				_FACTS = AWX.REST_GET(self, '/api/v2/hosts/%d/ansible_facts/' % host['id'])
 				result[ip]['ids'][host['id']]['facts_size'] = len(list(_FACTS.keys()))
 				# result[ip]['ids'][host['id']]['variables'] = host['variables']
-				if result[ip]['ids'][host['id']]['facts_size'] != 0 and _FACTS['network_os'] != 'none':
+				if result[ip]['ids'][host['id']]['facts_size'] != 0:
 					if 'date_time' in _FACTS.keys():
 						result[ip]['ids'][host['id']]['facts_timestamp'] = _FACTS['date_time']['date'] + ' ' + _FACTS['date_time']['time'] + ' ' + _FACTS['date_time']['tz']
 					elif 'ansible_date_time' in _FACTS.keys():
