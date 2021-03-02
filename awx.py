@@ -365,7 +365,7 @@ class AWX():
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
 						result[ip]['ids'][host['id']]['host_vars'] = host
 					else:
-						wc.pairprint('awx.GetFacts2 ', 'vendor %s not coded' % vendor)
+						wc.pairprint('awx.GetFacts2 ', 'vendor %s not coded' % str(interesting['ansible_net_system']))
 						exit(5)
 					if 'ansible_hostname' in _FACTS.keys() and 'ansible_net_hostname' not in _FACTS.keys():
 						# if no net_hostname then get ansible_hostname (might be ans.self.hostname?)
