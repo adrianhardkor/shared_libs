@@ -267,7 +267,7 @@ class AWX():
 					interesting['ansible_net_system'] = []
 					if 'network_os' in _FACTS.keys(): interesting['ansible_net_system'].append(_FACTS['network_os'].lower())
 					elif 'ansible_net_system' in _FACTS.keys(): interesting['ansible_net_system'].append(_FACTS['ansible_net_system'])
-					elif interesting['groups'] != []:
+					if interesting['groups'] != []:
 						for g in interesting['groups']:
 							interesting['ansible_net_system'].append(g['name'])
 					elif 'ansible_devices' in _FACTS.keys(): interesting['ansible_net_system'].append('linux')
