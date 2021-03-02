@@ -299,7 +299,6 @@ class AWX():
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 					elif 'junos' in vendor:
-						wc.pairprint('debug\t' + host['name'], host['id'])
 						_FACTS['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
 						interesting['ansible_net_interfaces_config'] = {}
 						for ancii in _FACTS['ansible_net_config']['interfaces']['interface']:
