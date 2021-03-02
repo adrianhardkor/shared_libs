@@ -263,19 +263,16 @@ class AWX():
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
 					interesting = {}
-					if 'vendor' in _FACTS.keys(): vendor = _FACTS['vendor']
-					elif 'network_os' in _FACTS.keys():
-						vendor = _FACTS['network_os'].lower()
-					elif 'ansible_env' in _FACTS.keys():
+					interesting['groups'] = host['groups']['results']
+					interesting['ansible_net_system'] = []
+					if 'network_os' in _FACTS.keys(): interesting['ansible_net_system'].append(_FACTS['network_os'].lower())
+					elif 'ansible_net_system' in _FACTS.keys(): interesting['ansible_net_system'].append(_FACTS['ansible_net_system'])
+					elif 'ansible_devices' in _FACTS.keys(): interesting['ansible_net_system'].append('linux')
+					if 'ansible_env' in _FACTS.keys():
 						for attr in ['SSH_CONNECTION', 'USER']:
 							if attr in _FACTS['ansible_env'].keys():
 								interesting[attr] = _FACTS['ansible_env'][attr]
-					if 'ansible_net_system' in _FACTS.keys():
-						vendor = _FACTS['ansible_net_system']
-					elif 'ansible_devices' in _FACTS.keys():
-						vendor = 'linux'
-					interesting['ansible_net_system'] = vendor
-					if vendor == 'linux':
+					if 'linux' in interesting['ansible_net_system']:
 						# linux
 						for ens in ['ens224', 'ansible_ens224']:
 							if ens in _FACTS.keys():
@@ -299,7 +296,7 @@ class AWX():
 								interesting['ansible_net_interfaces'][intf] = _FACTS['ansible_' + intf]
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
-					elif 'junos' in vendor:
+					elif 'junos' in interesting['ansible_net_system']:
 						_FACTS['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
 						interesting['ansible_net_interfaces_config'] = {}
 						for ancii in _FACTS['ansible_net_config']['interfaces']['interface']:
@@ -314,7 +311,7 @@ class AWX():
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
-					elif vendor == 'icx':
+					elif 'icx' in interesting['ansible_net_system']:
 						intf_locs = {}
 						for parent in ['ansible_net_model', 'network_os', 'ansible_net_image', 'ansible_net_interfaces', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_version', 'ansible_net_serialnum', 'ansible_net_interfaces', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb']:
 							if parent in _FACTS.keys():
@@ -360,7 +357,7 @@ class AWX():
 								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
 									interesting['ansible_net_interfaces_config'][clean[-1]] = []
 								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
-					elif vendor == 'none':
+					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
 						result[ip]['ids'][host['id']]['host_vars'] = host
