@@ -332,7 +332,7 @@ class AWX():
 								intf_config = {cfgLine: []}
 							elif cfgLine.startswith('  module'): intf_config[parentLine].append(cfgLine)
 							elif cfgLine.startswith('  stack-port'):
-								clean[-1] = icx_intf_format[clean[-1]]
+								clean[-1] = wc.icx_intf_format(clean[-1])
 								# intf_config[parentLine].append(' '.join(clean))
 								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
 									interesting['ansible_net_interfaces_config'][clean[-1]] = []
@@ -342,7 +342,7 @@ class AWX():
 								intf_config = {cfgLine: {'config':[], 'vlan': clean[1]}}
 								if 'name' in clean: intf_config['name'] = clean[3]
 							elif cfgLine.startswith(' tagged ') or cfgLine.startswith(' untagged '):
-								if 'to' not in clean: ports = [icx_intf_format[clean[-1]]]
+								if 'to' not in clean: ports = [wc.icx_intf_format(clean[-1])]
 								else:
 									# tagged ethe 1/2/1 to 1/2/8
 									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])									
@@ -352,7 +352,7 @@ class AWX():
 									interesting['ansible_net_interfaces_config'][port].append(intf_config)
 									
 							elif clean[0] == 'interface':
-								clean[-1] = icx_intf_format[clean[-1]]
+								clean[-1] = icx_intf_format(clean[-1])
 								parentLine = cfgLine
 								intf_config = {cfgLine: []}
 							elif 'ip' in clean and 'address' in clean:
