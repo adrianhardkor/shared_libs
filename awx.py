@@ -263,7 +263,7 @@ class AWX():
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
 					interesting = {}
-					interesting['groups'] = host['groups']['results']
+					interesting['groups'] = host['summary_fields']['groups']['results']
 					interesting['ansible_net_system'] = []
 					if 'network_os' in _FACTS.keys(): interesting['ansible_net_system'].append(_FACTS['network_os'].lower())
 					elif 'ansible_net_system' in _FACTS.keys(): interesting['ansible_net_system'].append(_FACTS['ansible_net_system'])
