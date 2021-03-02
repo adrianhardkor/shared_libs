@@ -360,6 +360,11 @@ class AWX():
 								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
 									interesting['ansible_net_interfaces_config'][clean[-1]] = []
 								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
+					elif 'commscope' in interesting['ansible_net_system']:
+						# all is interesting = we built the driver
+						# ansible_net_config2 is non-parsed AnsibleModule driver in template/e6k.parser.py
+						# look at icx.get_facts.py to build our own AnsibleModule too
+						interesting = _FACTS['ansible_net_config2']
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''

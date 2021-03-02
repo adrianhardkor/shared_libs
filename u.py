@@ -13,7 +13,9 @@ import re
 # /velocity/api/inventory/v13/template/{templateId}/sessions/{sessionId}?merge= <NO/INVENTORY/FULL>
 # /ito/executions/v1/agents
 
-data = json.loads(wc.read_file('j'))
 
-for intf in data.keys():
-	wc.pairprint(intf, wc.icx_intf_format(intf))
+data = json.loads(wc.read_file('/Users/adrian/Desktop/comm.json'))
+for d in data.keys():
+	if type(data[d]) != dict: continue
+	for dd in data[d].keys():
+		wc.pairprint(d,dd)
