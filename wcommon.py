@@ -823,9 +823,12 @@ def expand_slash_ports(port):
 def icx_intf_format(raw):
 	# first int of char+
 	i = 0
+	flag = False
 	for char in raw:
-		if wc.is_int(char):
+		isint = is_int(char)
+		if isint and flag and str(char) != '.':
 			return(raw[i::])
+		elif not isint and str(char) != '.': flag = True
 		i = i + 1
 	return('')
 

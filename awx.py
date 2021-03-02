@@ -322,8 +322,7 @@ class AWX():
 								if parent == 'ansible_net_interfaces':
 									pp = list(interesting[parent].keys())
 									for intf in pp:
-										wc.pairprint(intf,wc.icx_intf_format[intf])
-										intf_locs[wc.icx_intf_format[intf]] = interesting[parent][intf]
+										intf_locs[wc.icx_intf_format(intf)] = interesting[parent][intf]
 						interesting['ansible_net_config'] = _FACTS['ansible_net_config'].split('\n')
 						interesting['ansible_net_interfaces_config'] = {}
 						for cfgLine in interesting['ansible_net_config']:
