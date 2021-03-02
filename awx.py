@@ -351,7 +351,7 @@ class AWX():
 									interesting['ansible_net_interfaces_config'][port].append(intf_config)
 									
 							elif clean[0] == 'interface':
-								clean[-1] = icx_intf_format(clean[-1])
+								clean[-1] = wc.icx_intf_format(clean[-1])
 								parentLine = cfgLine
 								intf_config = {cfgLine: []}
 							elif 'ip' in clean and 'address' in clean:
