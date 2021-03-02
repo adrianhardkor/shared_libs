@@ -263,7 +263,8 @@ class AWX():
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
 					interesting = {}
-					if 'network_os' in _FACTS.keys():
+					if 'vendor' in _FACTS.keys(): vendor = _FACTS['vendor']
+					elif 'network_os' in _FACTS.keys():
 						vendor = _FACTS['network_os'].lower()
 					elif 'ansible_env' in _FACTS.keys():
 						for attr in ['SSH_CONNECTION', 'USER']:
