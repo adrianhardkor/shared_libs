@@ -316,20 +316,13 @@ class AWX():
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					elif vendor == 'icx':
 						intf_locs = {}
-						def icx_intf_format(raw):
-							# first int of char+
-							i = 0
-							for char in raw:
-								if wc.is_int(char): return(raw[i::])
-								i = i + 1
-							return('') 
-
 						for parent in ['ansible_net_model', 'network_os', 'ansible_net_image', 'ansible_net_interfaces', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_version', 'ansible_net_serialnum', 'ansible_net_interfaces', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb']:
 							if parent in _FACTS.keys():
 								interesting[parent] = _FACTS[parent]
 								if parent == 'ansible_net_interfaces':
-									for intf in list(interesting[parent].keys()): 
-										intf_locs[icx_intf_format[intf]] = intf
+									pp = list(interesting[parent].keys())
+									for intf in pp:
+										intf_locs[wc.icx_intf_format[intf]] = intf
 						interesting['ansible_net_config'] = _FACTS['ansible_net_config'].split('\n')
 						interesting['ansible_net_interfaces_config'] = {}
 						for cfgLine in interesting['ansible_net_config']:

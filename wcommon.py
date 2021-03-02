@@ -820,7 +820,14 @@ def expand_slash_ports(port):
                 result.append('/'.join([port[0],port[1],str(channel)]))
         return(result)
 
-
+def icx_intf_format(raw):
+	# first int of char+
+	i = 0
+	for char in raw:
+		if wc.is_int(char):
+			return(raw[i::])
+		i = i + 1
+	return('')
 
 def is_pingable(IP):
     global matcher
