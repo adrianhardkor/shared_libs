@@ -364,7 +364,7 @@ class AWX():
 						# all is interesting = we built the driver
 						# ansible_net_config2 is non-parsed AnsibleModule driver in template/e6k.parser.py
 						# look at icx.get_facts.py to build our own AnsibleModule too
-						interesting = _FACTS['ansible_net_config2']
+						interesting = _FACTS['ansible_raw']
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
