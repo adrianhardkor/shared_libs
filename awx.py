@@ -365,6 +365,12 @@ class AWX():
 						# ansible_net_config2 is non-parsed AnsibleModule driver in template/e6k.parser.py
 						# look at icx.get_facts.py to build our own AnsibleModule too
 						interesting = _FACTS['ansible_raw']
+					elif 'gainspeed' in interesting['ansible_net_system']:
+						# ansible_cable_mac
+						# | replace('.','')
+						for f in _FACTS.keys():
+							if type(_FACTS[f]) != dict: continue
+							_FACTS[f] = json.loads(_FACTS[f])
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
