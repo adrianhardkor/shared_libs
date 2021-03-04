@@ -1136,10 +1136,15 @@ def jenkins_header():
 
 def FindAnsibleHost(ansible_host, INV):
 	# Could be used for multiple repos?
+	vByIP = {}
 	for d in INV.keys():
 		# pairprint(d,INV[d]['ipAddress'])
-		if INV[d]['ipAddress']['value'] == ansible_host:
+		if str(INV[d]['ipAddress']['value']).trim() == str(ansible_host).trim():
+			wc.pairprint('Velocity Device Found by ansible_host_ip', d)
 			return(INV[d])
+		else:
+			vByIP[str(INV[d]['ipAddress']['value']).trim()] = str(ansible_host).trim()
+	wc.jd(vByIP)
 	return({})
 
 def print_vagent_header():
