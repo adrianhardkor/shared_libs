@@ -361,7 +361,7 @@ class AWX():
 								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
 									interesting['ansible_net_interfaces_config'][clean[-1]] = []
 								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
-						if _FACTS['ansible_net_model'] == None and 'ansible_net_stacked_models' in _FACTS.keys():
+						if 'ansible_net_stacked_models' in _FACTS.keys():
 							 _FACTS['ansible_net_model'] = ' '.join( _FACTS['ansible_net_stacked_models'])
 					elif 'commscope' in interesting['ansible_net_system']:
 						# all is interesting = we built the driver
