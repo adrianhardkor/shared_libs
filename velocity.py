@@ -380,6 +380,8 @@ class VELOCITY():
 				return(d)
 		if templateName != '':
 				return(out[templateName])
+		wc.pairprint(templateName, templateId)
+		wc.jd(data)
 		return(out)
 	def FormatPorts(self, out, device, pg, p, ports):
 		# wc.pairprint(device['name'], p['name'] + '\t' + p['templateId'])
