@@ -432,10 +432,10 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-INV = V.GetInventory(); # device ipAddress
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# INV = V.GetInventory(); # device ipAddress
 # V.Discover(INV['ARCBKBNEDGEPR02']['id'], driver='ping')
-wc.jd(INV)
+# wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
