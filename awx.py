@@ -76,7 +76,7 @@ class AWX():
 				if 'res' in result['event_data'].keys():
 					for dump in ['stdout_lines','stderr_lines']:
 						if dump in result['event_data']['res'].keys():
-							wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
+							# wc.pairprint(i + '    ' + dump,'\n'.join(result['event_data']['res'][dump]))
 							new[i][dump] = result['event_data']['res'][dump]
 			elif 'res' in result['event_data']:
 				new[i] = result['event_data']['res']
