@@ -219,11 +219,12 @@ class VELOCITY():
 			args = {}
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
+			wc.pairprint('args',args)
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			# re-up GetInventory
-			self.GetInventory()
-			# self.INV = self.FormatInventory(self.INV, device_new)
-			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
+			# self.GetInventory()
+			print('  '.join(['[INFO] Created:', device_name, str(device_new)]))
+			self.INV = self.FormatInventory(self.INV, device_new)
 		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append); # updates self.INV
 		if args == {}: return()
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s' % self.INV[device_name]['id'], args=args)
