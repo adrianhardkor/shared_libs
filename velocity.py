@@ -229,7 +229,7 @@ class VELOCITY():
 		if 'definitionId' in str(args):
 			for p in data['properties']:
 				if p['name'] == index:
-					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str(self.INV[device_name][index]['value'])), index + ':  ' + p['value'])
+					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str( self.INV[device_name][index]['value'])]), index + ':  ' + p['value'])
 		else:
 			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(self.INV[device_name][index])]), index + ':  ' + data[index])
 		if index == 'ipAddress':
