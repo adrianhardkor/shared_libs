@@ -369,8 +369,10 @@ class AWX():
 						# ansible_cable_mac
 						# | replace('.','')
 						_FACTS['ansible_net_model'] = []
+						_FACTS['ansible_net_serialnum'] = []
 						for node in _FACTS['ansible_net_system']['data']['node-discovery']:
 							_FACTS['ansible_net_model'].append({'node:' + node['node-ip']:node['device-type']})
+							_FACTS['ansible_net_serialnum'].append({'node:' + node['node-ip']:node['node-serial-number']})
 						for f in _FACTS.keys():
 							if not f.startswith('ansible_'): continue
 							interesting[f] = _FACTS[f]
