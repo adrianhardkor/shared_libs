@@ -1140,11 +1140,11 @@ def FindAnsibleHost(ansible_host, INV):
 	for d in INV.keys():
 		# pairprint(d,INV[d]['ipAddress'])
 		if str(INV[d]['ipAddress']['value']).strip() == str(ansible_host).strip():
-			pairprint('Velocity Device Found by ansible_host_ip', d)
+			# pairprint('Velocity Device Found by ansible_host_ip', d)
 			return(INV[d])
 		else:
 			vByIP[str(INV[d]['ipAddress']['value']).strip()] = str(ansible_host).strip()
-	jd(vByIP)
+	# jd(vByIP)
 	return({})
 
 def print_vagent_header():
