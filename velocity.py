@@ -221,7 +221,8 @@ class VELOCITY():
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			# re-up GetInventory
-			self.INV = self.FormatInventory(self.INV, device_new)
+			self.GetInventory()
+			# self.INV = self.FormatInventory(self.INV, device_new)
 			print('  '.join(['[INFO] Created:', device_name, device_new['id']]))
 		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append); # updates self.INV
 		if args == {}: return()
@@ -410,8 +411,8 @@ class VELOCITY():
 		return(out,ports)
 	def FormatInventory(self, out, device):
 		ports = {}
+		if 'id' not in device.keys(): wc.jd(device)
 		if device['id'] not in out.keys():
-			# wc.jd(device)
 			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'Tags':device['tags']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
