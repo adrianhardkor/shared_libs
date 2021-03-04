@@ -370,7 +370,7 @@ class AWX():
 						# | replace('.','')
 						for f in _FACTS.keys():
 							if not f.startswith('ansible_'): continue
-							_FACTS[f] = json.loads(_FACTS[f])
+							interesting[f] = _FACTS[f]
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
