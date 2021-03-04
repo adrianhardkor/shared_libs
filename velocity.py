@@ -229,9 +229,9 @@ class VELOCITY():
 		if 'definitionId' in str(args):
 			for p in data['properties']:
 				if p['name'] == index:
-					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str(new_value)]), index + ':  ' + p['value'])
+					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str(self.INV[device_name][index]['value'])), index + ':  ' + p['value'])
 		else:
-			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(new_value)]), index + ':  ' + data[index])
+			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(self.INV[device_name][index])]), index + ':  ' + data[index])
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			time.sleep(5); # wait 5s after applying ipAddress
@@ -432,10 +432,10 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-# INV = V.GetInventory(); # device ipAddress
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+INV = V.GetInventory(); # device ipAddress
 # V.Discover(INV['ARCBKBNEDGEPR02']['id'], driver='ping')
-# wc.jd(INV)
+wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
