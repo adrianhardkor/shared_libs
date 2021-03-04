@@ -198,7 +198,8 @@ class AWX():
 				for hostId in facts[ip]['ids'].keys():
 					facts[ip]['ids'][hostId]['ip'] = ip
 					idDict[hostId] = facts[ip]['ids'][hostId]; # 'facts'
-					if idDict[hostId]['facts_size'] not in [0,1,'0','1']:
+					if idDict[hostId]['facts_size'] not in [0,1,'0','1'] and \
+					sorted(list(idDict[hostId]['facts'].keys())) != ['ansible_net_system', 'groups']:
 						# if any deviceId has facts then out
 						out[a2v]['ready3'] = True
 			if 'ip' in idDict.keys():
