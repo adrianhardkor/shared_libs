@@ -369,7 +369,7 @@ class AWX():
 						# ansible_cable_mac
 						# | replace('.','')
 						for f in _FACTS.keys():
-							if type(_FACTS[f]) != dict: continue
+							if not f.startswith('ansible_'): continue
 							_FACTS[f] = json.loads(_FACTS[f])
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
