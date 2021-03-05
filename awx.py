@@ -379,6 +379,12 @@ class AWX():
 						for f in _FACTS.keys():
 							if not f.startswith('ansible_'): continue
 							interesting[f] = _FACTS[f]
+						# ansible_net_interfaces
+						_FACTS['ansible_net_interfaces'] = {}
+						_FACTS['ansible_net_interfaces_config'] = {}
+						for slot in _FACTS['ansible_net_configuration']['data']['ccap:proxy:ccap']['chassis']['slot']:
+							for port in slot['port']:
+								_FACTS['ansible_net_interfaces_config'][port['port-id']] = port
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
