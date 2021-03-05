@@ -15,6 +15,8 @@ class JENKINS():
 	def REST_POST(self, url, args={}, verify=False):
 		headers = {'Content-Type':'application/json', 'Accept':'application/json'}
 		# print('\t' + url)
+		wc.pairprint('url', self.IP + url)
+		wc.pairprint('args', args)
 		return(json.loads(wc.REST_POST(self.IP + url, user=self.user, pword=self.pword, verify=False, args=args, headers=headers, convert_args=True)))
 	def REST_GET(self, url):
 		# print('\t' + url)
@@ -85,9 +87,9 @@ class JENKINS():
 		runId,output = self.GetBuildResults(PipelineName)
 		wc.jd(output)
 	
-# J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
-# param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
-# param['dryrun'] = 'dryrun'
-# J.RunPipeline(wc.argv_dict['Pipe'], param)
+J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
+param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
+param['dryrun'] = 'dryrun'
+J.RunPipeline(wc.argv_dict['Pipe'], param)
 # curl -X POST http://jenkinUser:jenkinAPIToken@yourJenkinsURl.com/job/theJob/[11-1717]/doDelete
 

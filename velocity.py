@@ -428,7 +428,7 @@ class VELOCITY():
 		ports = {}
 		if 'id' not in device.keys(): wc.jd(device)
 		if device['id'] not in out.keys():
-			out[device['name']] = {'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'Tags':device['tags']}
+			out[device['name']] = {'tags': device['tags'], 'description': device['description'], 'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'Tags':device['tags']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
 			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
