@@ -41,8 +41,13 @@ class VELOCITY():
 		if '?' not in url:
 			url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
-		headers['Content-Type'] = headers['Accept'] = 'application/json'	
-		return(json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
+		headers['Content-Type'] = headers['Accept'] = 'application/json'
+		result = json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
+		if 'response.status_code' in result.keys():
+			wc.pairprint('args', args)
+			wc.pairprint('result' result)
+			exit(5)
+		return(result)
 	def REST_DELETE(self, url, args={}, verify=False):
 		# wc.pairprint('[INFO] ', 'REST_DELETE: ' + url)
 		headers = {"X-Auth-Token": self.TOKEN}
@@ -219,11 +224,10 @@ class VELOCITY():
 			args = {}
 			args['name'] = device_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
-			wc.pairprint('args',args)
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			# re-up GetInventory
 			# self.GetInventory()
-			print('  '.join(['[INFO] Created:', device_name, str(device_new)]))
+			print('  '.join(['[INFO] Created:', device_name, str(device_new['id'])]))
 			self.INV = self.FormatInventory(self.INV, device_new)
 		args = self.BuildDevicePropertyArgs(device_name, index, new_value, append=append); # updates self.INV
 		if args == {}: return()
@@ -240,6 +244,9 @@ class VELOCITY():
 			# DISCOVERY HAPPENS IN BATCHES OF 4 // ANY 1of4 CAN DELAY(Ping Timeout) THE BATCH ONLINE STATUS
 			# DISCOVERY COULD TAKE UP TO TIMEOUT * 4-DEVICES
 			self.Discover(self.INV[device_name]['id'],driver='ping')
+		elif index == 'name' and device_name in self.INV.keys():
+			# change name // already existed
+			self.INV[new_value] = self.INV.pop(device_name)
 		return()
 	def Discover(self, deviceId, driver=''):
 		discover = self.REST_POST('/velocity/api/inventory/v13/device/%s/action?type=discover' % deviceId)
