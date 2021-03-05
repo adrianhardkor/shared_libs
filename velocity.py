@@ -35,8 +35,14 @@ class VELOCITY():
 	def REST_PUT(self, url, args={}, verify=False):
 		url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
-		headers['Content-Type'] = headers['Accept'] = 'application/json'	
-		return(json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
+		headers['Content-Type'] = headers['Accept'] = 'application/json'
+		result = json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
+		if 'response.status_code' in result.keys():
+			if result['response.status_code'] not in ['200',200]:
+				wc.pairprint('args', args)
+				wc.pairprint('result', result)
+				exit(5)	
+		return(result)
 	def REST_POST(self, url, args={}, verify=False):
 		if '?' not in url:
 			url = url + '?limit=200'
