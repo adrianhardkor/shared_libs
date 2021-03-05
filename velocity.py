@@ -44,9 +44,10 @@ class VELOCITY():
 		headers['Content-Type'] = headers['Accept'] = 'application/json'
 		result = json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
 		if 'response.status_code' in result.keys():
-			wc.pairprint('args', args)
-			wc.pairprint('result', result)
-			exit(5)
+			if result['response.status_code'] not in ['200',200]:
+				wc.pairprint('args', args)
+				wc.pairprint('result', result)
+				exit(5)
 		return(result)
 	def REST_DELETE(self, url, args={}, verify=False):
 		# wc.pairprint('[INFO] ', 'REST_DELETE: ' + url)
