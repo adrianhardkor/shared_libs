@@ -231,7 +231,7 @@ class VELOCITY():
 					self.INV[device_name][index] = []
 				new = self.INV[device_name][index]
 				new.append(new_value)
-				args = {index:new}
+				args = {index:list(new)}
 				if new in self.INV[device_name][index]:
 					args = {}; # already exists
 				# wc.pairprint(self.INV[device_name][index].split(' '), new)
