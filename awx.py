@@ -375,6 +375,7 @@ class AWX():
 						_FACTS['ansible_net_serialnum'] = []
 						_FACTS['ansible_net_interfaces'] = {}
 						_FACTS['ansible_net_interfaces_config'] = {}
+						_FACTS['ansible_net_serialnum'] = []
 #						for slot in _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['chassis']['slot']:
 #							for port in slot['port']:
 #								_FACTS['ansible_net_interfaces_config'][port['port-id']] = port
