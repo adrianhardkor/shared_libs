@@ -382,9 +382,9 @@ class AWX():
 						# ansible_net_interfaces
 						_FACTS['ansible_net_interfaces'] = {}
 						_FACTS['ansible_net_interfaces_config'] = {}
-						for slot in _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['chassis']['slot']:
-							for port in slot['port']:
-								_FACTS['ansible_net_interfaces_config'][port['port-id']] = port
+#						for slot in _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['chassis']['slot']:
+#							for port in slot['port']:
+#								_FACTS['ansible_net_interfaces_config'][port['port-id']] = port
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
