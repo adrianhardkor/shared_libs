@@ -221,6 +221,21 @@ class VELOCITY():
 					args = {}; # already exists
 				# wc.pairprint(self.INV[device_name][index].split(' '), new)
 			self.INV[device_name][index] = new
+		elif type(self.INV[device_name][index]) == list:
+			if not append:
+				new = new_value
+				args = {index: new}
+				if self.INV[device_name][index] == new_value: args = {}
+			else:
+				if self.INV[device_name][index] == None:
+					self.INV[device_name][index] = []
+				new = self.INV[device_name][index]
+				new.append(new_value)
+				args = {index:new}
+				if new in self.INV[device_name][index]:
+					args = {}; # already exists
+				# wc.pairprint(self.INV[device_name][index].split(' '), new)
+			self.INV[device_name][index] = new
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
 		new_value = str(new_value)
