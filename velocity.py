@@ -36,8 +36,8 @@ class VELOCITY():
 		url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'
-		if list(args.keys()) == ['tags']:
-			wc.jd(args)
+		# if list(args.keys()) == ['tags']:
+		# 	wc.jd(args)
 		result = json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
 		if 'response.status_code' in result.keys():
 			if result['response.status_code'] not in ['200',200]:
