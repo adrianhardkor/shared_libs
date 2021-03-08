@@ -1,0 +1,91 @@
+{
+  "{http://schemas.xmlsoap.org/soap/envelope/}Body": {
+    "{http://www.cisco.com/prime/cp/v5}searchResponse": {
+      "{http://www.cisco.com/prime/cp/v5}results": {
+        "{http://www.cisco.com/prime/xsd/cp/v5}item": {
+          "{http://www.cisco.com/prime/xsd/cp/v5}cos": "residential",
+          "{http://www.cisco.com/prime/xsd/cp/v5}deviceIds": {
+            "{http://www.cisco.com/prime/xsd/cp/v5}id": {
+              "{http://www.w3.org/2001/XMLSchema-instance}type": "cptype:MACAddressType"
+            },
+            "{http://www.cisco.com/prime/xsd/cp/v5}macAddress": "1,6,00:15:96:f8:1c:bc"
+          },
+          "{http://www.cisco.com/prime/xsd/cp/v5}deviceType": "DOCSISModem",
+          "{http://www.cisco.com/prime/xsd/cp/v5}dhcpCriteria": "provisioned-docsis-troy",
+          "{http://www.cisco.com/prime/xsd/cp/v5}properties": {
+            "{http://www.cisco.com/prime/xsd/cp/v5}entry": [
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "PACKAGE",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "TIER_1"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "DIVISION",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "TROY"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/generic/oidRevisionNumber",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "1008806398138897441-1586196611001"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/provisioning/domain",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "RootDomain"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/provisioning/isBehindRequiredDevice",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "false"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/node",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "[]"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/provisioning/isRegistered",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "true"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/provisioning/isInRequiredProvGroup",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": "false"
+              },
+              {
+                "{http://www.cisco.com/prime/xsd/cp/v5}name": "/provisioning/properties/detected",
+                "{http://www.cisco.com/prime/xsd/cp/v5}value": {
+                  "{http://www.w3.org/2001/XMLSchema-instance}nil": "true"
+                }
+              }
+            ]
+          },
+          "{http://www.cisco.com/prime/xsd/cp/v5}subscriberId": "5bf8b7de-114b-465b-b365-dc87076d7f89",
+          "{http://www.w3.org/2001/XMLSchema-instance}type": "cptype:DeviceType"
+        },
+        "{http://www.cisco.com/prime/xsd/cp/v5}next": {
+          "{http://www.cisco.com/prime/xsd/cp/v5}maxResults": "1000",
+          "{http://www.cisco.com/prime/xsd/cp/v5}query": {
+            "{http://www.cisco.com/prime/xsd/cp/v5}deviceIdPattern": {
+              "{http://www.cisco.com/prime/xsd/cp/v5}macAddressPattern": "*"
+            },
+            "{http://www.cisco.com/prime/xsd/cp/v5}returnParameters": "ALL",
+            "{http://www.w3.org/2001/XMLSchema-instance}type": "cptype:DeviceSearchByDeviceIdPatternType"
+          },
+          "{http://www.cisco.com/prime/xsd/cp/v5}start": "1,6,00:15:96:f8:1c:bc"
+        },
+        "{http://www.cisco.com/prime/xsd/cp/v5}operationStatus": {
+          "{http://www.cisco.com/prime/xsd/cp/v5}code": "SUCCESS",
+          "{http://www.cisco.com/prime/xsd/cp/v5}message": "Operation successful",
+          "{http://www.cisco.com/prime/xsd/cp/v5}operationId": "0258f557-e2f8-44be-a9e4-26cf4d56d0ad",
+          "{http://www.cisco.com/prime/xsd/cp/v5}subStatus": {
+            "{http://www.cisco.com/prime/xsd/cp/v5}status": {
+              "{http://www.cisco.com/prime/xsd/cp/v5}batchCode": "BATCH_COMPLETED",
+              "{http://www.cisco.com/prime/xsd/cp/v5}cmdCodes": {
+                "{http://www.cisco.com/prime/xsd/cp/v5}code": "CMD_OK",
+                "{http://www.cisco.com/prime/xsd/cp/v5}index": "0"
+              },
+              "{http://www.cisco.com/prime/xsd/cp/v5}code": "CMD_OK",
+              "{http://www.cisco.com/prime/xsd/cp/v5}txId": "Batch:127.0.0.1:17f920cf:1775f5923bf:80053a74"
+            }
+          }
+        },
+        "{http://www.cisco.com/prime/xsd/cp/v5}size": "1000"
+      }
+    }
+  }
+}
