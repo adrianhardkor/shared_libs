@@ -226,7 +226,7 @@ class VELOCITY():
 		elif type(self.INV[device_name][index]) == list:
 			if not append:
 				new = new_value
-				args = {index: new}
+				args = {index: list(new)}
 				if self.INV[device_name][index] == new_value: args = {}
 			else:
 				if self.INV[device_name][index] == None:
@@ -240,7 +240,6 @@ class VELOCITY():
 			self.INV[device_name][index] = new
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
-		new_value = str(new_value)
 		# API PageId = 48
 		# wc.pairprint('[INFO] ', device_name)
 		if device_name not in self.INV.keys():
