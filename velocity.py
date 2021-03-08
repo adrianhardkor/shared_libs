@@ -232,7 +232,8 @@ class VELOCITY():
 				if self.INV[device_name][index] == None:
 					self.INV[device_name][index] = []
 				new = self.INV[device_name][index]
-				new.append(new_value)
+				for nv in new_value:
+					new.append(nv)
 				args = {index:list(new)}
 				if new in self.INV[device_name][index]:
 					args = {}; # already exists
