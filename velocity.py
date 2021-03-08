@@ -443,7 +443,7 @@ class VELOCITY():
 		ports = {}
 		if 'id' not in device.keys(): wc.jd(device)
 		if device['id'] not in out.keys():
-			out[device['name']] = {'tags': device['tags'], 'description': device['description'], 'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'Tags':device['tags']}
+			out[device['name']] = {'tags': device['tags'], 'description': device['description'], 'ports': {}, 'name':device['name'], 'isOnline':device['isOnline'], 'templateName':self.GetTemplates(templateId=device['templateId'])['name'], 'tags':device['tags']}
 		out[device['name']]['id'] = device['id']
 		for prop in device['properties']:
 			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
@@ -466,7 +466,10 @@ class VELOCITY():
 		return(out)
 
 # V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
-# wc.jd(V.GetInventory()); # device ipAddress
+# V.INV = V.GetInventory(); # device ipAddress
+#wc.jd(V.INV['ARCBKBNEDGDRR01'])
+# args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
+# wc.jd(V.REST_PUT('/velocity/api/inventory/v13/device/c2bc86a5-71fc-4fdf-bd74-8973ce3c71f9?limit=200', args=args))
 # V.Discover(INV['ARCBKBNEDGEPR02']['id'], driver='ping')
 # wc.jd(INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
