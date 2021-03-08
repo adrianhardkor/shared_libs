@@ -261,7 +261,7 @@ class VELOCITY():
 				if p['name'] == index:
 					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str( self.INV[device_name][index]['value'])]), index + ':  ' + p['value'])
 		else:
-			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(self.INV[device_name][index])]), index + ':  ' + data[index])
+			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(self.INV[device_name][index])]), index + ':  ' + str(data[index]))
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			time.sleep(5); # wait 5s after applying ipAddress
