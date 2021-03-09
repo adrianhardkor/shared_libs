@@ -43,7 +43,7 @@ class VELOCITY():
 			if result['response.status_code'] not in ['200',200]:
 				wc.jd(args)
 				wc.jd(result)
-				exit(5)	
+				raise
 		return(result)
 	def REST_POST(self, url, args={}, verify=False):
 		if '?' not in url:
