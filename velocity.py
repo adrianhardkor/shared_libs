@@ -305,7 +305,7 @@ class VELOCITY():
 				args = {'properties': [{'definitionId':self.INV[device_name]['ports'][port_name][index]['definitionId'], 'value': new_value}]}
 				if self.INV[device_name]['ports'][port_name][index]['value'] == new_value:
 					return(self.INV)
-				print('  '.join(['',str(self.INV[device_name]['ports'][port_name][index]['value']),str(type(self.INV[device_name]['ports'][port_name][index]['value'])),'',str(new_value),str(type(new_value))]))
+				# print('  '.join(['',str(self.INV[device_name]['ports'][port_name][index]['value']),str(type(self.INV[device_name]['ports'][port_name][index]['value'])),'',str(new_value),str(type(new_value))]))
 			else:
 				if self.INV[device_name]['ports'][port_name][index]['value'] == None:
 					self.INV[device_name]['ports'][port_name][index]['value'] = ''
@@ -382,7 +382,7 @@ class VELOCITY():
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
 			out,ports = self.FormatPorts(self.INV, self.INV[device_name], PGs, new_port, {})
-			wc.pairprint('[INFO] ' + port_name, 'created:' + str(ports[port_name]))
+			wc.pairprint('[INFO] ' + port_name, ports[port_name].keys())
 			# Re-Apply inventory for ChangeDevicePortProp to use
 			self.INV[device_name]['ports'][port_name] = ports[port_name]
 			wc.pairprint('ports_' + port_name, ports[port_name]['id'])
