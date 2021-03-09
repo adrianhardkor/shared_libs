@@ -195,7 +195,7 @@ class VELOCITY():
 			if not append:
 				new = new_value
 				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new_value}]}
-				if self.INV[device_name][index]['value'] == new_value: args = {}
+				if self.INV[device_name][index]['value'] == new_value: return({})
 			else:
 				if self.INV[device_name][index]['value'] == None:
 					self.INV[device_name][index]['value'] = ''
@@ -205,13 +205,14 @@ class VELOCITY():
 				# wc.pairprint(self.INV[device_name][index]['value'].split(' '), new)
 				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new}]}
 				if new in self.INV[device_name][index]['value'].split(' '):
+					return({})
 					args = {}; # already exists
 			self.INV[device_name][index]['value'] = new; # same definitionId
 		elif type(self.INV[device_name][index]) == str:
 			if not append:
 				new = new_value
 				args = {index: new}
-				if self.INV[device_name][index] == new_value: args = {}
+				if self.INV[device_name][index] == new_value: return({})
 			else:
 				if self.INV[device_name][index] == None:
 					self.INV[device_name][index] = ''
@@ -220,6 +221,7 @@ class VELOCITY():
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {index:new}
 				if new in self.INV[device_name][index].split(' '):
+					return({})
 					args = {}; # already exists
 				# wc.pairprint(self.INV[device_name][index].split(' '), new)
 			self.INV[device_name][index] = new
@@ -227,7 +229,7 @@ class VELOCITY():
 			if not append:
 				new = sorted(wc.lunique(list(new_value)))
 				args = {index: new}
-				if sorted(self.INV[device_name][index]) == new: args = {}
+				if sorted(self.INV[device_name][index]) == new: return({})
 			else:
 				if self.INV[device_name][index] == None: self.INV[device_name][index] = []
 				new = wc.lunique(self.INV[device_name][index])
@@ -236,6 +238,7 @@ class VELOCITY():
 				new = sorted(wc.lunique(list(new)))
 				args = {index:new}
 				if new == sorted(list(self.INV[device_name][index])):
+					return({})
 					args = {}; # already same
 			self.INV[device_name][index] = new
 		return(args)
