@@ -472,7 +472,7 @@ class VELOCITY():
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
 # wc.jd(V.REST_PUT('/velocity/api/inventory/v13/device/c2bc86a5-71fc-4fdf-bd74-8973ce3c71f9?limit=200', args=args))
 # V.Discover(INV['ARCBKBNEDGEPR02']['id'], driver='ping')
-# wc.jd(INV)
+# wc.jd(V.INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
