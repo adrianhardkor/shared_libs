@@ -41,8 +41,8 @@ class VELOCITY():
 		result = json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
 		if 'response.status_code' in result.keys():
 			if result['response.status_code'] not in ['200',200]:
-				wc.pairprint('args', args)
-				wc.pairprint('result', result)
+				wc.jd(args)
+				wc.jd(result)
 				exit(5)	
 		return(result)
 	def REST_POST(self, url, args={}, verify=False):
@@ -225,13 +225,12 @@ class VELOCITY():
 			self.INV[device_name][index] = new
 		elif type(self.INV[device_name][index]) == list:
 			if not append:
-				new = new_value
-				args = {index: list(new)}
-				if self.INV[device_name][index] == new_value: args = {}
+				new = sorted(wc.lunique(list(new_value)))
+				args = {index: new}
+				if sorted(self.INV[device_name][index]) == args[index]: args = {}
 			else:
-				if self.INV[device_name][index] == None:
-					self.INV[device_name][index] = []
-				new = self.INV[device_name][index]
+				if self.INV[device_name][index] == None: self.INV[device_name][index] = []
+				new = wc.lunique(self.INV[device_name][index])
 				for nv in new_value:
 					new.append(nv)
 				new = sorted(wc.lunique(list(new)))
