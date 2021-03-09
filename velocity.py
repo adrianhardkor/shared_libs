@@ -234,10 +234,10 @@ class VELOCITY():
 				new = self.INV[device_name][index]
 				for nv in new_value:
 					new.append(nv)
-				args = {index:list(wc.lunique(new))}
-				if new in self.INV[device_name][index]:
-					args = {}; # already exists
-				# wc.pairprint(self.INV[device_name][index].split(' '), new)
+				new = sorted(wc.lunique(list(new)))
+				args = {index:new}
+				if new == sorted(list(self.INV[device_name][index])):
+					args = {}; # already same
 			self.INV[device_name][index] = new
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
