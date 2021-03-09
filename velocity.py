@@ -227,7 +227,7 @@ class VELOCITY():
 			if not append:
 				new = sorted(wc.lunique(list(new_value)))
 				args = {index: new}
-				if sorted(self.INV[device_name][index]) == args[index]: args = {}
+				if sorted(self.INV[device_name][index]) == new: args = {}
 			else:
 				if self.INV[device_name][index] == None: self.INV[device_name][index] = []
 				new = wc.lunique(self.INV[device_name][index])
