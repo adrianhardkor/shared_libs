@@ -346,13 +346,13 @@ class AWX():
 							elif cfgLine.startswith(' tagged ') or cfgLine.startswith(' untagged '):
 								if 'to' not in clean: 
 									ports = [intf_locs[clean[-1]]]
-									wc.pairprint(clean[-1], ports)
+									# wc.pairprint(clean[-1], ports)
 								else:
 									# tagged ethe 1/2/1 to 1/2/8
 									ports = []
 									for ps in wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1]):
 										ports.append(intf_locs[ps])
-									wc.pairprint(clean, ports)
+									# wc.pairprint(clean, ports)
 								for port in ports:
 									if port not in interesting['ansible_net_interfaces_config'].keys(): 
 										interesting['ansible_net_interfaces_config'][port] = []
@@ -369,7 +369,6 @@ class AWX():
 								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
 						if 'ansible_net_stacked_models' in _FACTS.keys():
 							 interesting['ansible_net_model'] = ' '.join( _FACTS['ansible_net_stacked_models'])
-						exit(5)
 					elif 'commscope' in interesting['ansible_net_system']:
 						# all is interesting = we built the driver
 						# ansible_net_config2 is non-parsed AnsibleModule driver in template/e6k.parser.py
