@@ -5,6 +5,6 @@ import wcommon as wc
 import json
 import re
 
-raw = wc.read_file('/Users/adrian/Desktop/provServer.modems.xml.txt').replace('cptype:','cptype_')
-raw = wc.xml_loads2(raw)
-wc.jd(raw)
+raw = wc.read_file('./export.json')
+raw = json.loads(raw)
+wc.jd(raw[sys.argv[1].lower()])

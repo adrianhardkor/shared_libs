@@ -1,0 +1,14 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.cisco.com/prime/cp/v5">
+  <SOAP-ENV:Body>
+    <ns1:closeSession>
+      <ns1:context>
+        <ns1:{http://www.cisco.com/prime/xsd/cp/v5}sessionId>{{ sessionId }}</ns1:{http://www.cisco.com/prime/xsd/cp/v5}sessionId>
+        <ns1:{http://www.cisco.com/prime/xsd/cp/v5}username>{{ username }}</ns1:{http://www.cisco.com/prime/xsd/cp/v5}username>
+        <ns1:{http://www.cisco.com/prime/xsd/cp/v5}password>{{ password }}</ns1:{http://www.cisco.com/prime/xsd/cp/v5}password>
+        <ns1:{http://www.cisco.com/prime/xsd/cp/v5}rduHost>{{ rduHost }}</ns1:{http://www.cisco.com/prime/xsd/cp/v5}rduHost>
+	<ns1:{http://www.cisco.com/prime/xsd/cp/v5}rduPort>{{ rduPort }}</ns1:{http://www.cisco.com/prime/xsd/cp/v5}rduPort>
+      </ns1:context>
+    </ns1:closeSession>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+

@@ -1,0 +1,18 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://www.cisco.com/prime/xsd/cp/v5" xmlns:ns2="http://www.cisco.com/prime/cp/v5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SOAP-ENV:Body>
+    <ns2:search>
+      <ns2:context>
+        <ns1:sessionId>{{ sessionId }}</ns1:sessionId>
+      </ns2:context>
+      <ns2:search>
+        <ns1:query xsi:type="ns1:DeviceSearchByDeviceIdPatternType">
+          <ns1:deviceIdPattern>
+            <ns1:macAddressPattern>{{ macAddressPattern }}</ns1:macAddressPattern>
+          </ns1:deviceIdPattern>
+          <ns1:returnParameters>ALL</ns1:returnParameters>
+        </ns1:query>
+        <ns1:maxResults>1000</ns1:maxResults>
+      </ns2:search>
+    </ns2:search>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
