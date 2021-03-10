@@ -359,14 +359,15 @@ class AWX():
 									interesting['ansible_net_interfaces_config'][port].append(intf_config)
 									
 							elif clean[0] == 'interface':
-								clean[-1] = wc.icx_intf_format(clean[-1])
+								l3port = wc.icx_intf_format(clean[-1])
 								parentLine = cfgLine
 								intf_config = {cfgLine: []}
 							elif 'ip' in clean and 'address' in clean:
+								# interface ethernet 1/1/4\n ip address 192.168.0.166 255.255.255.0 dynamic
 								intf_config['ip'] = ' '.join(clean[2:4])
-								if clean[-1] not in interesting['ansible_net_interfaces_config'].keys(): 
-									interesting['ansible_net_interfaces_config'][clean[-1]] = []
-								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
+								if l3port not in interesting['ansible_net_interfaces_config'].keys(): 
+									interesting['ansible_net_interfaces_config'][l3port] = []
+								interesting['ansible_net_interfaces_config'][l3port].append(intf_config)
 						if 'ansible_net_stacked_models' in _FACTS.keys():
 							 interesting['ansible_net_model'] = ' '.join( _FACTS['ansible_net_stacked_models'])
 					elif 'commscope' in interesting['ansible_net_system']:
