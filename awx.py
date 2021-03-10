@@ -323,7 +323,8 @@ class AWX():
 								if parent == 'ansible_net_interfaces':
 									pp = list(interesting[parent].keys())
 									for intf in pp:
-										intf_locs[wc.icx_intf_format(intf)] = interesting[parent][intf]
+										intf_locs[wc.icx_intf_format(intf)] = intf
+										# interesting[parent][intf]
 						interesting['ansible_net_config'] = _FACTS['ansible_net_config'].split('\n')
 						interesting['ansible_net_interfaces_config'] = {}
 						for cfgLine in interesting['ansible_net_config']:
@@ -348,6 +349,7 @@ class AWX():
 									# tagged ethe 1/2/1 to 1/2/8
 									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])									
 								for port in ports:
+									port = intf_locs[port]
 									if port not in interesting['ansible_net_interfaces_config'].keys(): 
 										interesting['ansible_net_interfaces_config'][port] = []
 									interesting['ansible_net_interfaces_config'][port].append(intf_config)
