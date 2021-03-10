@@ -345,11 +345,13 @@ class AWX():
 								if 'name' in clean: intf_config['name'] = clean[3]
 							elif cfgLine.startswith(' tagged ') or cfgLine.startswith(' untagged '):
 								if 'to' not in clean: 
-									ports = [wc.icx_intf_format(clean[-1])]
+									ports = [intf_locs[clean[-1]]]
 									wc.pairprint(clean[-1], ports)
 								else:
 									# tagged ethe 1/2/1 to 1/2/8
-									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])
+									ports = []
+									for ps in wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1]):
+										ports.append(intf_locs[ps])
 									wc.pairprint(clean, ports)
 								for port in ports:
 									if port not in interesting['ansible_net_interfaces_config'].keys(): 
