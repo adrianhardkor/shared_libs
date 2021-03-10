@@ -344,13 +344,14 @@ class AWX():
 								intf_config = {cfgLine: {'config':[], 'vlan': clean[1]}}
 								if 'name' in clean: intf_config['name'] = clean[3]
 							elif cfgLine.startswith(' tagged ') or cfgLine.startswith(' untagged '):
-								if 'to' not in clean: ports = [wc.icx_intf_format(clean[-1])]
+								if 'to' not in clean: 
+									ports = [wc.icx_intf_format(clean[-1])]
+									wc.pairprint(clean[-1], ports)
 								else:
 									# tagged ethe 1/2/1 to 1/2/8
-									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])									
+									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])
+									wc.pairprint(clean, ports)
 								for port in ports:
-									if port not in intf_locs.keys(): wc.jd(intf_locs)
-									port = intf_locs[port]
 									if port not in interesting['ansible_net_interfaces_config'].keys(): 
 										interesting['ansible_net_interfaces_config'][port] = []
 									interesting['ansible_net_interfaces_config'][port].append(intf_config)
@@ -366,6 +367,7 @@ class AWX():
 								interesting['ansible_net_interfaces_config'][clean[-1]].append(intf_config)
 						if 'ansible_net_stacked_models' in _FACTS.keys():
 							 interesting['ansible_net_model'] = ' '.join( _FACTS['ansible_net_stacked_models'])
+						exit(5)
 					elif 'commscope' in interesting['ansible_net_system']:
 						# all is interesting = we built the driver
 						# ansible_net_config2 is non-parsed AnsibleModule driver in template/e6k.parser.py
