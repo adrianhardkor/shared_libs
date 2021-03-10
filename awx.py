@@ -349,6 +349,7 @@ class AWX():
 									# tagged ethe 1/2/1 to 1/2/8
 									ports = wc.expand_slash_ports(clean[-3] + '-' + clean[-1].split('/')[-1])									
 								for port in ports:
+									if port not in intf_locs.keys(): wc.jd(intf_locs)
 									port = intf_locs[port]
 									if port not in interesting['ansible_net_interfaces_config'].keys(): 
 										interesting['ansible_net_interfaces_config'][port] = []
