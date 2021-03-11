@@ -563,7 +563,7 @@ def pairedList(myl):
     # {'eng1': 'WOPR', 'eng2': 'VOLTRON'}
     result = {}
     for i in range(0, len(myl), 2):
-        index = str(myl[i])
+        index = str(myl[i]).strip()
         value = str(myl[i + 1])
         # pairprint(index, value)
         if index in result:
