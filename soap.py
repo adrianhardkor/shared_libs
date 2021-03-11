@@ -42,6 +42,7 @@ class BACSOAP():
 		wc.pairprint('sessionId',self.sessionId)
 		self.__name__ = 'BACSOAP'
 	def DeviceSearchByDeviceIdPatternType(self, macAddressPattern='*'):
+		fname = '.'.join(['/opt/RDU', self.RDU, '.json'])
 		data = runner('DeviceSearchByDeviceIdPatternType', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'macAddressPattern':macAddressPattern})
 		result = {}
 		if 'ns2:searchResponse' not in data['soap:Envelope']['soap:Body'].keys():
@@ -57,17 +58,17 @@ class BACSOAP():
 			for modem in data['soap:Envelope']['soap:Body']['ns2:searchResponse']['ns2:results']['cptype:item']:
 				result[modem['cptype:deviceIds']['cptype:macAddress']] = modem
 			wc.pairprint('\n\n\n\nMODEMCOUNT\t' + start, len(result.keys()))
-		wc.rmf('export.json')
-		wc.post_fname(json.dumps(result), 'export.json')
+		wc.rmf(fname)
+		wc.post_fname(json.dumps(result), fname)
 		wc.pairprint('export took', wc.fullRuntime())
 		return(result)
 	def closeSession(self):
             wc.jd(runner('closeSession', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'username':self.username, 'password':self.password, 'rduHost':self.RDU, 'rduPort':'49187'}))
 
-BAC = BACSOAP(PWS=wc.argv_dict['PWS'], RDU=wc.argv_dict['RDU'], username=wc.argv_dict['username'], password=wc.argv_dict['password'])
-if 'mac' in wc.argv_dict.keys():
-    BAC.DeviceSearchByDeviceIdPatternType(macAddressPattern=wc.argv_dict['mac']); # 1,6,00:00:ca:de:7f:f4
-else:
-    BAC.DeviceSearchByDeviceIdPatternType()
-BAC.closeSession()
+# BAC = BACSOAP(PWS=wc.argv_dict['PWS'], RDU=wc.argv_dict['RDU'], username=wc.argv_dict['username'], password=wc.argv_dict['password'])
+# if 'mac' in wc.argv_dict.keys():
+#     BAC.DeviceSearchByDeviceIdPatternType(macAddressPattern=wc.argv_dict['mac']); # 1,6,00:00:ca:de:7f:f4
+# else:
+#     BAC.DeviceSearchByDeviceIdPatternType()
+# BAC.closeSession()
 

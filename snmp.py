@@ -36,3 +36,5 @@ M = MODEMSNMP(wc.argv_dict['comm'])
 Ports = M.GetModemPorts(wc.argv_dict['ip'])
 print(json.dumps(Ports, indent=4))
 
+# sysLocation
+
