@@ -42,7 +42,7 @@ class BACSOAP():
 		wc.pairprint('sessionId',self.sessionId)
 		self.__name__ = 'BACSOAP'
 	def DeviceSearchByDeviceIdPatternType(self, macAddressPattern='*'):
-		fname = '.'.join(['/opt/RDU', self.RDU, '.json'])
+		fname = '.'.join(['/opt/RDU', self.RDU, 'json'])
 		data = runner(self.PATH, 'DeviceSearchByDeviceIdPatternType', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'macAddressPattern':macAddressPattern})
 		result = {}
 		if 'ns2:searchResponse' not in data['soap:Envelope']['soap:Body'].keys():
