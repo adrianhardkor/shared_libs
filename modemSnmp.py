@@ -20,13 +20,18 @@ class MODEMSNMP():
 		result = {'intfs':{}, 'chassis':{}}
 		for mib in ['ifDescr', 'ifPromiscuousMode', 'ifConnectorPresent', 'ifType', 'ifMtu', 'ifSpeed', 'ifAdminStatus', 'ifOperStatus', 'ifPhysAddress']:
 			data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib))
-			wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
+			# wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
 			for d in data.split('\n'):
 				d = wc.mcsplit(d, ':=')
 				ifIndex = d[2].strip().split('.')[-1]
 				Value = d[-1]
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
-				if mib == 'ifPhysAddress': result['intfs'][ifIndex][mib] = ''.join(d[-6::]).replace(':','').upper().strip()
+				if mib == 'ifPhysAddress':
+					new = []
+					for element in d[-6::].strip().split(':'):
+						if len(element) == 1: new.append('0' + element)
+						else: new.append(element)
+					result['intfs'][ifIndex][mib] = ''.join(new).upper()
 				else: result['intfs'][ifIndex][mib] = d[-1].strip()
 		data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, 'ipNetToMediaPhysAddress'))
 		for d in data.split('\n'):
