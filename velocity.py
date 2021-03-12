@@ -62,6 +62,10 @@ class VELOCITY():
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'	
 		return(json.loads(wc.REST_DELETE(self.V + url, verify=verify, args=args, headers=headers, convert_args=True)))
+	def DelAllMessages(self):
+		for isRead in ['false', 'true']:
+			gone = self.REST_DELETE('/velocity/api/message/v6/messages?filter=isRead::' + isRead)
+			wc.jd(gone)
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
@@ -460,6 +464,7 @@ class VELOCITY():
 			out[device['name']]['ports'][p['name']] = ports[p['name']]
 		return(out)
 	def GetInventory(self):
+		self.DelAllMessages()
 		out = {}
 		self.top = VELOCITY.GetTopologies(self)
 		data = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/devices', params={'includeProperties':True, 'includePortGroups': True})
@@ -470,6 +475,8 @@ class VELOCITY():
 		return(out)
 
 # V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# V.DelAllMessages()
+
 # V.INV = V.GetInventory(); # device ipAddress
 #wc.jd(V.INV['ARCBKBNEDGDRR01'])
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
