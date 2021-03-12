@@ -21,6 +21,7 @@ class MODEMSNMP():
 		for mib in ['ifDescr', 'ifPromiscuousMode', 'ifConnectorPresent', 'ifType', 'ifMtu', 'ifSpeed', 'ifAdminStatus', 'ifOperStatus', 'ifPhysAddress']:
 			data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib))
 			for d in data.split('\n'):
+				print(d)
 				d = wc.mcsplit(d, ':=')
 				ifIndex = d[2].strip().split('.')[-1]
 				Value = d[-1]
