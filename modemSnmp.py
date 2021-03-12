@@ -28,7 +28,8 @@ class MODEMSNMP():
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
 				if mib == 'ifPhysAddress':
 					new = []
-					for element in d[-6::].strip().split(':'):
+					for element in d[-6::]:
+						element = element.strip()
 						if len(element) == 1: new.append('0' + element)
 						else: new.append(element)
 					result['intfs'][ifIndex][mib] = ''.join(new).upper()
