@@ -25,6 +25,7 @@ class MODEMSNMP():
 				d = wc.mcsplit(d, ':=')
 				ifIndex = d[2].strip().split('.')[-1]
 				Value = d[-1]
+				if mib == 'ifDescr': Value = ':'.join(d[3::])
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
 				if mib == 'ifPhysAddress':
 					new = []
@@ -33,7 +34,7 @@ class MODEMSNMP():
 						if len(element) == 1: new.append('0' + element)
 						else: new.append(element)
 					result['intfs'][ifIndex][mib] = ''.join(new).upper()
-				else: result['intfs'][ifIndex][mib] = d[-1].strip()
+				else: result['intfs'][ifIndex][mib] = Value.strip()
 		data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, 'ipNetToMediaPhysAddress'))
 		for d in data.split('\n'):
 			d = d.split('=')
