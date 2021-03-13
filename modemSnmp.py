@@ -20,7 +20,7 @@ class MODEMSNMP():
 		result = {'intfs':{}, 'chassis':{}}
 		for mib in ['ifDescr', 'ifPromiscuousMode', 'ifConnectorPresent', 'ifType', 'ifMtu', 'ifSpeed', 'ifAdminStatus', 'ifOperStatus', 'ifPhysAddress']:
 			data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib))
-			wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
+			# wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
 			for d in data.split('\n'):
 				d = wc.mcsplit(d, ':=')
 				ifIndex = d[2].strip().split('.')[-1]
@@ -49,6 +49,7 @@ class MODEMSNMP():
 		result['chassis']['serialNumber'] = wc.grep('69.1.1.4.0', data).split(':')[-1]
 		result['chassis']['softwareFile'] = wc.grep('69.1.3.2.0', data).split(':')[-1]
 		self.Modem = result
+		wc.jd(result)
 		return(result)
 
 # M = MODEMSNMP(wc.argv_dict['comm'])
