@@ -46,7 +46,7 @@ class MODEMSNMP():
 			intf = d.pop(0)
 			if 'ipNetToMediaPhysAddress' not in result['intfs'][intf].keys():
 				result['intfs'][intf]['ipNetToMediaPhysAddress'] = {}
-			result['intfs'][intf]['ipNetToMediaPhysAddress'][value.replace(':','').upper()] = '.'.join(d).strip()
+			result['intfs'][intf]['ipNetToMediaPhysAddress'][str(value).replace(':','').upper()] = '.'.join(d).strip()
 		data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, 'SNMPv2-SMI::mib-2.69.1'))
 		result['chassis']['serialNumber'] = wc.grep('69.1.1.4.0', data).split(':')[-1]
 		result['chassis']['softwareFile'] = wc.grep('69.1.3.2.0', data).split(':')[-1]
