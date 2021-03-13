@@ -25,8 +25,8 @@ class MODEMSNMP():
 				d = wc.mcsplit(d, ':=')
 				ifIndex = d[2].strip().split('.')[-1]
 				Value = d[-1]
-				if mib == 'ifConnectorPresent' and Value = '0': Value = 'false(2)'
-				if mib == 'ifConnectorPresent' and Value = '1': Value = 'true(1)'
+				if mib == 'ifConnectorPresent' and Value == '0': Value = 'false(2)'
+				if mib == 'ifConnectorPresent' and Value == '1': Value = 'true(1)'
 				if mib == 'ifDescr': Value = ':'.join(d[4::])
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
 				if mib == 'ifPhysAddress':
