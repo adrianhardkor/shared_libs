@@ -382,6 +382,7 @@ class VELOCITY():
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# POST / create
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
+			elif self.INV[device_name]['templateName'] == 'Modem': templateName = 'Modem Port'
 			else: templateName = 'Network Port'
 			args = {}
 			args['name'] = port_name
