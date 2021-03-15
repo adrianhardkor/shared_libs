@@ -65,7 +65,7 @@ class VELOCITY():
 	def DelAllMessages(self):
 		for isRead in ['false', 'true']:
 			gone = self.REST_DELETE('/velocity/api/message/v6/messages?filter=isRead::' + isRead)
-			wc.jd(gone)
+			# wc.jd(gone)
 	def GetAgentReservation(self, resvId):
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
