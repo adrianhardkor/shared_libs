@@ -41,6 +41,9 @@ class BACSOAP():
 		self.sessionId = raw['soap:Envelope']['soap:Body']['ns2:createSessionResponse']['ns2:context']['cptype:sessionId']
 		wc.pairprint('sessionId',self.sessionId)
 		self.__name__ = 'BACSOAP'
+	def delDevice(self, cmac):
+		data = runner(self.PATH, 'delDevice', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'cmac':cmac})
+		wc.pairprint(cmac, data)
 	def DeviceSearchByDeviceIdPatternType(self, macAddressPattern='*'):
 		fname = '.'.join(['/opt/RDU', self.RDU, 'json'])
 		data = runner(self.PATH, 'DeviceSearchByDeviceIdPatternType', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'macAddressPattern':macAddressPattern})
