@@ -384,6 +384,7 @@ class VELOCITY():
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
 			elif self.INV[device_name]['templateName'] == 'Modem': templateName = 'Modem Port'
 			else: templateName = 'Network Port'
+			wc.pairprint(self.INV[device_name]['templateName'], templateName)
 			args = {}
 			args['name'] = port_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
