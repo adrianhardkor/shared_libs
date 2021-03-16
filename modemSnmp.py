@@ -23,7 +23,11 @@ class MODEMSNMP():
 			# wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
 			for d in data.split('\n'):
 				d = wc.mcsplit(d, ':=')
-				ifIndex = d[2].strip().split('.')[-1]
+				try:
+					ifIndex = d[2].strip().split('.')[-1]
+				except IndexError:
+					wc.pairprint('IndexError\t' + str(d), d[2].strip().split('.'))
+					raise
 				Value = d[-1]
 				if mib == 'ifConnectorPresent' and Value == '0': Value = 'false(2)'
 				if mib == 'ifConnectorPresent' and Value == '1': Value = 'true(1)'
@@ -52,7 +56,7 @@ class MODEMSNMP():
 		result['chassis']['serialNumber'] = wc.grep('69.1.1.4.0', data).split(':')[-1]
 		result['chassis']['softwareFile'] = wc.grep('69.1.3.2.0', data).split(':')[-1]
 		self.Modem = result
-		wc.jd(result)
+		# wc.jd(result)
 		return(result)
 
 # M = MODEMSNMP(wc.argv_dict['comm'])
