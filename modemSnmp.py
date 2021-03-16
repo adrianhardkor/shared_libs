@@ -41,6 +41,7 @@ class MODEMSNMP():
 		data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, 'ipNetToMediaPhysAddress'))
 		for d in data.split('\n'):
 			d = d.split('=')
+			wc.pairprint('ipNetToMediaPhysAddress', d)
 			value =  wc.cleanLine(d[-1])
 			d = d[0].split('.')
 			snmpjunk = d.pop(0)
