@@ -23,11 +23,8 @@ class MODEMSNMP():
 			# wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
 			for d in data.split('\n'):
 				d = wc.mcsplit(d, ':=')
-				try:
-					ifIndex = d[2].strip().split('.')[-1]
-				except IndexError:
-					wc.pairprint('IndexError', d)
-					raise
+				if d == [''] or d == []: continue
+				ifIndex = d[2].strip().split('.')[-1]
 				Value = d[-1]
 				if mib == 'ifConnectorPresent' and Value == '0': Value = 'false(2)'
 				if mib == 'ifConnectorPresent' and Value == '1': Value = 'true(1)'
