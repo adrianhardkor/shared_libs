@@ -375,7 +375,7 @@ class VELOCITY():
 			# wc.jd(pg)
 		else:
 			pg = PGs[pgName]
-		wc.pairprint(port_name, self.INV[device_name])
+		# wc.pairprint(port_name, self.INV[device_name])
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# for auto-loading template-ports
 			self.INV = self.GetInventory()
