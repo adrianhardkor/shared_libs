@@ -26,7 +26,7 @@ class MODEMSNMP():
 				try:
 					ifIndex = d[2].strip().split('.')[-1]
 				except IndexError:
-					wc.pairprint('IndexError\t' + str(d), d[2].strip().split('.'))
+					wc.pairprint('IndexError', d)
 					raise
 				Value = d[-1]
 				if mib == 'ifConnectorPresent' and Value == '0': Value = 'false(2)'
