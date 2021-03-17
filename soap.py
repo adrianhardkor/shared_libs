@@ -61,8 +61,9 @@ class BACSOAP():
 			for modem in data['soap:Envelope']['soap:Body']['ns2:searchResponse']['ns2:results']['cptype:item']:
 				result[modem['cptype:deviceIds']['cptype:macAddress']] = modem
 			wc.pairprint('\n\n\n\nMODEMCOUNT\t' + start, len(result.keys()))
-		wc.rmf(fname)
+		wc.pairprint('DEL: ' + fname, str(wc.rmf(fname)))
 		wc.post_fname(json.dumps(result), fname)
+		wc.pairprint(fname, wc.exec2(' ls -l ' + fname))
 		wc.pairprint('export took', wc.fullRuntime())
 		return(result)
 	def closeSession(self):
