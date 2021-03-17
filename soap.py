@@ -6,6 +6,9 @@ import json
 import re
 import jinja2
 
+# PATH is for soapTemplates
+# PATH2 is for json export
+
 def runner(PATH, method, PWS_URL, args={}):
 	# does file exist?
 	if args != {}:
@@ -31,12 +34,13 @@ def runner(PATH, method, PWS_URL, args={}):
 	return(wc.xml_loads2(session_xml))
 
 class BACSOAP():
-	def __init__(self, PWS, RDU, username, password, PATH):
+	def __init__(self, PWS, RDU, username, password, PATH, PATH2):
 		self.PWS = PWS
 		self.RDU = RDU
 		self.username = username
 		self.password = password
 		self.PATH = PATH
+		self.PATH2 = PATH2
 		raw = runner(self.PATH, 'createSession', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'username':self.username, 'password':self.password, 'rduHost':self.RDU, 'rduPort':'49187'})
 		self.sessionId = raw['soap:Envelope']['soap:Body']['ns2:createSessionResponse']['ns2:context']['cptype:sessionId']
 		wc.pairprint('sessionId',self.sessionId)
@@ -45,7 +49,7 @@ class BACSOAP():
 		data = runner(self.PATH, 'delDevice', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'cmac':cmac})
 		wc.pairprint(cmac, data)
 	def DeviceSearchByDeviceIdPatternType(self, macAddressPattern='*'):
-		fname = '.'.join([self.PATH + '/RDU', self.RDU, 'json'])
+		fname = '.'.join([self.PATH2 + '/RDU', self.RDU, 'json'])
 		data = runner(self.PATH, 'DeviceSearchByDeviceIdPatternType', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'macAddressPattern':macAddressPattern})
 		result = {}
 		if 'ns2:searchResponse' not in data['soap:Envelope']['soap:Body'].keys():
