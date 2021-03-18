@@ -396,6 +396,57 @@ class AWX():
 							interesting['ansible_net_hostname'] = interesting['ansible_net_configuration']['data']['tailf-aaa:session']
 						except Exception:
 							pass
+						for node2 in _FACTS['ansible_cable_mac']['data']['node-oper-data:cable']:
+							for upstream in node2['upstream-summary']['upstream-channel']:
+								ppp = upstream['ucid']
+								if ppp not in _FACTS['ansible_net_interfaces'].keys():
+									_FACTS['ansible_net_interfaces'][ppp] = {'summary':{},'docs-mac-domain':{}}
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['ucid'] = ppp
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['ucid-modem-count'] = upstream['ucid-modem-count']
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['dir'] = 'upstream'
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['mac-domain-index'] = node2['mac-domain-index']
+							for downstream in node2['downstream-summary']['primary-dcid']:
+								ppp = downstream['dcid']
+								if ppp not in _FACTS['ansible_net_interfaces'].keys():
+									_FACTS['ansible_net_interfaces'][ppp] = {'summary':{},'docs-mac-domain':{}}
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['dcid'] = ppp
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['dcid-modem-count'] = downstream['dcid-modem-count']
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['dir'] = 'downstream'
+								_FACTS['ansible_net_interfaces'][ppp]['summary']['mac-domain-index'] = node2['mac-domain-index']							
+						for macdomain in _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['docsis']['docs-mac-domain']['mac-domain']:
+							primary_ds = macdomain.pop('primary-capable-ds')
+							ofdm = macdomain.pop('ds-ofdm-channel-list')
+							bonding_us = macdomain.pop('upstream-bonding-group')
+							physical_us = macdomain.pop('upstream-physical-channel-ref')
+
+							for _ds in primary_ds:
+								_ds = '/'.join([_ds['slot'],_ds['ds-rf-port'],_ds['down-channel']])
+								if _ds not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ds] = {'summary':{},'docs-mac-domain':{}}
+								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain'] = macdomain
+								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain']['_portType'] = 'primary-capable-ds'
+
+							for _ofdm in primary_ofdm:
+								_ofdm = '/'.join([_ofdm['slot'],_ofdm['ds-rf-port'],_ofdm['ofdm-channel']])
+								if _ofdm not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ofdm] = {'summary':{},'docs-mac-domain':{}}
+								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain'] = macdomain
+								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain']['_portType'] = 'ds-ofdm-channel-list'
+
+							for group in bonding_us:
+								groupname = group['bonding-group-name']
+								for _us1 in bonding_us:
+									_us1 = '/'.join([_us1['slot'],_us1['us-rf-port'],_us1['upstream-physical-channel']])
+									if _us1 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us1] = {'summary':{},'docs-mac-domain':{}}
+									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain'] = macdomain
+									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_portType'] = 'upstream-bonding-group'
+									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_groupName'] = groupname
+									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_upstream-logical-channel'] = _us1['upstream-logical-channel']
+
+#							for _us2 in physical_us:
+#								_us2 = '/'.join([_us2['slot'],_us2['us-rf-port'],_us2['upstream-physical-channel']])
+#								if _us2 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us2] = {'summary':{},'docs-mac-domain':{}}
+#								_FACTS['ansible_net_interfaces'][_us2]['docs-mac-domain'] = macdomain
+#								_FACTS['ansible_net_interfaces'][_us2]['docs-mac-domain']['_portType'] = 'physical-us'
+						# docs-mac-domain
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
