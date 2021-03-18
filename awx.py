@@ -425,7 +425,7 @@ class AWX():
 								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain'] = macdomain
 								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain']['_portType'] = 'primary-capable-ds'
 
-							for _ofdm in primary_ofdm:
+							for _ofdm in ofdm:
 								_ofdm = '/'.join([str(_ofdm['slot']),str(_ofdm['ds-rf-port']),str(_ofdm['ofdm-channel'])])
 								if _ofdm not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ofdm] = {'summary':{},'docs-mac-domain':{}}
 								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain'] = macdomain
