@@ -384,6 +384,7 @@ class VELOCITY():
 			# POST / create
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
 			elif self.INV[device_name]['templateName'] == 'Modem': templateName = 'Modem Port'
+			elif self.INV[device_name]['templateName'] == 'CMTS' and wc.is_int(port_name[0]): templateName = 'RF Port'
 			else: templateName = 'Network Port'
 			wc.pairprint(self.INV[device_name]['templateName'], templateName)
 			args = {}
