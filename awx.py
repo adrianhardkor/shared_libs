@@ -433,7 +433,7 @@ class AWX():
 
 							for group in bonding_us:
 								groupname = group['bonding-group-name']
-								for _us1 in bonding_us:
+								for _us1 in group['upstream-logical-channel-ref']:
 									_us1 = '/'.join([str(_us1['slot']),str(_us1['us-rf-port']),str(_us1['upstream-physical-channel'])])
 									if _us1 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us1] = {'summary':{},'docs-mac-domain':{}}
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain'] = macdomain
