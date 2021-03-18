@@ -420,13 +420,13 @@ class AWX():
 							physical_us = macdomain.pop('upstream-physical-channel-ref')
 
 							for _ds in primary_ds:
-								_ds = '/'.join([_ds['slot'],_ds['ds-rf-port'],_ds['down-channel']])
+								_ds = '/'.join([str(_ds['slot']),str(_ds['ds-rf-port']),str(_ds['down-channel'])])
 								if _ds not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ds] = {'summary':{},'docs-mac-domain':{}}
 								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain'] = macdomain
 								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain']['_portType'] = 'primary-capable-ds'
 
 							for _ofdm in primary_ofdm:
-								_ofdm = '/'.join([_ofdm['slot'],_ofdm['ds-rf-port'],_ofdm['ofdm-channel']])
+								_ofdm = '/'.join([str(_ofdm['slot']),str(_ofdm['ds-rf-port']),str(_ofdm['ofdm-channel'])])
 								if _ofdm not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ofdm] = {'summary':{},'docs-mac-domain':{}}
 								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain'] = macdomain
 								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain']['_portType'] = 'ds-ofdm-channel-list'
@@ -434,7 +434,7 @@ class AWX():
 							for group in bonding_us:
 								groupname = group['bonding-group-name']
 								for _us1 in bonding_us:
-									_us1 = '/'.join([_us1['slot'],_us1['us-rf-port'],_us1['upstream-physical-channel']])
+									_us1 = '/'.join([str(_us1['slot']),str(_us1['us-rf-port']),str(_us1['upstream-physical-channel'])])
 									if _us1 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us1] = {'summary':{},'docs-mac-domain':{}}
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain'] = macdomain
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_portType'] = 'upstream-bonding-group'
