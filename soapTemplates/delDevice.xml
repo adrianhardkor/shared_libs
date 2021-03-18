@@ -4,13 +4,10 @@
       <ns2:context>
         <ns1:sessionId>{{ sessionId }}</ns1:sessionId>
       </ns2:context>
-      <ns2:device>
-        <ns1:id xsi:type="ns1:MACAddressType">{{ cmac }}</ns1:id>
-        <ns1:deviceType>DOCSISModem</ns1:deviceType>
-        <ns1:deviceIds>
-          <ns1:id xsi:type="ns1:MACAddressType">{{ cmac }}</ns1:id>
-        </ns1:deviceIds>
-      </ns2:device>
+      <ns2:options></ns2:options>
+      <ns2:deviceId>
+        <ns1:macAddress>{{ cmac }}</ns1:macAddress>
+      </ns2:deviceId>
     </ns2:deleteDevice>
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

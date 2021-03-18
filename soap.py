@@ -47,7 +47,8 @@ class BACSOAP():
 		self.__name__ = 'BACSOAP'
 	def delDevice(self, cmac):
 		data = runner(self.PATH, 'delDevice', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'cmac':cmac})
-		wc.pairprint(cmac, data)
+		# wc.jd(data)
+		return(data)
 	def DeviceSearchByDeviceIdPatternType(self, macAddressPattern='*'):
 		fname = '.'.join([self.PATH2 + '/RDU', self.RDU, 'json'])
 		data = runner(self.PATH, 'DeviceSearchByDeviceIdPatternType', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'macAddressPattern':macAddressPattern})
