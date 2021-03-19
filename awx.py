@@ -187,7 +187,7 @@ class AWX():
 		summ = {}
 		# check if scaffolding has working GetFacts
 		for a2v in out.keys():
-			out[a2v]['ready3'] = False
+			out[a2v]['readyHasFacts'] = False
 			if out[a2v]['ip'] == []:
 				# no ip = not out
 				out[a2v]['no_ip'] = True
@@ -201,7 +201,7 @@ class AWX():
 					if idDict[hostId]['facts_size'] not in [0,1,'0','1'] and \
 					sorted(list(idDict[hostId]['facts'].keys())) != ['ansible_net_system', 'groups']:
 						# if any deviceId has facts then out
-						out[a2v]['ready3'] = True
+						out[a2v]['readyHasFacts'] = True
 			if 'ip' in idDict.keys():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
@@ -209,7 +209,7 @@ class AWX():
 			# FINAL SUMMARY
 			summ[a2v] = {}
 			for i in [match for match in list(out[a2v].keys()) if "ready" in match]:
-				if out[a2v][i] == False:  summ[a2v]['ready'] = False
+				if out[a2v][i] == False:  summ[a2v]['ready'] = False; wc.jd(out)
 				summ[a2v][i] = out[a2v][i]
 			if 'ready' not in summ[a2v].keys(): summ[a2v]['ready'] = True
 		return(out,summ)
