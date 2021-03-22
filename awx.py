@@ -133,6 +133,7 @@ class AWX():
 			return(invalid)
 		
 		out = {}
+		printOut = {}
 		path = './inventories/'
 		for inventory_file in wc.exec2('ls ' + path).split('\n'):
 			if not inventory_file.lower().endswith('yml') and not inventory_file.lower().endswith('yaml'):
@@ -152,14 +153,19 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':''})
 								if hostname not in out.keys():
-									out[hostname] = {'ready1':True,'ip':[]}
+									out[hostname] = {'readyValidateHostname':True,'ip':[]}
 									out[hostname]['groups'] = [valid_host['lab'],valid_host['market'],valid_host['service'],valid_host['function']]
+									printOut[hostname] = {'readyValidateHostname': True}
 								if valid_host['INVALID'] != []:
-									out[hostname]['ready1'] = False
+									# dns name doesnt fit supported groups in Confluence page
+									out[hostname]['readyValidateHostname'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
+									printOut[hostname]['readyValidateHostname'] = str(valid_host)
 								if valid_path != [] and group == 'ARC':
-									out[hostname]['ready1'] = False
+									# dns name doesnt match Scaffolding
+									out[hostname]['readyValidateHostname'] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
+									printOut[hostname]['readyValidateHostname'] = str(valid_path)
 							continue
 						for service in data[a]['children'][group]['children'][market]['children'].keys():
 							if type(data[a]['children'][group]['children'][market]['children'][service]) is None or \
@@ -171,14 +177,17 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
 								if hostname not in out.keys():
-									out[hostname] = {'ready2':True,'ip':[]}
+									out[hostname] = {'readyService':True,'ip':[]}
 									out[hostname]['groups'] = [valid_host['lab'],valid_host['market'],valid_host['service'],valid_host['function']]
+									printOut[hostname] = {'readyService': True}
 								if valid_host['INVALID'] != []:
-									out[hostname]['ready2'] = False
+									out[hostname]['readyService'] = False
 									out[hostname]['namingStandard'] = str(valid_host)
+									printOut[hostname]['readyService'] = str(valid_host)
 								if valid_path != [] and group == 'ARC':
-									out[hostname]['ready2'] = False
+									out[hostname]['readyService'] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
+									printOut[hostname]['readyService'] = str(valid_path)
 								for d in facts.keys():
 									if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
 										out[hostname]['ip'].append(d)
@@ -202,6 +211,9 @@ class AWX():
 					sorted(list(idDict[hostId]['facts'].keys())) != ['ansible_net_system', 'groups']:
 						# if any deviceId has facts then out
 						out[a2v]['readyHasFacts'] = True
+						printOut[a2v]['readyHasFacts'] = True
+					else:
+						printOut[a2v]['readyHasFacts'] = False
 			if 'ip' in idDict.keys():
 				if len(idDict['ip']) == 1: idDict['ip'] = idDict['ip'][0]
 			out[a2v]['facts'] = idDict
@@ -209,7 +221,7 @@ class AWX():
 			# FINAL SUMMARY
 			summ[a2v] = {}
 			for i in [match for match in list(out[a2v].keys()) if "ready" in match]:
-				if out[a2v][i] == False:  summ[a2v]['ready'] = False; wc.jd(out)
+				if out[a2v][i] == False:  summ[a2v]['ready'] = False; wc.jd(printOut)
 				summ[a2v][i] = out[a2v][i]
 			if 'ready' not in summ[a2v].keys(): summ[a2v]['ready'] = True
 		return(out,summ)
