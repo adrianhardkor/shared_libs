@@ -473,7 +473,7 @@ class VELOCITY():
 		port2Id = self.INV[device2]['ports'][port2]['id']
 		mytype = 'FIXED'
 		# if device1.lower().startswith('lepton') or device2.lower().startswith('lepton'): mytype = 'DYNAMIC'
-		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args={'port1Id':port1Id,'port2Id':port2Id,'type':mytype})
+		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args=[{'port1Id':port1Id,'port2Id':port2Id,'type':mytype}])
 		wc.jd(data)
 		connection_name = '_'.join([device1,port1,'',device2,port2])
 		self.INV[device1]['ports'][port1]['connections'][connection_name] = connection_name.split('__')[0]
