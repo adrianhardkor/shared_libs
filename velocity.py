@@ -444,6 +444,7 @@ class VELOCITY():
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
 		ports[p['name']]['linkChecked'] = p['linkChecked']
 		ports[p['name']]['lastModified'] = p['lastModified']
+		ports[p['name']]['connections'] = {}
 		for PortProp in p['properties']:
 			ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
 		if p['isLocked']:
@@ -467,6 +468,29 @@ class VELOCITY():
 			out,ports = self.FormatPorts(out, device, PGs, p, ports)
 			out[device['name']]['ports'][p['name']] = ports[p['name']]
 		return(out)
+	def CreateConnection(self, device1, port1, device2, port2):
+		port1Id = self.INV[device1]['ports'][port1]['id']
+		port2Id = self.INV[device2]['ports'][port2]['id']
+		mytype = 'FIXED'
+		if device1.lower().startwith('lepton') or device2.lower().startwith('lepton'): mytype = 'DYNAMIC'
+		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args={'port1Id':port1Id,'port2Id':port2Id,'type':mytype})
+		wc.jd(data)
+		connection_name = '_'.join([device1,port1,'',device2,port2])
+		self.INV[device1]['ports'][port1]['connections'][connection_name] = connection_name.split('__')[0]
+		self.INV[device2]['ports'][port2]['connections'][connection_name] = connection_name.split('__')[1]
+	def GetConnections(self, out):
+		# PHYSICAL CONNECTIONS
+		physical = self.REST_GET('/velocity/api/inventory/v14/physical_connections')['connections']
+		for p in physical:
+			connection_name = '_'.join([p['device1']['name'],p['port1']['name'],'',p['device2']['name'],p['port2']['name']])
+			# print(connection_name)
+			value = {}
+			value['id'] = p['id']
+			value[p['device1']['name'] + '_' + p['port1']['name']] = 1
+			value[p['device2']['name'] + '_' + p['port2']['name']] = 2
+			out[p['device1']['name']]['ports'][p['port1']['name']]['connections'][connection_name] = value
+			out[p['device2']['name']]['ports'][p['port2']['name']]['connections'][connection_name] = value
+		return(out)
 	def GetInventory(self):
 		self.DelAllMessages()
 		out = {}
@@ -475,18 +499,20 @@ class VELOCITY():
 		# wc.jd(data)
 		for device in data['devices']:
 			out = self.FormatInventory(out, device)
+
+		out = self.GetConnections(out)
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.DelAllMessages()
 
-# V.INV = V.GetInventory(); # device ipAddress
+V.INV = V.GetInventory(); # device ipAddress
 #wc.jd(V.INV['ARCBKBNEDGDRR01'])
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
 # wc.jd(V.REST_PUT('/velocity/api/inventory/v13/device/c2bc86a5-71fc-4fdf-bd74-8973ce3c71f9?limit=200', args=args))
 # V.Discover(INV['ARCBKBNEDGEPR02']['id'], driver='ping')
-# wc.jd(V.INV)
+wc.jd(V.INV)
 # wc.jd(wc.FindAnsibleHost('10.88.48.237', INV))
 
 # data = V.RunScript(INV, 'main/assets/' + wc.argv_dict['s'])
