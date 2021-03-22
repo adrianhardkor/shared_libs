@@ -177,17 +177,17 @@ class AWX():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
 								if hostname not in out.keys():
-									out[hostname] = {'readyService':True,'ip':[]}
+									out[hostname] = {'readyService:' + service:True,'ip':[]}
 									out[hostname]['groups'] = [valid_host['lab'],valid_host['market'],valid_host['service'],valid_host['function']]
-									printOut[hostname] = {'readyService': True}
+									printOut[hostname] = {'readyService:' + service: True}
 								if valid_host['INVALID'] != []:
-									out[hostname]['readyService'] = False
+									out[hostname]['readyService:' + service] = False
 									out[hostname]['namingStandard'] = str(valid_host)
-									printOut[hostname]['readyService'] = str(valid_host)
+									printOut[hostname]['readyService:' + service] = str(valid_host)
 								if valid_path != [] and group == 'ARC':
-									out[hostname]['readyService'] = False
+									out[hostname]['readyService:' + service] = False
 									out[hostname]['inventoryPathing'] = str(valid_path)
-									printOut[hostname]['readyService'] = str(valid_path)
+									printOut[hostname]['readyService:' + service] = str(valid_path)
 								for d in facts.keys():
 									if type(facts[d]['hostnames']) == str and facts[d]['hostnames'] == hostname:
 										out[hostname]['ip'].append(d)
@@ -221,7 +221,7 @@ class AWX():
 			# FINAL SUMMARY
 			summ[a2v] = {}
 			for i in [match for match in list(out[a2v].keys()) if "ready" in match]:
-				if out[a2v][i] == False:  summ[a2v]['ready'] = False; wc.jd(printOut)
+				if out[a2v][i] == False:  summ[a2v]['ready'] = False; wc.jd(printOut[a2v])
 				summ[a2v][i] = out[a2v][i]
 			if 'ready' not in summ[a2v].keys(): summ[a2v]['ready'] = True
 		return(out,summ)
