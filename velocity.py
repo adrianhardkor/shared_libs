@@ -469,17 +469,36 @@ class VELOCITY():
 			out[device['name']]['ports'][p['name']] = ports[p['name']]
 		return(out)
 	def CreateConnection(self, device1, port1, device2, port2):
+		connection_name = '_'.join([device1,port1,'',device2,port2])
+		# SEE IF DEVICE AND PORT EXISTS
+		for d in [device1, device2]:
+			if d not in self.INV.keys():
+				wc.pairprint('Connection Failed:  ' + connection_name, d + '  not in V.INV')
+				return()
+		for d2,p2 in {device1:port1,device2:port2}.items():
+			if p2 not in self.INV[d2]['ports'].keys(): 
+				wc.pairprint('Connection Failed:  ' + connection_name, p2 + '  not in ' + d2 + ' V.INV ports')
+				return()
+		# GET IDs
 		port1Id = self.INV[device1]['ports'][port1]['id']
 		port2Id = self.INV[device2]['ports'][port2]['id']
+		connect_args = {'port1Id':port1Id,'port2Id':port2Id,'type':mytype}
 		mytype = 'FIXED'
-		# if device1.lower().startswith('lepton') or device2.lower().startswith('lepton'): mytype = 'DYNAMIC'
-		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args=[{'port1Id':port1Id,'port2Id':port2Id,'type':mytype}])
-		wc.jd(data)
-		connection_name = '_'.join([device1,port1,'',device2,port2])
+		# RUN REST_PUT
+		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args=[connect_args])
+		# PASS/FAIL HANDLER
+		result = 'FAIL'
+		if 'response.request.body' in data.keys():
+			if len(data['response.request.body']) > 0: 
+				wc.pairprint('Connection Made:    ' + connect_args, 'SUCCESS')
+		if result == 'FAIL':
+			wc.pairprint('Connection Failed:  ' + connect_args, data)
+			return()
+		# IF SUCCESS: ADD TO V.INV  
 		self.INV[device1]['ports'][port1]['connections'][connection_name] = connection_name.split('__')[0]
 		self.INV[device2]['ports'][port2]['connections'][connection_name] = connection_name.split('__')[1]
 	def GetConnections(self, out):
-		# PHYSICAL CONNECTIONS
+		# PHYSICAL CONNECTIONS, USED FOR TOPOLOGY ABSTRACTION
 		physical = self.REST_GET('/velocity/api/inventory/v14/physical_connections')['connections']
 		for p in physical:
 			connection_name = '_'.join([p['device1']['name'],p['port1']['name'],'',p['device2']['name'],p['port2']['name']])
