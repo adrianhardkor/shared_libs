@@ -89,6 +89,8 @@ class LEPTON():
 
 # LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
 # status = LEP.GetStatus()
+# wc.jd(status)
+
 # 
 # # Apply LEPTON class to VELOCITY-INVENTORY-LEPTON
 # for port in status['ports'].keys():
