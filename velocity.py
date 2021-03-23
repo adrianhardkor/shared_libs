@@ -471,13 +471,13 @@ class VELOCITY():
 	def CreateConnection(self, device1, port1, device2, port2):
 		connection_name = '_'.join([str(device1),str(port1),'',str(device2),str(port2)])
 		# SEE IF DEVICE AND PORT EXISTS
-		for d in [device1, device2]:
+		for d in [str(device1), str(device2)]:
 			if d not in self.INV.keys():
-				wc.pairprint('Connection Failed:  ' + connection_name, d + '  not in V.INV')
+				wc.pairprint('Connection Failed:  ' + connection_name, str(d) + '  not in V.INV')
 				return()
 		for d2,p2 in {device1:port1,device2:port2}.items():
 			if p2 not in self.INV[d2]['ports'].keys(): 
-				wc.pairprint('Connection Failed:  ' + connection_name, p2 + '  not in ' + d2 + ' V.INV ports')
+				wc.pairprint('Connection Failed:  ' + connection_name, str(p2) + '  not in ' + str(d2) + ' V.INV ports')
 				return()
 		# SEE IF CONNECTION ALREADY EXISTS
 		if connection_name in self.INV[device1]['ports'][port1]['connections'].keys() and \
