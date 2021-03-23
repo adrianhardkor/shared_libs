@@ -503,9 +503,9 @@ class VELOCITY():
 		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args=[connect_args])
 		# PASS/FAIL HANDLER
 		result = 'FAIL'
-		if 'response.request.body' in data.keys():
-			if len(data['response.request.body']) > 0: 
-				wc.pairprint('Connection Made:    ' + connection_name, 'SUCCESS')
+		if data['response.status_code'] in ['200',200]:
+			wc.pairprint('Connection Made:    ' + connection_name, 'SUCCESS')
+			result = 'SUCCESS'
 		if result == 'FAIL':
 			wc.pairprint('Connection Failed:  ' + connection_name, data)
 			return()
