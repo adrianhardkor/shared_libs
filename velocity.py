@@ -482,8 +482,7 @@ class VELOCITY():
 		# GET IDs
 		port1Id = self.INV[device1]['ports'][port1]['id']
 		port2Id = self.INV[device2]['ports'][port2]['id']
-		connect_args = {'port1Id':port1Id,'port2Id':port2Id,'type':mytype}
-		mytype = 'FIXED'
+		connect_args = {'port1Id':port1Id,'port2Id':port2Id,'type':'FIXED'}
 		# RUN REST_PUT
 		data = self.REST_PUT('/velocity/api/inventory/v14/physical_connections', args=[connect_args])
 		# PASS/FAIL HANDLER
