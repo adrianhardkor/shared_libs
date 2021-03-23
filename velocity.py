@@ -199,7 +199,10 @@ class VELOCITY():
 			if not append:
 				new = new_value
 				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new_value}]}
-				if self.INV[device_name][index]['value'] == new_value: return({})
+				if self.INV[device_name][index]['value'] == new_value: return({}); # already matches
+				else:
+					old = self.INV[device_name][index]['value']
+					new = new_value
 			else:
 				if self.INV[device_name][index]['value'] == None:
 					self.INV[device_name][index]['value'] = ''
@@ -209,14 +212,18 @@ class VELOCITY():
 				# wc.pairprint(self.INV[device_name][index]['value'].split(' '), new)
 				args = {'properties': [{'definitionId':self.INV[device_name][index]['definitionId'], 'value': new}]}
 				if new in self.INV[device_name][index]['value'].split(' '):
-					return({})
-					args = {}; # already exists
+					return({}); # already exists
+				else:
+					old = self.INV[device_name][index]['value'].split(' ')
 			self.INV[device_name][index]['value'] = new; # same definitionId
 		elif type(self.INV[device_name][index]) == str:
 			if not append:
 				new = new_value
 				args = {index: new}
-				if self.INV[device_name][index] == new_value: return({})
+				if self.INV[device_name][index] == new_value: return({}); # already matches
+				else:
+					old = self.INV[device_name][index]
+					new = new_value
 			else:
 				if self.INV[device_name][index] == None:
 					self.INV[device_name][index] = ''
@@ -225,15 +232,17 @@ class VELOCITY():
 				new = ' '.join(sorted(wc.lunique(new))).strip(' ')
 				args = {index:new}
 				if new in self.INV[device_name][index].split(' '):
-					return({})
-					args = {}; # already exists
-				# wc.pairprint(self.INV[device_name][index].split(' '), new)
+					return({}); # already exists
+				else:
+					old = self.INV[device_name][index].split(' ')
 			self.INV[device_name][index] = new
 		elif type(self.INV[device_name][index]) == list:
 			if not append:
 				new = sorted(wc.lunique(list(new_value)))
 				args = {index: new}
-				if sorted(self.INV[device_name][index]) == new: return({})
+				if sorted(self.INV[device_name][index]) == new: return({}); # already matches
+				else:
+					old = sorted(self.INV[device_name][index])
 			else:
 				if self.INV[device_name][index] == None: self.INV[device_name][index] = []
 				new = wc.lunique(self.INV[device_name][index])
@@ -242,9 +251,12 @@ class VELOCITY():
 				new = sorted(wc.lunique(list(new)))
 				args = {index:new}
 				if new == sorted(list(self.INV[device_name][index])):
-					return({})
-					args = {}; # already same
+					return({}); # already same
+				else:
+					old = sorted(list(self.INV[device_name][index]))
 			self.INV[device_name][index] = new
+		# UPDATE NEEDED
+		wc.pairprint('UPDATE NEEDED (append:%s)\t' + str(type(old)) + ': ' + str(old), str(type(new)) + ': ' + str(new))
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
 		# API PageId = 48
