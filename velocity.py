@@ -480,8 +480,8 @@ class VELOCITY():
 				wc.pairprint('Connection Failed:  ' + connection_name, p2 + '  not in ' + d2 + ' V.INV ports')
 				return()
 		# SEE IF CONNECTION ALREADY EXISTS
-		if connection_name in V.INV[device1]['ports'][port1]['connections'].keys() and \
-		connection_name in V.INV[device2]['ports'][port2]['connections'].keys():
+		if connection_name in self.INV[device1]['ports'][port1]['connections'].keys() and \
+		connection_name in self.INV[device2]['ports'][port2]['connections'].keys():
 			wc.pairprint('Connection Already Exists', connection_name); return()
 		# GET IDs
 		port1Id = self.INV[device1]['ports'][port1]['id']
