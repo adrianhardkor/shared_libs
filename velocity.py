@@ -256,7 +256,7 @@ class VELOCITY():
 					old = sorted(list(self.INV[device_name][index]))
 			self.INV[device_name][index] = new
 		# UPDATE NEEDED
-		wc.pairprint('UPDATE NEEDED (append:%s)\t' + str(type(old)) + ': ' + str(old), str(type(new)) + ': ' + str(new))
+		wc.pairprint('UPDATE NEEDED %s (append:%s)\t' + str(type(old)) + '= ' + str(old) % (index, str(append)), str(type(new)) + '= ' + str(new))
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
 		# API PageId = 48
@@ -277,9 +277,9 @@ class VELOCITY():
 		if 'definitionId' in str(args):
 			for p in data['properties']:
 				if p['name'] == index:
-					wc.pairprint('  '.join(['[INFO] Updated D2:', device_name,index,str( self.INV[device_name][index]['value'])]), index + ':  ' + p['value'])
+					wc.pairprint('  '.join(['[INFO] Updated Device Prop:', device_name,index]), p['value'])
 		else:
-			wc.pairprint('  '.join(['[INFO] Updated D1:', device_name,index,str(self.INV[device_name][index])]), index + ':  ' + str(data[index]))
+			wc.pairprint('  '.join(['[INFO] Updated Device Index:', device_name,index]), data[index])
 		if index == 'ipAddress':
 			# updated DEVICE IP ADDRESS - RE DISCOVER
 			time.sleep(5); # wait 5s after applying ipAddress
@@ -357,18 +357,18 @@ class VELOCITY():
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (self.INV[device_name]['id'], self.INV[device_name]['ports'][port_name]['id']), args=args)
 		# NOTIFY PORT PROP CHANGE
 		if index in data.keys():
-			wc.pairprint('  '.join(['[INFO] Updated1:', port_name,index,str(new_value)]), data[index])
+			wc.pairprint('  '.join(['[INFO] Updated Port Index:', device_name, port_name,index), data[index])
 			self.INV[device_name]['ports'][port_name][index] = new
 		elif 'definitionId' in str(args):
 			for p in data['properties']:
 				if p['name'] == index:
 					self.INV[device_name]['ports'][port_name][index]['value'] = new
 					# Add confirmation here to verify value, otherwise didnt take
-					wc.pairprint('  '.join(['[INFO] Updated2:', port_name,index]),p['value'])
+					wc.pairprint('  '.join(['[INFO] Updated Port Prop:', device_name, port_name,index]),p['value'])
 					break
 		else:
 			# error
-			wc.pairprint('  '.join(['[INFO] Updated3:', port_name,index,str(new_value)]), data)
+			wc.pairprint('  '.join(['[ERROR] DID NOT UPDATE:', port_name,index,str(new_value)]), data)
 	def UpdatePort(self, device_name, pgName, port_name, index, value, templateName="Network Port", append=False):
 		# WILL CREATE IF NOT FOUND
 		# REMINDER TO RE-UP GetInventory once updated via REST_PUT
