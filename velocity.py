@@ -489,9 +489,9 @@ class VELOCITY():
 		result = 'FAIL'
 		if 'response.request.body' in data.keys():
 			if len(data['response.request.body']) > 0: 
-				wc.pairprint('Connection Made:    ' + connect_args, 'SUCCESS')
+				wc.pairprint('Connection Made:    ' + connection_name, 'SUCCESS')
 		if result == 'FAIL':
-			wc.pairprint('Connection Failed:  ' + connect_args, data)
+			wc.pairprint('Connection Failed:  ' + connection_name, data)
 			return()
 		# IF SUCCESS: ADD TO V.INV  
 		self.INV[device1]['ports'][port1]['connections'][connection_name] = connection_name.split('__')[0]
