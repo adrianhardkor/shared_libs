@@ -256,7 +256,7 @@ class VELOCITY():
 					old = sorted(list(self.INV[device_name][index]))
 			self.INV[device_name][index] = new
 		# UPDATE NEEDED
-		wc.pairprint('UPDATE NEEDED %s (append:%s)\t' + str(type(old)) + '= ' + str(old) % (index, str(append)), str(type(new)) + '= ' + str(new))
+		print('  '.join(['UPDATE NEEDED',str(index),str(append),'',str(type(old)),str(old),''str(type(new)),str(new)]))
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
 		# API PageId = 48
