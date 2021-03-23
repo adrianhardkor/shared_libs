@@ -357,7 +357,7 @@ class VELOCITY():
 		data = VELOCITY.REST_PUT(self, '/velocity/api/inventory/v13/device/%s/port/%s' % (self.INV[device_name]['id'], self.INV[device_name]['ports'][port_name]['id']), args=args)
 		# NOTIFY PORT PROP CHANGE
 		if index in data.keys():
-			wc.pairprint('  '.join(['[INFO] Updated Port Index:', device_name, port_name,index), data[index])
+			wc.pairprint('  '.join(['[INFO] Updated Port Index:', device_name, port_name,index]), data[index])
 			self.INV[device_name]['ports'][port_name][index] = new
 		elif 'definitionId' in str(args):
 			for p in data['properties']:
