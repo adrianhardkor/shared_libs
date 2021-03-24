@@ -522,8 +522,8 @@ class VELOCITY():
 			value['id'] = p['id']
 			value[p['device1']['name'] + '_' + p['port1']['name']] = 1
 			value[p['device2']['name'] + '_' + p['port2']['name']] = 2
-			if p['port1'] not in out[p['device1']['name']]['ports'].keys(): wc.jd(p)
-			if p['port2'] not in out[p['device2']['name']]['ports'].keys(): wc.jd(p)
+			if p['port1']['name'] not in out[p['device1']['name']]['ports'].keys(): wc.jd(p)
+			if p['port2']['name'] not in out[p['device2']['name']]['ports'].keys(): wc.jd(p)
 			out[p['device1']['name']]['ports'][p['port1']['name']]['connections'][connection_name] = value
 			out[p['device2']['name']]['ports'][p['port2']['name']]['connections'][connection_name] = value
 		return(out)
