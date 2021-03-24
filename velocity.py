@@ -21,16 +21,25 @@ class VELOCITY():
 			print('Failed: VELOCITY No U/P or TOKEN provided!')
 			exit(5)
 		self.headers = {"X-Auth-Token": self.TOKEN}
-	def REST_GET(self, url, params={}, limit='?limit=200'):
-		# print('\t' + self.V + url)
-		# page = '1'
-		# while page is ''
-		# url = url + '?offset={offset}&limit={limit}&filter={filter}' == MAX 200 then OFFSET
+	def REST_GET(self, url, params={}, limit='?limit=200', list_attr=''):
+		# IF PAGED, THEN NEEDS LIST_ATTR TO COUNT AND APPEND!
 		if '?' not in url:
 			url = url + limit
 		self.headers['Content-Type'] = self.headers['Accept'] = 'application/json'
 		# print(headers)
+		offset = 200
 		data = json.loads(wc.REST_GET(self.V + url, headers=self.headers, params=params))
+		if 'total' not in data.keys(): return(data)
+
+		# PAGER
+		if int(data['total']) > 200:
+			# wc.pairprint(url, data['total'])
+			while len(data[list_attr]) < int(data['total']):
+				data1 = json.loads(wc.REST_GET(self.V + url + '&offset=' + str(offset), headers=self.headers, params=params))
+				for added in data1[list_attr]:
+					data[list_attr].append(added)
+				offset = offset + 200
+		
 		return(data)
 	def REST_PUT(self, url, args={}, verify=False):
 		url = url + '?limit=200'
@@ -473,7 +482,9 @@ class VELOCITY():
 		for prop in device['properties']:
 			out[device['name']][prop['name']] = {'value': prop['value'], 'definitionId': prop['definitionId']}
 
-		all_ports = self.REST_GET('/velocity/api/inventory/v13/device/%s/ports' % device['id'], params={'includeProperties':True})['ports']
+		all_ports = self.REST_GET('/velocity/api/inventory/v13/device/%s/ports' % device['id'], params={'includeProperties':True}, list_attr='ports')
+		if len(all_ports['ports']) == 200: wc.jd(all_ports)
+		all_ports = all_ports['ports']
 		out[device['name']]['ports'] = {}
 		PGs = self.GetDevicePGs(device['id'])
 		for p in all_ports:
@@ -522,8 +533,8 @@ class VELOCITY():
 			value['id'] = p['id']
 			value[p['device1']['name'] + '_' + p['port1']['name']] = 1
 			value[p['device2']['name'] + '_' + p['port2']['name']] = 2
-			if p['port1']['name'] not in out[p['device1']['name']]['ports'].keys(): wc.jd(out[p['device1']['name']])
-			if p['port2']['name'] not in out[p['device2']['name']]['ports'].keys(): wc.jd(out[p['device2']['name']])
+			if p['port1']['name'] not in out[p['device1']['name']]['ports'].keys(): wc.pairprint('len1', len(out[p['device1']['name']]['ports'].keys()))
+			if p['port2']['name'] not in out[p['device2']['name']]['ports'].keys(): wc.pairprint('len2', len(out[p['device2']['name']]['ports'].keys()))
 			out[p['device1']['name']]['ports'][p['port1']['name']]['connections'][connection_name] = value
 			out[p['device2']['name']]['ports'][p['port2']['name']]['connections'][connection_name] = value
 		return(out)
@@ -540,10 +551,10 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.DelAllMessages()
 
-# V.INV = V.GetInventory(); # device ipAddress
+V.INV = V.GetInventory(); # device ipAddress
 #wc.jd(V.INV['ARCBKBNEDGDRR01'])
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
 # wc.jd(V.REST_PUT('/velocity/api/inventory/v13/device/c2bc86a5-71fc-4fdf-bd74-8973ce3c71f9?limit=200', args=args))
