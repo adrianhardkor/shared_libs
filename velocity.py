@@ -551,10 +551,10 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.DelAllMessages()
 
-V.INV = V.GetInventory(); # device ipAddress
+# V.INV = V.GetInventory(); # device ipAddress
 #wc.jd(V.INV['ARCBKBNEDGDRR01'])
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
 # wc.jd(V.REST_PUT('/velocity/api/inventory/v13/device/c2bc86a5-71fc-4fdf-bd74-8973ce3c71f9?limit=200', args=args))
