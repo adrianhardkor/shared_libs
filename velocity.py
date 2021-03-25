@@ -157,7 +157,7 @@ class VELOCITY():
 				out[t['name']]['activeRes'] = activeRes[t['id']]
 				resources = VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topology/%s/resources' % t['id'])
 				if 'items' not in resources.keys(): wc.jd(resources)
-				for resource in resources:
+				for resource in resources['items']:
 					if 'parentName' not in resource.keys(): wc.jd(resource)
 					if resource['parentName'] == None:
 						out[t['name']]['resources'][resource['name']] = resource
