@@ -561,10 +561,10 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.DelAllMessages()
 
-V.INV = V.GetInventory(); # device ipAddress
+# V.INV = V.GetInventory(); # device ipAddress
 # wc.jd(V.INV)
 #wc.jd(V.INV['ARCBKBNEDGDRR01'])
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
