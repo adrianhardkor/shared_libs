@@ -79,7 +79,7 @@ class VELOCITY():
 		# if has resvId then already reserved
 		# if has topId then script requires reservation PUT/POST?
 		INV = VELOCITY.GetTopologies(self)
-		for r in VELOCITY.REST_GET(self, '/velocity/api/reservation/v16/reservations', params={'filter': 'status::ACTIVE'})['items']:
+		for r in VELOCITY.REST_GET(self, '/velocity/api/reservation/v16/reservations', params={'filter': 'status::ACTIVE'}, list_attr='items')['items']:
 			if r['id'] == resvId:
 				return(INV[r['topologyName']])
 	def VelocityReportParse(self, html_data):
@@ -108,7 +108,7 @@ class VELOCITY():
 			time.sleep(4)
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
 			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
-		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))['text']
+		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers), list_attr='text')['text']
 		data['html_report'] = self.VelocityReportParse(html_report) 
 		# wc.jd(data)
 		if HTML_FNAME != '':
@@ -123,7 +123,7 @@ class VELOCITY():
 		# data = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))['text']
 		# wc.log_fname(data,testPath.split('/')[-1] + '.html')
 	def GetScripts(self):
-		scripts = self.REST_GET( '/ito/repository/v1/scripts')['content']
+		scripts = self.REST_GET( '/ito/repository/v1/scripts', list_attr='content')['content']
 		out = {}
 		for script in scripts:
 			if not script['driver']:
@@ -134,14 +134,14 @@ class VELOCITY():
 	def GetUsers(self):
 		# /velocity/api/user/v9/profiles
 		out = {}
-		for p in VELOCITY.REST_GET(self, '/velocity/api/user/v9/profiles')['profiles']:
+		for p in VELOCITY.REST_GET(self, '/velocity/api/user/v9/profiles', list_attr='profiles')['profiles']:
 			out[p['id']] = p
 			out[p['id']]['display'] = "%s (%s)" % (p['name'], p['login'])
 		return(out)
 	def GetTopologies(self):
 		out = {}
-		top = VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topologies')['topologies']
-		res = VELOCITY.REST_GET(self, '/velocity/api/reservation/v16/reservations', params={'filter': 'status::ACTIVE'})['items']
+		top = VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topologies', list_attr='topologies')['topologies']
+		res = VELOCITY.REST_GET(self, '/velocity/api/reservation/v16/reservations', params={'filter': 'status::ACTIVE'}, list_attr='items')['items']
 		users = VELOCITY.GetUsers(self)
 		activeRes = {}
 		for r in res:
@@ -155,7 +155,9 @@ class VELOCITY():
 			out[t['name']] = t
 			if t['id'] in activeRes.keys():
 				out[t['name']]['activeRes'] = activeRes[t['id']]
-				for resource in VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topology/%s/resources' % t['id'])['items']:
+				resources = VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topology/%s/resources' % t['id'])
+				if 'items' not in resources.keys(): wc.jd(resources)
+				for resource in resources:
 					if resource['parentName'] == None:
 						out[t['name']]['resources'][resource['name']] = resource
 					else:
@@ -307,8 +309,8 @@ class VELOCITY():
 			# executionID
 			# parametersList
 			# testPath
-			raw = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::IN_PROGRESS')['content']
-			for not_begun in self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::NOT_BEGUN')['content']:
+			raw = self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::IN_PROGRESS', list_attr='content')['content']
+			for not_begun in self.REST_GET('/ito/executions/v1/executions?limit=200&filter=executionState::NOT_BEGUN', list_attr='content')['content']:
 				raw.append(not_begun)
 			data = []
 			for d in raw:
@@ -425,7 +427,7 @@ class VELOCITY():
 		self.ChangeDevicePortProp(device_name, port_name, index, value, append=append)
 	def GetDevicePGs(self, deviceId):
 		out = {}
-		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId)['portGroups']
+		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId, list_attr='portGroups')['portGroups']
 		for blah in raw:
 			if blah['id'] == None: blah['id'] = 'null'
 			out[blah['name']] = blah
@@ -436,7 +438,7 @@ class VELOCITY():
 		return(self.REST_GET('/velocity/api/inventory/v13/device/' + uuid)['name'])
 	def GetTemplates(self, templateName='', templateId=''):
 		# /velocity/api/inventory/v13/templates
-		data = self.REST_GET('/velocity/api/inventory/v13/templates')['templates']
+		data = self.REST_GET('/velocity/api/inventory/v13/templates', list_attr='templates')['templates']
 		out = {}
 		for d in data:
 			out[d['name']] = out[d['id']] = d
@@ -525,7 +527,7 @@ class VELOCITY():
 		self.INV[device2]['ports'][port2]['connections'][connection_name] = connection_name.split('__')[1]
 	def GetConnections(self, out):
 		# PHYSICAL CONNECTIONS, USED FOR TOPOLOGY ABSTRACTION
-		physical = self.REST_GET('/velocity/api/inventory/v14/physical_connections')['connections']
+		physical = self.REST_GET('/velocity/api/inventory/v14/physical_connections', list_attr='connections')['connections']
 		for p in physical:
 			connection_name = '_'.join([p['device1']['name'],p['port1']['name'],'',p['device2']['name'],p['port2']['name']])
 			# print(connection_name)
@@ -542,7 +544,7 @@ class VELOCITY():
 		self.DelAllMessages()
 		out = {}
 		self.top = VELOCITY.GetTopologies(self)
-		data = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/devices', params={'includeProperties':True, 'includePortGroups': True})
+		data = VELOCITY.REST_GET(self, '/velocity/api/inventory/v13/devices', params={'includeProperties':True, 'includePortGroups': True}, list_attr='devices')
 		# wc.jd(data)
 		for device in data['devices']:
 			out = self.FormatInventory(out, device)
