@@ -30,7 +30,8 @@ class VELOCITY():
 		# print(headers)
 		offset = 200
 		data = json.loads(wc.REST_GET(self.V + url, headers=self.headers, params=params))
-		if 'total' not in data.keys(): return(data)
+		if list_attr != '' and list_attr not in data.keys(): wc.jd(data); # if cant find list_attr then debug-output
+		if 'total' not in data.keys(): return(data); # if not paged then return
 
 		# PAGER
 		if int(data['total']) > 200:
@@ -161,8 +162,7 @@ class VELOCITY():
 			out[t['name']] = t
 			if t['id'] in activeRes.keys():
 				out[t['name']]['activeRes'] = activeRes[t['id']]
-				resources = VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topology/%s/resources' % t['id'])
-				if 'items' not in resources.keys(): wc.jd(resources)
+				resources = VELOCITY.REST_GET(self, '/velocity/api/topology/v12/topology/%s/resources' % t['id'], list_attr='items')
 				for resource in resources['items']:
 					if 'parentName' not in resource.keys(): wc.jd(resource)
 					if resource['parentName'] == None:
