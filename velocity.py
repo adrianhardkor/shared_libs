@@ -21,6 +21,7 @@ class VELOCITY():
 			print('Failed: VELOCITY No U/P or TOKEN provided!')
 			exit(5)
 		self.headers = {"X-Auth-Token": self.TOKEN}
+		# self.GetCableTypes()
 	def REST_GET(self, url, params={}, limit='?limit=200', list_attr=''):
 		# IF PAGED, THEN NEEDS LIST_ATTR TO COUNT AND APPEND!
 		if '?' not in url:
@@ -122,6 +123,11 @@ class VELOCITY():
 		# HTML Report
 		# data = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))['text']
 		# wc.log_fname(data,testPath.split('/')[-1] + '.html')
+	def GetCableTypes(self):
+		self.CableTypes = {}
+		for ct in self.REST_GET('/velocity/api/inventory/v14/cable_types', list_attr='cableTypes')['cableTypes']:
+			self.CableTypes[ct['id']] = ct['name']
+			self.CableTypes[ct['name']] = ct['id']
 	def GetScripts(self):
 		scripts = self.REST_GET( '/ito/repository/v1/scripts', list_attr='content')['content']
 		out = {}
@@ -533,6 +539,7 @@ class VELOCITY():
 			connection_name = '_'.join([p['device1']['name'],p['port1']['name'],'',p['device2']['name'],p['port2']['name']])
 			# print(connection_name)
 			value = {}
+			value['cableType'] = p['cableType']
 			value['id'] = p['id']
 			value[p['device1']['name'] + '_' + p['port1']['name']] = 1
 			value[p['device2']['name'] + '_' + p['port2']['name']] = 2
@@ -554,10 +561,11 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 # V.DelAllMessages()
 
-# V.INV = V.GetInventory(); # device ipAddress
+V.INV = V.GetInventory(); # device ipAddress
+# wc.jd(V.INV)
 #wc.jd(V.INV['ARCBKBNEDGDRR01'])
 # args = {'tags': ['ARC', 'BKBN', 'DRR', 'EDG']}
 # wc.jd(V.REST_PUT('/velocity/api/inventory/v13/device/c2bc86a5-71fc-4fdf-bd74-8973ce3c71f9?limit=200', args=args))
