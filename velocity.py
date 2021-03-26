@@ -416,17 +416,16 @@ class VELOCITY():
 			elif self.INV[device_name]['templateName'] == 'Modem': templateName = 'Modem Port'
 			elif self.INV[device_name]['templateName'] == 'CMTS' and wc.is_int(port_name[0]): templateName = 'RF Port'
 			else: templateName = 'Network Port'
-			wc.pairprint(self.INV[device_name]['templateName'], templateName)
 			args = {}
 			args['name'] = port_name
 			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
 			out,ports = self.FormatPorts(self.INV, self.INV[device_name], PGs, new_port, {})
-			wc.pairprint('[INFO] ' + port_name, ports[port_name].keys())
+			wc.pairprint('[INFO] Created' + port_name, '\t'.join([str(ports[port_name]['portNumber']), templateName, str(ports[port_name]['pgName'])))
 			# Re-Apply inventory for ChangeDevicePortProp to use
 			self.INV[device_name]['ports'][port_name] = ports[port_name]
-			wc.pairprint('ports_' + port_name, ports[port_name]['id'])
+			# wc.pairprint('ports_' + port_name, ports[port_name]['id'])
 		else:
 			# if port exists, assume pg exists
 			pass
