@@ -28,19 +28,37 @@ class MDB():
 		self.M = MongoEngine()
 		self.M.init_app(self.app)
 		self.__name__ = 'MDB'
-	def GetMongoModems(self,myFilter=''):
-		return(flask.jsonify(rduModem.objects()))
 	def LoadModem(self, data):
+		# DELETE OLD
+		# IF MODEM.MONGO NOT IN MODEM.JSON-RDU: DELETE
+		for rm in rduModem.objects():
+			if str(rm.cmac) not in data.keys(): rduModem.objects(cmac=cmac).delete()
+		# ADD NEW
 		for cmac in data.keys():
 			MODEM = soap.FormatRDU_Modem(cmac, data[cmac])
 			for unset in list(dir(rduModem)):
 				if unset not in MODEM.keys(): MODEM[unset] = ''
 			current = rduModem.objects(cmac=cmac)
-			wc.pairprint(cmac,len(current))
-			if len(current) == 1: cmacM = current[0]; # found existing
+			if len(current) == 1: 
+				# current.update()
+				# https://stackoverflow.com/questions/17688415/python-using-a-variable-in-an-expression-or-calling-the-mongoengine-update-fun
+				rduModem.objects.update(**{'timestamp':str(time.ctime(time.time()))})
+				wc.pairprint(cmac, 'PUT\ttimestamp')
+				#'set__timestamp__' + str(time.ctime(time.time()))})
+				#try:
+				#    user = User.objects(username="FooBar").get()
+				#    user.update(
+				#        age=30,
+				#        bio="Explicit is better than implicit"
+				#    )
+				#    print("User updated!")
+				#except DoesNotExist:
+				#    print("User not found")
+				# user.reload()
 			else:
 				if len(current) != 0: 
 					rduModem.objects(cmac=cmac).delete(); # more than 1, delete all!
+					wc.pairprint(cmac, 'DELETE')
 				cmacM = rduModem(cmac=cmac,
 					access=MODEM['access'],
 					chaddr=MODEM['chaddr'],
@@ -73,6 +91,7 @@ class MDB():
 					vendorEncapsulatedOptions=MODEM['vendorEncapsulatedOptions'],
 					timestamp=MODEM['timestamp'])
 				cmacM.save()
+				wc.pairprint(cmac,'POST')
 
 MONGO = MDB('localhost', 27017, 'admin')
 
@@ -111,26 +130,4 @@ class rduModem(MONGO.M.Document):
 	pass
 
 # MONGO.LoadModem(json.loads(wc.read_file(rdu_json)))
-
-
-
-#rdu = json.loads(wc.read_file(rdu_json))
-#for cmac in rdu.keys():
-#	RDU = FormatRDU_Modem(cmac, rdu[cmac]) 
-#	# if CMAC doesnt exist, create
-#	if list(rduModem.objects(cmac=cmac)) == []:
-#		cmacM = rduModem(cmac=cmac, deviceType=RDU['deviceType'],timestamp=str(time.time()))
-#		cmacM.save()
-# 	rduModem.objects(cmac=cmac).delete()
-
-#def flask_RDU():
-#	@app.route('/rdu', methods=['GET'])
-#	def all():
-#		return(flask.jsonify(rduModem.objects()))
-#
-## FLASK WEB-API
-#def flask_default():
-#	@app.route('/', methods=['GET'])
-#	def home():
-#		return "<h1>DFEAULT</h1><p>Got default, but is working</p>"
 

@@ -9,7 +9,7 @@ import cablemedic
 import velocity
 
 import flask
-import Mongo
+import Mongo; # shared_libs
 flaskIP = wc.argv_dict['flaskIP']
 
 def flask_RDU():
@@ -24,6 +24,7 @@ def flask_default():
                 return "<h1>DFEAULT</h1><p>Got default, but is working</p>"
 
 if  __name__ == "__main__":
+	# Executables
         flask_default()
         flask_RDU()
         Mongo.MONGO.app.run(debug=True, host=flaskIP)
