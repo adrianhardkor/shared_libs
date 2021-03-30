@@ -27,4 +27,13 @@ SyntaxError: invalid syntax
 
 
 10.88.200.11 - - [30/Mar/2021 14:24:34] "[37mGET /rdu HTTP/1.1[0m" 200 -
-^C
+^C * Serving Flask app "Mongo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+ * Running on http://10.88.48.21:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 950-704-576
+10.88.200.11 - - [30/Mar/2021 16:48:19] "[37mGET /rdu HTTP/1.1[0m" 200 -
