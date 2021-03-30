@@ -1,0 +1,30 @@
+ * Serving Flask app "MongoDemo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+ * Running on http://10.88.48.21:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 950-704-576
+
+10.88.200.11 - - [30/Mar/2021 12:47:26] "[37mGET /rdu HTTP/1.1[0m" 200 -
+10.88.200.11 - - [30/Mar/2021 12:49:44] "[37mGET /rdu HTTP/1.1[0m" 200 -
+  File "./Mongo.py", line 68
+    self.app = flask.Flask(__name))
+                                  ^
+SyntaxError: invalid syntax
+ * Detected change in '/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/__init__.py', reloading
+ * Serving Flask app "MongoDemo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+ * Running on http://10.88.48.21:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 950-704-576
+
+
+10.88.200.11 - - [30/Mar/2021 14:24:34] "[37mGET /rdu HTTP/1.1[0m" 200 -
+^C

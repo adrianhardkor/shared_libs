@@ -72,7 +72,59 @@ class BACSOAP():
 		wc.pairprint('export took', wc.fullRuntime())
 		return(result)
 	def closeSession(self):
-            wc.jd(self.PATH, runner('closeSession', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'username':self.username, 'password':self.password, 'rduHost':self.RDU, 'rduPort':'49187'}))
+	    wc.jd(self.PATH, runner('closeSession', 'http://%s:9100/cp-ws-prov/provService' % self.PWS, args={'sessionId':self.sessionId, 'username':self.username, 'password':self.password, 'rduHost':self.RDU, 'rduPort':'49187'}))
+
+def wonky_bac_pairedlist(myl):
+	result = {}
+	for i in range(0, len(myl), 2):
+		index = str(myl[i]).strip()
+		value = str(myl[i + 1])
+		result[index] = value
+		if index == 'dhcp-parameter-request-list':
+			ii = int(i) + 1
+			for myll in myl[ii::]:
+				if myll.startswith(' '):
+					break
+				ii = ii + 1
+			result[index] = ' '.join(myl[i:ii])
+			remainder = wonky_bac_pairedlist(myl[ii:])
+			for r in remainder:
+				result[r] = remainder[r]
+			return(result)
+	return(result)
+
+def FormatRDU_Modem(cmac, bac):
+	result = {}
+	if bac == {}: return(result)
+	result['deviceType'] = bac['cptype:deviceType']
+	if 'cptype:dhcpCriteria' in bac.keys(): result['dhcpCritera'] = bac['cptype:dhcpCriteria']
+	else: result['dhcpCritera'] = ''
+	if 'cptype:discoveredData' in bac.keys():
+		properties = bac['cptype:discoveredData']['cptype:dhcpv4RequestData']['cptype:entry']
+	elif 'cptype:properties' in bac.keys():
+		properties = bac['cptype:properties']['cptype:entry']
+	else: wc.jd(bac)
+	for unformat in properties:
+		if ',' not in unformat['cptype:value']: result[unformat['cptype:name']] = unformat['cptype:value']
+		else:
+			for each in unformat['cptype:value'].split(','):
+				result[each[0]] = each[-1]
+	for unformat2 in bac['cptype:properties']['cptype:entry']:
+		if '/' in unformat2['cptype:name']: index = unformat2['cptype:name'].split('/')[-1]
+		else: index = unformat2['cptype:name']
+		if str(unformat2['cptype:value']) != '[]': result[index] = unformat2['cptype:value']
+		if unformat2['cptype:name'] == '/discoveredData/raw/dhcpv4':
+			pairedlist = wc.mcsplit(unformat2['cptype:value'], ',=')
+			pairedlist.pop(0)
+			pairedlist[0] = pairedlist[0].strip('{')
+			pairedlist[-1] = pairedlist[0].strip('}')
+			mydict = wonky_bac_pairedlist(pairedlist)
+			for key in mydict.keys():
+				result[key] = mydict[key]
+	return(result)
+
+
+
 
 # BAC = BACSOAP(PWS=wc.argv_dict['PWS'], RDU=wc.argv_dict['RDU'], username=wc.argv_dict['username'], password=wc.argv_dict['password'])
 # if 'mac' in wc.argv_dict.keys():
