@@ -51,7 +51,9 @@ class MDB():
 		cSET = {}
 		currentJSON = json.loads(current.to_json())[0]
 		for old in criteria_SET.keys():
-			if currentJSON[old] != criteria_SET[old]:
+			if old not in currentJSON:
+				cSET[old] = criteria_SET[old]
+			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
 		if cSET != {}:
 			current.update(**cSET)
