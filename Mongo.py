@@ -63,6 +63,9 @@ class MDB():
 	def _GET(self, _TEMPLATE, criteria={}):
 		if criteria == {}: return(_TEMPLATE.objects())
 		else: return(_TEMPLATE.objects(**criteria))
+	def _GETJSON(self, _TEMPLATE, criteria={}):
+		_obj = self._GET(_TEMPLATE, criteria=criteria)
+		return(json.loads(_obj.to_json())); # returns type(dict)
 	def _DELETE(self, _TEMPLATE, criteria={}, force=False):
 		if criteria == {}: 
 			if not force: wc.pairprint("Mongo._DELETE Cannot be for all objects", _TEMPLATE)
@@ -104,6 +107,7 @@ class MDB():
 			self._UPDATE(rduModem, {'cmac':cmac}, MODEM)
 
 MONGO = MDB('localhost', 27017, 'admin')
+# SCALE ALL FURTHER CLASSES/DOCUMENTS IN ORDER OF CALLS/REFERENCES
 
 class rduModem(MONGO.M.Document):
 	cmac = MONGO.M.StringField(required=True)
@@ -148,25 +152,52 @@ class rduModem(MONGO.M.Document):
 	dhcpv4 = MONGO.M.StringField()
 	pass
 
-# ansible host/group vars?
 
-class Router(MONGO.M.Document):
-	name = MONGO.M.StringField(); # ansible inventory name
-	device_name = MONGO.M.StringField(); # name on device
-	vendor = MONGO.M.StringField()
-	model = MONGO.M.StringField()
-	ipAddress = MONGO.M.StringField()
-	sn = MONGO.M.StringField()
-	protocols = MONGO.M.ListField()
-	ansible_inventories = MONGO.M.StringField()
-	ansible_host_vars = MONGO.M.StringField()
-	# ansible host/group vars?
-	ports = MONGO.M.ListField(MONGO.M.ReferenceField(Port))	
-	velocityARC = MONGO.M.ReferenceField(velDevice)
-	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
-	# NCS = MONGO.M.ReferenceField(mNCS); # rack-loc?
-	timestamp = MONGO.M.StringField()
+class velTopologyReservation(MONGO.M.Document):
+	topologyId = MONGO.M.StringField()
+	topologyName = MONGO.M.StringField()
+	topologyDescription = MONGO.M.StringField()
+	creatorId = MONGO.M.StringField(); # top built by
+
+	reservationName = MONGO.M.StringField()
+	reservationId = MONGO.M.StringField()
+	ownerId = MONGO.M.StringField(); # reserved by
+	start = MONGO.M.StringField()
+	end = MONGO.M.StringField()	
 	pass
+
+class velPort(MONGO.M.Document):
+	name = MONGO.M.StringField()
+	portGroup = MONGO.M.StringField(); # name
+	portGroupId = MONGO.M.StringField()
+	uuid = MONGO.M.StringField()
+	templateName = MONGO.M.StringField()
+	description = MONGO.M.StringField()
+	isLocked = MONGO.M.StringField()
+	isOnline = MONGO.M.StringField()
+	connections = MONGO.M.StringField(); # uuid? V is p2p so String
+	top_reserv = MONGO.M.ListField(MONGO.M.ReferenceField(velTopologyReservation))
+	pass
+
+class velDevice(MONGO.M.Document):
+	name = MONGO.M.StringField()
+	uuid = MONGO.M.StringField()
+	templateName = MONGO.M.StringField()
+	ipAddress = MONGO.M.StringField()
+	hostname = MONGO.M.StringField(); # V uses for DNS instead of IP
+	vendor = MONGO.M.StringField()
+	model = MONGO.M.StringField(); # used for V.abstract
+	tags = MONGO.M.StringField(); # list
+	isOnline = MONGO.M.StringField(); # ping/status
+	isLocked = MONGO.M.StringField()
+	driver = MONGO.M.StringField(); # pull from template
+	connections = MONGO.M.StringField(); # uuid? V is p2p so String
+
+	ports = MONGO.M.ListField(MONGO.M.ReferenceField(velPort)) 
+	top_reserv = MONGO.M.ListField(MONGO.M.ReferenceField(velTopologyReservation))
+	pass
+
+# ansible host/group vars?
 
 class Port(MONGO.M.Document):
 	name = MONGO.M.StringField()
@@ -185,48 +216,22 @@ class Port(MONGO.M.Document):
 	qos = MONGO.M.StringField()
 	pass
 
-class velDevice(MONGO.M.Document):
-	name = MONGO.M.StringField()
-	uuid = MONGO.M.StringField()
-	templateName = MONGO.M.StringField()
-	ipAddress = MONGO.M.StringField()
-	hostname = MONGO.M.StringField(): # V uses for DNS instead of IP
+class Router(MONGO.M.Document):
+	name = MONGO.M.StringField(); # ansible inventory name
+	device_name = MONGO.M.StringField(); # name on device
 	vendor = MONGO.M.StringField()
-	model = MONGO.M.StringField(); # used for V.abstract
-	tags = MONGO.M.StringField(); # list
-	isOnline = MONGO.M.StringField(); # ping/status
-	isLocked = MONGO.M.StringField()
-	driver = MONGO.M.StringField(); # pull from template
-	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-
-	ports = MONGO.M.ListField(ReferenceField(velPort)) 
-	top_reserv = MONGO.M.ListField(MONGO.M.ReferenceField(velTopologyReservation))
-	pass
-
-class velPort(MONGO.M.Document):
-	name = MONGO.M.StringField()
-	portGroup = MONGO.M.StringField(); # name
-	portGroupId = MONGO.M.StringField()
-	uuid = MONGO.M.StringField()
-	templateName = MONGO.M.StringField()
-	description = MONGO.M.StringField()
-	isLocked = MONGO.M.StringField()
-	isOnline = MONGO.M.StringField()
-	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-	top_reserv = MONGO.M.ListField(MONGO.M.ReferenceField(velTopologyReservation))
-	pass
-
-class velTopologyReservation(MONGO.M.Document):
-	topologyId = MONGO.M.StringField()
-	topologyName = MONGO.M.StringField()
-	topologyDescription = MONGO.M.StringField()
-	creatorId = MONGO.M.StringField(); # top built by
-
-	reservationName = MONGO.M.StringField()
-	reservationId = MONGO.M.StringField()
-	ownerId = MONGO.M.StringField(); # reserved by
-	start = MONGO.M.StringField()
-	end = MONGO.M.StringField()	
+	model = MONGO.M.StringField()
+	ipAddress = MONGO.M.StringField()
+	sn = MONGO.M.StringField()
+	protocols = MONGO.M.ListField()
+	ansible_inventories = MONGO.M.StringField()
+	ansible_host_vars = MONGO.M.StringField()
+	# ansible host/group vars?
+	ports = MONGO.M.ListField(MONGO.M.ReferenceField(Port))	
+	velocityARC = MONGO.M.ReferenceField(velDevice)
+	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
+	# NCS = MONGO.M.ReferenceField(mNCS); # rack-loc?
+	timestamp = MONGO.M.StringField()
 	pass
 
 # MONGO._DELETE(rduModem, criteria={}, force=True)
