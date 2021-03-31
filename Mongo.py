@@ -10,7 +10,7 @@ sys.path.insert(1,'./MongoClasses/')
 import soap
 
 # INPUTS
-rdu_json = wc.argv_dict['rdu_json']
+# rdu_json = wc.argv_dict['rdu_json']
 # flaskIP = wc.argv_dict['flaskIP']
 
 class MDB():
@@ -148,6 +148,87 @@ class rduModem(MONGO.M.Document):
 	dhcpv4 = MONGO.M.StringField()
 	pass
 
+# ansible host/group vars?
+
+class Router(MONGO.M.Document):
+	name = MONGO.M.StringField(); # ansible inventory name
+	device_name = MONGO.M.StringField(); # name on device
+	vendor = MONGO.M.StringField()
+	model = MONGO.M.StringField()
+	ipAddress = MONGO.M.StringField()
+	sn = MONGO.M.StringField()
+	protocols = MONGO.M.ListField()
+	ansible_inventories = MONGO.M.StringField()
+	ansible_host_vars = MONGO.M.StringField()
+	# ansible host/group vars?
+	ports = MONGO.M.ListField(MONGO.M.ReferenceField(Port))	
+	velocityARC = MONGO.M.ReferenceField(velDevice)
+	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
+	# NCS = MONGO.M.ReferenceField(mNCS); # rack-loc?
+	timestamp = MONGO.M.StringField()
+	pass
+
+class Port(MONGO.M.Document):
+	name = MONGO.M.StringField()
+	description = MONGO.M.StringField()
+	status = MONGO.M.StringField()	
+	vlans = MONGO.M.ListField()
+	unit = MONGO.M.ListField()
+	duplex = MONGO.M.StringField()
+	speed = MONGO.M.StringField()
+	ipv4 = MONGO.M.StringField()
+	ipv6 = MONGO.M.StringField()	
+	familys = MONGO.M.ListField()
+	MAC = MONGO.M.StringField()
+	PortType = MONGO.M.StringField()
+	mtu = MONGO.M.StringField()
+	qos = MONGO.M.StringField()
+	pass
+
+class velDevice(MONGO.M.Document):
+	name = MONGO.M.StringField()
+	uuid = MONGO.M.StringField()
+	templateName = MONGO.M.StringField()
+	ipAddress = MONGO.M.StringField()
+	hostname = MONGO.M.StringField(): # V uses for DNS instead of IP
+	vendor = MONGO.M.StringField()
+	model = MONGO.M.StringField(); # used for V.abstract
+	tags = MONGO.M.StringField(); # list
+	isOnline = MONGO.M.StringField(); # ping/status
+	isLocked = MONGO.M.StringField()
+	driver = MONGO.M.StringField(); # pull from template
+	connections = MONGO.M.StringField(); # uuid? V is p2p so String
+
+	ports = MONGO.M.ListField(ReferenceField(velPort)) 
+	top_reserv = MONGO.M.ListField(MONGO.M.ReferenceField(velTopologyReservation))
+	pass
+
+class velPort(MONGO.M.Document):
+	name = MONGO.M.StringField()
+	portGroup = MONGO.M.StringField(); # name
+	portGroupId = MONGO.M.StringField()
+	uuid = MONGO.M.StringField()
+	templateName = MONGO.M.StringField()
+	description = MONGO.M.StringField()
+	isLocked = MONGO.M.StringField()
+	isOnline = MONGO.M.StringField()
+	connections = MONGO.M.StringField(); # uuid? V is p2p so String
+	top_reserv = MONGO.M.ListField(MONGO.M.ReferenceField(velTopologyReservation))
+	pass
+
+class velTopologyReservation(MONGO.M.Document):
+	topologyId = MONGO.M.StringField()
+	topologyName = MONGO.M.StringField()
+	topologyDescription = MONGO.M.StringField()
+	creatorId = MONGO.M.StringField(); # top built by
+
+	reservationName = MONGO.M.StringField()
+	reservationId = MONGO.M.StringField()
+	ownerId = MONGO.M.StringField(); # reserved by
+	start = MONGO.M.StringField()
+	end = MONGO.M.StringField()	
+	pass
+
 # MONGO._DELETE(rduModem, criteria={}, force=True)
-MONGO.LoadModem(json.loads(wc.read_file(rdu_json)))
+# MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
