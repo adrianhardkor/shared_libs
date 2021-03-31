@@ -17,6 +17,14 @@ def flask_RDU():
         def all():
                 return(flask.jsonify(Mongo.rduModem.objects()))
 
+def flask_RunJenkinsPipeline():
+	@Mongo.MONGO.app.route('/runJenkinsPipeline', methods=['POST'])
+	def pipeline():
+		# create jenkins class
+		# connect to jenkins
+		# run 
+		pass
+
 # FLASK WEB-API
 def flask_default():
         @Mongo.MONGO.app.route('/', methods=['GET'])
