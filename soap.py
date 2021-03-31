@@ -97,8 +97,8 @@ def FormatRDU_Modem(cmac, bac):
 	result = {}
 	if bac == {}: return(result)
 	result['deviceType'] = bac['cptype:deviceType']
-	if 'cptype:dhcpCriteria' in bac.keys(): result['dhcpCritera'] = bac['cptype:dhcpCriteria']
-	else: result['dhcpCritera'] = ''
+	if 'cptype:dhcpCriteria' in bac.keys(): result['dhcpCriteria'] = bac['cptype:dhcpCriteria']
+	else: result['dhcpCriteria'] = ''
 	if 'cptype:discoveredData' in bac.keys():
 		properties = bac['cptype:discoveredData']['cptype:dhcpv4RequestData']['cptype:entry']
 	elif 'cptype:properties' in bac.keys():
@@ -121,7 +121,22 @@ def FormatRDU_Modem(cmac, bac):
 			mydict = wonky_bac_pairedlist(pairedlist)
 			for key in mydict.keys():
 				result[key] = mydict[key]
-	return(result)
+	# cleanup
+	bad = ['(',')',' ','{']
+	for kk in list(result.keys()):
+		if kk in bad: del result[kk]
+		elif wc.is_int(kk): del result[kk]
+		elif '/' in kk: del result[kk]
+		else: result[kk.replace('-','')] = result.pop(kk)
+		if kk in result.keys():
+			result[kk.strip('/')] = result.pop(kk)
+	if 'detected' in result.keys():
+		result['detected'] = result['detected']['@xsi:nil']
+#	if 'mac' in result.keys():
+#		if 'cmac' in result.keys():
+#			if result['cmac'] == '': result['cmac'] = result.pop('mac')
+#		else: result['cmac'] = result.pop('mac')
+	return(json.loads(json.dumps(result, sort_keys=True)))
 
 
 
