@@ -224,8 +224,9 @@ class Router(MONGO.M.Document):
 	ipAddress = MONGO.M.StringField()
 	sn = MONGO.M.StringField()
 	protocols = MONGO.M.ListField()
+	ansible_net_system = MONGO.M.ListField()
 	ansible_inventories = MONGO.M.StringField()
-	ansible_host_vars = MONGO.M.StringField()
+	ansible_host_vars = MONGO.M.DictField()
 	ansible_ready = MONGO.M.DictField()
 	# ansible host/group vars?
 	ports = MONGO.M.ListField(MONGO.M.ReferenceField(Port))	
