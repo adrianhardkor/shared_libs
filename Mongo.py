@@ -226,6 +226,7 @@ class Router(MONGO.M.Document):
 	protocols = MONGO.M.ListField()
 	ansible_inventories = MONGO.M.StringField()
 	ansible_host_vars = MONGO.M.StringField()
+	ansible_ready = MONGO.M.StringField()
 	# ansible host/group vars?
 	ports = MONGO.M.ListField(MONGO.M.ReferenceField(Port))	
 	velocityARC = MONGO.M.ReferenceField(velDevice)
