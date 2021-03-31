@@ -237,6 +237,6 @@ class Router(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	pass
 
-MONGO._DELETE(Router, criteria={}, force=True)
+# MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
