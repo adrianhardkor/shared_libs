@@ -53,9 +53,10 @@ class MDB():
 		for old in criteria_SET.keys():
 			if currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
-		current.update(**cSET)
-		# current.reload()
-		wc.pairprint('Mongo._PUT:  ' + str(criteria_GET), sorted(list(cSET.keys())))
+		if cSET != {}:
+			current.update(**cSET)
+			# current.reload()
+			wc.pairprint('Mongo._PUT:  ' + str(criteria_GET), sorted(list(cSET.keys())))
 	def _POST(self, _TEMPLATE, criteria_SET, name):
 		_OBJECT = _TEMPLATE(**criteria_SET)
 		_OBJECT.save()
@@ -225,7 +226,7 @@ class Router(MONGO.M.Document):
 	sn = MONGO.M.StringField()
 	protocols = MONGO.M.ListField()
 	ansible_net_system = MONGO.M.ListField()
-	ansible_inventories = MONGO.M.StringField()
+	ansible_inventories = MONGO.M.DictField()
 	ansible_host_vars = MONGO.M.DictField()
 	ansible_ready = MONGO.M.DictField()
 	# ansible host/group vars?
@@ -236,6 +237,6 @@ class Router(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	pass
 
-# MONGO._DELETE(Router, criteria={}, force=True)
+MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
