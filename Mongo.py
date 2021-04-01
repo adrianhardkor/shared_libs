@@ -190,7 +190,7 @@ class velPort(MONGO.M.EmbeddedDocument):
 	isLocked = MONGO.M.StringField()
 	isOnline = MONGO.M.StringField()
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-	top_reserv = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
+	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
 	pass
 
 class velDevice(MONGO.M.EmbeddedDocument):
@@ -198,17 +198,15 @@ class velDevice(MONGO.M.EmbeddedDocument):
 	uuid = MONGO.M.StringField()
 	templateName = MONGO.M.StringField()
 	ipAddress = MONGO.M.StringField()
-	hostname = MONGO.M.StringField(); # V uses for DNS instead of IP
-	vendor = MONGO.M.StringField()
-	model = MONGO.M.StringField(); # used for V.abstract
-	tags = MONGO.M.StringField(); # list
+	Hostname = MONGO.M.StringField(); # V uses for DNS instead of IP
+	Make = MONGO.M.StringField()
+	Model = MONGO.M.StringField(); # used for V.abstract
+	tags = MONGO.M.ListField(); # list
 	isOnline = MONGO.M.StringField(); # ping/status
 	isLocked = MONGO.M.StringField()
 	driver = MONGO.M.StringField(); # pull from template
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-
-	ports = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velPort, dbref=True)) 
-	top_reserv = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
+	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
 	pass
 
 # ansible host/group vars?
@@ -228,6 +226,7 @@ class Port(MONGO.M.EmbeddedDocument):
 	PortType = MONGO.M.StringField()
 	mtu = MONGO.M.StringField()
 	qos = MONGO.M.StringField()
+	velocityARC = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velPort, dbref=True))
 	pass
 
 class Router(MONGO.M.Document):
@@ -250,6 +249,6 @@ class Router(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	pass
 
-# MONGO._DELETE(Router, criteria={}, force=True)
+MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
