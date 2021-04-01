@@ -68,7 +68,7 @@ class MDB():
 		# doc.update(set__<embedded-doc-key>__S__<embedded-doc-lookup-key> = <new-val>)
 		if cSET != {}:
 			current.update(**cSET)
-			current.save(); # reload()
+			current.reload()
 			wc.pairprint('Mongo._PUT:  ' + str(criteria_GET), sorted(list(cSET.keys())))
 	def _POST(self, _TEMPLATE, criteria_SET, name):
 		_OBJECT = _TEMPLATE(**criteria_SET)
