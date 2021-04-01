@@ -202,8 +202,8 @@ class velDevice(MONGO.M.EmbeddedDocument):
 	Make = MONGO.M.StringField()
 	Model = MONGO.M.StringField(); # used for V.abstract
 	tags = MONGO.M.ListField(); # list
-	isOnline = MONGO.M.StringField(); # ping/status
-	isLocked = MONGO.M.StringField()
+	isOnline = MONGO.M.BooleanField(); # ping/status
+	isLocked = MONGO.M.BooleanField()
 	driver = MONGO.M.StringField(); # pull from template
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
 	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
