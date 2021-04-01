@@ -67,12 +67,12 @@ class MDB():
 		# doc = MyModel.objects.find(<model-key> = <model-val>, <embedded-doc-key>__<embedded-doc-lookup-key> = <lookup-key-val>)
 		# doc.update(set__<embedded-doc-key>__S__<embedded-doc-lookup-key> = <new-val>)
 		if cSET != {}:
-			current.update(**cSET)
-			current.reload()
+			current.update(**cSET, check_keys=False)
+			current.save(check_keys=False)
 			wc.pairprint('Mongo._PUT:  ' + str(criteria_GET), sorted(list(cSET.keys())))
 	def _POST(self, _TEMPLATE, criteria_SET, name):
 		_OBJECT = _TEMPLATE(**criteria_SET)
-		_OBJECT.save()
+		_OBJECT.save(check_keys=False)
 		wc.pairprint('Mongo._POST', name)
 	def _GET(self, _TEMPLATE, criteria={}):
 		if criteria == {}: return(_TEMPLATE.objects())
