@@ -167,7 +167,7 @@ class rduModem(MONGO.M.Document):
 	pass
 
 
-class velTopologyReservation(MONGO.M.Document):
+class velTopologyReservation(MONGO.M.EmbeddedDocument):
 	topologyId = MONGO.M.StringField()
 	topologyName = MONGO.M.StringField()
 	topologyDescription = MONGO.M.StringField()
@@ -180,7 +180,7 @@ class velTopologyReservation(MONGO.M.Document):
 	end = MONGO.M.StringField()	
 	pass
 
-class velPort(MONGO.M.Document):
+class velPort(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
 	portGroup = MONGO.M.StringField(); # name
 	portGroupId = MONGO.M.StringField()
@@ -193,7 +193,7 @@ class velPort(MONGO.M.Document):
 	top_reserv = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
 	pass
 
-class velDevice(MONGO.M.Document):
+class velDevice(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
 	uuid = MONGO.M.StringField()
 	templateName = MONGO.M.StringField()
@@ -213,7 +213,7 @@ class velDevice(MONGO.M.Document):
 
 # ansible host/group vars?
 
-class Port(MONGO.M.Document):
+class Port(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
 	description = MONGO.M.StringField()
 	status = MONGO.M.StringField()	
