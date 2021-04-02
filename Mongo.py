@@ -225,7 +225,7 @@ class Port(MONGO.M.EmbeddedDocument):
 	PortType = MONGO.M.StringField()
 	mtu = MONGO.M.StringField()
 	qos = MONGO.M.StringField()
-	velocityARC = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velPort, dbref=True))
+	velocityARC = MONGO.M.EmbeddedDocumentField(velPort, dbref=True)
 	pass
 
 class Modem(MONGO.M.EmbeddedDocument):
@@ -255,6 +255,7 @@ class SG(MONGO.M.Document):
 	modems = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(Modem, dbref=True))
 	timestamp = MONGO.M.StringField()
 	cmts = MONGO.M.StringField()
+	velocityARC = MONGO.M.EmbeddedDocumentField(velDevice, dbref=True)
 	pass
 
 class Router(MONGO.M.Document):
