@@ -265,6 +265,7 @@ class Router(MONGO.M.Document):
 	ipAddress = MONGO.M.StringField()
 	sn = MONGO.M.StringField()
 	protocols = MONGO.M.ListField()
+	Type = MONGO.M.StringField()
 	ansible_net_system = MONGO.M.ListField()
 	ansible_inventories = MONGO.M.DictField()
 	ansible_host_vars = MONGO.M.DictField()
@@ -317,7 +318,7 @@ class CMTS(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	pass
 
-# MONGO._DELETE(Router, criteria={}, force=True)
+MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO._DELETE(CMTS, criteria={}, force=True)
 # MONGO._DELETE(Server, criteria={}, force=True)
 # MONGO._DELETE(SG, criteria={}, force=True)
