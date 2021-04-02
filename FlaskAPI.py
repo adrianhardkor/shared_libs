@@ -7,10 +7,10 @@ import re
 import skinny
 import cablemedic
 import velocity
-
 import flask
 import Mongo; # shared_libs
-flaskIP = wc.argv_dict['flaskIP']
+flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
+
 
 def flask_RDU():
 	@Mongo.MONGO.app.route('/rdu', methods=['GET'])

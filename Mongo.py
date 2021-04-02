@@ -181,13 +181,13 @@ class velTopologyReservation(MONGO.M.EmbeddedDocument):
 
 class velPort(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
-	portGroup = MONGO.M.StringField(); # name
-	portGroupId = MONGO.M.StringField()
+	pgName = MONGO.M.StringField(); # name
+	pgId = MONGO.M.StringField()
 	uuid = MONGO.M.StringField()
 	templateName = MONGO.M.StringField()
 	description = MONGO.M.StringField()
 	isLocked = MONGO.M.StringField()
-	isOnline = MONGO.M.StringField()
+	# isOnline = MONGO.M.StringField()
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
 	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
 	pass
