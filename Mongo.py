@@ -318,11 +318,11 @@ class CMTS(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	pass
 
-MONGO._DELETE(Router, criteria={}, force=True)
-MONGO._DELETE(CMTS, criteria={}, force=True)
-MONGO._DELETE(Server, criteria={}, force=True)
-MONGO._DELETE(SG, criteria={}, force=True)
-MONGO._DELETE(Port, criteria={}, force=True)
+# MONGO._DELETE(Router, criteria={}, force=True)
+# MONGO._DELETE(CMTS, criteria={}, force=True)
+# MONGO._DELETE(Server, criteria={}, force=True)
+# MONGO._DELETE(SG, criteria={}, force=True)
+
 try:
 	MONGO._DELETE(Modem, criteria={}, force=True)
 except Exception:
