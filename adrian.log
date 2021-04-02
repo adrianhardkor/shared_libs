@@ -281,3 +281,12 @@ Mongo._PUT:  {'cmac': '1,6,c8:63:fc:af:c5:d5'} = '['timestamp']'
  * Debugger PIN: 950-704-576
 
 10.88.200.11 - - [02/Apr/2021 00:52:42] "[37mGET /ais?ipAddress=10.88.232.3&model=mx480 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 00:53:02] "[37mGET /ais?ipAddress=10.88.232.3&model=mx480 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 01:00:59] "[37mGET /ais?ipAddress=10.88.232.3&model=mx480 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 12:55:36] "[37mGET /ais?ipAddress=10.88.232.3&model=mx480 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 13:41:48] "[37mGET /ais?name=ARCBKBNEDGACS36 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 13:41:53] "[37mGET /ais HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 13:42:07] "[37mGET /ais?name=ARCUAT1HUHAGS36 HTTP/1.1[0m" 200 -
+10.88.200.13 - - [02/Apr/2021 13:42:53] "[37mGET /ais?name=ARCUAT1HUHAGS36 HTTP/1.1[0m" 200 -
+10.88.200.13 - - [02/Apr/2021 13:42:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+ * Detected change in '/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/pip/__init__.py', reloading
