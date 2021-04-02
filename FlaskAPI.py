@@ -22,8 +22,11 @@ def flask_AIS():
 	@Mongo.MONGO.app.route('/ais', methods=['GET'])
 	def ais():
 		AIS = {}
-		if 'name' in flask.request.args: criteria = {'name': flask.request.args['name']}
-		for router in Mongo.MONGO._GETJSON(Mongo.Router):
+		if flask.request.args == {}:
+			routers = Mongo.MONGO._GETJSON(Mongo.Router)
+		else:
+			routers = Mongo.MONGO._GETJSON(Mongo.Router, criteria=flask.request.args)
+		for router in routers:
 			# list per mongo, choose top-id
 			if 'name' not in router.keys(): return(flask.jsonify(router))
 			AIS[router['name']] = router
