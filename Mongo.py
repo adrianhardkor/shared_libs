@@ -189,7 +189,7 @@ class velPort(MONGO.M.EmbeddedDocument):
 	isLocked = MONGO.M.StringField()
 	isOnline = MONGO.M.StringField()
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-	activeRes = MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True)
+	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
 	pass
 
 class velDevice(MONGO.M.EmbeddedDocument):
@@ -205,7 +205,7 @@ class velDevice(MONGO.M.EmbeddedDocument):
 	isLocked = MONGO.M.BooleanField()
 	driver = MONGO.M.StringField(); # pull from template
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-	activeRes = MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True)
+	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
 	pass
 
 # ansible host/group vars?
