@@ -20,6 +20,7 @@ class VELOCITY():
 		else:
 			print('Failed: VELOCITY No U/P or TOKEN provided!')
 			exit(5)
+		self.ALL_TEMPLATES = {}
 		self.headers = {"X-Auth-Token": self.TOKEN}
 		# self.GetCableTypes()
 	def REST_GET(self, url, params={}, limit='?limit=200', list_attr=''):
@@ -444,14 +445,22 @@ class VELOCITY():
 		return(self.REST_GET('/velocity/api/inventory/v13/device/' + uuid)['name'])
 	def GetTemplates(self, templateName='', templateId=''):
 		# /velocity/api/inventory/v13/templates
+		if templateName != '' and templateName in self.ALL_TEMPLATES.keys(): return(self.ALL_TEMPLATES[templateName])
+		if templateId != '' and templateId in self.ALL_TEMPLATES.keys(): return(self.ALL_TEMPLATES[templateId])
+
 		data = self.REST_GET('/velocity/api/inventory/v13/templates', list_attr='templates')['templates']
 		out = {}
 		for d in data:
 			out[d['name']] = out[d['id']] = d
 			if d['id'] == templateId:
+				self.ALL_TEMPLATES[d['name']] = d
+				self.ALL_TEMPLATES[d['id']] = d
 				return(d)
 		if templateName != '':
-				return(out[templateName])
+				d = out[templateName]
+				self.ALL_TEMPLATES[d['name']] = d
+				self.ALL_TEMPLATES[d['id']] = d
+				return(d)
 		wc.pairprint(templateName, templateId)
 		wc.jd(data)
 		return(out)
@@ -473,6 +482,7 @@ class VELOCITY():
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
 		ports[p['name']]['linkChecked'] = p['linkChecked']
 		ports[p['name']]['lastModified'] = p['lastModified']
+		ports[p['name']]['templateName'] = self.GetTemplates(templateId=p['templateId'])
 		ports[p['name']]['connections'] = {}
 		for PortProp in p['properties']:
 			ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
