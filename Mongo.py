@@ -322,6 +322,9 @@ MONGO._DELETE(Router, criteria={}, force=True)
 MONGO._DELETE(CMTS, criteria={}, force=True)
 MONGO._DELETE(Server, criteria={}, force=True)
 MONGO._DELETE(SG, criteria={}, force=True)
-
+try:
+	MONGO._DELETE(Modem, criteria={}, force=True)
+except Exception:
+	pass
 # MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
