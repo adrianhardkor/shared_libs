@@ -24,12 +24,16 @@ def flask_AIS():
 		AIS = {}
 		if flask.request.args == {}:
 			routers = Mongo.MONGO._GETJSON(Mongo.Router)
+			servers = Mongo.MONGO._GETJSON(Mongo.Server)
 		else:
 			routers = Mongo.MONGO._GETJSON(Mongo.Router, criteria=flask.request.args)
+			servers = Mongo.MONGO._GETJSON(Mongo.Server, criteria=flask.request.args)
 		for router in routers:
-			# list per mongo, choose top-id
 			if 'name' not in router.keys(): return(flask.jsonify(router))
 			AIS[router['name']] = router
+		for server in servers:
+			if 'name' not in server.keys(): return(flask.jsonify(server))
+			AIS[server['name']] = server
 		return(flask.jsonify(AIS))
 
 def flask_RunJenkinsPipeline():

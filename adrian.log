@@ -290,3 +290,82 @@ Mongo._PUT:  {'cmac': '1,6,c8:63:fc:af:c5:d5'} = '['timestamp']'
 10.88.200.13 - - [02/Apr/2021 13:42:53] "[37mGET /ais?name=ARCUAT1HUHAGS36 HTTP/1.1[0m" 200 -
 10.88.200.13 - - [02/Apr/2021 13:42:53] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
  * Detected change in '/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/pip/__init__.py', reloading
+ * Serving Flask app "Mongo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+ * Running on http://10.88.48.21:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 950-704-576
+10.88.200.11 - - [02/Apr/2021 14:44:21] "[37mGET /ais?name=ARCUAT1HUHAGS36 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 14:44:34] "[37mGET /ais HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 14:48:25] "[37mGET /ais?name=ARCBKBNEDGEPR02 HTTP/1.1[0m" 200 -
+10.88.200.22 - - [02/Apr/2021 14:53:41] "[37mGET /ais?name=ARCBKBNEDGEPR02 HTTP/1.1[0m" 200 -
+10.88.200.22 - - [02/Apr/2021 14:53:41] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+10.88.200.15 - - [02/Apr/2021 14:58:26] "[37mGET /ais?name=ARCBKBNEDGEPR02 HTTP/1.1[0m" 200 -
+10.88.200.15 - - [02/Apr/2021 14:58:26] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+ * Serving Flask app "Mongo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+Traceback (most recent call last):
+  File "./FlaskAPI.py", line 58, in <module>
+    Mongo.MONGO.app.run(debug=True, host=flaskIP)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 990, in run
+    run_simple(host, port, self, **options)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/werkzeug/serving.py", line 1030, in run_simple
+    s.bind(server_address)
+OSError: [Errno 98] Address already in use
+ * Detected change in '/home/adrian/shared_libs/FlaskAPI.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 950-704-576
+10.88.200.11 - - [02/Apr/2021 15:14:17] "[35m[1mGET /ais?name=ARCBKBNEDGEPR02 HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/adrian/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/adrian/shared_libs/FlaskAPI.py", line 34, in ais
+    for server in servers:
+UnboundLocalError: local variable 'servers' referenced before assignment
+10.88.200.11 - - [02/Apr/2021 15:14:17] "[37mGET /ais?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 15:14:17] "[37mGET /ais?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 15:14:17] "[37mGET /ais?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 15:14:18] "[37mGET /ais?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 15:14:18] "[37mGET /ais?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+ * Detected change in '/home/adrian/shared_libs/FlaskAPI.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 950-704-576
+10.88.200.11 - - [02/Apr/2021 15:14:54] "[37mGET /ais?name=ARCBKBNEDGEPR02 HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 15:15:06] "[37mGET /ais HTTP/1.1[0m" 200 -
+10.88.200.11 - - [02/Apr/2021 15:15:44] "[37mGET /ais?name=ARCPODSUATDNS01 HTTP/1.1[0m" 200 -
+ * Detected change in '/home/adrian/shared_libs/Mongo.py', reloading
+ * Restarting with stat
+Traceback (most recent call last):
+  File "/home/adrian/shared_libs/FlaskAPI.py", line 12, in <module>
+    import Mongo; # shared_libs
+  File "/home/adrian/shared_libs/Mongo.py", line 182
+    "activeRes": {
+                 ^
+IndentationError: unindent does not match any outer indentation level

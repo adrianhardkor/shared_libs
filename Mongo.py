@@ -170,10 +170,9 @@ class rduModem(MONGO.M.Document):
 class velTopologyReservation(MONGO.M.EmbeddedDocument):
 	topologyId = MONGO.M.StringField()
 	topologyName = MONGO.M.StringField()
-	topologyDescription = MONGO.M.StringField()
+	descriptionTopology = MONGO.M.StringField()
 	creatorId = MONGO.M.StringField(); # top built by
-
-	reservationName = MONGO.M.StringField()
+	name = MONGO.M.StringField()
 	reservationId = MONGO.M.StringField()
 	ownerId = MONGO.M.StringField(); # reserved by
 	start = MONGO.M.StringField()
@@ -190,7 +189,7 @@ class velPort(MONGO.M.EmbeddedDocument):
 	isLocked = MONGO.M.StringField()
 	isOnline = MONGO.M.StringField()
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
+	activeRes = MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True)
 	pass
 
 class velDevice(MONGO.M.EmbeddedDocument):
@@ -206,7 +205,7 @@ class velDevice(MONGO.M.EmbeddedDocument):
 	isLocked = MONGO.M.BooleanField()
 	driver = MONGO.M.StringField(); # pull from template
 	connections = MONGO.M.StringField(); # uuid? V is p2p so String
-	activeRes = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True))
+	activeRes = MONGO.M.EmbeddedDocumentField(velTopologyReservation, dbref=True)
 	pass
 
 # ansible host/group vars?
