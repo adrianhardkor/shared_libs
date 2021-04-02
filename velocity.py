@@ -482,7 +482,7 @@ class VELOCITY():
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
 		ports[p['name']]['linkChecked'] = p['linkChecked']
 		ports[p['name']]['lastModified'] = p['lastModified']
-		ports[p['name']]['templateName'] = self.GetTemplates(templateId=p['templateId'])
+		ports[p['name']]['templateName'] = self.GetTemplates(templateId=p['templateId'])['name']
 		ports[p['name']]['connections'] = {}
 		for PortProp in p['properties']:
 			ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
