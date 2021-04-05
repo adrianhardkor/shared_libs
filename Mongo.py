@@ -210,6 +210,10 @@ class velDevice(MONGO.M.EmbeddedDocument):
 
 # ansible host/group vars?
 
+class RFPort(MONGO.M.EmbeddedDocument):
+	name = MONGO.M.StringField()
+	pass
+
 class Port(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
 	description = MONGO.M.StringField()
@@ -312,6 +316,7 @@ class CMTS(MONGO.M.Document):
 	ansible_ready = MONGO.M.DictField()
 	# ansible host/group vars?
 	ports = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(Port, dbref=True))
+	portsRF = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(RFPort, dbref=True))
 	velocityARC = MONGO.M.EmbeddedDocumentField(velDevice, dbref=True)
 	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
