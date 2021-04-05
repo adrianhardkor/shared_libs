@@ -252,7 +252,7 @@ class Modem(MONGO.M.Document):
 class SG(MONGO.M.Document):
 	name = MONGO.M.StringField()
 	ports = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(velPort, dbref=True))
-	modems = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(Modem, dbref=True))
+	modems = MONGO.M.DictField()
 	timestamp = MONGO.M.StringField()
 	cmts = MONGO.M.StringField()
 	velocityARC = MONGO.M.EmbeddedDocumentField(velDevice, dbref=True)
