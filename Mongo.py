@@ -228,7 +228,7 @@ class Port(MONGO.M.EmbeddedDocument):
 	velocityARC = MONGO.M.EmbeddedDocumentField(velPort, dbref=True)
 	pass
 
-class Modem(MONGO.M.EmbeddedDocument):
+class Modem(MONGO.M.Document):
 	name = MONGO.M.StringField(); # ansible inventory name
 	device_name = MONGO.M.StringField(); # name on device
 	vendor = MONGO.M.StringField()

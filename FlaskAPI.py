@@ -25,15 +25,17 @@ def flask_AIS():
 		if flask.request.args == {}:
 			routers = Mongo.MONGO._GETJSON(Mongo.Router)
 			servers = Mongo.MONGO._GETJSON(Mongo.Server)
+			CMTSs = Mongo.MONGO._GETJSON(Mongo.CMTS)
+			modems = Mongo.MONGO._GETJSON(Mongo.Modem)
 		else:
 			routers = Mongo.MONGO._GETJSON(Mongo.Router, criteria=flask.request.args)
 			servers = Mongo.MONGO._GETJSON(Mongo.Server, criteria=flask.request.args)
-		for router in routers:
-			if 'name' not in router.keys(): return(flask.jsonify(router))
-			AIS[router['name']] = router
-		for server in servers:
-			if 'name' not in server.keys(): return(flask.jsonify(server))
-			AIS[server['name']] = server
+			CMTSs = Mongo.MONGO._GETJSON(Mongo.CMTS, criteria=flask.request.args)
+			modems = Mongo.MONGO._GETJSON(Mongo.Modem, criteria=flask.request.args)
+		for deviceTypeObj in [routers, servers, CMTSs, modems]:
+			for deviceObject in deviceTypeObj:
+				if 'name' not in deviceObject.keys(): return(flask.jsonify(deviceObject))
+				AIS[deviceObject['name']] = deviceObject
 		return(flask.jsonify(AIS))
 
 def flask_RunJenkinsPipeline():
