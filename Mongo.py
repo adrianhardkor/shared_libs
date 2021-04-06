@@ -54,8 +54,8 @@ class MDB():
 			if old not in currentJSON:
 				cSET[old] = criteria_SET[old]
 			elif type(currentJSON[old]) == dict:
-				for k in criteria_SET.keys():
-					if str(currentJSON[old][k]) != str(criteria_SET[old][k]):
+				for k in criteria_SET[old].keys():
+					elif str(currentJSON[old][k]) != str(criteria_SET[old][k]):
 						cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
