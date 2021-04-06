@@ -55,7 +55,7 @@ class MDB():
 				cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
-			if old in cSET:
+			if old in cSET and old == 'velocityARC':
 				wc.jd(currentJSON[old])
 				wc.jd(cSET[old])
 				print(old)
