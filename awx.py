@@ -412,7 +412,7 @@ class AWX():
 							for upstream in node2['upstream-summary']['upstream-channel']:
 								ppp = upstream['ucid']
 								if ppp not in _FACTS['ansible_net_interfaces'].keys():
-									_FACTS['ansible_net_interfaces'][ppp] = {'summary':{},'docs-mac-domain':{}}
+									_FACTS['ansible_net_interfaces'][ppp] = {'summary':{},'docs-mac-domain':{},'var':'portsRF'}
 								_FACTS['ansible_net_interfaces'][ppp]['summary']['ucid'] = ppp
 								_FACTS['ansible_net_interfaces'][ppp]['summary']['ucid-modem-count'] = upstream['ucid-modem-count']
 								_FACTS['ansible_net_interfaces'][ppp]['summary']['dir'] = 'upstream'
@@ -420,7 +420,7 @@ class AWX():
 							for downstream in node2['downstream-summary']['primary-dcid']:
 								ppp = downstream['dcid']
 								if ppp not in _FACTS['ansible_net_interfaces'].keys():
-									_FACTS['ansible_net_interfaces'][ppp] = {'summary':{},'docs-mac-domain':{}}
+									_FACTS['ansible_net_interfaces'][ppp] = {'summary':{},'docs-mac-domain':{},'var':'portsRF'}
 								_FACTS['ansible_net_interfaces'][ppp]['summary']['dcid'] = ppp
 								_FACTS['ansible_net_interfaces'][ppp]['summary']['dcid-modem-count'] = downstream['dcid-modem-count']
 								_FACTS['ansible_net_interfaces'][ppp]['summary']['dir'] = 'downstream'
@@ -453,12 +453,51 @@ class AWX():
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_portType'] = 'upstream-bonding-group'
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_groupName'] = groupname
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_upstream-logical-channel'] = logical
-
+							
 #							for _us2 in physical_us:
 #								_us2 = '/'.join([_us2['slot'],_us2['us-rf-port'],_us2['upstream-physical-channel']])
 #								if _us2 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us2] = {'summary':{},'docs-mac-domain':{}}
 #								_FACTS['ansible_net_interfaces'][_us2]['docs-mac-domain'] = macdomain
 #								_FACTS['ansible_net_interfaces'][_us2]['docs-mac-domain']['_portType'] = 'physical-us'
+							for slot in _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['chassis']['slot']:
+								if 'sre-line-card' in slot.keys(): 
+									for k in slot['sre-line-card'].keys():
+										if 'port' in slot['sre-line-card'][k].keys():
+											for pport in slot['sre-line-card'][k]['port']:
+												if pport['port-id'] not in _FACTS['ansible_net_interfaces'].keys():
+													_FACTS['ansible_net_interfaces'][pport['port-id']] = {'var': 'ports'}
+												_FACTS['ansible_net_interfaces'][pport['port-id']]['shutdown'] = pport['shutdown']
+												_FACTS['ansible_net_interfaces'][pport['port-id']]['mtu'] = pport['ethernet']['mtu']['mtu-bytes']
+										if 'lag' in slot['sre-line-card'][k].keys():
+											# SRE-LAG
+											for lag in slot['sre-line-card'][k]['lag']:
+												for p in lag['port']:
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['var'] = 'ports'
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['encap'] = 'lag ' + lag['lag-id']
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['PortType'] = slot['device-type']
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['chassis_slot'] = slot['slot-number']
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['shutdown'] = lag['shutdown']
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['encap-type'] = lag['encap-type']
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['mode'] = lag['mode']
+													 _FACTS['ansible_net_interfaces'][p['port-id']]['configure'] = k
+								elif 'rf-line-card' in slot.keys(): 
+									# Frequency info et al
+									attr2 = {'ds-rf-port':'downstream-channel','us-rf-port':'upstream-physical-channel'}
+									attr2 = {'ds-rf-port':'downstream-channel'}; # UPSTREAM LOGICAL CHANNELS NOT CODED FOR YET
+									slotnum = str(slot['rf-line-card']['slot-number'])
+									for a2 in attr2.keys():
+										p = slot['rf-line-card'][a2]
+										portnum = str(p['port-number'])
+										for channel in p[attr2[a2]]:
+											PORT = '/'.join([slotnum,portnum,str(channel['channel-index'])])
+											_FACTS['ansible_net_interfaces'][PORT]['frequency'] = channel['frequency']
+											_FACTS['ansible_net_interfaces'][PORT]['admin-state'] = channel['admin-state']
+											_FACTS['ansible_net_interfaces'][PORT]['tilt-span'] = p['tilt-span']
+											_FACTS['ansible_net_interfaces'][PORT]['tilt-power'] = p['tilt-power']
+											_FACTS['ansible_net_interfaces'][PORT]['tilt-start'] = p['tilt-start']
+
+								else: continue
+							# ['interface']['cable-bundle']; # for SG services
 						# docs-mac-domain
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
