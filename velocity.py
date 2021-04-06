@@ -21,6 +21,7 @@ class VELOCITY():
 			print('Failed: VELOCITY No U/P or TOKEN provided!')
 			exit(5)
 		self.ALL_TEMPLATES = {}
+		self.ALL_PORTGROUPS = {}
 		self.headers = {"X-Auth-Token": self.TOKEN}
 		# self.GetCableTypes()
 	def REST_GET(self, url, params={}, limit='?limit=200', list_attr=''):
@@ -446,8 +447,12 @@ class VELOCITY():
 		# PUT: for each attribute, update port
 		self.ChangeDevicePortProp(device_name, port_name, index, value, append=append)
 	def GetDevicePGs(self, deviceId):
-		out = {}
-		raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId, list_attr='portGroups')['portGroups']
+		if deviceId not in self.ALL_PORTGROUPS.keys():
+			out = {}
+			raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId, list_attr='portGroups')['portGroups']
+			self.ALL_PORTGROUPS[deviceId] = raw
+		else:
+			raw = self.ALL_PORTGROUPS[deviceId]
 		for blah in raw:
 			if blah['id'] == None: blah['id'] = 'null'
 			out[blah['name']] = blah
