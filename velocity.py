@@ -448,11 +448,11 @@ class VELOCITY():
 		self.ChangeDevicePortProp(device_name, port_name, index, value, append=append)
 	def GetDevicePGs(self, deviceId):
 		if deviceId not in self.ALL_PORTGROUPS.keys():
-			out = {}
 			raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId, list_attr='portGroups')['portGroups']
 			self.ALL_PORTGROUPS[deviceId] = raw
 		else:
 			raw = self.ALL_PORTGROUPS[deviceId]
+		out = {}
 		for blah in raw:
 			if blah['id'] == None: blah['id'] = 'null'
 			out[blah['name']] = blah
