@@ -485,18 +485,18 @@ class AWX():
 									# Frequency info et al
 									attr2 = {'ds-rf-port':'downstream-channel','us-rf-port':'upstream-physical-channel'}
 									attr2 = {'ds-rf-port':'downstream-channel'}; # UPSTREAM LOGICAL CHANNELS NOT CODED FOR YET
-									if 'slot-number' not in slot['rf-line-card'].keys(): wc.jd(slot['rf-line-card'])
-									slotnum = str(slot['rf-line-card']['slot-number'])
-									for a2 in attr2.keys():
-										p = slot['rf-line-card'][a2]
-										portnum = str(p['port-number'])
-										for channel in p[attr2[a2]]:
+									slotnum = str(slot['slot-number'])
+									for port2 in slot['rf-line-card']['ds-rf-port']:
+										portnum = str(port2['port-number'])
+										for channel in port2['down-channel']:
 											PORT = '/'.join([slotnum,portnum,str(channel['channel-index'])])
+											if PORT not in _FACTS['ansible_net_interfaces'].keys():
+												_FACTS['ansible_net_interfaces'][PORT] = {'summary':{},'docs-mac-domain':{},'var':'portsRF'}
 											_FACTS['ansible_net_interfaces'][PORT]['frequency'] = channel['frequency']
 											_FACTS['ansible_net_interfaces'][PORT]['admin-state'] = channel['admin-state']
-											_FACTS['ansible_net_interfaces'][PORT]['tilt-span'] = p['tilt-span']
-											_FACTS['ansible_net_interfaces'][PORT]['tilt-power'] = p['tilt-power']
-											_FACTS['ansible_net_interfaces'][PORT]['tilt-start'] = p['tilt-start']
+											_FACTS['ansible_net_interfaces'][PORT]['tilt-span'] = port2['tilt-span']
+											_FACTS['ansible_net_interfaces'][PORT]['tilt-power'] = port2['tilt-power']
+											_FACTS['ansible_net_interfaces'][PORT]['tilt-start'] = port2['tilt-start']
 
 								else: continue
 							# ['interface']['cable-bundle']; # for SG services
