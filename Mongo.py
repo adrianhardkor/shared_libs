@@ -212,6 +212,18 @@ class velDevice(MONGO.M.EmbeddedDocument):
 
 class RFPort(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
+	node = MONGO.M.StringField()
+	direction = MONGO.M.StringField()
+	cable_mac = MONGO.M.StringField()
+	docsis_mode = MONGO.M.StringField()
+	supervision = MONGO.M.StringField()
+	channel_width = MONGO.M.StringField()
+	modulation_profile = MONGO.M.StringField()
+	modulation = MONGO.M.StringField()
+	ingress_cancellation = MONGO.M.StringField()
+	interleave_depth = MONGO.M.StringField()
+	ds_profile = MONGO.M.DictField()
+	bonding_group = MONGO.M.DictField()
 	pass
 
 class Port(MONGO.M.EmbeddedDocument):
