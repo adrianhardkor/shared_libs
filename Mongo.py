@@ -8,6 +8,7 @@ import wcommon as wc
 import time
 sys.path.insert(1,'./MongoClasses/')
 import soap
+import deepdiff
 
 # INPUTS
 # rdu_json = wc.argv_dict['rdu_json']
@@ -56,8 +57,9 @@ class MDB():
 			elif type(currentJSON[old]) == dict:
 				for k in criteria_SET[old].keys():
 					if str(currentJSON[old][k]) != str(criteria_SET[old][k]):
-						wc.pairprint(old + '   ' k + '\t' + str(currentJSON[old][k]), str(criteria_SET[old][k]))
 						cSET[old] = criteria_SET[old]
+				if old in cSET.keys():
+					wc.jd(deepdiff.DeepDiff(currentJSON[old], critiera_SET[old]))
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
 #			if old in cSET and old == 'velocityARC':

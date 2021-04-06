@@ -20,3 +20,4 @@ behave-py3
 pyyaml
 suds-py3
 xmltodict
+deepdiff
