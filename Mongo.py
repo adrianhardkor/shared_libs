@@ -340,9 +340,10 @@ class CMTS(MONGO.M.Document):
 # MONGO._DELETE(Server, criteria={}, force=True)
 # MONGO._DELETE(SG, criteria={}, force=True)
 
-try:
-	MONGO._DELETE(Modem, criteria={}, force=True)
-except Exception:
-	pass
+def TryDeleteDocuments(obj):
+	try:
+		MONGO._DELETE(obj, criteria={}, force=True)
+	except Exception:
+		pass
 # MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
