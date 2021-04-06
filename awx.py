@@ -467,6 +467,7 @@ class AWX():
 												if pport['port-id'] not in _FACTS['ansible_net_interfaces'].keys():
 													_FACTS['ansible_net_interfaces'][pport['port-id']] = {'var': 'ports'}
 												_FACTS['ansible_net_interfaces'][pport['port-id']]['shutdown'] = pport['shutdown']
+												if 'ethernet' not in pport.keys(): wc.jd(pport)
 												_FACTS['ansible_net_interfaces'][pport['port-id']]['mtu'] = pport['ethernet']['mtu']['mtu-bytes']
 										if 'lag' in slot['sre-line-card'][k].keys():
 											# SRE-LAG
