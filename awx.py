@@ -485,6 +485,7 @@ class AWX():
 									# Frequency info et al
 									attr2 = {'ds-rf-port':'downstream-channel','us-rf-port':'upstream-physical-channel'}
 									attr2 = {'ds-rf-port':'downstream-channel'}; # UPSTREAM LOGICAL CHANNELS NOT CODED FOR YET
+									if 'slot-number' not in slot['rf-line-card'].keys(): wc.jd(slot['rf-line-card'])
 									slotnum = str(slot['rf-line-card']['slot-number'])
 									for a2 in attr2.keys():
 										p = slot['rf-line-card'][a2]
