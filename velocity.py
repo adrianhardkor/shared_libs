@@ -275,6 +275,10 @@ class VELOCITY():
 					old = sorted(list(self.INV[device_name][index]))
 			self.INV[device_name][index] = new
 		# UPDATE NEEDED
+		if str(index) == 'tags' and self.INTV[device_name]['Model']['value'] != None:
+			# if index=tags and Model already exists (device already fully created) then dont update
+			# Spirent CSC bug: 01490688 
+			return({})
 		print('  '.join(['\nUPDATE NEEDED',str(index),str(append),'',str(type(old)),str(old),'',str(type(new)),str(new)]))
 		return(args)
 	def UpdateDevice(self, device_name, index, new_value, append=False, templateName=''):
