@@ -13,6 +13,7 @@ class AWX():
 		self.pword = pword
 		self.IP = IP
 		self.__name__ = 'AWX'
+		self.SCMsources = {}
 	def REST_GET(self,api):
 		return(json.loads(wc.REST_GET('http://' + self.IP + api, user=self.user, pword=self.pword)))
 	def mcsplit(mystr, cc):
@@ -225,24 +226,31 @@ class AWX():
 				summ[a2v][i] = out[a2v][i]
 			if 'ready' not in summ[a2v].keys(): summ[a2v]['ready'] = True
 		return(out,summ)
+	def GetSourceProjects(self, url):
+		if url not in self.SCMsources.keys():
+			self.SCMsources[url] = self.REST_GET(url)
+		return(self.SCMsources[url])
+	def GetSCMSources(self, url):
+		# self.SCMsources
+		if url not in self.SCMsources.keys():
+			self.SCMsources[url] = self.REST_GET(url)['results']
+		return(self.SCMsources[url])
 	def GetFacts2(self,result,raw):
 		# PAGED
 		result = {}
 		inventories = {}
 		all_hosts = AWX.REST_GET(self,'/api/v2/hosts/')['results']
-		wc.pairprint('all_hosts_count', len(all_hosts))
+		wc.pairprint('Found ' + str(len(all_hosts)), wc.fullRuntime())
 		scm_data = {}
 		for host in all_hosts:
 			try:
 				host['variables'] = json.loads(host['variables'].replace("'",'"'))
 			except Exception:
 				host['variables'] = {'_': host['variables']}
-			for scm_source in self.REST_GET(host['related']['inventory'] + 'inventory_sources/')['results']:
-				host['summary_fields']['inventory']['url'] = self.REST_GET(scm_source['related']['source_project'])
-			# wc.pairprint('\t' + str(host['variables']), host['name'] + '\t' + str(host['id']))
-
+			for scm_source in self.GetSCMSources(host['related']['inventory'] + 'inventory_sources/'):
+				host['summary_fields']['inventory']['url'] = self.GetSourceProjects(scm_source['related']['source_project'])
 			if host['inventory'] not in inventories.keys():
-				inventories[host['inventory']] = AWX.REST_GET(self,host['related']['inventory'])['name']
+				inventories[host['inventory']] = self.REST_GET(host['related']['inventory'])['name']
 
 			# FOR IP ADDRESS HOST_VAR === CHANGE TO DNS???
 			if 'ansible_host' in host['variables'].keys():
