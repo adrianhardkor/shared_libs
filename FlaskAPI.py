@@ -32,6 +32,7 @@ def flask_AIS():
 			servers = Mongo.MONGO._GETJSON(Mongo.Server, criteria=flask.request.args)
 			CMTSs = Mongo.MONGO._GETJSON(Mongo.CMTS, criteria=flask.request.args)
 			modems = Mongo.MONGO._GETJSON(Mongo.Modem, criteria=flask.request.args)
+			wc.jd(flask.request.args)
 		for deviceTypeObj in [routers, servers, CMTSs, modems]:
 			for deviceObject in deviceTypeObj:
 				if 'name' not in deviceObject.keys(): return(flask.jsonify(deviceObject))

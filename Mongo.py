@@ -227,6 +227,7 @@ class RFPort(MONGO.M.EmbeddedDocument):
 	interleave_depth = MONGO.M.StringField()
 	ds_profile = MONGO.M.DictField()
 	bonding_group = MONGO.M.DictField()
+	_templateName = MONGO.M.StringField()
 	pass
 
 class Port(MONGO.M.EmbeddedDocument):
@@ -245,6 +246,7 @@ class Port(MONGO.M.EmbeddedDocument):
 	mtu = MONGO.M.StringField()
 	qos = MONGO.M.StringField()
 	velocityARC = MONGO.M.EmbeddedDocumentField(velPort, dbref=True)
+	_templateName = MONGO.M.StringField()
 	pass
 
 class Modem(MONGO.M.Document):
@@ -266,6 +268,7 @@ class Modem(MONGO.M.Document):
 	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
+	_templateName = MONGO.M.StringField()
 	pass
 
 class SG(MONGO.M.Document):
@@ -275,6 +278,7 @@ class SG(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	cmts = MONGO.M.StringField()
 	velocityARC = MONGO.M.EmbeddedDocumentField(velDevice, dbref=True)
+	_templateName = MONGO.M.StringField()
 	pass
 
 class Router(MONGO.M.Document):
@@ -295,6 +299,7 @@ class Router(MONGO.M.Document):
 	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
+	_templateName = MONGO.M.StringField()
 	pass
 
 class Server(MONGO.M.Document):
@@ -315,6 +320,7 @@ class Server(MONGO.M.Document):
 	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
+	_templateName = MONGO.M.StringField()
 	pass
 
 class CMTS(MONGO.M.Document):
@@ -336,6 +342,7 @@ class CMTS(MONGO.M.Document):
 	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
+	_templateName = MONGO.M.StringField()
 	pass
 
 # MONGO._DELETE(Router, criteria={}, force=True)
