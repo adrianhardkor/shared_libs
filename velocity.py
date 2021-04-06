@@ -413,8 +413,9 @@ class VELOCITY():
 		# wc.pairprint(port_name, self.INV[device_name])
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# for auto-loading template-ports
-			self.INV = self.GetInventory()
+			# self.INV = self.GetInventory(); # MAY NEED TO BE RE_VISITED
 			# print(self.INV[device_name]['ports'].keys())
+			pass
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# POST / create
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
@@ -598,7 +599,6 @@ class VELOCITY():
 
 # V.GetScripts()
 # V.GetAgentReservation('cecf3f52-fc19-4d3c-9e58-7bf8c5975290')
-# INV = V.GetInventory(); # device ipAddress
 # wc.jd(V.INV)
 # wc.jd(V.GetTopologies())
 # https://10.88.48.31/velocity/inventory/resources/14a1dc9b-3347-4396-bb38-eb4ede1a30c4/ports/6ae2b408-7b9f-42d3-800d-a3cb23d7d70e/properties
