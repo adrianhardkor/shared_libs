@@ -53,6 +53,10 @@ class MDB():
 		for old in criteria_SET.keys():
 			if old not in currentJSON:
 				cSET[old] = criteria_SET[old]
+			elif type(currentJSON[old]) == dict:
+				for k in criteria_SET.keys():
+					if str(currentJSON[old][k]) != str(criteria_SET[old][k]):
+						cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
 			if old in cSET and old == 'velocityARC':
