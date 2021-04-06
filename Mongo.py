@@ -78,8 +78,11 @@ class MDB():
 		if criteria == {}: return(_TEMPLATE.objects())
 		else: return(_TEMPLATE.objects(**criteria))
 	def _GETJSON(self, _TEMPLATE, criteria={}):
-		_obj = self._GET(_TEMPLATE, criteria=criteria)
-		return(json.loads(_obj.to_json())); # returns type(dict)
+		try:
+			_obj = self._GET(_TEMPLATE, criteria=criteria)
+			return(json.loads(_obj.to_json())); # returns type(dict)
+		except Exception:
+			return({})
 	def _DELETE(self, _TEMPLATE, criteria={}, force=False):
 		if criteria == {}: 
 			if not force: wc.pairprint("Mongo._DELETE Cannot be for all objects", _TEMPLATE)
