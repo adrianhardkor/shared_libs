@@ -228,6 +228,7 @@ class RFPort(MONGO.M.EmbeddedDocument):
 	ds_profile = MONGO.M.DictField()
 	bonding_group = MONGO.M.DictField()
 	_templateName = MONGO.M.StringField()
+	description = MONGO.M.StringField()
 	pass
 
 class Port(MONGO.M.EmbeddedDocument):

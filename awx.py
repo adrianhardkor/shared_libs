@@ -433,13 +433,13 @@ class AWX():
 
 							for _ds in primary_ds:
 								_ds = '/'.join([str(_ds['slot']),str(_ds['ds-rf-port']),str(_ds['down-channel'])])
-								if _ds not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ds] = {'summary':{},'docs-mac-domain':{}}
+								if _ds not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ds] = {'var': 'portsRF', 'summary':{},'docs-mac-domain':{}}
 								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain'] = macdomain
 								_FACTS['ansible_net_interfaces'][_ds]['docs-mac-domain']['_portType'] = 'primary-capable-ds'
 
 							for _ofdm in ofdm:
 								_ofdm = '/'.join([str(_ofdm['slot']),str(_ofdm['ds-rf-port']),str(_ofdm['ofdm-channel'])])
-								if _ofdm not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ofdm] = {'summary':{},'docs-mac-domain':{}}
+								if _ofdm not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_ofdm] = {'var': 'portsRF', 'summary':{},'docs-mac-domain':{}}
 								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain'] = macdomain
 								_FACTS['ansible_net_interfaces'][_ofdm]['docs-mac-domain']['_portType'] = 'ds-ofdm-channel-list'
 
@@ -448,7 +448,7 @@ class AWX():
 								for _us1 in group['upstream-logical-channel-ref']:
 									logical = str(_us1['upstream-logical-channel'])
 									_us1 = '/'.join([str(_us1['slot']),str(_us1['us-rf-port']),str(_us1['upstream-physical-channel'])])
-									if _us1 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us1] = {'summary':{},'docs-mac-domain':{}}
+									if _us1 not in _FACTS['ansible_net_interfaces'].keys(): _FACTS['ansible_net_interfaces'][_us1] = {'var': 'portsRF', 'summary':{},'docs-mac-domain':{}}
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain'] = macdomain
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_portType'] = 'upstream-bonding-group'
 									_FACTS['ansible_net_interfaces'][_us1]['docs-mac-domain']['_groupName'] = groupname
