@@ -56,6 +56,7 @@ class MDB():
 			elif type(currentJSON[old]) == dict:
 				for k in criteria_SET[old].keys():
 					if str(currentJSON[old][k]) != str(criteria_SET[old][k]):
+						wc.pairprint(old + '   ' k + '\t' + str(currentJSON[old][k]), str(criteria_SET[old][k]))
 						cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
