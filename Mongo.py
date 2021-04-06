@@ -55,10 +55,10 @@ class MDB():
 				cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
-#			if old in cSET and old == 'velocityARC':
-#				wc.jd(currentJSON[old])
-#				wc.jd(cSET[old])
-#				print(old)
+			if old in cSET and old == 'velocityARC':
+				wc.jd(currentJSON[old])
+				wc.jd(cSET[old])
+				print(old)
 		# {'ports': [{'name': 'ae0'}]}
 
 		#current = _TEMPLATE.objects(_id="....").first()

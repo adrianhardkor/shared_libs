@@ -30,7 +30,9 @@ class VELOCITY():
 		self.headers['Content-Type'] = self.headers['Accept'] = 'application/json'
 		# print(headers)
 		offset = 200
+		time1 = wc.timer_index_start()
 		data = json.loads(wc.REST_GET(self.V + url, headers=self.headers, params=params))
+		wc.pairprint('GET\t' + url,wc.timer_index_since(time1))
 		if list_attr != '' and list_attr not in data.keys(): wc.jd(data); # if cant find list_attr then debug-output
 		if 'total' not in data.keys(): return(data); # if not paged then return
 
@@ -38,7 +40,9 @@ class VELOCITY():
 		if int(data['total']) > 200:
 			# wc.pairprint(url, data['total'])
 			while len(data[list_attr]) < int(data['total']):
+				timer = wc.timer_index_start()
 				data1 = json.loads(wc.REST_GET(self.V + url + '&offset=' + str(offset), headers=self.headers, params=params))
+				wc.pairprint('GET\t' + url + '&offset=' + str(offset), wc.timer_index_since(timer)
 				for added in data1[list_attr]:
 					data[list_attr].append(added)
 				offset = offset + 200
@@ -50,7 +54,9 @@ class VELOCITY():
 		headers['Content-Type'] = headers['Accept'] = 'application/json'
 		# if list(args.keys()) == ['tags']:
 		# 	wc.jd(args)
+		timer = wc.timer_index_start()
 		result = json.loads(wc.REST_PUT(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
+		wc.pairprint('PUT\t' + url, wc.timer_index_since(timer)
 		if 'response.status_code' in result.keys():
 			if result['response.status_code'] not in ['200',200]:
 				wc.jd(args)
@@ -62,7 +68,9 @@ class VELOCITY():
 			url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'
+		timer = wc.timer_index_start()
 		result = json.loads(wc.REST_POST(self.V + url, verify=verify, args=args, headers=headers, convert_args=True))
+		wc.pairprint('POST\t' + url, wc.timer_index_since(timer)
 		if 'response.status_code' in result.keys():
 			if result['response.status_code'] not in ['200',200]:
 				wc.pairprint('args', args)
