@@ -188,6 +188,7 @@ class rduModem(MONGO.M.Document):
 
 
 class rduModemEmbed(MONGO.M.EmbeddedDocument):
+	_id = MONGO.M.DictField()
 	cmac = MONGO.M.StringField(required=True)
 	access = MONGO.M.StringField()
 	chaddr = MONGO.M.StringField()
