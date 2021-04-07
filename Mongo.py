@@ -270,11 +270,27 @@ class Port(MONGO.M.EmbeddedDocument):
 class Modem(MONGO.M.Document):
 	name = MONGO.M.StringField(); # ansible inventory name
 	device_name = MONGO.M.StringField(); # name on device
-	vendor = MONGO.M.StringField()
-	model = MONGO.M.StringField()
+	Make = MONGO.M.StringField()
+	Model = MONGO.M.StringField()
 	ipAddress = MONGO.M.StringField()
 	sn = MONGO.M.StringField()
 	protocols = MONGO.M.ListField()
+	SAID = MONGO.M.StringField()
+	State = MONGO.M.StringField()
+	_cmts = MONGO.M.StringField()
+	_cmts_port_ds = MONGO.M.StringField()
+	_cmts_port_us = MONGO.M.StringField()
+	Bootr = MONGO.M.StringField()
+	sw_rev = MONGO.M.StringField()
+	DOCSIS = MONGO.M.StringField()
+	description = MONGO.M.StringField()
+	rx_power = MONGO.M.StringField()
+	_sg = MONGO.M.StringField()
+	type = MONGO.M.StringField()
+	hw_rev = MONGO.M.StringField()
+	cfg = MONGO.M.StringField()
+	traffic = MONGO.M.DictField(); # embed?
+	rdu_bac = MONGO.M.DictField(); # embed?
 	isReserved = MONGO.M.StringField()
 	# ansible_net_system = MONGO.M.ListField()
 	# ansible_inventories = MONGO.M.DictField()
@@ -288,6 +304,7 @@ class Modem(MONGO.M.Document):
 	timestamp = MONGO.M.StringField()
 	_templateName = MONGO.M.StringField()
 	pass
+
 
 class SG(MONGO.M.Document):
 	name = MONGO.M.StringField()
