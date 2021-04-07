@@ -147,11 +147,11 @@ def compareList(old,new):
 	out = {'added':[],'removed':[]}
 	for o in old:
 		if o not in new:
-			wc.pairprint('compareList removed', o)
+			pairprint('compareList removed', o)
 			out['removed'].append(o)
 	for n in new:
 		if n not in old:
-			wc.pairprint('compareList added', n)
+			pairprint('compareList added', n)
 			out['added'].append(n)
 	if out == {'added':[],'removed':[]}: return(True)
 	else: return(False)
