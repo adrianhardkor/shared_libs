@@ -20,6 +20,7 @@ import paramiko
 import uuid
 import urllib3
 from bs4 import BeautifulSoup
+import deepdiff
 import yaml
 urllib3.disable_warnings()
 
@@ -135,6 +136,12 @@ def jd(mydict):
     pairprint('Timestamp',fullRuntime())
     print('\n')
     return(out)
+
+def compareDict(old,new):
+	out = deepdiff.DeepDiff(old,new)
+	out = json.dumps(out)
+	out = json.loads(out)
+	return(out)
 
 def read_yaml(fname):
     return(yaml.load(read_file(fname), Loader=yaml.FullLoader))

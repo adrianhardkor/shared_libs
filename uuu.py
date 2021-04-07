@@ -5,6 +5,18 @@ import wcommon as wc
 import json
 import re
 import soap
+import deepdiff
+
+one = {'1':1,'2':2,'list':[1,2,3,4]}
+two = {'1':2,'2':1,'list':[4,3,2,1]}
+def compareDict(old,new):
+	out = deepdiff.DeepDiff(old,new)
+	out = json.dumps(out)
+	out = json.loads(out)
+	return(out)
+print(compareDict(one,two))
+print(compareDict(one,one))
+exit(0)
 
 out = {}
 out2 = {}
