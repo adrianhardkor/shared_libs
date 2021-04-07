@@ -55,8 +55,8 @@ class MDB():
 				cSET[old] = criteria_SET[old]
 			elif type(currentJSON[old]) == dict:
 				compare = wc.compareDict(currentJSON[old],criteria_SET[old])
-				wc.jd(compare)
 				if compare != {} and compare != "{}": cSET[old] = criteria_SET[old]
+				wc.pairprint(old,compare)
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
 #			if old in cSET and old == 'velocityARC':
