@@ -16,7 +16,7 @@ import soap
 def compareForPUT(old,new):
 	compare = wc.compareDict(old,new)
 	if compare != {} and compare != "{}":
-		print(compare)
+		# print(compare)
 		return(True)
 	return(False)
 
