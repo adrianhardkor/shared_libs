@@ -139,7 +139,7 @@ def jd(mydict):
 
 def compareDict(old,new):
 	out = deepdiff.DeepDiff(old,new)
-	out = json.dumps(out)
+	out = json.dumps(str(out))
 	out = json.loads(out)
 	return(out)
 
