@@ -63,6 +63,7 @@ class MDB():
 			elif type(currentJSON[old]) == dict:
 				if compareForPUT(currentJSON[old],criteria_SET[old]):  cSET[old] = criteria_SET[old]
 			elif type(currentJSON[old]) == list:
+				# NEEDS POSSIBLE EFFICENCY? PORTS?
 				if wc.compareList(currentJSON[old],criteria_SET[old]) is False:
 					cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
