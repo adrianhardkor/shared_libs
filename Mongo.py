@@ -187,6 +187,49 @@ class rduModem(MONGO.M.Document):
 	pass
 
 
+class rduModemEmbed(MONGO.M.EmbeddedDocument):
+	cmac = MONGO.M.StringField(required=True)
+	access = MONGO.M.StringField()
+	chaddr = MONGO.M.StringField()
+	clientid = MONGO.M.StringField()
+	clientidcreatedfrommacaddress = MONGO.M.StringField()
+	cos = MONGO.M.StringField()
+	detected = MONGO.M.StringField()
+	deviceType = MONGO.M.StringField()
+	domain = MONGO.M.StringField()
+	dhcpmessagetype = MONGO.M.StringField()
+	dhcpparameterrequestlist = MONGO.M.StringField()
+	dhcpCriteria = MONGO.M.StringField()
+	dhcpclassidentifier = MONGO.M.StringField()
+	docsisVersion = MONGO.M.StringField()
+	DIVISION = MONGO.M.StringField()
+	e = MONGO.M.StringField()
+	explanation = MONGO.M.StringField()
+	giaddr = MONGO.M.StringField()
+	hlen = MONGO.M.StringField()
+	htype = MONGO.M.StringField()
+	isBehindRequiredDevice = MONGO.M.StringField()
+	isProvisioned = MONGO.M.StringField()
+	isRegistered = MONGO.M.StringField()
+	isInRequiredProvGroup = MONGO.M.StringField()
+	provGroup = MONGO.M.StringField()
+	isInRequiredPortGroup = MONGO.M.StringField()
+	oidRevisionNumber = MONGO.M.StringField()
+	mac = MONGO.M.StringField()
+	node = MONGO.M.StringField()
+	PACKAGE = MONGO.M.StringField()
+	reason = MONGO.M.StringField()
+	relayagentcircuitid = MONGO.M.StringField()
+	relayagentremoteid = MONGO.M.StringField()
+	relayagentinfo = MONGO.M.StringField()
+	selected = MONGO.M.StringField()
+	subscriberId = MONGO.M.StringField()
+	vivendoropts = MONGO.M.StringField()
+	vendorencapsulatedoptions = MONGO.M.StringField()
+	timestamp = MONGO.M.StringField()
+	dhcpv4 = MONGO.M.StringField()
+	pass
+
 class velTopologyReservation(MONGO.M.EmbeddedDocument):
 	topologyId = MONGO.M.StringField()
 	topologyName = MONGO.M.StringField()
@@ -294,7 +337,7 @@ class Modem(MONGO.M.Document):
 	hw_rev = MONGO.M.StringField()
 	cfg = MONGO.M.StringField()
 	traffic = MONGO.M.DictField(); # embed?
-	rdu_bac = MONGO.M.DictField(); # embed?
+	rdu_bac = MONGO.M.EmbeddedDocumentField(rduModemEmbed, dbref=True)
 	isReserved = MONGO.M.StringField()
 	# ansible_net_system = MONGO.M.ListField()
 	# ansible_inventories = MONGO.M.DictField()
