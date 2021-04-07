@@ -353,6 +353,8 @@ class Modem(MONGO.M.Document):
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
 	_templateName = MONGO.M.StringField()
+	ERTR = MONGO.M.DictField()
+	MTA = MONGO.M.DictField()
 	pass
 
 

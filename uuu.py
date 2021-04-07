@@ -103,11 +103,21 @@ def e6kModemVerbose(lines):
 		elif cline[0] == 'L2VPN':
 			modems[mac]['L2VPN per CM'] = ' '.join(cline[3::])
 		elif 'CPE' in cline[0]:
-			print(cline)
+			TYPE = cline[0]; cline.pop(0)
+			TYPE = wc.cleanLine(TYPE.replace('(',' ').replace(')',' '))
+			if len(TYPE) == 2: TYPE = TYPE[1]
+			elif len(TYPE) == 1: TYPE = TYPE[0]
+			modems[mac][TYPE] = {}
+			modems[mac][TYPE]['id'] = cline[0]; cline.pop(0)
+			if cline[-2] == 'IP': cline[-1] = cline[-2] + cline[-1]; cline.pop(-2)
+			modems[mac][TYPE]['IP'] = cline[-1].split('=')[-1]; cline.pop(-1)
+			modems[mac][TYPE][cline[-1].split('=')[0]] = cline[-1].split('=')[-1]; cline.pop(-1)
+			modems[mac][TYPE][cline[0].split(':')[0]] = [cline[-1].split(':')[-1]]; cline.pop(0)
+			for remainder in cline:
+				modems[mac][TYPE]['Filter-Group'].append(remainder)
 		else:
 			# print(line)
 			pass
 	return(modems)
 out = e6kModemVerbose(data.split('\n'))
-# wc.jd(out)
-
+wc.jd(out)
