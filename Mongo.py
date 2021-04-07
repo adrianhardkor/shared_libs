@@ -330,6 +330,7 @@ class Modem(MONGO.M.Document):
 	_cmts_port_us = MONGO.M.StringField()
 	Bootr = MONGO.M.StringField()
 	sw_rev = MONGO.M.StringField()
+	ofdm = MONGO.M.StringField()
 	DOCSIS = MONGO.M.StringField()
 	description = MONGO.M.StringField()
 	rx_power = MONGO.M.StringField()

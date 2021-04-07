@@ -1,0 +1,348 @@
+ARCUAT1HUHCMT01# show cable modem verbose 
+Apr  7 18:13:09
+
+
+12/0/25-1/0/0     CM 0cf8.93b5.96b2 (Arris) D3.0 State=Operational D1.1/atdma PrimSID=9651 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0000ca0008  RCC_Stat= 73, RCS=0x01000096 TCS=0x0100000e
+Timing Offset=285184   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime=  7 days 21:44:20 IPv4=10.88.17.9      cfg=bpr01060cf893b596b20001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9651  Seq=0  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18301      -  9651 Activ BE            0   52428800         31        14434      0      0  1/0/0-2                         
+dB     18302      -  9151 Activ               0  524288000         25         7725                12/0/15-16,18-22,25             
+uB     18303      -  9652 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18304      -  9653 Activ BE            0    1024000       1387       144512      0      0  1/0/0-2                         
+dB     18305      -  9152 Activ               0   31457280          0            0                12/0/15-16,18-22,25             
+dB     18306      -  9153 Activ               0    1024000       1387       134904                12/0/15-16,18-22,25             
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) 0cf8.93b5.96b4 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.2
+
+12/0/25-1/0/1     CM 14c0.3eb6.b2d1 (14.c0.3e) D3.1 State=Operational D1.1/atdma PrimSID=9547 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=259584   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime= 14 days  0:03:18 IPv4=10.88.16.14     cfg=bpr010614c03eb6b2d10001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9547  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18093      -  9547 Activ BE            0    1024000         78        17866      0      0  1/0/0-2                         
+dB     18094      -  9047 Activ               0    1024000         71        12259                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=4, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) 14c0.3eb6.b2d2 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.22.2
+
+12/0/26-1/0/1     CM 2c99.245d.90cb (2c.99.24) D3.0 State=Operational D1.1/atdma PrimSID=9686 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0010000020  RCC_Stat= 21, RCS=0x0100009d TCS=0x0100000e
+Timing Offset=282112   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime=  0 days  2:35:53 IPv4=10.88.17.10     cfg=bpr01062c99245d90cb0001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9686  Seq=1  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18371      -  9686 Activ BE            0   52428800         24        11208      0      0  1/0/0-2                         
+dB     18372      -  9186 Activ               0  524288000         24         7416                12/0/0-30                       
+uB     18373      -  9687 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18374      -  9688 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18375      -  9187 Activ               0   31457280          0            0                12/0/0-30                       
+dB     18376      -  9188 Activ               0    1024000          3          306                12/0/0-30                       
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) 2c99.245d.90cc Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.208
+
+12/0/28-1/0/0     CM 3870.0c0e.235e (38.70.0c) D3.0 State=Operational D1.1/atdma PrimSID=9535 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0010000018  RCC_Stat= 78, RCS=0x0100008e TCS=0x0100000e
+Timing Offset=290560   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime= 14 days  0:10:31 IPv4=10.88.17.15     cfg=bpr010638700c0e235e0001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9535  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18069      -  9535 Activ BE            0   52428800         54        27444      0      0  1/0/0-2                         
+dB     18070      -  9035 Activ               0  524288000         49        16991                12/0/0-8,16-30                  
+uB     18071      -  9536 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18072      -  9537 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18073      -  9036 Activ               0   31457280          0            0                12/0/0-8,16-30                  
+dB     18074      -  9037 Activ               0    1024000          3          306                12/0/0-8,16-30                  
+L2VPN per CM: (Disabled) 
+Current CPE=2, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(MTA)  3870.0c0e.235f Filter-Group:Up=6 Down=5 Proto-Throttle=Normal IP  =NULL_IP
+ CPE(ERTR) 3870.0c0e.2360 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.3
+
+12/0/29-1/0/1     CM 5896.3079.1ae3 (58.96.30) D3.1 State=Operational D1.1/atdma PrimSID=9669 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=289792   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime=  2 days  2:13:54 IPv4=10.88.16.12     cfg=bpr0106589630791ae30001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9669  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18337      -  9669 Activ BE            0   52428800         74        30614      0      0  1/0/0-2                         
+dB     18338      -  9169 Activ               0  524288000         56        17294                12/0/0-30,o32:2                 
+uB     18345      -  9673 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18346      -  9674 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18347      -  9173 Activ               0   31457280          0            0                12/0/0-30,o32:2                 
+dB     18348      -  9174 Activ               0    1024000          3          306                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=2, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(MTA)  5896.3079.1ae4 Filter-Group:Up=6 Down=5 Proto-Throttle=Normal IP  =NULL_IP
+ CPE       5896.3079.1ae5 Filter-Group:Up=4 Down=3 Proto-Throttle=Normal IPv4=10.88.18.121
+
+12/0/0-1/0/2     CM 5c8f.e01b.2762 (Arris) D3.0 State=Operational D1.1/atdma PrimSID=9666 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0010000018  RCC_Stat= 83, RCS=0x01000098 TCS=0x0100000e
+Timing Offset=281344   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime=  2 days  2:15:51 IPv4=10.88.16.13     cfg=bpr01065c8fe01b27620001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9666  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18331      -  9666 Activ BE            0   52428800         26        11336      0      0  1/0/0-2                         
+dB     18332      -  9166 Activ               0  524288000         26         7544                12/0/0-2,9-24,26-30             
+uB     18333      -  9667 Activ BE            0    5242880          1           78      0      0  1/0/0-2                         
+uB     18334      -  9668 Activ BE            0    1024000          4          393      0      0  1/0/0-2                         
+dB     18335      -  9167 Activ               0   31457280          0            0                12/0/0-2,9-24,26-30             
+dB     18336      -  9168 Activ               0    1024000          4          554                12/0/0-2,9-24,26-30             
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) 5c8f.e01b.2763 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.124
+
+12/0/25-1/0/1     CM 5c8f.e01c.9fa2 (Arris) D3.0 State=Operational D1.1/atdma PrimSID=9518 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0010000018  RCC_Stat= 74, RCS=0x0100008b TCS=0x0100000e
+Timing Offset=281344   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime= 14 days  0:15:12 IPv4=10.88.17.11     cfg=bpr01065c8fe01c9fa20001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9518  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18035      -  9518 Activ BE            0   52428800         24        11208      0      0  1/0/0-2                         
+dB     18036      -  9018 Activ               0  524288000         24         7416                12/0/0-15,23-30                 
+uB     18045      -  9523 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18046      -  9524 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18047      -  9023 Activ               0   31457280          0            0                12/0/0-15,23-30                 
+dB     18048      -  9024 Activ               0    1024000          3          306                12/0/0-15,23-30                 
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) 5c8f.e01c.9fa3 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.151
+
+12/0/26-1/0/2     CM 5c8f.e05a.0941 (Arris) D3.0 State=Operational D1.1/atdma PrimSID=9678 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0010000018  RCC_Stat= 85, RCS=0x0100009b TCS=0x0100000e
+Timing Offset=281088   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime=  1 days 13:24:45 IPv4=10.88.17.14     cfg=bpr01065c8fe05a09410001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9678  Seq=7  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18355      -  9678 Activ BE            0    1024000         62        28398      0      0  1/0/0-2                         
+dB     18356      -  9178 Activ               0    1024000         56        17798                12/0/3-26                       
+L2VPN per CM: (Disabled) 
+Current CPE=2, IPv4 Addr=1, IPv6 Addr=0          Max CPE=4, IPv4 Addr=16, IPv6 Addr=16
+ CPE(MTA)  5c8f.e05a.0942 Filter-Group:Up=6 Down=5 Proto-Throttle=Normal IP  =NULL_IP
+ CPE(ERTR) 5c8f.e05a.0943 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.22.42
+
+12/0/5-1/0/2     CM 5ce3.0e7c.4fd6 (Arris) D3.1 State=Operational D1.1/atdma PrimSID=9660 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=259584   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime=  2 days  2:40:53 IPv4=10.88.17.16     cfg=bpr01065ce30e7c4fd60001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9660  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18319      -  9660 Activ BE            0   52428800         72        31362      0      0  1/0/0-2                         
+dB     18320      -  9160 Activ               0  524288000         61        17759                12/0/0-30,o32:2                 
+uB     18321      -  9661 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18322      -  9662 Activ BE            0    1024000         11         1132      0      0  1/0/0-2                         
+dB     18323      -  9161 Activ               0   31457280          0            0                12/0/0-30,o32:2                 
+dB     18324      -  9162 Activ               0    1024000         11         2016                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=2, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(MTA)  5ce3.0e7c.4fd7 Filter-Group:Up=6 Down=5 Proto-Throttle=Normal IP  =NULL_IP
+ CPE(ERTR) 5ce3.0e7c.4fd8 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.5
+
+12/0/17-1/0/2     CM 6019.7172.6bd5 (60.19.71) D3.0 State=Operational D1.1/atdma PrimSID=9670 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0000ca0008  RCC_Stat= 74, RCS=0x01000099 TCS=0x0100000e
+Timing Offset=276736   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime=  2 days  2:13:50 IPv4=10.88.17.6      cfg=bpr0106601971726bd50001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9670  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18339      -  9670 Activ BE            0   52428800         24        11424      0      0  1/0/0-2                         
+dB     18340      -  9170 Activ               0  524288000         24         7416                12/0/2-8,17                     
+uB     18341      -  9671 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18342      -  9672 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18343      -  9171 Activ               0   31457280          0            0                12/0/2-8,17                     
+dB     18344      -  9172 Activ               0    1024000          3          306                12/0/2-8,17                     
+L2VPN per CM: (Disabled) 
+Current CPE=0, IPv4 Addr=0, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+
+12/0/24-1/0/2     CM 603d.264a.5210 (60.3d.26) D3.1 State=Operational D1.1/atdma PrimSID=9496 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=320768   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime= 14 days  0:16:55 IPv4=10.88.16.2      cfg=bpr0106603d264a52100001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9496  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     17991      -  9496 Activ BE            0   10485760         24        11160      0      0  1/0/0-2                         
+dB     17992      -  8996 Activ               0  209715200         24         7416                12/0/0-30,o32:2                 
+uB     18001      -  9501 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18002      -  9502 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18003      -  9001 Activ               0   31457280          0            0                12/0/0-30,o32:2                 
+dB     18004      -  9002 Activ               0    1024000          3          306                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=0, IPv4 Addr=0, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+
+12/0/1-1/0/0     CM 889e.68d8.b0b4 (88.9e.68) D3.1 State=Operational D1.1/atdma PrimSID=9646 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=294144   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime=  8 days 12:08:25 IPv4=10.88.16.10     cfg=bpr0106889e68d8b0b40001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9646  Seq=3  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18291      -  9646 Activ BE            0    1024000         28        11536      0      0  1/0/0-2                         
+dB     18292      -  9146 Activ               0    1024000         28         7786                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=0, IPv4 Addr=0, IPv6 Addr=0          Max CPE=4, IPv4 Addr=16, IPv6 Addr=16
+
+12/0/0-1/0/0     CM 900d.cb60.2882 (Arris) D3.0 State=Operational D1.1/atdma PrimSID=9689 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= 0x0000ca0008  RCC_Stat= 76, RCS=0x0100009e TCS=0x0100000e
+Timing Offset=285440   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+Uptime=  0 days  1:47:29 IPv4=10.88.17.7      cfg=bpr0106900dcb6028820001  FreqRng=STD  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9689  Seq=1  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18377      -  9689 Activ BE            0   52428800         31        14119      0      0  1/0/0-2                         
+dB     18378      -  9189 Activ               0  524288000         24         7416                12/0/0-1,9-14                   
+uB     18379      -  9690 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18380      -  9691 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18381      -  9190 Activ               0   31457280          0            0                12/0/0-1,9-14                   
+dB     18382      -  9191 Activ               0    1024000          3          306                12/0/0-1,9-14                   
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) 900d.cb60.2884 Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.175
+
+12/0/22-1/0/1     CM a0ff.7096.6b0b (a0.ff.70) D3.1 State=Operational D1.1/atdma PrimSID=9656 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=315648   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime=  5 days  9:27:36 IPv4=10.88.16.8      cfg=bpr0106a0ff70966b0b0001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9656  Seq=6  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18311      -  9656 Activ BE            0   10485760         35        13082      0      0  1/0/0-2                         
+dB     18312      -  9156 Activ               0  209715200         29         7850                12/0/0-30,o32:2                 
+uB     18313      -  9657 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18314      -  9658 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18315      -  9157 Activ               0   31457280          0            0                12/0/0-30,o32:2                 
+dB     18316      -  9158 Activ               0    1024000          3          306                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) a0ff.7096.6b0d Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.4
+
+12/0/22-1/0/0     CM a0ff.7097.e71b (a0.ff.70) D3.1 State=Operational D1.1/atdma PrimSID=9683 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=289536   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime=  0 days  2:36:27 IPv4=10.88.17.1      cfg=bpr0106a0ff7097e71b0001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9683  Seq=1  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18365      -  9683 Activ BE            0   52428800         32        12818      0      0  1/0/0-2                         
+dB     18366      -  9183 Activ               0  524288000         26         7544                12/0/0-30,o32:2                 
+uB     18367      -  9684 Activ BE            0    5242880          0            0      0      0  1/0/0-2                         
+uB     18368      -  9685 Activ BE            0    1024000          3          306      0      0  1/0/0-2                         
+dB     18369      -  9184 Activ               0   31457280          0            0                12/0/0-30,o32:2                 
+dB     18370      -  9185 Activ               0    1024000          3          306                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=1, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(ERTR) a0ff.7097.e71d Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.206
+
+12/0/4-1/0/0     CM bc9b.68cd.b862 (bc.9b.68) D3.1 State=Operational D1.1/atdma PrimSID=9679 FiberNode= FN1
+Cable-Mac= 1,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000085 TCS=0x0100000e
+Timing Offset=288000   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/0/32, ds-profile=0,1,2  
+Uptime=  1 days  2:25:30 IPv4=10.88.16.11     cfg=bpr0106bc9b68cdb8620001  cmStatusAck=Disabled
+LB Policy=0  LB Group=16779264    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=9679  Seq=5  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB     18357      -  9679 Activ BE            0    1024000          0            0      0      0  1/0/0-2                         
+dB     18358      -  9179 Activ               0    1024000         27         7722                12/0/0-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=0, IPv4 Addr=0, IPv6 Addr=0          Max CPE=4, IPv4 Addr=16, IPv6 Addr=16
+
+12/1/1-1/0/12    CM 3c9a.773b.939b (3c.9a.77) D3.1 State=Operational D1.1/atdma PrimSID=12513 FiberNode= FN2
+Cable-Mac= 2,  mCMsg = 1   mDSsg = 1   mUSsg = 1  RCP_ID= - RCC_Stat= 0, RCS=0x01000590 TCS=0x01000590
+Timing Offset=288512   Rec Power= 0.00 dBmV Proto-Throttle=Normal dsRegFailedChan - usRegFailedChan -
+MODEM CAPABILITY:DS=108.000-1002.000 Mhz  US=5.000-42.000 Mhz
+OFDM=12/1/32, ds-profile=0,1,2  
+Uptime= 14 days  0:16:53 IPv4=10.88.16.9      cfg=bpr01063c9a773b939b0001  cmStatusAck=Disabled
+LB Policy=0  LB Group=25167872    Filter-Group CM-Down:1   CM-Up:2
+Privacy=Ready  Ver=BPI Plus  Authorized    DES56  Primary SAId=12513  Seq=9  EAE=Supported/Disabled
+em1x1Enable=Disabled  em1x1Operational=No  em1x1TotalDuration=   0 days 00:00:00
+MDF Capability= GMAC Promiscuous(2)  MDF Mode= MDF Disabled(0)
+                                                                                            Slot/Channels
+u/d     SFID  ASFID   SID State Sched      Tmin       Tmax     Frames        Bytes    CRC    HCS  (o=>ofdm :profile/ofdma:iuc
+uB      8643      - 12513 Activ BE            0   52428800         61        19348      0      0  1/0/12-15                       
+dB      8644      -  4322 Activ               0 1000000000          9          576                12/1/1-30,o32:2                 
+uB      8645      - 12514 Activ BE            0    5242880          7          546      0      0  1/0/12-15                       
+uB      8646      - 12515 Activ BE            0    1024000         31        12699      0      0  1/0/12-15                       
+dB      8647      -  4323 Activ               0   31457280          0            0                12/1/1-30,o32:2                 
+dB      8648      -  4324 Activ               0    1024000         53        16834                12/1/1-30,o32:2                 
+L2VPN per CM: (Disabled) 
+Current CPE=2, IPv4 Addr=1, IPv6 Addr=0          Max CPE=2, IPv4 Addr=16, IPv6 Addr=16
+ CPE(MTA)  3c9a.773b.939c Filter-Group:Up=6 Down=5 Proto-Throttle=Normal IP  =NULL_IP
+ CPE(ERTR) 3c9a.773b.939d Filter-Group:Up=10 Down=9 Proto-Throttle=Normal IPv4=10.88.18.185
+
+ARCUAT1HUHCMT01# 
