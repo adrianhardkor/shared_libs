@@ -422,7 +422,7 @@ class VELOCITY():
 		# wc.pairprint(port_name, self.INV[device_name])
 		if port_name not in self.INV[device_name]['ports'].keys():
 			# for auto-loading template-ports
-			# self.INV = self.GetInventory(); # MAY NEED TO BE RE_VISITED
+			self.INV = self.GetInventory(); # MAY NEED TO BE RE_VISITED
 			# print(self.INV[device_name]['ports'].keys())
 			pass
 		if port_name not in self.INV[device_name]['ports'].keys():
