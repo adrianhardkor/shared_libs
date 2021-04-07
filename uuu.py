@@ -7,6 +7,13 @@ import re
 import soap
 import deepdiff
 
+for f in wc.exec2('ls ~/Modems').split('\n'):
+	if f.endswith('.json') is False: continue
+	print(f)
+	data = wc.read_file('/home/adrian/Modems/' + f)
+	data = json.loads(data)
+#	wc.jd(data)
+
 data = wc.read_file('e6k.verbose.log')
 def e6kModemVerbose(lines):
 	modems = {}
@@ -45,7 +52,6 @@ def e6kModemVerbose(lines):
 			modems[mac]['OFDM'] = cline[0]
 			modems[mac]['OFDM ds-profile'] = ' '.join(cline[1::])
 		elif cline[0] == 'Uptime=':
-			print(cline)
 			for k in cline:
 				if '=' in k:
 					
@@ -96,10 +102,12 @@ def e6kModemVerbose(lines):
 
 		elif cline[0] == 'L2VPN':
 			modems[mac]['L2VPN per CM'] = ' '.join(cline[3::])
+		elif 'CPE' in cline[0]:
+			print(cline)
 		else:
 			# print(line)
 			pass
 	return(modems)
 out = e6kModemVerbose(data.split('\n'))
-wc.jd(out)
+# wc.jd(out)
 
