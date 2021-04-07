@@ -143,6 +143,19 @@ def compareDict(old,new):
 	out = json.loads(out)
 	return(out)
 
+def compareList(old,new):
+	out = {'added':[],'removed':[]}
+	for o in old:
+		if o not in new:
+			wc.pairprint('compareList removed', o)
+			out['removed'].append(o)
+	for n in new:
+		if n not in old:
+			wc.pairprint('compareList added', n)
+			out['added'].append(n)
+	if out == {'added':[],'removed':[]}: return(True)
+	else: return(False)
+
 def read_yaml(fname):
     return(yaml.load(read_file(fname), Loader=yaml.FullLoader))
 

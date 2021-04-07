@@ -13,6 +13,13 @@ import soap
 # rdu_json = wc.argv_dict['rdu_json']
 # flaskIP = wc.argv_dict['flaskIP']
 
+def compareForPUT(old,new):
+	compare = wc.compareDict(old,new)
+	if compare != {} and compare != "{}":
+		print(compare)
+		return(True)
+	return(False)
+
 class MDB():
 	def __init__(self, MongoIP, MongoPort, MongoName):
 		self.MongoIP = MongoIP
@@ -54,9 +61,10 @@ class MDB():
 			if old not in currentJSON:
 				cSET[old] = criteria_SET[old]
 			elif type(currentJSON[old]) == dict:
-				compare = wc.compareDict(currentJSON[old],criteria_SET[old])
-				if compare != {} and compare != "{}": cSET[old] = criteria_SET[old]
-				wc.pairprint(old,compare)
+				if compareForPUT(currentJSON[old],critiera_SET[old]):  cSET[old] = criteria_SET[old]
+			elif type(currentJSON[old]) == list:
+				if wc.compareList(currentJSON[old],critiera_SET[old]) is False:
+					cSET[old] = criteria_SET[old]
 			elif currentJSON[old] != criteria_SET[old]:
 				cSET[old] = criteria_SET[old]
 #			if old in cSET and old == 'velocityARC':
