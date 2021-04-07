@@ -265,6 +265,7 @@ class Port(MONGO.M.EmbeddedDocument):
 	qos = MONGO.M.StringField()
 	velocityARC = MONGO.M.EmbeddedDocumentField(velPort, dbref=True)
 	_uplinkPort = MONGO.M.BooleanField()
+	ifIndex = MONGO.M.FloatField()
 	_templateName = MONGO.M.StringField()
 	pass
 
