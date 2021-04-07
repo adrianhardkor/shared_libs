@@ -267,6 +267,8 @@ class Port(MONGO.M.EmbeddedDocument):
 	_uplinkPort = MONGO.M.BooleanField()
 	ifIndex = MONGO.M.FloatField()
 	_templateName = MONGO.M.StringField()
+	ifPromiscuousMode = MONGO.M.StringField()
+	ifConnectorPresent = MONGO.M.StringField()
 	pass
 
 class Modem(MONGO.M.Document):
