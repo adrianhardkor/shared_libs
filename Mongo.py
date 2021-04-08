@@ -317,12 +317,13 @@ class Port(MONGO.M.EmbeddedDocument):
 	pass
 
 class e6k_traffic(MONGO.M.EmbeddedDocument):
-	dir = MONGO.M.StringField()
+	ud = MONGO.M.StringField()
 	max_burst = MONGO.M.StringField()
 	max_sustained_rate = MONGO.M.StringField()
 	min_reserved_rate = MONGO.M.StringField()
-	sched_type = MONGO.M.StringField()
+	sched = MONGO.M.StringField()
 	sfid = MONGO.M.StringField()
+	sid = MONGO.M.StringField()
 	state = MONGO.M.StringField()
 	trhoughput_bps = MONGO.M.StringField()
 	tp = MONGO.M.StringField()
