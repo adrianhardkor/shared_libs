@@ -13,7 +13,7 @@ class MODEMSNMP():
 		cmac = cmac.replace(':','').upper().strip()
 		allmacs = {}
 		for intf in self.Modem['intfs'].keys():
-			allmacs[self.Modem['intfs'][intf]['ifPhysAddress'].replace(':').upper()] = self.Modem['intfs'][intf]['ifDescr']
+			allmacs[self.Modem['intfs'][intf]['ifPhysAddress'].replace(':','').upper()] = self.Modem['intfs'][intf]['ifDescr']
 		if allmacs == {}: return({})
 		found = ''
 		try:
