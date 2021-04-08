@@ -318,13 +318,13 @@ class Port(MONGO.M.EmbeddedDocument):
 
 class e6k_traffic(MONGO.M.EmbeddedDocument):
 	dir = MONGO.M.StringField()
-	max-burst = MONGO.M.StringField()
-	max-sustained-rate = MONGO.M.StringField()
-	min-reserved-rate = MONGO.M.StringField()
-	sched-type = MONGO.M.StringField()
+	max_burst = MONGO.M.StringField()
+	max_sustained_rate = MONGO.M.StringField()
+	min_reserved_rate = MONGO.M.StringField()
+	sched_type = MONGO.M.StringField()
 	sfid = MONGO.M.StringField()
 	state = MONGO.M.StringField()
-	trhoughput-bps = MONGO.M.StringField()
+	trhoughput_bps = MONGO.M.StringField()
 	tp = MONGO.M.StringField()
 
 class Modem(MONGO.M.Document):
