@@ -20,6 +20,9 @@ class MODEMSNMP():
 		except IndexError:
 			wc.jd(allmacs)
 			wc.pairprint('CMAC Not Found', cmac)
+		except KeyError:
+			wc.jd(allmacs)
+			wc.pairprint('CMAC Not Found', cmac)
 		return(allmacs[cmac])
 	def GetModemPorts(self, ip):
 		result = {'intfs':{}, 'chassis':{}}
@@ -55,7 +58,7 @@ class MODEMSNMP():
 			snmpjunk = d.pop(0)
 			intf = d.pop(0)
 			if intf not in result['intfs'].keys():
-				wc.pairprint('[WARNING] ipNetToMediaPhysAddress has ifIndex but not in ifDescr\t' + str(intf), d)
+				wc.pairprint('[WARNING] ipNetToMediaPhysAddress has ifIndex but not in ifDescr\t' + str(intf), str(d) + '\t' + str(result['intfs'].keys()))
 				continue
 			elif 'ipNetToMediaPhysAddress' not in result['intfs'][intf].keys():
 				result['intfs'][intf]['ipNetToMediaPhysAddress'] = {}
