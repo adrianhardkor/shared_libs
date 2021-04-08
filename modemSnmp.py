@@ -58,7 +58,7 @@ class MODEMSNMP():
 			snmpjunk = d.pop(0)
 			intf = d.pop(0)
 			if intf not in result['intfs'].keys():
-				wc.pairprint('[WARNING] ipNetToMediaPhysAddress has ifIndex but not in ifDescr\t' + str(intf), str(d) + '\t' + str(result['intfs'].keys()))
+				wc.pairprint(ip + '  [WARNING] ipNetToMediaPhysAddress has ifIndex but not in ifDescr\t' + str(intf), str(d) + '\t' + str(result['intfs'].keys()))
 				continue
 			elif 'ipNetToMediaPhysAddress' not in result['intfs'][intf].keys():
 				result['intfs'][intf]['ipNetToMediaPhysAddress'] = {}
