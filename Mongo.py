@@ -316,6 +316,17 @@ class Port(MONGO.M.EmbeddedDocument):
 	arp = MONGO.M.StringField()
 	pass
 
+class e6k_traffic(MONGO.M.EmbeddedDocument):
+	dir = MONGO.M.StringField()
+	max-burst = MONGO.M.StringField()
+	max-sustained-rate = MONGO.M.StringField()
+	min-reserved-rate = MONGO.M.StringField()
+	sched-type = MONGO.M.StringField()
+	sfid = MONGO.M.StringField()
+	state = MONGO.M.StringField()
+	trhoughput-bps = MONGO.M.StringField()
+	tp = MONGO.M.StringField()
+
 class Modem(MONGO.M.Document):
 	name = MONGO.M.StringField(); # ansible inventory name
 	device_name = MONGO.M.StringField(); # name on device
@@ -340,7 +351,8 @@ class Modem(MONGO.M.Document):
 	type = MONGO.M.StringField()
 	hw_rev = MONGO.M.StringField()
 	cfg = MONGO.M.StringField()
-	traffic = MONGO.M.DictField(MONGO.M.DictField())
+	# traffic = MONGO.M.DictField(MONGO.M.DictField())
+	traffic = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(e6k_traffic, dbref=True))
 	rdu_bac = MONGO.M.EmbeddedDocumentField(rduModemEmbed, dbref=True)
 	isReserved = MONGO.M.StringField()
 	# ansible_net_system = MONGO.M.ListField()
