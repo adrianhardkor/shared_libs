@@ -16,7 +16,7 @@ class MODEMSNMP():
 			allmacs[self.Modem['intfs'][intf]['ifPhysAddress']] = self.Modem['intfs'][intf]['ifDescr']
 		if allmacs == {}: return({})
 		try:
-			wc.pairprint('CMAC Found', allmacs[cmac])
+			found = allmacs[cmac]
 		except IndexError:
 			wc.jd(allmacs)
 			wc.pairprint('CMAC Not Found', cmac)
