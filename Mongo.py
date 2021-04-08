@@ -326,6 +326,7 @@ class e6k_traffic(MONGO.M.EmbeddedDocument):
 	state = MONGO.M.StringField()
 	trhoughput_bps = MONGO.M.StringField()
 	tp = MONGO.M.StringField()
+	pass
 
 class Modem(MONGO.M.Document):
 	name = MONGO.M.StringField(); # ansible inventory name
