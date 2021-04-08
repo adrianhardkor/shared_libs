@@ -340,7 +340,7 @@ class Modem(MONGO.M.Document):
 	type = MONGO.M.StringField()
 	hw_rev = MONGO.M.StringField()
 	cfg = MONGO.M.StringField()
-	traffic = MONGO.M.DictField(MONGO.M.DictField(MONGO.M.DictField())); # embed?
+	traffic = MONGO.M.DictField(MONGO.M.DictField())
 	rdu_bac = MONGO.M.EmbeddedDocumentField(rduModemEmbed, dbref=True)
 	isReserved = MONGO.M.StringField()
 	# ansible_net_system = MONGO.M.ListField()
