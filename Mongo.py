@@ -355,6 +355,7 @@ class Modem(MONGO.M.Document):
 	_templateName = MONGO.M.StringField()
 	ERTR = MONGO.M.DictField()
 	MTA = MONGO.M.DictField()
+	node = MONGO.M.StringField()
 	pass
 
 
