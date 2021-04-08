@@ -27,7 +27,7 @@ class MODEMSNMP():
 			COMMAND = 'snmpbulkget '
 			# COMMAND = 'snmpwalk -r 2 -t 15 '
 			data = wc.exec2(COMMAND + '-v2c -c %s -m all %s %s' % (self.community, ip, mib))
-			# wc.pairprint('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, mib), data)
+			wc.pairprint( COMMAND + '-v2c -c %s -m all %s %s' % (self.community, ip, mib), data.split('\n'))
 			for d in data.split('\n'):
 				d = wc.mcsplit(d, ':=')
 				if d == [''] or d == []: continue
