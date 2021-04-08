@@ -357,6 +357,7 @@ class Modem(MONGO.M.Document):
 	ERTR = MONGO.M.DictField()
 	MTA = MONGO.M.DictField()
 	node = MONGO.M.StringField()
+	lb = MONGO.M.DictField()
 	pass
 
 
