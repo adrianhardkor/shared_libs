@@ -26,6 +26,7 @@ class MODEMSNMP():
 			wc.pairprint('CMAC Not Found', cmac)
 		return(found)
 	def GetModemPorts(self, ip):
+		# snmpbulkwalk -r 2 -t 15 -m all -v2c -c W0WForeCM@! 10.88.16.9 1.3.6.1.2.1.2.2.1
 		result = {'intfs':{}, 'chassis':{}}
 		for mib in ['ifDescr', 'ifPromiscuousMode', 'ifConnectorPresent', 'ifType', 'ifMtu', 'ifSpeed', 'ifAdminStatus', 'ifOperStatus', 'ifPhysAddress']:
 			COMMAND = 'snmpbulkget '
