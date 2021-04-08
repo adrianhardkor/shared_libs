@@ -49,12 +49,15 @@ class MODEMSNMP():
 		for d in data.split('\n'):
 			d = d.split('=')
 			if d == [''] or d == []: continue
-			wc.pairprint('ipNetToMediaPhysAddress', d)
+			# wc.pairprint('ipNetToMediaPhysAddress', d)
 			value =  wc.cleanLine(d[-1])
 			d = d[0].split('.')
 			snmpjunk = d.pop(0)
 			intf = d.pop(0)
-			if 'ipNetToMediaPhysAddress' not in result['intfs'][intf].keys():
+			if intf not in result['intfs'].keys():
+				wc.pairprint('[WARNING] ipNetToMediaPhysAddress has ifIndex but not in ifDescr\t' + str(intf), d)
+				continue
+			elif 'ipNetToMediaPhysAddress' not in result['intfs'][intf].keys():
 				result['intfs'][intf]['ipNetToMediaPhysAddress'] = {}
 			value.pop(0)
 			result['intfs'][intf]['ipNetToMediaPhysAddress'][' '.join(value)] = '.'.join(d).strip()
