@@ -335,6 +335,7 @@ class Modem(MONGO.M.Document):
 	DOCSIS = MONGO.M.StringField()
 	description = MONGO.M.StringField()
 	rx_power = MONGO.M.StringField()
+	tx_power = MONGO.M.StringField()
 	_sg = MONGO.M.StringField()
 	type = MONGO.M.StringField()
 	hw_rev = MONGO.M.StringField()
