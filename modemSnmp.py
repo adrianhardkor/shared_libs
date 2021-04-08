@@ -25,57 +25,36 @@ class MODEMSNMP():
 			wc.jd(allmacs)
 			wc.pairprint('CMAC Not Found', cmac)
 		return(found)
+	def FormatSNMPline(self, line):
+		line = line.split('=')
+		line[0] = wc.mcsplit(line[0].strip(), ['.',':'])
+		line[1] = line[1].strip().split(':')
+		line[1].pop(0)
+		line[1] = ':'.join(line[1])
+		if line[0][2] == 'ipNetToMediaPhysAddress':
+			line[1] = ':'.join(wc.cleanLine(line[1]))
+			line[1] = line[1] + ' ' + '.'.join(line[0][4::])
+		return(line[0][2].strip(),line[0][3].strip(),line[1].strip())
 	def GetModemPorts(self, ip):
-		# snmpbulkwalk -r 2 -t 15 -m all -v2c -c W0WForeCM@! 10.88.16.9 1.3.6.1.2.1.2.2.1
 		result = {'intfs':{}, 'chassis':{}}
-		for mib in ['ifDescr', 'ifPromiscuousMode', 'ifConnectorPresent', 'ifType', 'ifMtu', 'ifSpeed', 'ifAdminStatus', 'ifOperStatus', 'ifPhysAddress']:
-			COMMAND = 'snmpbulkget '
-			# COMMAND = 'snmpwalk -r 2 -t 15 '
-			data = wc.exec2(COMMAND + '-v2c -c %s -m all %s %s' % (self.community, ip, mib))
-			if mib == 'ifDescr': print(data)
-			# wc.pairprint( COMMAND + '-v2c -c %s -m all %s %s' % (self.community, ip, mib), data.split('\n'))
-			for d in data.split('\n'):
-				d = wc.mcsplit(d, ':=')
-				if d == [''] or d == []: continue
-				ifIndex = d[2].strip().split('.')[-1]
-				Value = d[-1]
-				if mib == 'ifConnectorPresent' and Value == '0': Value = 'false(2)'
-				if mib == 'ifConnectorPresent' and Value == '1': Value = 'true(1)'
-				if mib == 'ifDescr': Value = ':'.join(d[4::])
-				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
-				if mib == 'ifPhysAddress':
-					new = []
-					for element in d[-6::]:
-						element = element.strip()
-						if len(element) == 1: new.append('0' + element)
-						else: new.append(element)
-					result['intfs'][ifIndex][mib] = ''.join(new).upper()
-				else: result['intfs'][ifIndex][mib] = Value.strip()
-		data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, 'ipNetToMediaPhysAddress'))
-		for d in data.split('\n'):
-			d = d.split('=')
-			if d == [''] or d == []: continue
-			# wc.pairprint('ipNetToMediaPhysAddress', d)
-			value =  wc.cleanLine(d[-1])
-			d = d[0].split('.')
-			snmpjunk = d.pop(0)
-			intf = d.pop(0)
-			if intf not in result['intfs'].keys():
-				wc.pairprint(ip + '  [WARNING] ipNetToMediaPhysAddress has ifIndex but not in ifDescr\t' + str(intf), str(d) + '\t' + str(result['intfs'].keys()))
-				continue
-			elif 'ipNetToMediaPhysAddress' not in result['intfs'][intf].keys():
-				result['intfs'][intf]['ipNetToMediaPhysAddress'] = {}
-			value.pop(0)
-			result['intfs'][intf]['ipNetToMediaPhysAddress'][' '.join(value)] = '.'.join(d).strip()
-		data = wc.exec2('snmpwalk -v2c -c %s -m all %s %s' % (self.community, ip, 'SNMPv2-SMI::mib-2.69.1'))
-		result['chassis']['serialNumber'] = wc.grep('69.1.1.4.0', data).split(':')[-1]
-		result['chassis']['softwareFile'] = wc.grep('69.1.3.2.0', data).split(':')[-1]
-		self.Modem = result
-		# wc.jd(result)
+		data = []
+		MIBS = ['1.3.6.1.2.1.2.2.1', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
+		for MIB in MIBS:
+			data.append(wc.exec2('snmpbulkwalk -r 2 -t 15 -m all -v2c -c %s %s %s' % (self.community, ip, MIB)))
+		data = '\n'.join(data)
+		for intf in wc.grep('ifDescr', data).split('\n'):
+			mib,ifIndex,value = self.FormatSNMPline(intf)
+			result['intfs'][ifIndex] = {}
+		for intf in data.split('\n'):
+			mib,ifIndex,value = self.FormatSNMPline(intf)
+			# print(mib,ifIndex,value)
+			# if mib in MIBS: print(mib,ifIndex,value)
+			result['intfs'][ifIndex][mib] = value
 		return(result)
 
-# M = MODEMSNMP(wc.argv_dict['comm'])
-# wc.jd(M.GetModemPorts(wc.argv_dict['ip']))
+# M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
+# data = M.GetModemPorts(wc.argv_dict['ip'])
+# wc.jd(data)
 # M.ValidateModemIP(wc.argv_dict['ip'], wc.argv_dict['cmac'])
 
 
