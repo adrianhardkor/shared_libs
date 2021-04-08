@@ -329,6 +329,7 @@ class e6k_traffic(MONGO.M.EmbeddedDocument):
 	tp = MONGO.M.StringField()
 	Tmax = MONGO.M.StringField()
 	Tmin = MONGO.M.StringField()
+	capability = MONGO.M.StringField()
 	pass
 
 class Modem(MONGO.M.Document):
