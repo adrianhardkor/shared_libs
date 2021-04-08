@@ -50,6 +50,7 @@ class MODEMSNMP():
 			# print(mib,ifIndex,value)
 			# if mib in MIBS: print(mib,ifIndex,value)
 			result['intfs'][ifIndex][mib] = value
+		self.Modem = result
 		return(result)
 
 # M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
