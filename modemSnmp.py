@@ -15,6 +15,7 @@ class MODEMSNMP():
 		for intf in self.Modem['intfs'].keys():
 			allmacs[self.Modem['intfs'][intf]['ifPhysAddress']] = self.Modem['intfs'][intf]['ifDescr']
 		if allmacs == {}: return({})
+		found = ''
 		try:
 			found = allmacs[cmac]
 		except IndexError:
@@ -23,7 +24,7 @@ class MODEMSNMP():
 		except KeyError:
 			wc.jd(allmacs)
 			wc.pairprint('CMAC Not Found', cmac)
-		return(allmacs[cmac])
+		return(found)
 	def GetModemPorts(self, ip):
 		result = {'intfs':{}, 'chassis':{}}
 		for mib in ['ifDescr', 'ifPromiscuousMode', 'ifConnectorPresent', 'ifType', 'ifMtu', 'ifSpeed', 'ifAdminStatus', 'ifOperStatus', 'ifPhysAddress']:
