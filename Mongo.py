@@ -293,6 +293,7 @@ class RFPort(MONGO.M.EmbeddedDocument):
 	pass
 
 class ModemPort(MONGO.M.EmbeddedDocument):
+	_connections = MONGO.M.StringField(); # connections/modems not in V 
 	ifSpeed = MONGO.M.StringField()
 	ifLastChange = MONGO.M.StringField()
 	ifInUnknownProtos = MONGO.M.StringField()
