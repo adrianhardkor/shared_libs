@@ -51,7 +51,7 @@ class MODEMSNMP():
 		data = '\n'.join(data)
 		for intf in wc.grep('ifDescr', data).split('\n'):
 			mib,ifIndex,value = self.FormatSNMPline(intf)
-			result['intfs'][ifIndex] = {}
+			result['intfs'][ifIndex] = {'ipNetToMediaPhysAddress':''}
 		for intf in data.split('\n'):
 			mib,ifIndex,value = self.FormatSNMPline(intf)
 			# print(mib,ifIndex,value)
