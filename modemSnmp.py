@@ -13,18 +13,10 @@ class MODEMSNMP():
 		cmac = cmac.replace(':','').upper().strip()
 		allmacs = {}
 		for intf in self.Modem['intfs'].keys():
-			allmacs[self.Modem['intfs'][intf]['ifPhysAddress'].replace(':','').upper()] = self.Modem['intfs'][intf]['ifDescr']
-		if allmacs == {}: return({})
-		found = ''
-		try:
-			found = allmacs[cmac]
-		except IndexError:
-			wc.jd(allmacs)
-			wc.pairprint('CMAC Not Found', cmac)
-		except KeyError:
-			wc.jd(allmacs)
-			wc.pairprint('CMAC Not Found', cmac)
-		return(found)
+			if self.Modem['intfs'][intf]['ifPhysAddress'].replace(':','').upper() == cmac:
+				self.Modem['intfs'][intf]['_uplinkPort'] = 'cmac'
+			elif 'erouter' in self.Modem['intfs'][intf]['ifDescr'].lower():
+				self.Modem['intfs'][intf]['_uplinkPort'] = 'ertr'
 	def FormatSNMPline(self, line):
 		line = line.split('=')
 		line[0] = wc.mcsplit(line[0].strip(), ['.',':'])
@@ -51,7 +43,7 @@ class MODEMSNMP():
 		data = '\n'.join(data)
 		for intf in wc.grep('ifDescr', data).split('\n'):
 			mib,ifIndex,value = self.FormatSNMPline(intf)
-			result['intfs'][ifIndex] = {'ipNetToMediaPhysAddress':''}
+			result['intfs'][ifIndex] = {'ipNetToMediaPhysAddress':'', '_uplinkPort':''}
 		for intf in data.split('\n'):
 			mib,ifIndex,value = self.FormatSNMPline(intf)
 			# print(mib,ifIndex,value)
