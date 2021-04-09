@@ -30,15 +30,16 @@ class MODEMSNMP():
 		line[0] = wc.mcsplit(line[0].strip(), ['.',':'])
 		line[1] = line[1].strip().split(':')
 		line[1].pop(0)
-		line[1] = ':'.join(line[1])
+		line[1] = str(':'.join(line[1]))
 		if line[0][2] == 'ipNetToMediaPhysAddress':
 			line[1] = ':'.join(wc.cleanLine(line[1]))
 			line[1] = line[1] + ' ' + '.'.join(line[0][4::])
 		elif line[0][2] == 'ifPhysAddress':
 			value = []
-			for v in line[1].split(':'):
-				if len(v) == 1: v = '0' + v
-				value.append(v)
+			for v in str(line[1]).split(':'):
+				for vv in v:
+					if wc.str_int_split(vv) == (' ',''): value.append('0')
+					else: value.append(vv)
 			line[1] = ''.join(value).upper()
 		return(line[0][2].strip(),line[0][3].strip(),line[1].strip())
 	def GetModemPorts(self, ip):
