@@ -60,9 +60,10 @@ class GCP():
 
 	def CONVERT_JSON_BY_HEADER(self,sheet,headIndex):
 		self.headers = sheet.pop(0)
-		ipIndex = self.headers.index(headIndex)
 		asset = {}
 		r = 2; # 2=because there's no 0 and 1 is headers.pop(0)
+		if headIndex == '': ipIndex = r
+		else: ipIndex = self.headers.index(headIndex)
 		for row in sheet:
 			# wc.pairprint(row,ipIndex)
 			if len(row)-1 < ipIndex:
