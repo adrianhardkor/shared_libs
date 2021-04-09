@@ -62,7 +62,7 @@ class VELOCITY():
 			if result['response.status_code'] not in ['200',200]:
 				wc.jd(args)
 				wc.jd(result)
-				raise
+				raise()
 		return(result)
 	def REST_POST(self, url, args={}, verify=False):
 		if '?' not in url:
@@ -408,8 +408,8 @@ class VELOCITY():
 
 		# if device is Network then Port is Network
 		if device_name not in self.INV.keys():
-			raise('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
-
+			print('UpdatePort: ' + device_name + ' not in Inventory, cant update port yet: ' + port_name)
+			raise()
 		# if pg doesnt exist, create and create port underneath pg
 		PGs = self.GetDevicePGs(self.INV[device_name]['id'])
 		if pgName not in PGs.keys():
@@ -499,7 +499,7 @@ class VELOCITY():
 				wc.jd(p)
 				wc.pairprint(device['name'], p['name'])
 			pg = pg[p['groupId']]
-		ports[p['name']] = {'description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
+		ports[p['name']] = {'name':p['name'],'description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
 		ports[p['name']]['linkChecked'] = p['linkChecked']
