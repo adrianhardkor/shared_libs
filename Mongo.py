@@ -355,7 +355,7 @@ class e6k_traffic(MONGO.M.EmbeddedDocument):
 	sfid = MONGO.M.StringField()
 	sid = MONGO.M.StringField()
 	state = MONGO.M.StringField()
-	trhoughput_bps = MONGO.M.StringField()
+	throughput_bps = MONGO.M.StringField()
 	tp = MONGO.M.StringField()
 	Tmax = MONGO.M.StringField()
 	Tmin = MONGO.M.StringField()
