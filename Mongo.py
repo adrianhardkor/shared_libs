@@ -404,6 +404,7 @@ class Modem(MONGO.M.Document):
 	ERTR = MONGO.M.DictField()
 	MTA = MONGO.M.DictField()
 	node = MONGO.M.StringField()
+	host = MONGO.M.DictField()
 	lb = MONGO.M.DictField()
 	connections = MONGO.M.StringField()
 	trafficVLAN = MONGO.M.StringField()
