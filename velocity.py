@@ -415,6 +415,9 @@ class VELOCITY():
 		if pgName not in PGs.keys():
 			# pg doesnt exist on device yet
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/%s/port_group' % self.INV[device_name]['id'], args={'name':pgName})
+			# new pg but PGs have already been stored in memory for efficency
+			self.ALL_PORTGROUPS[self.INV[device_name]['id']] = self.INV[device_name]['name']
+			self.ALL_PORTGROUPS[self.INV[device_name]['name']] = self.INV[device_name]['id']
 			PGs = self.GetDevicePGs(self.INV[device_name]['id'])
 			# wc.jd(pg)
 		else:
