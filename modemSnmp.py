@@ -13,10 +13,21 @@ class MODEMSNMP():
 		cmac = cmac.replace(':','').upper().strip()
 		allmacs = {}
 		for intf in self.Modem['intfs'].keys():
-			if self.Modem['intfs'][intf]['ifPhysAddress'].replace(':','').upper() == cmac:
-				self.Modem['intfs'][intf]['_uplinkPort'] = 'cmac'
-			elif 'erouter' in self.Modem['intfs'][intf]['ifDescr'].lower():
-				self.Modem['intfs'][intf]['_uplinkPort'] = 'ertr'
+			if self.Modem['intfs'][intf]['ifPhysAddress'].replace(':','').upper() == cmac and \
+			self.Modem['intfs'][intf]['ipNetToMediaPhysAddress'] != '':
+				self.Modem['intfs'][intf]['portGroup'] = 'cmac'
+			elif 'erouter' in self.Modem['intfs'][intf]['ifDescr'].lower() and \
+			self.Modem['intfs'][intf]['ipNetToMediaPhysAddress'] != '':
+				self.Modem['intfs'][intf]['portGroup'] = 'ertr'
+			elif self.Modem['intfs'][intf]['ifType'].startswith('ipForward'):
+				self.Modem['intfs'][intf]['portGroup'] = 'logical'
+			elif self.Modem['intfs'][intf]['ifType'].startswith('ethernetCsmacd'):
+				self.Modem['intfs'][intf]['portGroup'] = 'ethernet'
+			elif self.Modem['intfs'][intf]['ifType'].startswith('ieee80211') and 'sub' in self.Modem['intfs'][intf]['ifDescr']:
+				self.Modem['intfs'][intf]['portGroup'] = 'logical'
+			elif 'packetcable' in self.Modem['intfs'][intf]['ifDescr'].lower():
+				self.Modem['intfs'][intf]['portGroup'] = 'PacketCable'
+			else: self.Modem['intfs'][intf]['portGroup'] = self.Modem['intfs'][intf]['ifType']
 	def FormatSNMPline(self, line):
 		line = line.split('=')
 		line[0] = wc.mcsplit(line[0].strip(), ['.',':'])
@@ -43,7 +54,7 @@ class MODEMSNMP():
 		data = '\n'.join(data)
 		for intf in wc.grep('ifDescr', data).split('\n'):
 			mib,ifIndex,value = self.FormatSNMPline(intf)
-			result['intfs'][ifIndex] = {'ipNetToMediaPhysAddress':'', '_uplinkPort':''}
+			result['intfs'][ifIndex] = {'ipNetToMediaPhysAddress':'', 'portGroup':''}
 		for intf in data.split('\n'):
 			mib,ifIndex,value = self.FormatSNMPline(intf)
 			# print(mib,ifIndex,value)

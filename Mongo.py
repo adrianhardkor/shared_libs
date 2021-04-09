@@ -292,6 +292,36 @@ class RFPort(MONGO.M.EmbeddedDocument):
 	description = MONGO.M.StringField()
 	pass
 
+class ModemPort(MONGO.M.EmbeddedDocument):
+	ifSpeed = MONGO.M.StringField()
+	ifLastChange = MONGO.M.StringField()
+	ifInUnknownProtos = MONGO.M.StringField()
+	ifOutOctets = MONGO.M.StringField()
+	ifOutErrors = MONGO.M.StringField()
+	ifPhysAddress = MONGO.M.StringField()
+	ifInOctets = MONGO.M.StringField()
+	ifOperStatus = MONGO.M.StringField()
+	ifMtu = MONGO.M.StringField()
+	ifDescr = MONGO.M.StringField()
+	ifInDiscards = MONGO.M.StringField()
+	ifType = MONGO.M.StringField()
+	name = MONGO.M.StringField()
+	ipNetToMediaPhysAddress = MONGO.M.StringField()
+	ifInErrors = MONGO.M.StringField()
+	ifAdminStatus = MONGO.M.StringField()
+	ifInUcastPkts = MONGO.M.StringField()
+	ifOutDiscards = MONGO.M.StringField()
+	ifOutUcastPkts = MONGO.M.StringField()
+	ifIndex = MONGO.M.StringField()
+	ifPromiscuousMode = MONGO.M.StringField()
+	ifConnectorPresent = MONGO.M.StringField()
+	portGroup = MONGO.M.StringField()
+	ifOutNUcastPkts = MONGO.M.StringField()
+	ifInNUcastPkts = MONGO.M.StringField()
+	ifSpecific = MONGO.M.StringField()
+	ifOutQLen = MONGO.M.StringField()
+	pass
+
 class Port(MONGO.M.EmbeddedDocument):
 	name = MONGO.M.StringField()
 	description = MONGO.M.StringField()
@@ -365,7 +395,7 @@ class Modem(MONGO.M.Document):
 	# ansible_host_vars = MONGO.M.DictField()
 	# ansible_ready = MONGO.M.DictField()
 	# ansible host/group vars?
-	ports = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(Port, dbref=True))
+	ports = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(ModemPort, dbref=True))
 	# modems not in V;  # velocityARC = MONGO.M.EmbeddedDocumentField(velDevice, dbref=True)
 	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
