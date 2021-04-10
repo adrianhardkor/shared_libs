@@ -458,6 +458,7 @@ class VELOCITY():
 			raw = self.ALL_PORTGROUPS[deviceId]
 		out = {}
 		for blah in raw:
+			if type(blah) == str: print(blah)
 			if blah['id'] == None: blah['id'] = 'null'
 			out[blah['name']] = blah
 			out[blah['id']] = blah
