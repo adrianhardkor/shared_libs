@@ -409,6 +409,8 @@ class Modem(MONGO.M.Document):
 	lb = MONGO.M.DictField()
 	connections = MONGO.M.StringField()
 	trafficVLAN = MONGO.M.StringField()
+	trafficLAN = MONGO.M.StringField()
+	trafficRF = MONGO.M.DictField()
 	pass
 
 
