@@ -344,6 +344,7 @@ class Port(MONGO.M.EmbeddedDocument):
 	ifPromiscuousMode = MONGO.M.StringField()
 	ifConnectorPresent = MONGO.M.StringField()
 	arp = MONGO.M.StringField()
+	connections = MONGO.M.StringField()
 	pass
 
 class e6k_traffic(MONGO.M.EmbeddedDocument):
