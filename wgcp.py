@@ -42,10 +42,17 @@ class GCP():
 		getTime = wc.timer_index_start()
 		out = []
 		result = handle.get(spreadsheetId=self.SAMPLE_SPREADSHEET_ID, range=self.SAMPLE_RANGE_NAME).execute()
+		self.got = result
 		# wc.pairprint('GCP:  GET', str(wc.timer_index_since(getTime)) + ' ms')
 		return(result.get('values',[]))
 
 	def SET(self,handle,cell,value):
+		sCELL = wc.split_str_int(cell)
+		# Check current value
+		for k in self.got.keys():
+			if self.got[k]['Row'] == str(sCELL[1]):
+				for v in self.got[k].keys():
+					if str(self.got[k][v]) == str(value): return(); # no update / already exists
 		setTime = wc.timer_index_start()
 		body = {'values':[[value]]}
 		rangeName = self.SAMPLE_RANGE_NAME + '!' + cell
