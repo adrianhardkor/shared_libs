@@ -47,7 +47,7 @@ class GCP():
 		return(result.get('values',[]))
 
 	def SET(self,handle,cell,value):
-		sCELL = wc.split_str_int(cell)
+		sCELL = wc.str_int_split(cell)
 		# Check current value
 		for k in self.got.keys():
 			if self.got[k]['Row'] == str(sCELL[1]):
