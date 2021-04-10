@@ -47,10 +47,10 @@ class GCP():
 		return(result.get('values',[]))
 
 	def SET(self,handle,cell,value):
-		sCELL = wc.str_int_split(cell)
+		strs,ints = wc.str_int_split(cell)
 		# Check current value
 		for k in self.got.keys():
-			if self.got[k]['Row'] == str(sCELL[1]):
+			if self.got[k]['Row'] == str(ints):
 				for v in self.got[k].keys():
 					if str(self.got[k][v]) == str(value): return(); # no update / already exists
 		setTime = wc.timer_index_start()
