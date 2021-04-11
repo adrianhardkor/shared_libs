@@ -60,7 +60,7 @@ for slot in physical['//' + _CHASSIS_IP]['slots'].keys():
 		slotNum = port.split('/')[-2]
 		portNum = port.split('/')[-1]
 		slotName = 'S' + slotNum
-		portName = slotNum + '/' + portNum
+		portName = slotName + 'P' + str(portNum)
 		new_descr = []
 		# new_descr.append(str(physical['//' + _CHASSIS_IP]['slots'][slot]['PartNum']))
 		OwnershipState = physical['//' + _CHASSIS_IP]['slots'][slot]['ports'][port]['OwnershipState']
