@@ -49,6 +49,7 @@ class GCP():
 	def SET(self,handle,cell,value):
 		strs,ints = wc.str_int_split(cell)
 		# Check current value
+		old = 'didnt_find'
 		for id2 in self.got.keys():
 			if self.got[id2]['Row'] == str(ints):
 				for v in self.got[d2].keys():
