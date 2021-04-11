@@ -42,15 +42,14 @@ class GCP():
 		getTime = wc.timer_index_start()
 		out = []
 		result = handle.get(spreadsheetId=self.SAMPLE_SPREADSHEET_ID, range=self.SAMPLE_RANGE_NAME).execute()
-		self.got = result.get('values',[])
+		got = result.get('values',[])
 		# wc.pairprint('GCP:  GET', str(wc.timer_index_since(getTime)) + ' ms')
-		return(self.got)
+		return(got)
 
 	def SET(self,handle,cell,value):
 		strs,ints = wc.str_int_split(cell)
 		# Check current value
 		for id2 in self.got.keys():
-			# wc.pairprint(id2,self.got[id2])
 			if self.got[id2]['Row'] == str(ints):
 				for v in self.got[d2].keys():
 					if str(self.got[id2][v]) == str(value): return(); # no update / already exists
@@ -88,6 +87,7 @@ class GCP():
 					asset[ip]['__' + list(string.ascii_uppercase)[i] + '__'] = colum
 				i += 1
 			r += 1
+		self.got = asset
 		return(asset)
 
 
