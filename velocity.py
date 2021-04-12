@@ -456,7 +456,7 @@ class VELOCITY():
 			pass
 		# PUT: for each attribute, update port
 		self.ChangeDevicePortProp(device_name, port_name, index, value, append=append)
-	def GetDevicePGs(self, deviceId, Force=True):
+	def GetDevicePGs(self, deviceId, Force=False):
 		if deviceId not in self.ALL_PORTGROUPS.keys() or Force is True:
 			raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId, list_attr='portGroups')['portGroups']
 			self.ALL_PORTGROUPS[deviceId] = raw
