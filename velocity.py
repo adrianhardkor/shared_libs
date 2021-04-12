@@ -442,7 +442,7 @@ class VELOCITY():
 			else: templateName = 'Network Port'
 			args = {}
 			args['name'] = port_name
-			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
+			args['templateId'] = self.GetTemplates(templateName=templateName, Force=True)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
 			out,ports = self.FormatPorts(self.INV, self.INV[device_name], PGs, new_port, {})
@@ -471,10 +471,10 @@ class VELOCITY():
 	def GetDeviceName(self, uuid):
 		# converted to name for reservation-resource sync (per name)
 		return(self.REST_GET('/velocity/api/inventory/v13/device/' + uuid)['name'])
-	def GetTemplates(self, templateName='', templateId=''):
+	def GetTemplates(self, templateName='', templateId='', Force=False):
 		# /velocity/api/inventory/v13/templates
-		if templateName != '' and templateName in self.ALL_TEMPLATES.keys(): return(self.ALL_TEMPLATES[templateName])
-		if templateId != '' and templateId in self.ALL_TEMPLATES.keys(): return(self.ALL_TEMPLATES[templateId])
+		if templateName != '' and templateName in self.ALL_TEMPLATES.keys() and Force is False: return(self.ALL_TEMPLATES[templateName])
+		if templateId != '' and templateId in self.ALL_TEMPLATES.keys() and Force is False: return(self.ALL_TEMPLATES[templateId])
 
 		data = self.REST_GET('/velocity/api/inventory/v13/templates', list_attr='templates')['templates']
 		out = {}
