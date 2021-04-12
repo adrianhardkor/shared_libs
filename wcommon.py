@@ -1206,8 +1206,8 @@ def print_vagent_header():
 def vagent_getStcResource(resources, master_topology):
 	# INV: dns-naming right now, IP?
 	for t in resources.keys():
-		if t.lower().startswith('stc') and '_' not in t:
-			return(master_topology[t]['ipAddress']['value'],t)
+		if t.lower().startswith('n12') or t.lower().startswith('n11') or 'stc' in t.lower():
+			if '_' not in t: return(master_topology[t]['ipAddress']['value'],t)
 
 wait_start()
 global current_time
