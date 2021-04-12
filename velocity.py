@@ -186,7 +186,7 @@ class VELOCITY():
 			out[t['name']]['creatorId'] = users[out[t['name']]['creatorId']]['display']
 			out[t['name']]['lastModifierId'] = users[out[t['name']]['lastModifierId']]['display']
 		return(out)
-	def ApplyReservationTopology(top, out, pg, ports, p, device):
+	def ApplyReservationTopology(top, out, ports, p, device):
 		ports[p['name']]['lockUtilizationType'] = p['lockUtilizationType']
 		ports[p['name']]['connectedPortParentName'] = p['connectedPortParentName']
 		ports[p['name']]['connectedPortParentId'] = p['connectedPortParentId']
@@ -504,7 +504,9 @@ class VELOCITY():
 				wc.jd(pg)
 				wc.jd(p)
 				wc.pairprint(device['name'], p['name'])
-			pg = pg[p['groupId']]
+			pg = {}
+			if p['groupId'] not in pg.keys(): pg['name'] = pg['id'] = 'not_until_next_run'
+			else: pg = pg[p['groupId']]
 		ports[p['name']] = {'name':p['name'],'description': p['description'], 'pgName': pg['name'], 'pgId': p['groupId'], 'id':p['id'],'linkChecked':time.ctime(p['linkChecked'])}
 		ports[p['name']]['isLocked'] = p['isLocked']
 		ports[p['name']]['isReportedByDriver'] = p['isReportedByDriver']
@@ -515,9 +517,7 @@ class VELOCITY():
 		for PortProp in p['properties']:
 			ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
 		if p['isLocked']:
-			out,ports = VELOCITY.ApplyReservationTopology(self.top, out, pg, ports, p, device)
-		# wc.pairprint(p['name'], pg['ports'][p['name']])
-		# out[device['name']]['ports'] = ports
+			out,ports = VELOCITY.ApplyReservationTopology(self.top, out, ports, p, device)
 		return(out,ports)
 	def FormatInventory(self, out, device):
 		ports = {}
