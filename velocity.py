@@ -298,7 +298,7 @@ class VELOCITY():
 			# CreateDevice (POST)
 			args = {}
 			args['name'] = device_name
-			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
+			args['templateId'] = self.GetTemplates(templateName=templateName, Force=True)['id']
 			device_new = self.REST_POST('/velocity/api/inventory/v13/device', args=args)
 			# re-up GetInventory
 			# self.GetInventory()
@@ -413,6 +413,7 @@ class VELOCITY():
 			raise()
 		# if pg doesnt exist, create and create port underneath pg
 		PGs = self.GetDevicePGs(self.INV[device_name]['id'])
+		if pgName not in PGs.keys(): PGs = self.GetDevicePGs(self.INV[device_name]['id'], Force=True)
 		if pgName not in PGs.keys():
 			# pg doesnt exist on device yet
 			pg = self.REST_POST('/velocity/api/inventory/v13/device/%s/port_group' % self.INV[device_name]['id'], args={'name':pgName})
@@ -423,7 +424,7 @@ class VELOCITY():
 			if self.INV[device_name]['name'] not in self.ALL_PORTGROUPS.keys():
 				self.ALL_PORTGROUPS[self.INV[device_name]['name']] = []
 			self.ALL_PORTGROUPS[self.INV[device_name]['name']].append({'id':self.INV[device_name]['id'],'name':self.INV[device_name]['name']})
-			PGs = self.GetDevicePGs(self.INV[device_name]['id'])
+			PGs = self.GetDevicePGs(self.INV[device_name]['id'], Force=True)
 			# wc.jd(pg)
 		else:
 			pg = PGs[pgName]
@@ -442,7 +443,7 @@ class VELOCITY():
 			else: templateName = 'Network Port'
 			args = {}
 			args['name'] = port_name
-			args['templateId'] = self.GetTemplates(templateName=templateName)['id']
+			args['templateId'] = self.GetTemplates(templateName=templateName, Force=True)['id']
 			if pg['id'] != None: args['groupId'] = pg['id']
 			new_port = self.REST_POST('/velocity/api/inventory/v13/device/%s/port' % self.INV[device_name]['id'], args=args)
 			out,ports = self.FormatPorts(self.INV, self.INV[device_name], PGs, new_port, {})
@@ -455,8 +456,8 @@ class VELOCITY():
 			pass
 		# PUT: for each attribute, update port
 		self.ChangeDevicePortProp(device_name, port_name, index, value, append=append)
-	def GetDevicePGs(self, deviceId):
-		if deviceId not in self.ALL_PORTGROUPS.keys():
+	def GetDevicePGs(self, deviceId, Force=True):
+		if deviceId not in self.ALL_PORTGROUPS.keys() or Force is True:
 			raw = self.REST_GET('/velocity/api/inventory/v13/device/%s/port_groups' % deviceId, list_attr='portGroups')['portGroups']
 			self.ALL_PORTGROUPS[deviceId] = raw
 		else:
