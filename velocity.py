@@ -22,6 +22,7 @@ class VELOCITY():
 			exit(5)
 		self.debug = False
 		self.ALL_TEMPLATES = {}
+		self.ALL_TOPOLOGIES = {}
 		self.ALL_PORTGROUPS = {}
 		self.headers = {"X-Auth-Token": self.TOKEN}
 		# self.GetCableTypes()
@@ -186,7 +187,8 @@ class VELOCITY():
 			out[t['name']]['creatorId'] = users[out[t['name']]['creatorId']]['display']
 			out[t['name']]['lastModifierId'] = users[out[t['name']]['lastModifierId']]['display']
 		return(out)
-	def ApplyReservationTopology(top, out, ports, p, device):
+	def ApplyReservationTopology(self, out, ports, p, device):
+		top = self.top
 		ports[p['name']]['lockUtilizationType'] = p['lockUtilizationType']
 		ports[p['name']]['connectedPortParentName'] = p['connectedPortParentName']
 		ports[p['name']]['connectedPortParentId'] = p['connectedPortParentId']
@@ -208,6 +210,7 @@ class VELOCITY():
 					'creatorId': top[t]['creatorId'],
 					'descriptionTopology': top[t]['description']
 				}
+				self.ALL_TOPOLOGIES[top[t]['activeRes']['topologyId']] = self.ALL_TOPOLOGIES[top[t]['activeRes']['topologyName']] = {'id': top[t]['activeRes']['topologyId'], 'name': top[t]['activeRes']['topologyName']}
 				if device['name'] == resource:
 					# Reserved Device
 					out[device['name']]['activeRes'] = activeRes
@@ -518,7 +521,7 @@ class VELOCITY():
 		for PortProp in p['properties']:
 			ports[p['name']][PortProp['name']] = {'value': PortProp['value'], 'definitionId': PortProp['definitionId']}
 		if p['isLocked']:
-			out,ports = VELOCITY.ApplyReservationTopology(self.top, out, ports, p, device)
+			out,ports = self.ApplyReservationTopology(out, ports, p, device)
 		return(out,ports)
 	def FormatInventory(self, out, device):
 		ports = {}
