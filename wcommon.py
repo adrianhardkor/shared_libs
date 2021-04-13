@@ -1209,7 +1209,7 @@ def vagent_getStcResource(resources, master_topology):
 		if t.lower().startswith('n12') or t.lower().startswith('n11') or 'stc' in t.lower():
 			if '_' not in t: return(master_topology[t]['ipAddress']['value'],t)
 
-def GetMapping(connection, L):
+def GetMapping(connection, L, V):
 	for lepAwk in [1,-1]:
 		if connection.split('_')[lepAwk] in L.INV['ports'].keys():
 			mapping = sorted(list(L.INV['ports'][connection.split('_')[lepAwk]]['MAP'].keys()))
