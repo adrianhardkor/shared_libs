@@ -124,7 +124,7 @@ class VELOCITY():
 			time.sleep(4)
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
 			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
-		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers), list_attr='text')['text']
+		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers, list_attr='text'))['text']
 		data['html_report'] = self.VelocityReportParse(html_report) 
 		# wc.jd(data)
 		if HTML_FNAME != '':
@@ -190,7 +190,7 @@ class VELOCITY():
 			out[t['name']]['lastModifierId'] = users[out[t['name']]['lastModifierId']]['display']
 		self.ALL_TOPOLOGIES = out
 		return(out)
-	def ApplyReservationTopology(out, ports, p, device):
+	def ApplyReservationTopology(self, out, ports, p, device):
 		top = self.ALL_TOPOLOGIES
 		# wc.jd(top)
 		ports[p['name']]['lockUtilizationType'] = p['lockUtilizationType']
