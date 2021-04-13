@@ -1229,8 +1229,9 @@ def GetStcPortMappings(_CHASSIS_NAME, _CHASSIS_IP, resourceDict, V, L):
 			# pairprint('[INFO]  ' + reserved_stc_port, connection)
 			for role in TopologyRoles.keys():
 				if role in str(connection):
+					if TopologyRoles[role] + str(count) in out.keys():
+						count = count + 1
 					out[TopologyRoles[role] + str(count)] = '/'.join(['','',_CHASSIS_IP,split_stc_port[1],split_stc_port[-1]])
-					count = count + 1
 	return(out)
 
 def GetMapping(connection, L, V):
