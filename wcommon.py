@@ -1210,15 +1210,15 @@ def vagent_getStcResource(resources, master_topology):
 			if '_' not in t: return(master_topology[t]['ipAddress']['value'],t)
 
 def GetMapping(connection, L):
-        for lepAwk in [1,-1]:
-        if connection.split('_')[lepAwk] in L.INV['ports'].keys():
-                mapping = sorted(list(L.INV['ports'][connection.split('_')[lepAwk]]['MAP'].keys()))
-                if len(mapping) > 1:
-                        wc.pairprint(reserved_stc_port, 'LEPTON HAS 3+ PORTS IN CURRENT MAPPING -- VELOCITY BUILT INVALID MAP')
-                        sys.exit(1)
-                lepton_far_port = mapping[0]
-                # wc.pairprint('[INFO]  ' + reserved_stc_port, list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0].split('_'))
-                return(list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0])
+	for lepAwk in [1,-1]:
+		if connection.split('_')[lepAwk] in L.INV['ports'].keys():
+			mapping = sorted(list(L.INV['ports'][connection.split('_')[lepAwk]]['MAP'].keys()))
+			if len(mapping) > 1:
+				wc.pairprint(reserved_stc_port, 'LEPTON HAS 3+ PORTS IN CURRENT MAPPING -- VELOCITY BUILT INVALID MAP')
+				sys.exit(1)
+			lepton_far_port = mapping[0]
+			# wc.pairprint('[INFO]  ' + reserved_stc_port, list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0].split('_'))
+			return(list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0])
 
 wait_start()
 global current_time
