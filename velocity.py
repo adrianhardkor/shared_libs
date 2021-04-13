@@ -191,7 +191,7 @@ class VELOCITY():
 		return(out)
 	def ApplyReservationTopology(out, ports, p, device):
 		top = self.ALL_TOPOLOGIES
-		wc.jd(top)
+		# wc.jd(top)
 		ports[p['name']]['lockUtilizationType'] = p['lockUtilizationType']
 		ports[p['name']]['connectedPortParentName'] = p['connectedPortParentName']
 		ports[p['name']]['connectedPortParentId'] = p['connectedPortParentId']
@@ -604,12 +604,12 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 ## V.DelAllMessages()
 #
 #counter = {'all':0}
 #
-V.INV = V.GetInventory(); # device ipAddress
+# V.INV = V.GetInventory(); # device ipAddress
 #for d in V.INV.keys():
 #	counter[d] = len(V.INV[d]['ports'].keys())
 #	counter['all'] = counter['all'] + counter[d]
