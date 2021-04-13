@@ -103,7 +103,7 @@ class VELOCITY():
 		out = []
 		from bs4 import BeautifulSoup
 		parsed = BeautifulSoup(html_data, features="html.parser")
-		return('\n'.join(parsed))
+		return(parsed.get_text())
 		flag = 0
 		for line in parsed.find_all('span'):
 			if line.text.startswith('['): flag = 1
