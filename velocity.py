@@ -96,6 +96,13 @@ class VELOCITY():
 			if r['id'] == resvId:
 				return(INV[r['topologyName']])
 	def VelocityReportParse(self, html_data):
+		from bs4 import BeautifulSoup
+		parsed = BeautifulSoup(html_data, features="html.parser")
+		out = []
+		for line in parsed.Find_all('span'):
+			out.append(line.text)
+		# return(parsed.get_text())
+		return(out)
 		if type(html_data) == dict:
 			# failed?
 			if 'response.body' in html_data.keys():
@@ -128,6 +135,7 @@ class VELOCITY():
 		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))
 		data['html_report'] = self.VelocityReportParse(html_report['text']) 
 		data['html_report_raw'] = html_report
+		if 'response.body' in data['html_report_raw'].keys(): data['html_report_raw']['response.body'] = data['html_report_raw']['response.body'].split('\n')
 		# wc.jd(data)
 		if HTML_FNAME != '':
 			if not HTML_FNAME.lower().endswith('.html'):
