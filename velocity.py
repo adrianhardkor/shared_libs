@@ -110,7 +110,7 @@ class VELOCITY():
 				out.append(line.text)
 		return('\n'.join(out))
 	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
-		wc.jd(self.GetScripts()[testPath])
+		wc.jd(self.GetScripts())
 		timer = wc.timer_index_start()
 		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ERROR_STEPS', 'parametersList':parameters}
 		if topology != '':
