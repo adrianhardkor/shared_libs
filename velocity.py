@@ -22,7 +22,6 @@ class VELOCITY():
 			exit(5)
 		self.debug = False
 		self.ALL_TEMPLATES = {}
-		self.ALL_TOPOLOGIES = {}
 		self.ALL_PORTGROUPS = {}
 		self.headers = {"X-Auth-Token": self.TOKEN}
 		# self.GetCableTypes()
@@ -113,7 +112,8 @@ class VELOCITY():
 	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
 		timer = wc.timer_index_start()
 		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
-		if topology != '': args['topologyId'] = self.ALL_TOPOLOGIES[topology]
+		if topology != '':
+			if topology in self.ALL_TOPOLOGIES.keys(): args['topologyId'] = self.ALL_TOPOLOGIES[topology]['id']
 		data = self.REST_POST('/ito/executions/v1/executions', args=args)
 		if 'executionState' not in data.keys():
 			data['html_report'] = wc.bytes_str(data['response.body'])
@@ -187,9 +187,11 @@ class VELOCITY():
 				out[t['name']]['activeRes']['ownerId'] = users[out[t['name']]['activeRes']['ownerId']]['display']
 			out[t['name']]['creatorId'] = users[out[t['name']]['creatorId']]['display']
 			out[t['name']]['lastModifierId'] = users[out[t['name']]['lastModifierId']]['display']
+		self.ALL_TOPOLOGIES = out
 		return(out)
-	def ApplyReservationTopology(self, out, ports, p, device):
-		top = self.top
+	def ApplyReservationTopology(out, ports, p, device):
+		top = self.ALL_TOPOLOGIES
+		wc.jd(top)
 		ports[p['name']]['lockUtilizationType'] = p['lockUtilizationType']
 		ports[p['name']]['connectedPortParentName'] = p['connectedPortParentName']
 		ports[p['name']]['connectedPortParentId'] = p['connectedPortParentId']
@@ -211,7 +213,6 @@ class VELOCITY():
 					'creatorId': top[t]['creatorId'],
 					'descriptionTopology': top[t]['description']
 				}
-				self.ALL_TOPOLOGIES[top[t]['activeRes']['topologyId']] = self.ALL_TOPOLOGIES[top[t]['activeRes']['topologyName']] = {'id': top[t]['activeRes']['topologyId'], 'name': top[t]['activeRes']['topologyName']}
 				if device['name'] == resource:
 					# Reserved Device
 					out[device['name']]['activeRes'] = activeRes
@@ -603,12 +604,12 @@ class VELOCITY():
 		self.INV = out
 		return(out)
 
-# V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
+V = VELOCITY(wc.argv_dict['IP'], user=wc.argv_dict['user'], pword=wc.argv_dict['pass'])
 ## V.DelAllMessages()
 #
 #counter = {'all':0}
 #
-# V.INV = V.GetInventory(); # device ipAddress
+V.INV = V.GetInventory(); # device ipAddress
 #for d in V.INV.keys():
 #	counter[d] = len(V.INV[d]['ports'].keys())
 #	counter['all'] = counter['all'] + counter[d]
