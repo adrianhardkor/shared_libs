@@ -113,6 +113,7 @@ class VELOCITY():
 	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
 		timer = wc.timer_index_start()
 		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
+		if topology != '': args['topologyId'] = self.ALL_TOPOLOGIES[topology]
 		data = self.REST_POST('/ito/executions/v1/executions', args=args)
 		if 'executionState' not in data.keys():
 			data['html_report'] = wc.bytes_str(data['response.body'])
