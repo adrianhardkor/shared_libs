@@ -66,8 +66,8 @@ class VELOCITY():
 				raise()
 		return(result)
 	def REST_POST(self, url, args={}, verify=False):
-		if '?' not in url:
-			url = url + '?limit=200'
+#		if '?' not in url:
+#			url = url + '?limit=200'
 		headers = {"X-Auth-Token": self.TOKEN}
 		headers['Content-Type'] = headers['Accept'] = 'application/json'
 		timer = wc.timer_index_start()
@@ -111,7 +111,7 @@ class VELOCITY():
 		return('\n'.join(out))
 	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
 		timer = wc.timer_index_start()
-		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
+		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ERROR_STEPS', 'parametersList':parameters}
 		if topology != '':
 			if topology in self.ALL_TOPOLOGIES.keys(): args['topologyId'] = self.ALL_TOPOLOGIES[topology]['id']
 		data = self.REST_POST('/ito/executions/v1/executions', args=args)
