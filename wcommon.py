@@ -1210,25 +1210,28 @@ def vagent_getStcResource(resources, master_topology):
 			if '_' not in t: return(master_topology[t]['ipAddress']['value'],t)
 
 def GetStcPortMappings(_CHASSIS_NAME, _CHASSIS_IP, resourceDict, V, L):
-        out = {}
-        global TopologyRoles
-        for reserved_stc_port in lsearchAllInline2(_CHASSIS_NAME + '_', list(resourceDict.keys())):
-                stc_port = reserved_stc_port.split('_')[-1]
-                split_stc_port = mcsplit(stc_port, ['S','P'])
-                connections = list(V.INV[_CHASSIS_NAME]['ports'][stc_port]['connections'].keys())
-                if connections == []: pairprint(reserved_stc_port, 'HAS NO PHYSICAL CONNECTIONS in VELOCITYY'); sys.exit(1)
-                else:
-                        connection = GetMapping(connections[0], L, V).split('_')
-                        if 'lep' in connection[0]:
-                                connectedDevice = connection[-2]
-                                connectedIntf = connection[-1]
-                        else:
-                                connectedDevice = connection[0]
-                                connectedIntf = connection[1]
-                        # pairprint('[INFO]  ' + reserved_stc_port, connection)
-                        for role in TopologyRoles.keys():
-                                if role in str(connection): out[TopologyRoles[role] = '/'.join(['','',_CHASSIS_IP,split_stc_port[1],split_stc_port[-1]])
-        return(out)
+	out = {}
+	global TopologyRoles
+	count = 1
+	for reserved_stc_port in lsearchAllInline2(_CHASSIS_NAME + '_', list(resourceDict.keys())):
+		stc_port = reserved_stc_port.split('_')[-1]
+		split_stc_port = mcsplit(stc_port, ['S','P'])
+		connections = list(V.INV[_CHASSIS_NAME]['ports'][stc_port]['connections'].keys())
+		if connections == []: pairprint(reserved_stc_port, 'HAS NO PHYSICAL CONNECTIONS in VELOCITYY'); sys.exit(1)
+		else:
+			connection = GetMapping(connections[0], L, V).split('_')
+			if 'lep' in connection[0]:
+				connectedDevice = connection[-2]
+				connectedIntf = connection[-1]
+			else:
+				connectedDevice = connection[0]
+				connectedIntf = connection[1]
+			# pairprint('[INFO]  ' + reserved_stc_port, connection)
+			for role in TopologyRoles.keys():
+				if role in str(connection):
+					out[TopologyRoles[role] + str(count)] = '/'.join(['','',_CHASSIS_IP,split_stc_port[1],split_stc_port[-1]])
+					count = count + 1
+	return(out)
 
 def GetMapping(connection, L, V):
 	for lepAwk in [1,-1]:
