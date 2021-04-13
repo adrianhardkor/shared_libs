@@ -99,7 +99,7 @@ class VELOCITY():
 		from bs4 import BeautifulSoup
 		parsed = BeautifulSoup(html_data, features="html.parser")
 		out = []
-		for line in parsed.Find_all('span'):
+		for line in parsed.find_all('span'):
 			out.append(line.text)
 		# return(parsed.get_text())
 		return(out)
