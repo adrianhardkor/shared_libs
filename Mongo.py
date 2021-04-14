@@ -488,10 +488,10 @@ class CMTS(MONGO.M.Document):
 	_templateName = MONGO.M.StringField()
 	pass
 
-class vAgent(MONGO.M.Document):
-	reportId = MONGO.M.StringField()
+class runner(MONGO.M.Document):
 	runId = MONGO.M.StringField()
 	stdout_lines = MONGO.M.ListField()
+
 
 # MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO._DELETE(CMTS, criteria={}, force=True)

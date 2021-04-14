@@ -11,7 +11,7 @@ import flask
 import Mongo; # shared_libs
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
 
-Mongo.TryDeleteDocuments(Mongo.runner)
+
 
 def dictFlask(input1):
 	# rebuild flask.request objects as dict -- ugly but works
@@ -23,14 +23,11 @@ def dictFlask(input1):
 def vagent_getter():
 	response = {}
 	args = dictFlask(flask.request.args)
-	if args == {}: objects = Mongo.MONGO._GETJSON(Mongo.runner)
-	else: objects = Mongo.MONGO._GETJSON(Mongo.runner, criteria=args)
-	fake = 1
+	if args == {}: objects = Mongo.MONGO._GETJSON(Mongo.vAgent)
+	else: objects = Mongo.MONGO._GETJSON(Mongo.vAgent, criteria=args)
 	for deviceObj in objects:
-		if 'runId' not in deviceObj.keys():
-			deviceObj['runId'] = str(fake)
-			fake = fake + 1
-		response[deviceObj['runId']] = deviceObj
+		if 'reportId' not in deviceObj.keys(): deviceObj['reportId'] = 'missing'
+		response[deviceObj['reportId']] = deviceObj
 	return(response)
 
 def flask_RDU():
@@ -70,9 +67,9 @@ def flask_RunJenkinsPipeline():
 		# run 
 		pass
 
-def flask_runtimelogger():
-	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET'])
-	def run():
+def flask_vAGENT():
+	@Mongo.MONGO.app.route('/vAgent', methods = ['POST', 'GET'])
+	def vAgent():
 		wc.pairprint('method', flask.request.method)
 		if flask.request.method == 'POST':
 			args = dictFlask(flask.request.args)
@@ -80,7 +77,7 @@ def flask_runtimelogger():
 			wc.jd(args)
 			wc.jd(payload)
 			try:
-				Mongo.MONGO._UPDATE(Mongo.runner, args, payload)
+				Mongo.MONGO._UPDATE(Mongo.vAgent, args, payload)
 				return(flask.jsonify(vagent_getter()))
 			except Exception as err:
 				return(json.dumps({'err':str(err)}))
@@ -97,6 +94,6 @@ if  __name__ == "__main__":
 	flask_default()
 	flask_RDU(); # /rdu
 	flask_AIS(); # /ais
-	flask_runtimelogger(); # /runner
+	flask_vAGENT(); # /vAgent
 	Mongo.MONGO.app.run(debug=True, host=flaskIP)
 
