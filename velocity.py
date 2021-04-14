@@ -126,7 +126,7 @@ class VELOCITY():
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
 			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
 		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))
-		# data['html_report'] = wc.lunique(self.VelocityReportParse(html_report['text']))
+		data['html_report'] = wc.lunique(self.VelocityReportParse(html_report['text']))
 		if HTML_FNAME != '':
 			if not HTML_FNAME.lower().endswith('.html'):
 				HTML_FNAME = HTML_FNAME + '.html'
