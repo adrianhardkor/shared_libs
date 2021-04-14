@@ -49,6 +49,18 @@ def flask_RunJenkinsPipeline():
 		# run 
 		pass
 
+def flask_vAGENT():
+	@Mongo.MONGO.app.route('/vAgent', methods = ['POST, GET'])
+	if flask.request.method == 'POST':
+		wc.jd(flask.request.form)
+		user = flask.request.form['nm']
+		return redirect(flask.url_for('success',name = user))
+	else:
+		response = {}
+		for deviceObj in Mongo.MONGO._GETJSON(Mongo.vAGENT, criteria=flask.request.args):
+			response[deviceObj['reportId']] = deviceObj
+		return(flask.jsonify(response))
+
 # FLASK WEB-API
 def flask_default():
 	@Mongo.MONGO.app.route('/', methods=['GET'])
@@ -60,5 +72,6 @@ if  __name__ == "__main__":
 	flask_default()
 	flask_RDU(); # /rdu
 	flask_AIS(); # /ais
+	flask_vAGENT(); # /vAgent
 	Mongo.MONGO.app.run(debug=True, host=flaskIP)
 

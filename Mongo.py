@@ -488,6 +488,9 @@ class CMTS(MONGO.M.Document):
 	_templateName = MONGO.M.StringField()
 	pass
 
+class vAGENT(MONGO.M.Document):
+	reportId = MONGO.M.StringField()
+
 # MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO._DELETE(CMTS, criteria={}, force=True)
 # MONGO._DELETE(Server, criteria={}, force=True)
