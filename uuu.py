@@ -7,6 +7,9 @@ import re
 import soap
 import deepdiff
 
-PATH = '/var/lib/jenkins/Modems/'
-for fname in wc.exec2('ls ' + PATH).split('\n'):
-	wc.jd(json.loads(wc.read_file(PATH + fname)))
+import base64
+encoded = base64.b64encode(b'data to be encoded')
+print(encoded)
+data = base64.b64decode(encoded)
+print(data)
+

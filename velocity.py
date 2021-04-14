@@ -6,6 +6,7 @@ import json
 # wc.jenkins_header(); # load inputs from Jenkinsfile
 # wc.jd(wc.wcheader)
 import time
+import base64
 
 class VELOCITY():
 	def __init__(self, IP, user='', pword='', token=''):
@@ -100,6 +101,7 @@ class VELOCITY():
 		parsed = BeautifulSoup(html_data, features="html.parser")
 		out = []
 		for line in parsed.find_all('span'):
+			
 			out.append(line.text)
 		# return(parsed.get_text())
 		return(out)
@@ -133,15 +135,12 @@ class VELOCITY():
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
 			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
 		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))
-		data['html_report'] = self.VelocityReportParse(html_report['text']) 
-		data['html_report_raw'] = html_report
-		if 'response.body' in data['html_report_raw'].keys(): data['html_report_raw']['response.body'] = data['html_report_raw']['response.body'].split('\n')
-		# wc.jd(data)
+		# data['html_report'] = self.VelocityReportParse(html_report['text']) 
 		if HTML_FNAME != '':
 			if not HTML_FNAME.lower().endswith('.html'):
 				HTML_FNAME = HTML_FNAME + '.html'
 			wc.log_fname(html_report, HTML_FNAME)
-		return(data)
+		return(data,html_report)
 		# wc.jd(self.REST_GET('/ito/reporting/v1/reports/' + data['reportID']))
 		# wc.jd(self.REST_GET('/ito/reporting/v1/reports/' + data['executionID']))
 		# wc.jd(self.REST_GET('/ito/reporting/v1/reports?filter=parentReport::%s' % data['executionID']))
