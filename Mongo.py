@@ -490,6 +490,7 @@ class CMTS(MONGO.M.Document):
 
 class vAgent(MONGO.M.Document):
 	reportId = MONGO.M.StringField()
+	runId = MONGO.M.StringField()
 	stdout_lines = MONGO.M.ListField()
 
 # MONGO._DELETE(Router, criteria={}, force=True)
@@ -500,7 +501,8 @@ class vAgent(MONGO.M.Document):
 def TryDeleteDocuments(obj):
 	try:
 		MONGO._DELETE(obj, criteria={}, force=True)
-	except Exception:
+	except Exception as err:
+		wc.pairprint('err',err)
 		pass
 # MONGO.LoadModem(json.loads(wc.read_file(os.environ['rdu_json'])))
 
