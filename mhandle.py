@@ -36,8 +36,8 @@ class mHANDLE():
 			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
 		return(data)
 
-MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
+# MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
 # wc.pairprint('before', MH.GetRun('docsisSched_25'))
 # wc.pairprint('update1', MH.UpdateRun('docsisSched_25', {'stdout_lines': ["1","2","a","A",'_']}))
-wc.pairprint('update2', MH.UpdateRun('docsisSched_25', time.ctime(time.time())))
+# wc.pairprint('update2', MH.UpdateRun('docsisSched_25', time.ctime(time.time())))
 
