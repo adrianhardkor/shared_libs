@@ -8,6 +8,7 @@ import wcommon as wc
 import time
 sys.path.insert(1,'./MongoClasses/')
 import soap
+from flask_cors import CORS
 
 # INPUTS
 # rdu_json = wc.argv_dict['rdu_json']
@@ -26,6 +27,7 @@ class MDB():
 		self.MongoPort = MongoPort
 		self.MongoName = MongoName
 		self.app = flask.Flask(__name__)
+		CORS(self.app)
 		self.app.config['MONGODB_SETTINGS'] = {
 			'db': self.MongoName,
 			'host': self.MongoIP,
