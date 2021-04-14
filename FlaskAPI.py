@@ -11,6 +11,22 @@ import flask
 import Mongo; # shared_libs
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
 
+def dictFlask(input1):
+	# rebuild flask.request objects as dict -- ugly but works
+	out = {}
+	for k in input1.keys():
+		out[k] = input1[k]
+	return(out)
+
+def vagent_getter():
+	response = {}
+	args = dictFlask(flask.request.args)
+	if args == {}: objects = Mongo.MONGO._GETJSON(Mongo.vAgent)
+	else: objects = Mongo.MONGO._GETJSON(Mongo.vAgent, criteria=args)
+	for deviceObj in objects:
+		if 'reportId' not in deviceObj.keys(): deviceObj['reportId'] = 'missing'
+		response[deviceObj['reportId']] = deviceObj
+	return(response)
 
 def flask_RDU():
 	@Mongo.MONGO.app.route('/rdu', methods=['GET'])
@@ -50,16 +66,20 @@ def flask_RunJenkinsPipeline():
 		pass
 
 def flask_vAGENT():
-	@Mongo.MONGO.app.route('/vAgent', methods = ['POST, GET'])
-	if flask.request.method == 'POST':
-		wc.jd(flask.request.form)
-		user = flask.request.form['nm']
-		return redirect(flask.url_for('success',name = user))
-	else:
-		response = {}
-		for deviceObj in Mongo.MONGO._GETJSON(Mongo.vAGENT, criteria=flask.request.args):
-			response[deviceObj['reportId']] = deviceObj
-		return(flask.jsonify(response))
+	@Mongo.MONGO.app.route('/vAgent', methods = ['POST', 'GET'])
+	def vAgent():
+		wc.pairprint('method', flask.request.method)
+		if flask.request.method == 'POST':
+			args = dictFlask(flask.request.args)
+			payload = dictFlask(flask.request.get_json())
+			wc.jd(args)
+			wc.jd(payload)
+			try:
+				Mongo.MONGO._UPDATE(Mongo.vAgent, args, payload)
+				return(flask.jsonify(vagent_getter()))
+			except Exception as err:
+				return(json.dumps({'err':str(err)}))
+		else: return(flask.jsonify(vagent_getter())); # [GET]
 
 # FLASK WEB-API
 def flask_default():

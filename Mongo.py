@@ -90,7 +90,7 @@ class MDB():
 	def _POST(self, _TEMPLATE, criteria_SET, name):
 		_OBJECT = _TEMPLATE(**criteria_SET)
 		_OBJECT.save()
-		wc.pairprint('Mongo._POST', name)
+		wc.pairprint('Mongo._POST\t' + str(name), criteria_SET.keys())
 	def _GET(self, _TEMPLATE, criteria={}):
 		if criteria == {}: return(_TEMPLATE.objects())
 		else: return(_TEMPLATE.objects(**criteria))
@@ -488,8 +488,9 @@ class CMTS(MONGO.M.Document):
 	_templateName = MONGO.M.StringField()
 	pass
 
-class vAGENT(MONGO.M.Document):
+class vAgent(MONGO.M.Document):
 	reportId = MONGO.M.StringField()
+	stdout_lines = MONGO.M.ListField()
 
 # MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO._DELETE(CMTS, criteria={}, force=True)
