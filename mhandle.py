@@ -4,7 +4,6 @@ import sys
 import wcommon as wc
 import json
 import re
-import jinja2
 import time
 
 class mHANDLE():
