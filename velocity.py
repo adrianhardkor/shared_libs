@@ -102,7 +102,13 @@ class VELOCITY():
 		out = []
 		for line in parsed.find_all('div'):
 			line = str(line.text).strip()
-			if line != '': out.append(line)
+			if line == '': continue
+			elif '\n' in line:
+				l = []
+				for ll in line.split('\n'):
+					if ll != '': l.append(ll)
+				out.append(l)
+			else: out.append(line)
 		return(out)
 	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
 		wc.jd(self.GetScripts())
