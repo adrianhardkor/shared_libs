@@ -11,7 +11,7 @@ import flask
 import Mongo; # shared_libs
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
 
-Mongo.TryDeleteDocuments(Mongo.runner)
+# Mongo.TryDeleteDocuments(Mongo.runner)
 
 def dictFlask(input1):
 	# rebuild flask.request objects as dict -- ugly but works
@@ -71,10 +71,10 @@ def flask_RunJenkinsPipeline():
 		pass
 
 def flask_runtimelogger():
-	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET'])
+	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
 	def run():
 		wc.pairprint('method', flask.request.method)
-		if flask.request.method == 'POST':
+		if flask.request.method != 'GET':
 			args = dictFlask(flask.request.args)
 			payload = dictFlask(flask.request.get_json())
 			wc.jd(args)
