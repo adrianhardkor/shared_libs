@@ -104,20 +104,6 @@ class VELOCITY():
 			line = str(line.text).strip()
 			if line != '': out.append(line)
 		return(out)
-		if type(html_data) == dict:
-			# failed?
-			if 'response.body' in html_data.keys():
-				return({'response.body':html_data['response.body']})
-		out = []
-		from bs4 import BeautifulSoup
-		parsed = BeautifulSoup(html_data, features="html.parser")
-		return(parsed.get_text())
-		flag = 0
-		for line in parsed.find_all('span'):
-			if line.text.startswith('['): flag = 1
-			if flag:
-				out.append(line.text)
-		return('\n'.join(out))
 	def RunScript(self, INV, testPath, parameters=[], topology='', reservation='', HTML_FNAME=''):
 		wc.jd(self.GetScripts())
 		timer = wc.timer_index_start()
