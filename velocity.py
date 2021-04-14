@@ -121,7 +121,7 @@ class VELOCITY():
 			data['html_report'] = wc.bytes_str(data['response.body'])
 			data['script'] = self.GetScripts()[testPath]
 			return(data)
-		while data['executionState'] != 'COMPLETED':
+		while data['executionState'] != 'COMPLETED' and 'FAIL' not in data['executionState']:
 			time.sleep(4)
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
 			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
