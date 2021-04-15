@@ -63,8 +63,17 @@ def flask_AIS():
 		return(flask.jsonify(AIS))
 
 def flask_RunJenkinsPipeline():
-	@Mongo.MONGO.app.route('/runJenkinsPipeline', methods=['POST'])
+	@Mongo.MONGO.app.route('/jenkins/runPipe', methods=['POST'])
 	def pipeline():
+		args = dictFlask(flask.request.args)
+		wc.jd(args)
+# J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
+# param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
+# param['dryrun'] = 'dryrun'
+# J.RunPipeline(wc.argv_dict['Pipe'], param)
+# curl -X POST http://jenkinUser:jenkinAPIToken@yourJenkinsURl.com/job/theJob/[11-1717]/doDelete
+
+
 		# create jenkins class
 		# connect to jenkins
 		# run 

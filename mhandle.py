@@ -41,9 +41,14 @@ class mHANDLE():
 	def _LOGGER(data, timestamp=True):
 		global who
 		global runId
-		if timestamp: preamble = '[%s @ %s] ' % (who, time.ctime(time.time()))
+		try:
+			self.who = who
+			self.runId = runId
+		except Exception:
+			pass
+		if timestamp: preamble = '[%s @ %s] ' % (self.who, time.ctime(time.time()))
 		else: preamble = ''
-		self.UpdateRun(runId, preamble + str(data))
+		self.UpdateRun(self.runId, preamble + str(data))
 
 # MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
 # wc.pairprint('before', MH.GetRun('docsisSched_25'))
