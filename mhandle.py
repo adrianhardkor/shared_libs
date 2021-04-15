@@ -23,7 +23,11 @@ class mHANDLE():
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
 		else:
 			payload[myID]['runId'] = myID
-			payload[myID]['stdout_lines'].append(data)
+			# Updater works if providing an additional str(log) or list(of logs)
+			if type(data) == str: payload[myID]['stdout_lines'].append(data)
+			elif type(data) == list:
+				for d in data:
+					payload[myID]['stdout_lines'].append(d)
 			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload[myID], convert_args=True))
 		return(data)
 	def PutRun(self, myID, payload):
