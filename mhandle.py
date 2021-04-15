@@ -38,6 +38,11 @@ class mHANDLE():
 		else:
 			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
 		return(data)
+	def _LOGGER(data, timestamp=True):
+		global who
+		if timestamp: preamble = '[%s @ %s] ' % (who, time.ctime(time.time()))
+		else: preamble = ''
+		self.UpdateRun(wc.env_dict['VELOCITY_PARAM_BUILD_TAG'], preamble + str(data))
 
 # MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
 # wc.pairprint('before', MH.GetRun('docsisSched_25'))
