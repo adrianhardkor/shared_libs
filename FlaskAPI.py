@@ -98,5 +98,7 @@ if  __name__ == "__main__":
 	flask_RDU(); # /rdu
 	flask_AIS(); # /ais
 	flask_runtimelogger(); # /runner
-	Mongo.MONGO.app.run(debug=True, host=flaskIP)
+	if 'port' in wc.argv_dict.keys():
+		Mongo.MONGO.app.run(debug=True, host=flaskIP, port=int(wc.argv_dict['port']))
+	else: Mongo.MONGO.app.run(debug=True, host=flaskIP)
 
