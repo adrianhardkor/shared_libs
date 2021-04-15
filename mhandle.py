@@ -38,7 +38,7 @@ class mHANDLE():
 		else:
 			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
 		return(data)
-	def _LOGGER(data, timestamp=True):
+	def _LOGGER(self, data, timestamp=True):
 		global who
 		global runId
 		try:
