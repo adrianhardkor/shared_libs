@@ -50,9 +50,9 @@ class mHANDLE():
 		else: preamble = ''
 		self.UpdateRun(self.runId, preamble + str(data))
 	def _UPLOAD(self, fname):
-		data = json.loads(wc.REST_POST(self.url + '/upload/' + str(fname), verify=False))
+		data = wc.REST_UPLOAD(self.url + '/upload', fname)
 		return(data)
 
-MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5001')
-wc.jd(MH._UPLOAD('./adrian'))
+# MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5001')
+# wc.jd(MH._UPLOAD('adrian.log'))
 

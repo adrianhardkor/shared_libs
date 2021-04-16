@@ -2,6 +2,7 @@
 import os
 import sys
 import wcommon as wc
+from werkzeug.utils import secure_filename
 import json
 import re
 import skinny
@@ -10,13 +11,13 @@ import velocity
 import flask
 import Mongo; # shared_libs
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
-import werkzeug
 
 # Mongo.TryDeleteDocuments(Mongo.runner)
 
 def dictFlask(input1):
 	# rebuild flask.request objects as dict -- ugly but works
 	out = {}
+	if input1 == None: return(out)
 	for k in input1.keys():
 		out[k] = input1[k]
 	return(out)
@@ -52,9 +53,13 @@ def flask_downloader():
 def flask_uploader():
 	@Mongo.MONGO.app.route('/upload', methods = ['POST'])
 	def upload_file():
+		args = dictFlask(flask.request.args)
+		payload = dictFlask(flask.request.get_json())
+		wc.jd(args)
+		wc.jd(payload)
 		Mongo.MONGO.app.config['UPLOAD_FOLDER'] = './'
 		f = flask.request.files['file']
-		f.save(werkzeug.secure_filename(f.filename))
+		f.save(secure_filename(f.filename))
 		return('file uploaded successfully')
   
 

@@ -1023,6 +1023,13 @@ def REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "applic
             dd['text'] = response.text
     return(json.dumps(dd))
 
+def REST_UPLOAD(url, fname, DB=''):
+	payload = {'upload_file':fname, 'OUT':fname.split('.')[-1].lower(), 'SHORT':'short'}
+	if DB != '': payload['DB'] = DB
+	files = {'file': open(fname,'rb')}
+	data2 = requests.post(url, files=files, data=payload, verify=False)
+	return(json.dumps({'response': str(data2)}))
+
 def time_epoch_human(myTime):
     # epoch = [10, 6, 3, 2]
     day = myTime // (24 * 3600)
