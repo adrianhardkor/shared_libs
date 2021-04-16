@@ -49,9 +49,10 @@ class mHANDLE():
 		if timestamp: preamble = '[%s @ %s] ' % (self.who, time.ctime(time.time()))
 		else: preamble = ''
 		self.UpdateRun(self.runId, preamble + str(data))
+	def _UPLOAD(self, fname):
+		data = json.loads(wc.REST_POST(self.url + '/upload/' + str(fname), verify=False))
+		return(data)
 
-# MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
-# wc.pairprint('before', MH.GetRun('docsisSched_25'))
-# wc.pairprint('update1', MH.UpdateRun('docsisSched_25', {'stdout_lines': ["1","2","a","A",'_']}))
-# wc.pairprint('update2', MH.UpdateRun('docsisSched_25', time.ctime(time.time())))
+MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5001')
+wc.jd(MH._UPLOAD('./adrian'))
 

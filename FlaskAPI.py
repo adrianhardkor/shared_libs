@@ -10,6 +10,7 @@ import velocity
 import flask
 import Mongo; # shared_libs
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
+import werkzeug
 
 # Mongo.TryDeleteDocuments(Mongo.runner)
 
@@ -38,6 +39,24 @@ def flask_RDU():
 	def rdu():
 		# return(flask.jsonify(Mongo.rduModem.objects()))
 		return(flask.jsonify(Mongo.MONGO._GETJSON(Mongo.rduModem)))
+
+def flask_downloader():
+	@Mongo.MONGO.app.route('/download', methods=['GET'])
+	def downloadFile():
+		#For windows you need to use drive name [ex: F:/Example.pdf]
+		# /download?fname=adrian_test.csv
+		fname = flask.request.args['fname']
+		return(flask.send_file('./' + fname, as_attachment=True))
+
+
+def flask_uploader():
+	@Mongo.MONGO.app.route('/upload', methods = ['POST'])
+	def upload_file():
+		Mongo.MONGO.app.config['UPLOAD_FOLDER'] = './'
+		f = flask.request.files['file']
+		f.save(werkzeug.secure_filename(f.filename))
+		return('file uploaded successfully')
+  
 
 def flask_AIS():
 	@Mongo.MONGO.app.route('/ais', methods=['GET'])
@@ -105,6 +124,8 @@ if  __name__ == "__main__":
 	# Executables
 	flask_default()
 	flask_RDU(); # /rdu
+	flask_uploader()
+	flask_downloader()
 	flask_AIS(); # /ais
 	flask_runtimelogger(); # /runner
 	if 'port' in wc.argv_dict.keys():
