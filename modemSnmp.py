@@ -31,6 +31,7 @@ class MODEMSNMP():
 	def FormatSNMPline(self, line):
 		line = line.split('=')
 		line[0] = wc.mcsplit(line[0].strip(), ['.',':'])
+		if len(line) < 2: wc.pairprint('broken?', line)
 		line[1] = line[1].strip().split(':')
 		line[1].pop(0)
 		line[1] = str(':'.join(line[1]))
