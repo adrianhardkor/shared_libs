@@ -95,18 +95,8 @@ def flask_RunJenkinsPipeline():
 		wc.jd(payload)
 		import jenkins
 		J = jenkins.JENKINS(payload.pop('JEN_IP'), payload.pop('username'), payload.pop('token'))
-		
-# J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
-# param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
-# param['dryrun'] = 'dryrun'
-# J.RunPipeline(wc.argv_dict['Pipe'], param)
-# curl -X POST http://jenkinUser:jenkinAPIToken@yourJenkinsURl.com/job/theJob/[11-1717]/doDelete
-
-
-		# create jenkins class
-		# connect to jenkins
-		# run 
-		pass
+		monitor = J.RunPipeline(wc.argv_dict['Pipe'], payload)
+		return(flask.jsonify({'monitor':'http://10.88.48.21:5001/runner?runId=' % monitor})) 
 
 def flask_runtimelogger():
 	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
