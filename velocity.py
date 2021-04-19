@@ -546,6 +546,7 @@ class VELOCITY():
 		return(out)
 	def CreateConnection(self, device1, port1, device2, port2):
 		connection_name = '_'.join([str(device1),str(port1),'',str(device2),str(port2)])
+		reverse = '_'.join([str(device2),str(port2),'',str(device1),str(port1)])
 		# SEE IF DEVICE AND PORT EXISTS
 		for d in [str(device1), str(device2)]:
 			if d not in self.INV.keys():
@@ -559,6 +560,9 @@ class VELOCITY():
 		if connection_name in self.INV[device1]['ports'][port1]['connections'].keys() and \
 		connection_name in self.INV[device2]['ports'][port2]['connections'].keys():
 			wc.pairprint('Connection Already Exists', connection_name); return()
+		if reverse in self.INV[device1]['ports'][port1]['connections'].keys() and \
+		reverse in self.INV[device2]['ports'][port2]['connections'].keys():
+			wc.pairprint('Connection Already Exists', reverse); return()
 		# GET IDs
 		port1Id = self.INV[device1]['ports'][port1]['id']
 		port2Id = self.INV[device2]['ports'][port2]['id']
