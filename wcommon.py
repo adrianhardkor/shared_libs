@@ -565,6 +565,14 @@ def lunique(list1):
             unique_list.append(x)
     return(unique_list)
 
+def lflatten(object):
+	gather = []
+	for item in object:
+		if isinstance(item, (list, tuple, set)):
+			gather.extend(lflatten(item))			
+		else:
+			gather.append(item)
+	return(gather)
 
 def findList(regex, mylist):
 	return(lsearchAllInline(regex, mylist))
