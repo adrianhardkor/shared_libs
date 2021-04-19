@@ -292,6 +292,7 @@ class RFPort(MONGO.M.EmbeddedDocument):
 	bonding_group = MONGO.M.DictField()
 	_templateName = MONGO.M.StringField()
 	description = MONGO.M.StringField()
+	ipv4 = MONGO.M.StringField()
 	pass
 
 class ModemPort(MONGO.M.EmbeddedDocument):
