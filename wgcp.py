@@ -48,10 +48,12 @@ class GCP():
 
 	def SET(self,handle,cell,value):
 		strs,ints = wc.str_int_split(cell)
+		print('updating',strs,ints)
 		# Check current value
 		old = 'didnt_find'
 		for id2 in self.got.keys():
-			if self.got[id2]['Row'] == str(ints):
+			if str(self.got[id2]['Row']) == str(ints):
+				print('foundrow')
 				for v in self.got[d2].keys():
 					if str(self.got[id2][v]) == str(value): return(); # no update / already exists
 		setTime = wc.timer_index_start()
