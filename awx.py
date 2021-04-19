@@ -109,8 +109,8 @@ class AWX():
 		while data['status'] not in ['successful','failed']:
 			time.sleep(4)
 			data = json.loads(wc.REST_GET('http://' + self.IP + status_url, user=self.user, pword=self.pword))
-			if data['status'] != 'running':
-				print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
+			# if data['status'] != 'running':
+			print('  '.join([job,playbook,inventory,data['status'],'',str(wc.timer_index_since(playbook_start))]))
 		raw = json.loads(wc.REST_GET('http://' + self.IP + data['related']['job_events'], user=self.user, pword=self.pword))
 		# wc.jd(raw)
 		wc.pairprint('API','http://' + self.IP + data['related']['job_events'])
