@@ -91,6 +91,11 @@ def flask_RunJenkinsPipeline():
 	def pipeline():
 		args = dictFlask(flask.request.args)
 		wc.jd(args)
+		payload = dictFlask(flask.request.get_json())
+		wc.jd(payload)
+		import jenkins
+		J = jenkins.JENKINS(payload.pop('JEN_IP'), payload.pop('username'), payload.pop('token'))
+		
 # J = JENKINS(wc.argv_dict['IP'], wc.argv_dict['user'], wc.env_dict['JEN_TOKEN'])
 # param = {'Playbook':'ARC_GetFactsMultivendor','sendmail':'adrian.krygowski'}
 # param['dryrun'] = 'dryrun'
