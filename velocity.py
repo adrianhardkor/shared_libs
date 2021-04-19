@@ -445,7 +445,7 @@ class VELOCITY():
 			if self.INV[device_name]['templateName'] == 'Server': templateName = 'Server Port'
 			elif self.INV[device_name]['templateName'] == 'Modem': templateName = 'Modem Port'
 			elif self.INV[device_name]['templateName'] == 'SG': templateName = 'SG Port'
-			elif self.INV[device_name]['templateName'] == 'CMTS' and wc.is_int(port_name[0]): templateName = 'RF Port'
+			elif self.INV[device_name]['templateName'] == 'CMTS' and ('_US' in port_name or '_DS' in port_name): templateName = 'RF Port'
 			else: templateName = 'Network Port'
 			args = {}
 			args['name'] = port_name
