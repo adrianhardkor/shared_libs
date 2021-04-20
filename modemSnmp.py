@@ -52,7 +52,7 @@ class MODEMSNMP():
 		if wc.is_pingable(ip) is False:
 			wc.pairprint(ip, 'is not pingable cant use snmp')
 			self.Modem = result
-			return(result)
+			return({})
 		data = []
 		MIBS = ['1.3.6.1.2.1.2.2.1', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
