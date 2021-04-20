@@ -48,6 +48,9 @@ class MODEMSNMP():
 		return(line[0][2].strip(),line[0][3].strip(),line[1].strip())
 	def GetModemPorts(self, ip):
 		result = {'intfs':{}, 'chassis':{}}
+		if wc.is_pingable(ip) is False:
+			wc.pairprint(ip, 'is not pingable cant use snmp')
+			return(result)
 		data = []
 		MIBS = ['1.3.6.1.2.1.2.2.1', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
