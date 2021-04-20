@@ -13,6 +13,7 @@ class MODEMSNMP():
 		cmac = cmac.replace(':','').upper().strip()
 		allmacs = {}
 		for intf in self.Modem['intfs'].keys():
+			if 'ifPhysAddress' not in self.Modem['intfs'][intf].keys(): continue
 			if self.Modem['intfs'][intf]['ifPhysAddress'].replace(':','').upper() == cmac and \
 			self.Modem['intfs'][intf]['ipNetToMediaPhysAddress'] != '':
 				self.Modem['intfs'][intf]['portGroup'] = 'cmac'
