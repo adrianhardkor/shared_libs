@@ -414,6 +414,7 @@ class Modem(MONGO.M.Document):
 	trafficVLAN = MONGO.M.StringField()
 	trafficLAN = MONGO.M.StringField()
 	trafficRF = MONGO.M.DictField()
+	rack = MONGO.M.StringField()
 	pass
 
 
@@ -446,6 +447,7 @@ class Router(MONGO.M.Document):
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
 	_templateName = MONGO.M.StringField()
+	rack = MONGO.M.StringField()
 	pass
 
 class Server(MONGO.M.Document):
@@ -467,6 +469,7 @@ class Server(MONGO.M.Document):
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
 	_templateName = MONGO.M.StringField()
+	rack = MONGO.M.StringField()
 	pass
 
 class CMTS(MONGO.M.Document):
@@ -489,6 +492,7 @@ class CMTS(MONGO.M.Document):
 	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
 	timestamp = MONGO.M.StringField()
 	_templateName = MONGO.M.StringField()
+	rack = MONGO.M.StringField()
 	pass
 
 class runner(MONGO.M.Document):
