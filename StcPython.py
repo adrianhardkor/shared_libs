@@ -5,7 +5,12 @@ import atexit
 from platform import python_version
 
 global MH; # mongo logger for WOPR
-
+def MongoLoggerHandler(data):
+        global MH; # velocity.MH, velocity.MH.who, velocity.MH.runId
+        try:
+                MH._LOGGER(data)
+        except exception:
+                pass
 
 class StcPython(object):
 
@@ -47,12 +52,16 @@ excluding 3.5 variants')
 
         if hex(sys.hexversion).startswith('0x2060'):
             self.stcInt = __import__('StcIntPython')
+            MongoLoggerHandler('stcInt = StcIntPython')
         elif hex(sys.hexversion).startswith('0x207'):
             self.stcInt = __import__('StcIntPython27')
+            MongoLoggerHandler('stcInt = StcIntPython27')
         elif hex(sys.hexversion).startswith('0x304'):
             self.stcInt = __import__('StcIntPython34')
+            MongoLoggerHandler('stcInt = StcIntPython34')
         else:
             self.stcInt = __import__('StcIntPython36')
+            MongoLoggerHandler('stcInt = StcIntPython36')
 
         os.chdir(runningDir)
 
