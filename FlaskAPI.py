@@ -58,10 +58,14 @@ def flask_uploader():
 		wc.jd(args)
 		wc.jd(payload)
 		Mongo.MONGO.app.config['UPLOAD_FOLDER'] = './'
+		_FNAME = str(flask.request.files['file']).split("'")[1]
+		wc.pairprint(_FNAME, os.path.exists('./' + _FNAME)) 
 		if os.path.exists('./' + str(flask.request.files['file'])) is False:
-			wc.exec2('touch ./' + str(flask.request.files['file']))
+			wc.exec2('touch ./' + _FNAME)
 		f = flask.request.files['file']
-		f.save(secure_filename(f.filename))
+		secure_f = secure_filename(f.filename)
+		f.save(secure_f)
+		wc.pairprint(f.filename, secure_f)
 		return('file uploaded successfully')
   
 
