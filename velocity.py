@@ -8,6 +8,14 @@ import json
 import time
 import base64
 
+global MH
+def MongoLoggerHandler(data):
+	global MH; # velocity.MH, velocity.MH.who, velocity.MH.runId
+	try:
+		MH._LOGGER(data)
+	except exception:
+		pass
+
 class VELOCITY():
 	def __init__(self, IP, user='', pword='', token=''):
 		self.__name__ = 'VELOCITY'
@@ -124,7 +132,9 @@ class VELOCITY():
 		while data['executionState'] != 'COMPLETED' and 'FAIL' not in data['executionState']:
 			time.sleep(4)
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
-			print('  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))]))
+			output_line = '  '.join([data['executionState'], data['testPath'],str(data['parametersList']),data['executionID'],str(wc.timer_index_since(timer))])
+			MongoLoggerHandler(output_line)
+			print(output_line)
 		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))
 		data['html_report'] = wc.lunique(self.VelocityReportParse(html_report['text']))
 		if HTML_FNAME != '':
