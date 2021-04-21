@@ -4,6 +4,8 @@ import time
 import atexit
 from platform import python_version
 
+global MH; # mongo logger for WOPR
+
 
 class StcPython(object):
 
