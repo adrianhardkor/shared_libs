@@ -274,6 +274,15 @@ def IP_get(n):
     except Exception as err:
         return([str(addr4.network), err])
 
+def IP_lsort(mylist):
+	new_list = []
+	for element in unsorted_list:
+		new_list.append(ipaddress.ip_address(element))
+	new_list.sort()
+	out = []
+	for n in new_list:
+		out.append(str(n))
+	return(out)
 
 def sorted_dict(inDict):
     # sort in-dict (without .dumps)
