@@ -15,7 +15,7 @@ class mHANDLE():
 	def GetRun(self, myID):
 		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID)))
 		return(data)
-	def UpdateRun(self, myID, data):
+	def UpdateRun(self, myID, preamble, data):
 		payload = self.GetRun(myID)
 		if payload == {}:
 			payload = {'stdout_lines': [data]}
@@ -24,10 +24,10 @@ class mHANDLE():
 		else:
 			payload[myID]['runId'] = myID
 			# Updater works if providing an additional str(log) or list(of logs)
-			if type(data) == str: payload[myID]['stdout_lines'].append(data)
+			if type(data) == str: payload[myID]['stdout_lines'].append(preamble + data)
 			elif type(data) == list:
 				for d in data:
-					payload[myID]['stdout_lines'].append(d)
+					payload[myID]['stdout_lines'].append(preamble + str(d))
 			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload[myID], convert_args=True))
 		return(data)
 	def PutRun(self, myID, payload):
@@ -48,7 +48,7 @@ class mHANDLE():
 			pass
 		if timestamp: preamble = '[%s @ %s] ' % (self.who, time.ctime(time.time()))
 		else: preamble = ''
-		self.UpdateRun(self.runId, preamble + str(data))
+		self.UpdateRun(self.runId, preamble, data)
 	def _UPLOAD(self, fname):
 		data = wc.REST_UPLOAD(self.url + '/upload', fname)
 		return(data)
