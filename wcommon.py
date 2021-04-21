@@ -274,7 +274,7 @@ def IP_get(n):
     except Exception as err:
         return([str(addr4.network), err])
 
-def IP_lsort(mylist):
+def IP_lsort(unsorted_list):
 	new_list = []
 	for element in unsorted_list:
 		new_list.append(ipaddress.ip_address(element))
