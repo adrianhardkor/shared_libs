@@ -133,7 +133,7 @@ class VELOCITY():
 			time.sleep(4)
 			data = self.REST_GET('/ito/executions/v1/executions/' + data['executionID'])
 			output_line = '  '.join([data['executionState'], data['testPath'],str(parameters),data['executionID'],str(wc.timer_index_since(timer))])
-			if str(data['executionState']) != 'IN_PROGRESS': MongoLoggerHandler(output_line)
+			if str(data['executionState']) != 'IN_PROGRESS': MongoLoggerHandler('  '.join([data['executionState'], data['testPath'],str(parameters),data['executionID']]))
 			print(output_line)
 		html_report = json.loads(wc.REST_GET(self.V + '/ito/reporting/v1/reports/%s/print' % data['reportID'], headers=self.headers))
 		data['html_report'] = wc.lunique(self.VelocityReportParse(html_report['text']))
