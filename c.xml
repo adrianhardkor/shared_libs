@@ -1,1 +1,0 @@
-<SOAP-ENV:Envelopexmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"xmlns:ns1="http://www.cisco.com/prime/cp/v5"><SOAP-ENV:Body><ns1:createSession><ns1:username>admin</ns1:username><ns1:password>wowlab12</ns1:password><ns1:rduHost>10.88.48.100</ns1:rduHost><ns1:rduPort>49187</ns1:rduPort></ns1:createSession></SOAP-ENV:Body></SOAP-ENV:Envelope>
