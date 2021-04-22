@@ -111,8 +111,8 @@ def flask_runtimelogger():
 		if flask.request.method != 'GET':
 			args = dictFlask(flask.request.args)
 			payload = dictFlask(flask.request.get_json())
-			wc.jd(args)
-			wc.jd(payload)
+			# wc.jd(args)
+			# wc.jd(payload)
 			try:
 				Mongo.MONGO._UPDATE(Mongo.runner, args, payload)
 				return(flask.jsonify(vagent_getter()))
