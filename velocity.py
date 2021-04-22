@@ -13,7 +13,7 @@ def MongoLoggerHandler(data):
 	global MH; # velocity.MH, velocity.MH.who, velocity.MH.runId
 	try:
 		MH._LOGGER(data)
-	except exception:
+	except Exception:
 		pass
 
 class VELOCITY():
