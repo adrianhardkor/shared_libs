@@ -18,7 +18,7 @@ class mHANDLE():
 	def UpdateRun(self, myID, preamble, data):
 		payload = self.GetRun(myID)
 		if payload == {}:
-			payload = {'stdout_lines': [data]}
+			payload = {'stdout_lines': [time.ctime(time.time()), preamble + data]}
 			payload['runId'] = myID
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
 		else:
@@ -46,7 +46,7 @@ class mHANDLE():
 			self.runId = runId
 		except Exception:
 			pass
-		if timestamp: preamble = '[%s @ %s] ' % (self.who, time.ctime(time.time()))
+		if timestamp: preamble = '[%s @ %s] ' % (self.who, str(time.ctime(time.time())).split(' ')[-2])
 		else: preamble = ''
 		self.UpdateRun(self.runId, preamble, data)
 	def _UPLOAD(self, fname):
