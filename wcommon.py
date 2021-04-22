@@ -1044,7 +1044,7 @@ def REST_UPLOAD(url, fname, DB=''):
 	payload = {'upload_file':fname, 'OUT':fname.split('.')[-1].lower(), 'SHORT':'short'}
 	if DB != '': payload['DB'] = DB
 	files = {'file': open(fname,'rb')}
-	wc.pairprint('[INFO] ', payload)
+	pairprint('[INFO] ', payload)
 	data2 = requests.post(url, files=files, data=payload, verify=False)
 	return(json.dumps({'response': str(data2)}))
 
