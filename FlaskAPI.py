@@ -65,7 +65,9 @@ def flask_uploader():
 		f = flask.request.files['file']
 		secure_f = secure_filename(f.filename)
 		f.save(secure_f)
+		print('\n\n\n')
 		wc.pairprint(f.filename, secure_f)
+		print('\n\n\n')
 		return('file uploaded successfully')
   
 
