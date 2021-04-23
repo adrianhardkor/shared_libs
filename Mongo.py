@@ -10,7 +10,6 @@ sys.path.insert(1,'./MongoClasses/')
 import soap
 from flask_cors import CORS
 # from werkzeug.debug import DebuggedApplication
-
 from flask_debug import Debug
 
 # INPUTS
@@ -36,7 +35,6 @@ class MDB():
 			'db': self.MongoName,
 			'host': self.MongoIP,
 			'port': self.MongoPort,
-			'FLASK_DEBUG_DISABLE_STRICT': True,
 			'connect': True
 		}
 		self.M = MongoEngine()
