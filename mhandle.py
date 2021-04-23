@@ -53,6 +53,6 @@ class mHANDLE():
 		data = wc.REST_UPLOAD(self.url + '/upload', fname)
 		return(data)
 
-# MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5001')
-# wc.jd(MH._UPLOAD('adrian.log'))
+MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
+wc.jd(MH._UPLOAD('adrian.csv'))
 

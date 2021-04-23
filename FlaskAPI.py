@@ -94,6 +94,11 @@ def flask_AIS():
 				AIS[deviceObject['name']] = deviceObject
 		return(flask.jsonify(AIS))
 
+def flask_NewCall():
+	@Mongo.MONGO.app.route('/new_call', methods=['GET'])
+	def new():
+		return(flask.jsonify({'got':'logs?'}))
+
 def flask_RunJenkinsPipeline():
 	@Mongo.MONGO.app.route('/jenkins/runPipe', methods=['POST'])
 	def pipeline():
@@ -135,6 +140,7 @@ if  __name__ == "__main__":
 	flask_uploader()
 	flask_downloader()
 	flask_AIS(); # /ais
+	flask_NewCall(); # /new_call
 	flask_runtimelogger(); # /runner
 	if 'port' in wc.argv_dict.keys():
 		Mongo.MONGO.app.run(debug=True, host=flaskIP, port=int(wc.argv_dict['port']))
