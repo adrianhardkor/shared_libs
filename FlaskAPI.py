@@ -11,7 +11,7 @@ import velocity
 import flask
 import Mongo; # shared_libs
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
-
+wc.jd(wc.wcheader)
 # Mongo.TryDeleteDocuments(Mongo.runner)
 
 def dictFlask(input1):
