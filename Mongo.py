@@ -36,6 +36,7 @@ class MDB():
 			'db': self.MongoName,
 			'host': self.MongoIP,
 			'port': self.MongoPort,
+			'FLASK_DEBUG_DISABLE_STRICT': True,
 			'connect': True
 		}
 		self.M = MongoEngine()
