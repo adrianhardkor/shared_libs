@@ -61,7 +61,7 @@ def flask_uploader():
 		_FNAME = str(flask.request.files['file']).split("'")[1]
 		wc.pairprint(_FNAME, os.path.exists('./' + _FNAME)) 
 		if os.path.exists('./' + str(flask.request.files['file'])) is False:
-			wc.exec2('touch ./' + _FNAME)
+			wc.exec2('/usr/bin/touch ./' + _FNAME)
 		f = flask.request.files['file']
 		secure_f = secure_filename(f.filename)
 		f.save(secure_f)
