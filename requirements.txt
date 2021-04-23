@@ -21,3 +21,4 @@ pyyaml
 suds-py3
 xmltodict
 deepdiff
+flask_debug

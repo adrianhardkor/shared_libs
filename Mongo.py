@@ -9,6 +9,9 @@ import time
 sys.path.insert(1,'./MongoClasses/')
 import soap
 from flask_cors import CORS
+# from werkzeug.debug import DebuggedApplication
+
+from flask_debug import Debug
 
 # INPUTS
 # rdu_json = wc.argv_dict['rdu_json']
@@ -27,6 +30,7 @@ class MDB():
 		self.MongoPort = MongoPort
 		self.MongoName = MongoName
 		self.app = flask.Flask(__name__)
+		Debug(self.app)
 		CORS(self.app)
 		self.app.config['MONGODB_SETTINGS'] = {
 			'db': self.MongoName,
