@@ -108,8 +108,7 @@ class VELOCITY():
 		from bs4 import BeautifulSoup
 		parsed = BeautifulSoup(html_data, features="html.parser")
 		out = []
-		# for line in parsed.find_all('div')
-		for line in parsed:
+		for line in parsed.find_all(['div', 'span']):
 			line = str(line.text).strip()
 			if line == '': continue
 			elif '\n' in line:
