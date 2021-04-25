@@ -12,23 +12,22 @@ class mHANDLE():
 		self.flaskPort = flaskPort
 		self.url = 'http://%s:%s' % (self.flaskIP, self.flaskPort)
 		self.__name__ = 'mHANDLE'
+		self.payload = {}
 	def GetRun(self, myID):
 		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID)))
 		return(data)
 	def UpdateRun(self, myID, preamble, data):
-		payload = self.GetRun(myID)
-		if payload == {}:
-			payload = {'stdout_lines': [time.ctime(time.time()), preamble + data]}
-			payload['runId'] = myID
-			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
+		if myID not in self.payload.keys():
+			self.payload[myID] = {'stdout_lines': [time.ctime(time.time()), preamble + data]}
+			self.payload[myID]['runId'] = myID
+			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		else:
-			payload[myID]['runId'] = myID
 			# Updater works if providing an additional str(log) or list(of logs)
-			if type(data) == str: payload[myID]['stdout_lines'].append(preamble + data)
+			if type(data) == str: self.payload[myID]['stdout_lines'].append(preamble + data)
 			elif type(data) == list:
 				for d in data:
-					payload[myID]['stdout_lines'].append(preamble + str(d))
-			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload[myID], convert_args=True))
+					self.payload[myID]['stdout_lines'].append(preamble + str(d))
+			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		return(data)
 	def PutRun(self, myID, payload):
 		current = self.GetRun(myID)
