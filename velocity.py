@@ -111,9 +111,11 @@ class VELOCITY():
 		for line in parsed.find_all(['div', 'span']):
 			line = str(line.text).strip()
 			if line == '': continue
+			elif 'VELOCITY_PARAM_VELOCITY_TOKEN' in line: continue
 			elif '\n' in line:
 				l = []
 				for ll in line.split('\n'):
+					if 'VELOCITY_PARAM_VELOCITY_TOKEN' in ll: continue
 					if ll != '': l.append(ll)
 				out.append(l)
 			else: out.append(line)
