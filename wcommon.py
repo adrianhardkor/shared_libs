@@ -24,7 +24,6 @@ import deepdiff
 import yaml
 urllib3.disable_warnings()
 
-
 def import_or_install(package):
     import pip
     try:
@@ -1269,6 +1268,22 @@ def GetMapping(connection, L, V):
 			lepton_far_port = mapping[0]
 			# pairprint('[INFO]  ' + reserved_stc_port, list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0].split('_'))
 			return(list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0])
+
+def StcGetCSV(MH, iteration=''):
+	# MH logger
+	try:
+		data = wc.exec2('find ./ -name *.csv')
+		MH._LOGGER(str(data))
+		wc.pairprint('[INFO] exec', data)
+		for fname in str(data).split('\n'):
+			shortname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
+			if iteration != '': shortname = 'log' + str(iteration) + 'iter' + shortname
+			os.rename(fname, './' + shortname)
+			MH._UPLOAD(shortname)
+			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + shortname)
+	except Exception as err1:
+		wc.pairprint('[INFO] err', str(err1))
+	# MH._LOGGER('CSV Export Complete')
 
 wait_start()
 global current_time
