@@ -102,14 +102,15 @@ def flask_NewCall():
 def flask_RunJenkinsPipeline():
 	@Mongo.MONGO.app.route('/jenkins/runPipe', methods=['POST'])
 	def pipeline():
-		args = dictFlask(flask.request.args)
-		wc.jd(args)
-		payload = dictFlask(flask.request.get_json())
-		wc.jd(payload)
+		# args = dictFlask(flask.request.args)
+		# wc.jd(args)
+		body = dictFlask(flask.request.get_json())
+		wc.jd(body)
 		import jenkins
-		J = jenkins.JENKINS(payload.pop('JEN_IP'), payload.pop('username'), payload.pop('token'))
-		monitor = J.RunPipeline(wc.argv_dict['Pipe'], payload)
-		return(flask.jsonify({'monitor':'http://10.88.48.21:5001/runner?runId=' % monitor})) 
+		J = jenkins.JENKINS(body.pop('JEN_IP'), body.pop('username'), body.pop('token'))
+		monitor = J.RunPipeline(body['Pipe'], body)
+		wc.pairprint('monitor', monitor)
+		return(flask.jsonify({'monitor':'http://10.88.48.21:' + str(wc.argv_dict['port']) + '/runner?runId=' + str(monitor)}))
 
 def flask_runtimelogger():
 	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
@@ -141,6 +142,7 @@ if  __name__ == "__main__":
 	flask_downloader()
 	flask_AIS(); # /ais
 	flask_NewCall(); # /new_call
+	flask_RunJenkinsPipeline()
 	flask_runtimelogger(); # /runner
 	if 'port' in wc.argv_dict.keys():
 		Mongo.MONGO.app.run(debug=True, host=flaskIP, port=int(wc.argv_dict['port']))
