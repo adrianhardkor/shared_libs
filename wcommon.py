@@ -1281,7 +1281,7 @@ def StcGetCSV(MH, iteration='', care=''):
 			localname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
 			if iteration != '': 
 				localname = ''.join(['log',str(iteration),'iter',localname])
-			os.system('cp ' + fname + './' + localname)
+			MH._LOGGER(exec2('cp ' + fname + ' ./' + localname))
 			MH._UPLOAD(localname)
 			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + localname)
 	except Exception as err1:
