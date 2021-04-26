@@ -2,6 +2,7 @@
 import os
 import sys
 import wcommon as wc
+if 'port' not in wc.argv_dict.keys(): wc.argv_dict['port'] = '5000'
 from werkzeug.utils import secure_filename
 import json
 import re
