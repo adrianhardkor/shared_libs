@@ -22,7 +22,7 @@ class mHANDLE():
 			potential = self.GetRun(myID)
 			if potential != {}:
 				self.payload[myID] = potential[myID]
-			wc.pairprint('potential', potential.keys())
+			wc.pairprint('potential:' + str(myID), potential)
 		if myID not in self.payload.keys():
 			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(preamble) + str(data)]}
 			self.payload[myID]['runId'] = myID
