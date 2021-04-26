@@ -18,6 +18,7 @@ class mHANDLE():
 		return(data)
 	def UpdateRun(self, myID, preamble, data):
 		if myID not in self.payload.keys():
+			# diff call-class will re-init self.payload
 			potential = self.GetRun(myID)
 			if potential != {}: self.payload[myID] = potential
 		if myID not in self.payload.keys():
@@ -26,6 +27,7 @@ class mHANDLE():
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		else:
 			# Updater works if providing an additional str(log) or list(of logs)
+			if 'stdout_lines' not in self.payload[myID].keys(): wc.jd(self.payload[myID])
 			if type(data) == str: self.payload[myID]['stdout_lines'].append(str(preamble) + str(data))
 			elif type(data) == list:
 				for d in data:
