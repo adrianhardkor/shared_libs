@@ -27,7 +27,7 @@ class mHANDLE():
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		else:
 			# Updater works if providing an additional str(log) or list(of logs)
-			if 'stdout_lines' not in self.payload[myID].keys(): wc.jd(self.payload[myID])
+			if 'stdout_lines' not in self.payload[myID].keys(): print(self.payload[myID])
 			if type(data) == str: self.payload[myID]['stdout_lines'].append(str(preamble) + str(data))
 			elif type(data) == list:
 				for d in data:
