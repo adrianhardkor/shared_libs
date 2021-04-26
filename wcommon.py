@@ -1269,13 +1269,15 @@ def GetMapping(connection, L, V):
 			# pairprint('[INFO]  ' + reserved_stc_port, list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0].split('_'))
 			return(list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0])
 
-def StcGetCSV(MH, iteration=''):
+def StcGetCSV(MH, iteration='', care=''):
 	# MH logger
 	try:
 		data = exec2('find ./ -name *.csv')
 		MH._LOGGER(str(data))
 		pairprint('[INFO] exec', data)
 		for fname in str(data).split('\n'):
+			if care != '':
+				if care not in fname: continue; # fnames we dont care about
 			localname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
 			if iteration != '': 
 				localname = ''.join(['log',str(iteration),'iter',localname])
