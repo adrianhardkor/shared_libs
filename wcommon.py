@@ -1284,6 +1284,7 @@ def StcGetCSV(MH, iteration='', care=''):
 			MH._LOGGER(exec2('cp ' + fname + ' ./' + localname))
 			MH._UPLOAD(localname)
 			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + localname)
+			rmf('./' + localname); # dont rename existing log1iter files
 	except Exception as err1:
 		pairprint('[INFO] err1', str(err1))
 	# MH._LOGGER('CSV Export Complete')
