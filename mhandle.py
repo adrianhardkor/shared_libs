@@ -16,13 +16,13 @@ class mHANDLE():
 	def GetRun(self, myID):
 		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID)))
 		return(data)
-	def UpdateRun(self, myID, preamble, data):
-		if self.payload == {}:
+	def UpdateRun(self, myID, preamble, data, ForceUpdate=False):
+		if self.payload == {} or ForceUpdate == True:
 			# diff call-class will re-init self.payload
 			potential = self.GetRun(myID)
 			if myID in potential.keys():
 				self.payload[myID] = potential[myID]
-				wc.pairprint('potential:' + self.url + str(myID), potential.keys())
+			wc.pairprint('potential:' + self.url + str(myID), potential.keys())
 		if myID not in self.payload.keys():
 			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(preamble) + str(data)]}
 			self.payload[myID]['runId'] = myID
@@ -45,7 +45,7 @@ class mHANDLE():
 		else:
 			data = json.loads(wc.REST_PUT(self.url + '/runner?runId=' + str(myID), verify=False, args=payload, convert_args=True))
 		return(data)
-	def _LOGGER(self, data, timestamp=True):
+	def _LOGGER(self, data, timestamp=True, ForceUpdate=False):
 		global who
 		global runId
 		try:
@@ -55,7 +55,7 @@ class mHANDLE():
 			pass
 		if timestamp: preamble = '[%s @ %s] ' % (self.who, str(time.ctime(time.time())).split(' ')[-2])
 		else: preamble = ''
-		self.UpdateRun(self.runId, preamble, data)
+		self.UpdateRun(self.runId, preamble, data, ForceUpdate=ForceUpdate)
 	def _UPLOAD(self, fname):
 		data = wc.REST_UPLOAD(self.url + '/upload', fname)
 		return(data)
