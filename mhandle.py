@@ -20,11 +20,12 @@ class mHANDLE():
 		if myID not in self.payload.keys():
 			# diff call-class will re-init self.payload
 			potential = self.GetRun(myID)
-			if potential != {}: self.payload[myID] = potential[myID]
+			if potential != {}:
+				self.payload[myID] = potential[myID]
+			wc.pairprint('potential', potential.keys())
 		if myID not in self.payload.keys():
 			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(preamble) + str(data)]}
 			self.payload[myID]['runId'] = myID
-			wc.jd(potential)
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		else:
 			# Updater works if providing an additional str(log) or list(of logs)
