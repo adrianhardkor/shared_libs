@@ -9,7 +9,7 @@ def MongoLoggerHandler(data):
         global MH; # velocity.MH, velocity.MH.who, velocity.MH.runId
         try:
                 MH._LOGGER(data)
-        except exception:
+        except Exception:
                 pass
 
 class StcPython(object):
@@ -95,6 +95,7 @@ excluding 3.5 variants')
 
     def get(self, handle, *args):
         if str(handle) == '':
+            MongoLoggerHandler('stc.get for empty handle is broken')
             raise Exception('stc.get for handle='' is broken')
         svec = StcPython._unpackArgs(*args)
         svecDashes = []
