@@ -1276,12 +1276,12 @@ def StcGetCSV(MH, iteration=''):
 		MH._LOGGER(str(data))
 		pairprint('[INFO] exec', data)
 		for fname in str(data).split('\n'):
-			shortname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
+			localname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
 			if iteration != '': 
-				shortname = ''.join(['log',str(iteration),'iter',shortname])
-			os.rename(fname, './' + shortname)
-			MH._UPLOAD(shortname)
-			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + shortname)
+				localname = ''.join(['log',str(iteration),'iter',localname])
+			os.system('cp ' + fname + './' + localname)
+			MH._UPLOAD(localname)
+			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + localname)
 	except Exception as err1:
 		pairprint('[INFO] err1', str(err1))
 	# MH._LOGGER('CSV Export Complete')
