@@ -12,11 +12,11 @@ class mHANDLE():
 		self.flaskPort = flaskPort
 		self.url = 'http://%s:%s' % (self.flaskIP, self.flaskPort)
 		self.__name__ = 'mHANDLE'
-		self.payload = {}
 	def GetRun(self, myID):
 		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID)))
 		return(data)
 	def UpdateRun(self, myID, preamble, data):
+		if 'payload' not in dir(self): self.payload = {}
 		if myID not in self.payload.keys():
 			# diff call-class will re-init self.payload
 			potential = self.GetRun(myID)
@@ -61,5 +61,6 @@ class mHANDLE():
 		return(data)
 
 # MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
+# wc.jd(dir(MH))
 # wc.jd(MH._UPLOAD('adrian.csv'))
 

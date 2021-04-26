@@ -1273,8 +1273,8 @@ def StcGetCSV(MH, iteration='', care=''):
 	# MH logger
 	try:
 		data = exec2('find ./ -name *.csv')
-		MH._LOGGER('AllFiles: ' + '  '.join(data))
-		pairprint('[INFO] exec', data)
+		MH._LOGGER('AllFiles: ' + data.replace('\n','  '))
+		pairprint('[INFO] exec', data.replace('\n','  '))
 		for fname in str(data).split('\n'):
 			if care != '':
 				if care not in fname: continue; # fnames we dont care about
