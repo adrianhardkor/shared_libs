@@ -1272,9 +1272,9 @@ def GetMapping(connection, L, V):
 def StcGetCSV(MH, iteration=''):
 	# MH logger
 	try:
-		data = wc.exec2('find ./ -name *.csv')
+		data = exec2('find ./ -name *.csv')
 		MH._LOGGER(str(data))
-		wc.pairprint('[INFO] exec', data)
+		pairprint('[INFO] exec', data)
 		for fname in str(data).split('\n'):
 			shortname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
 			if iteration != '': shortname = 'log' + str(iteration) + 'iter' + shortname
@@ -1282,7 +1282,7 @@ def StcGetCSV(MH, iteration=''):
 			MH._UPLOAD(shortname)
 			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + shortname)
 	except Exception as err1:
-		wc.pairprint('[INFO] err', str(err1))
+		pairprint('[INFO] err', str(err1))
 	# MH._LOGGER('CSV Export Complete')
 
 wait_start()
