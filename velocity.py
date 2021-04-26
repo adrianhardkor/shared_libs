@@ -16,6 +16,10 @@ def MongoLoggerHandler(data):
 	except Exception:
 		pass
 
+def GetDiagBundle(IP='', user='', pword=''):
+	wc.jd(json.loads(wc.REST_GET('https://' + IP + '/configure/diag-bundle-with-db.zip?mode=save_diag_with_db', user=user, pword=pword)))
+
+
 class VELOCITY():
 	def __init__(self, IP, user='', pword='', token=''):
 		self.__name__ = 'VELOCITY'
