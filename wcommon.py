@@ -1273,7 +1273,7 @@ def StcGetCSV(MH, iteration='', care=''):
 	# MH logger
 	try:
 		data = exec2('find ./ -name *.csv')
-		MH._LOGGER(['', str(data)])
+		MH._LOGGER('AllFiles: ' + '  '.join(data))
 		pairprint('[INFO] exec', data)
 		for fname in str(data).split('\n'):
 			if care != '':
