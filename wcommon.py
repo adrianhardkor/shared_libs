@@ -1273,7 +1273,7 @@ def StcGetCSV(MH, iteration='', care=''):
 	# MH logger
 	try:
 		data = exec2('find ./ -name *.csv')
-		MH._LOGGER(str(data))
+		MH._LOGGER(['', str(data)])
 		pairprint('[INFO] exec', data)
 		for fname in str(data).split('\n'):
 			if care != '':
@@ -1281,12 +1281,12 @@ def StcGetCSV(MH, iteration='', care=''):
 			localname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
 			if iteration != '': 
 				localname = ''.join(['log',str(iteration),'iter',localname])
-			MH._LOGGER(exec2('cp ' + fname + ' ./' + localname))
+			print(exec2('cp ' + fname + ' ./' + localname))
 			MH._UPLOAD(localname)
 			MH._LOGGER('http://' + MH.flaskIP + ":" + MH.flaskPort + '/download?fname=' + localname)
 			rmf('./' + localname); # dont rename existing log1iter files
 	except Exception as err1:
-		pairprint('[INFO] err1', str(err1))
+		pairprint('[INFO] StcGetCSV', str(err1))
 	# MH._LOGGER('CSV Export Complete')
 
 wait_start()
