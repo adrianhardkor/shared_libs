@@ -3,6 +3,7 @@ import sys
 import time
 import atexit
 from platform import python_version
+import wcommon as wc
 
 global MH; # mongo logger for WOPR
 def MongoLoggerHandler(data):
@@ -11,6 +12,41 @@ def MongoLoggerHandler(data):
                 MH._LOGGER(data)
         except Exception:
                 pass
+
+def LogSequencerLoop(stc, MH, RUNTIME_SEC): 
+    current_command = ''
+    current_step = ''
+    sequencer = stc.get('system1', 'children-sequencer')
+    oldCURRENT = {'Name':'INIT'}
+    iteration = 0
+    if RUNTIME_SEC == "1": SLEEP = 1
+    else: SLEEP = int(RUNTIME_SEC) - 1
+    while stc.get(sequencer, 'TestState') == 'NONE':
+        current_command = stc.get(sequencer, 'CurrentCommand')
+        try:
+            CURRENT = stc.get(current_command)
+        except Exception:
+            CURRENT = {'Name':'<missing>', 'children':''}
+            CURRENT['ProgressCurrentStepName'] = CURRENT['State'] = CURRENT['Status'] = CURRENT['Name']
+        if 'loop' in CURRENT['Name'].lower():
+            for subloop in [name for name in CURRENT['children'].split(' ') if 'oop' in name]:
+                sub = stc.get(subloop)
+                CURRENT['Status'] = {}
+                for attr in ['CurrentIteration', 'State', 'ProgressCurrentStepName']:
+                    CURRENT['Status'][attr] = sub[attr]
+                if int(CURRENT['Status']['CurrentIteration']) > int(iteration):
+                    # when CurrentIteration becomes 2, then log csv_upload for iteration1
+                    if iteration > 0: wc.StcGetCSV(MH, iteration=iteration, care='TVPlusData'); # name = old iteration
+                    iteration = int(CURRENT['Status']['CurrentIteration'])
+                    try:
+                       MH._LOGGER('  '.join([str(CURRENT['ProgressCurrentStepName']), str(CURRENT['Name']), str(CURRENT['State']), str(CURRENT['Status'])]))
+                    except Exception as err:
+                       MH._LOGGER('  '.join(['[INFO]', str(err)]))
+                       pass
+        elif CURRENT['Name'] != oldCURRENT['Name']:
+            # not loop but still updated testStatus
+            MH._LOGGER(str(CURRENT))
+            oldCURRENT
 
 class StcPython(object):
 
