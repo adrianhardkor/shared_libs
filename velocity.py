@@ -12,7 +12,7 @@ global MH
 def MongoLoggerHandler(data):
 	global MH; # velocity.MH, velocity.MH.who, velocity.MH.runId
 	try:
-		MH._LOGGER(data)
+		MH._LOGGER(data, ForceUpdate=True); # run Get before Put (other systems might have udpated)
 	except Exception:
 		pass
 
