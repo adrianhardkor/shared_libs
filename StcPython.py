@@ -46,7 +46,7 @@ def LogSequencerLoop(stc, MH, RUNTIME_SEC):
         elif CURRENT['Name'] != oldCURRENT['Name']:
             # not loop but still updated testStatus
             MH._LOGGER(str(CURRENT))
-            oldCURRENT
+            oldCURRENT = CURRENT
 
 class StcPython(object):
 
