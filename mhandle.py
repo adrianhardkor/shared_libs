@@ -20,8 +20,10 @@ class mHANDLE():
 		if self.payload == {} or ForceUpdate == True:
 			# diff call-class will re-init self.payload
 			potential = self.GetRun(myID)
-			if myID in potential.keys(): self.payload[myID] = potential[myID]
-			wc.pairprint('[INFO] potential:' + str(ForceUpdate) + str(myID), str(potential.keys()) + '\t' + str(data))
+			if myID in potential.keys():
+				self.payload[myID] = potential[myID]
+				wc.pairprint('[INFO] potential:' + str(ForceUpdate) + str(myID), str(potential.keys()))
+				wc.jd(self.payload[myID])
 		if myID not in self.payload.keys():
 			# NEW POST
 			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(preamble) + str(data)]}
