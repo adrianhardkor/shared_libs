@@ -72,11 +72,13 @@ class MODEMSNMP():
 				if MIB == 'ipNetToMediaPhysAddress':
 					d.oid_index = str(d.oid_index).split('.')
 					ifIndex = str(d.oid_index.pop(0))
+					index = MIB
 					value = value + ' ' + '.'.join(d.oid_index)
+
 				else:
 					ifIndex = str(d.oid_index)
 					index = str(d.oid)
-				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
+				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {'portGroup':''}
 				result['intfs'][ifIndex][index] = value
 		self.Modem = result
 		return(result)
