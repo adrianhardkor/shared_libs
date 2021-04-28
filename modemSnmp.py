@@ -78,7 +78,7 @@ class MODEMSNMP():
 					index = str(d.oid)
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
 				result['intfs'][ifIndex][index] = value
-		# self.Modem = result
+		self.Modem = result
 		return(result)
 
 # M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
