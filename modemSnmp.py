@@ -63,7 +63,7 @@ class MODEMSNMP():
 			self.Modem = result
 			return({})
 		session = Session(hostname=ip, community=self.community, version=2)
-		MIBS = ['ifPhysAddress', 'ifDescr', 'ifTable', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
+		MIBS = ['ifDescr', 'ifPhysAddress', 'ifTable', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
 			data = session.walk(MIB)
 			for d in data:
@@ -78,7 +78,7 @@ class MODEMSNMP():
 				else:
 					ifIndex = str(d.oid_index)
 					index = str(d.oid)
-				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {'portGroup':''}
+				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {'portGroup':'', 'ipNetToMediaPhysAddress':'', 'ifDescr':'','ifType':''}
 				result['intfs'][ifIndex][index] = value
 		self.Modem = result
 		return(result)
