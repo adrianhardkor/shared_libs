@@ -5,6 +5,9 @@ import wcommon as wc
 import json
 import re
 
+
+from easysnmp import Session
+
 class MODEMSNMP():
 	def __init__(self, community):
 		self.community = community
@@ -47,31 +50,40 @@ class MODEMSNMP():
 					else: value.append(vv)
 			line[1] = ''.join(value).upper()
 		return(line[0][2].strip(),line[0][3].strip(),line[1].strip())
+	def isAscii(self, value):
+		ascii2 = True
+		for v in str(value):
+			if 0 <= ord(v) <= 127: pass
+			else: ascii2 = False
+		return(ascii2)
 	def GetModemPorts(self, ip):
 		result = {'intfs':{}, 'chassis':{}}
 		if wc.is_pingable(ip) is False:
 			wc.pairprint(ip, 'is not pingable cant use snmp')
 			self.Modem = result
 			return({})
-		data = []
-		MIBS = ['1.3.6.1.2.1.2.2.1', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
+		session = Session(hostname=ip, community=self.community, version=2)
+		MIBS = ['ifPhysAddress', 'ifDescr', 'ifTable', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
-			data.append(wc.exec2('snmpbulkwalk -r 2 -t 15 -m all -v2c -c %s %s %s' % (self.community, ip, MIB)))
-		data = '\n'.join(data)
-		for intf in wc.grep('ifDescr', data).split('\n'):
-			mib,ifIndex,value = self.FormatSNMPline(intf)
-			result['intfs'][ifIndex] = {'ipNetToMediaPhysAddress':'', 'portGroup':''}
-		for intf in data.split('\n'):
-			mib,ifIndex,value = self.FormatSNMPline(intf)
-			# print(mib,ifIndex,value)
-			# if mib in MIBS: print(mib,ifIndex,value)
-			result['intfs'][ifIndex][mib] = value
-		self.Modem = result
+			data = session.walk(MIB)
+			for d in data:
+				if self.isAscii(d.value):  value = d.value
+				else: value = ':'.join('{:02x}'.format(ord(x)) for x in d.value)
+				if MIB == 'ipNetToMediaPhysAddress':
+					d.oid_index = str(d.oid_index).split('.')
+					ifIndex = str(d.oid_index.pop(0))
+					value = value + ' ' + '.'.join(d.oid_index)
+				else:
+					ifIndex = str(d.oid_index)
+					index = str(d.oid)
+				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {}
+				result['intfs'][ifIndex][index] = value
+		# self.Modem = result
 		return(result)
 
-# M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
-# data = M.GetModemPorts(wc.argv_dict['ip'])
-# wc.jd(data)
+M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
+data = M.GetModemPorts(wc.argv_dict['ip'])
+wc.jd(data)
 # M.ValidateModemIP(wc.argv_dict['ip'], wc.argv_dict['cmac'])
 
 
