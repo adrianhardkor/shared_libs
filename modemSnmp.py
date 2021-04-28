@@ -81,9 +81,9 @@ class MODEMSNMP():
 		# self.Modem = result
 		return(result)
 
-M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
-data = M.GetModemPorts(wc.argv_dict['ip'])
-wc.jd(data)
+# M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
+# data = M.GetModemPorts(wc.argv_dict['ip'])
+# wc.jd(data)
 # M.ValidateModemIP(wc.argv_dict['ip'], wc.argv_dict['cmac'])
 
 
