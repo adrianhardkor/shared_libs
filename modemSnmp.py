@@ -57,6 +57,7 @@ class MODEMSNMP():
 			else: ascii2 = False
 		return(ascii2)
 	def GetModemPorts(self, ip):
+		timer = wc.timer_index_start()
 		result = {'intfs':{}, 'chassis':{}}
 		if wc.is_pingable(ip) is False:
 			wc.pairprint(ip, 'is not pingable cant use snmp')
@@ -81,6 +82,7 @@ class MODEMSNMP():
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {'portGroup':'', 'ipNetToMediaPhysAddress':'', 'ifDescr':'','ifType':''}
 				result['intfs'][ifIndex][index] = value
 		self.Modem = result
+		wc.pairprint('[INFO] GetModemPorts.class.py took', wc.timer_index_since(timer))
 		return(result)
 
 # M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
