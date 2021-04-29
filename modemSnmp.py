@@ -66,12 +66,12 @@ class MODEMSNMP():
 					value = ' '.join(varBind[2::])
 					if mib == 'IP-MIB::ipNetToMediaPhysAddress':
 						ifIndex = str(out_oid[-5])
-						index = GetMibOID('.'.join(out_oid)).split('.')
+						index = self.GetMibOID('.'.join(out_oid)).split('.')
 						value = value + ' ' + '.'.join(index[2::])
 						index = index[0]
 					else:
 						ifIndex = out_oid.pop(-1)
-						index = GetMibOID('.'.join(out_oid))
+						index = self.GetMibOID('.'.join(out_oid))
 					if index == 'ifPhysAddress' and value != '':
 						value = value.split('x')[1]
 						value = ':'.join([value[0:2],value[2:4],value[4:6],value[6:8],value[8:10],value[10:12]])
