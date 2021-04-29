@@ -78,7 +78,7 @@ class MODEMSNMP():
 					elif index == 'ifType': value = ifTypes[value]
 					if ifIndex not in self.Modem['intfs'].keys(): self.Modem['intfs'][ifIndex] = {}
 					self.Modem['intfs'][ifIndex][index] = value
-			return(self.Modem)
+		return(self.Modem)
 	def GetModemPorts(self, ip):
 		MIBS = ['IF-MIB::ifTable', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
 		for MIB in MIBS:
