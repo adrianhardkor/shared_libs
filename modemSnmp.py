@@ -88,6 +88,6 @@ class MODEMSNMP():
 		MIBS = ['IF-MIB::ifTable', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
 		for MIB in MIBS:
 			self.walk(ip, MIB)
-		wc.pairprint('modemSnmp.PySnmp for ' + ip, timer)
+		wc.pairprint('modemSnmp.PySnmp for ' + ip, wc.timer_index_since(timer))
 		return(self.Modem)
 
