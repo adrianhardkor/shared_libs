@@ -29,7 +29,7 @@ class MODEMSNMP():
 				self.Modem['intfs'][intf]['portGroup'] = 'ertr'
 			elif self.Modem['intfs'][intf]['ifType'].startswith('ipForward'):
 				self.Modem['intfs'][intf]['portGroup'] = 'logical'
-			elif self.Modem['intfs'][intf]['ifType'].startswith('ethernetCsmacd'):
+			elif self.Modem['intfs'][intf]['ifType'].startswith('pptp'):
 				self.Modem['intfs'][intf]['portGroup'] = 'ethernet'
 			elif self.Modem['intfs'][intf]['ifType'].startswith('ieee80211') and 'sub' in self.Modem['intfs'][intf]['ifDescr']:
 				self.Modem['intfs'][intf]['portGroup'] = 'logical'
