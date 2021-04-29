@@ -5,8 +5,9 @@ import wcommon as wc
 import json
 import re
 
-from pysnmp.hlapi import *
-import sys
+import pysnmp.hlapi
+wc.jd(dir(pysnmp.hlapi))
+exit(0)
 
 
 class MODEMSNMP():
@@ -55,7 +56,7 @@ class MODEMSNMP():
 		return(self.translations[oid])
 	def walk(self, host, mib):
 		oid = wc.exec2('snmptranslate -On ' + mib)
-		for (errorIndication, errorStatus, errorIndex, varBinds) in bulkCmd(SnmpEngine(), 
+		for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(), 
 			CommunityData(self.community), 
 			UdpTransportTarget((host, 161)), 
 			ContextData(), 
