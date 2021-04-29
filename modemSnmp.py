@@ -83,9 +83,11 @@ class MODEMSNMP():
 					self.Modem['intfs'][ifIndex][index] = value
 		return(self.Modem)
 	def GetModemPorts(self, ip):
+		timer = wc.timer_index_start()
 		self.GetIfTypes()
 		MIBS = ['IF-MIB::ifTable', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
 		for MIB in MIBS:
 			self.walk(ip, MIB)
+		wc.pairprint('modemSnmp.PySnmp for ' + ip, timer)
 		return(self.Modem)
 
