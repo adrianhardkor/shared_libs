@@ -80,6 +80,7 @@ class MODEMSNMP():
 					self.Modem['intfs'][ifIndex][index] = value
 		return(self.Modem)
 	def GetModemPorts(self, ip):
+		self.GetIfTypes()
 		MIBS = ['IF-MIB::ifTable', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
 		for MIB in MIBS:
 			self.walk(ip, MIB)
