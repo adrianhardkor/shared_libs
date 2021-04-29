@@ -63,7 +63,7 @@ class MODEMSNMP():
 			wc.pairprint(ip, 'is not pingable cant use snmp')
 			self.Modem = result
 			return({})
-		session = Session(hostname=ip, community=self.community, version=2)
+		session = Session(hostname=ip, community=self.community, version=2, timeout=60)
 		MIBS = ['ifDescr', 'ifPhysAddress', 'ifTable', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
 			data = session.walk(MIB)
