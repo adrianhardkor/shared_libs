@@ -82,7 +82,7 @@ class MODEMSNMP():
 				if ifIndex not in result['intfs'].keys(): result['intfs'][ifIndex] = {'portGroup':'', 'ipNetToMediaPhysAddress':'', 'ifDescr':'','ifType':''}
 				result['intfs'][ifIndex][index] = value
 		self.Modem = result
-		wc.pairprint('[INFO] GetModemPorts.class.py took', wc.timer_index_since(timer))
+		wc.pairprint('[INFO] GetModemPorts.class.py took ' + ip + '\t', wc.timer_index_since(timer))
 		return(result)
 
 # M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
