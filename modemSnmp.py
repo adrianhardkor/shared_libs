@@ -75,7 +75,7 @@ class MODEMSNMP():
 					if index == 'ifPhysAddress' and value != '':
 						value = value.split('x')[1]
 						value = ':'.join([value[0:2],value[2:4],value[4:6],value[6:8],value[8:10],value[10:12]])
-					elif index == 'ifType': value = ifTypes[value]
+					elif index == 'ifType': value = self.ifTypes[value]
 					if ifIndex not in self.Modem['intfs'].keys(): self.Modem['intfs'][ifIndex] = {}
 					self.Modem['intfs'][ifIndex][index] = value
 		return(self.Modem)
