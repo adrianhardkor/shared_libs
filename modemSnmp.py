@@ -66,7 +66,12 @@ class MODEMSNMP():
 		session = Session(hostname=ip, community=self.community, version=2, timeout=60)
 		MIBS = ['ifDescr', 'ifPhysAddress', 'ifTable', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
-			data = session.walk(MIB)
+			try:
+				data = session.walk(MIB)
+			except Exception as err:
+				wc.pairprint('[WARN] ' + ip, err)
+				self.Modem = result
+				return(result)
 			for d in data:
 				if self.isAscii(d.value):  value = d.value
 				else: value = ':'.join('{:02x}'.format(ord(x)) for x in d.value)
