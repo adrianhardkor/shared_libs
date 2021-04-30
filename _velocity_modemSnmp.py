@@ -73,6 +73,7 @@ class MODEMSNMP():
 				self.Modem = result
 				return(result)
 			for d in data:
+				wc.pairprint(d.oid_index, d.value)
 				if self.isAscii(d.value):  value = d.value
 				else: value = ':'.join('{:02x}'.format(ord(x)) for x in d.value)
 				if MIB == 'ipNetToMediaPhysAddress':
@@ -90,9 +91,9 @@ class MODEMSNMP():
 		# wc.pairprint('[INFO] GetModemPorts.class.py took ' + ip + '\t', wc.timer_index_since(timer))
 		return(result)
 
-# M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
-# data = M.GetModemPorts(wc.argv_dict['ip'])
-# wc.jd(data)
+M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
+data = M.GetModemPorts(wc.argv_dict['ip'])
+wc.jd(data)
 # M.ValidateModemIP(wc.argv_dict['ip'], wc.argv_dict['cmac'])
 
 

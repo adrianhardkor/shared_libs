@@ -51,17 +51,44 @@ class MODEMSNMP():
 		if oid in self.translations.keys(): pass
 		else:
 			mib = wc.exec2('snmptranslate ' + oid)
+			# wc.pairprint('trans ' + oid, mib)
 			self.translations[oid] = mib.split(':')[-1]
 		return(self.translations[oid])
+	def bulkwalkSystem(self, host, mib):
+		data = wc.exec2('snmpbulkwalk -v2c -c ' + wc.env_dict['ARC_SNMP_COMM'] + ' '.join(['',host,mib]))
+		for varBind in data.split('\n'):
+			# print('\t' + str(varBind))
+			varBind = wc.cleanLine(str(varBind))
+			out_oid = varBind[0].split('.')
+			value = ' '.join(varBind[2::])
+			if mib == 'IP-MIB::ipNetToMediaPhysAddress':
+				ifIndex = str(out_oid[-5])
+				index = self.GetMibOID('.'.join(out_oid)).split('.')
+				value = value + ' ' + '.'.join(index[2::])
+				index = index[0]
+			else:
+				ifIndex = out_oid.pop(-1)
+				# index = self.GetMibOID('.'.join(out_oid))
+				index = mib.split(':')[-1]
+			if index == 'ifPhysAddress' and value != '':
+				if 'x' in value:
+					value = value.split('x')[1]
+					value = ':'.join([value[0:2],value[2:4],value[4:6],value[6:8],value[8:10],value[10:12]])
+			elif index == 'ifType' and wc.is_int(value): value = self.ifTypes[value]
+			if ifIndex not in self.Modem['intfs'].keys(): self.Modem['intfs'][ifIndex] = {}
+			self.Modem['intfs'][ifIndex][index] = value
 	def bulkwalk(self, host, mib):
-		oid = wc.exec2('snmptranslate -On ' + mib)
+		# wc.pairprint(host,mib)
+		# oid = wc.exec2('snmptranslate -On ' + mib)
 		for (errorIndication, errorStatus, errorIndex, varBinds) in bulkCmd(SnmpEngine(),
 			CommunityData(self.community),
 			UdpTransportTarget((host,161)),
 			ContextData(),
 			0, 2,
-			ObjectType(ObjectIdentity(oid))):
+			ObjectType(ObjectIdentity(mib.split(':')[0], mib.split(':')[-1]))):
+			wc.pairprint(mib.split(':')[0], mib.split(':')[-1])
 			for varBind in varBinds:
+				print('\t' + str(varBind))
 				varBind = wc.cleanLine(str(varBind))
 				out_oid = varBind[0].split('.')
 				value = ' '.join(varBind[2::])
@@ -72,15 +99,18 @@ class MODEMSNMP():
 					index = index[0]
 				else:
 					ifIndex = out_oid.pop(-1)
-					index = self.GetMibOID('.'.join(out_oid))
+					# index = self.GetMibOID('.'.join(out_oid))
+					index = mib.split(':')[-1]
 				if index == 'ifPhysAddress' and value != '':
-					value = value.split('x')[1]
-					value = ':'.join([value[0:2],value[2:4],value[4:6],value[6:8],value[8:10],value[10:12]])
+					if 'x' in value:
+						value = value.split('x')[1]
+						value = ':'.join([value[0:2],value[2:4],value[4:6],value[6:8],value[8:10],value[10:12]])
 				elif index == 'ifType': value = self.ifTypes[value]
 				if ifIndex not in self.Modem['intfs'].keys(): self.Modem['intfs'][ifIndex] = {}
 				self.Modem['intfs'][ifIndex][index] = value
 	def walk(self, host, mib):
 		oid = wc.exec2('snmptranslate -On ' + mib)
+		wc.pairprint('trans1 ' + mib, oid)
 		for (errorIndication, errorStatus, errorIndex, varBinds) in bulkCmd(SnmpEngine(), 
 			CommunityData(self.community), 
 			UdpTransportTarget((host, 161)), 
@@ -118,16 +148,20 @@ class MODEMSNMP():
 					self.Modem['intfs'][ifIndex][index] = value
 		return(self.Modem)
 	def GetModemPorts(self, ip):
-		wc.pairprint('[INFO] ' + ip, 'start')
+		# wc.pairprint('[INFO] ' + ip, 'start')
 		timer = wc.timer_index_start()
 		if not wc.is_pingable(ip): wc.pairprint(ip, 'not_pingable'); return(self.Modem)
 		self.GetIfTypes()
-		MIBS = ['IF-MIB::ifTable', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
+		MIBS = ['IF-MIB::ifDescr', 'IF-MIB::ifAdminStatus', 'IF-MIB::ifOperStatus', 'IF-MIB::ifMtu', 'IF-MIB::ifType', 'IF-MIB::ifPhysAddress', 'IF-MIB::ifSpeed', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
 		for MIB in MIBS:
-			self.bulkwalk(ip, MIB)
-		wc.pairprint('[INFO] modemSnmp.PySnmp for ' + ip, wc.timer_index_since(timer))
+			timer2 = wc.timer_index_start()
+			# wc.pairprint(ip, MIB)
+			self.bulkwalkSystem(ip, MIB)
+			# wc.pairprint(MIB, wc.timer_index_since(timer2))
+		# wc.pairprint('[INFO] modemSnmp.PySnmp for ' + ip, wc.timer_index_since(timer))
 		return(self.Modem)
 
 # M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
-# M.GetModemPorts('10.88.16.2')
+# out = M.GetModemPorts('10.88.16.2')
+# wc.jd(out)
 
