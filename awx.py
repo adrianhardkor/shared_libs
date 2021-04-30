@@ -322,6 +322,7 @@ class AWX():
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 					elif 'junipernetworks.junos.junos' in interesting['ansible_net_system'] or 'junos' in interesting['ansible_net_system']:
 						_FACTS['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
+						if '10.88.245.4' in ip: wc.jd(_FACTS['ansible_net_config']); exit(0)
 						interesting['ansible_net_interfaces_config'] = {}
 						for ancii in _FACTS['ansible_net_config']['interfaces']['interface']:
 							# convert to name = data
