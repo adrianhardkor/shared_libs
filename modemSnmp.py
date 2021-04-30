@@ -87,6 +87,7 @@ class MODEMSNMP():
 			ContextData(), 
 			ObjectType(ObjectIdentity(oid)), 
 			lookupMib=True,
+			maxRepetitions=3,
 			lexicographicMode=False): 
 			if errorIndication:
 				print(errorIndication, file=sys.stderr)
@@ -96,10 +97,12 @@ class MODEMSNMP():
 				break
 			else:
 				for varBind in varBinds:
+					print(varBind)
 					varBind = wc.cleanLine(str(varBind))
 					out_oid = varBind[0].split('.')
 					value = ' '.join(varBind[2::])
 					if mib == 'IP-MIB::ipNetToMediaPhysAddress':
+						if len(out_oid) <= 5: print(out_oid)
 						ifIndex = str(out_oid[-5])
 						index = self.GetMibOID('.'.join(out_oid)).split('.')
 						value = value + ' ' + '.'.join(index[2::])
