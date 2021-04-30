@@ -128,6 +128,6 @@ class MODEMSNMP():
 		wc.pairprint('[INFO] modemSnmp.PySnmp for ' + ip, wc.timer_index_since(timer))
 		return(self.Modem)
 
-M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
-M.GetModemPorts('10.88.16.2')
+# M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
+# M.GetModemPorts('10.88.16.2')
 
