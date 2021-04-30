@@ -64,7 +64,7 @@ class MODEMSNMP():
 			self.Modem = result
 			return({})
 		session = Session(hostname=ip, community=self.community, version=2, timeout=60)
-		MIBS = ['ifTable', 'ifConnectorPresent', 'ifPromiscuousMode', 'ipNetToMediaPhysAddress']
+		MIBS = ['ifDescr', 'ifAdminStatus', 'ifMtu', 'ifOperStatus', 'ifPhysAddress', 'ifSpeed', 'ifType', 'ifConnectorPresent', 'ipNetToMediaPhysAddress']
 		for MIB in MIBS:
 			try:
 				data = session.walk(MIB)
