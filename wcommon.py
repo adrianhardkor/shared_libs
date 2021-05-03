@@ -573,6 +573,10 @@ def lunique(list1):
             unique_list.append(x)
     return(unique_list)
 
+def Merge(dict1, dict2):
+    dict2.update(dict1)
+    return(dict2)
+
 def lflatten(object):
 	gather = []
 	for item in object:
