@@ -280,7 +280,6 @@ class AWX():
 							add_sec = add_sec + int(add[-4]) * 60
 							add_sec = add_sec + int(add[-6]) * 3600
 							add_sec = add_sec + int(add[-8]) * 86400
-							# wc.pairprint('add_sec', add_sec); exit(0)
 							result[ip]['ids'][host['id']]['facts_timestamp'] = time.strftime(formatter, time.localtime(start + int(add_sec)))
 							break
 					interesting = {}
@@ -321,8 +320,10 @@ class AWX():
 						for ad in wc.lsearchAllInline('ansible_devices_.*', list(_FACTS.keys())):
 							interesting[ad] = {'model':_FACTS[ad]['model'],'vendor':_FACTS[ad]['vendor']}
 					elif 'junipernetworks.junos.junos' in interesting['ansible_net_system'] or 'junos' in interesting['ansible_net_system']:
-						_FACTS['ansible_net_config'] = wc.xml_loads(_FACTS['ansible_net_config'])
-						if '10.88.245.4' in ip: wc.jd(_FACTS['ansible_net_config']); exit(0)
+						# two = wc.xml_loads2(_FACTS['ansible_net_config'])
+						_FACTS['ansible_net_config'] = wc.xml_loads2(_FACTS['ansible_net_config'])
+						_FACTS['ansible_net_config'] =  _FACTS['ansible_net_config']['configuration']
+						# if host['name'] == 'ARCNDEVHUHBBR02':wc.jd(two); exit(0)
 						interesting['ansible_net_interfaces_config'] = {}
 						for ancii in _FACTS['ansible_net_config']['interfaces']['interface']:
 							# convert to name = data
@@ -333,7 +334,21 @@ class AWX():
 							else:
 								# interesting[ansible_attr] = '_missing'
 								pass
+
+						# APPLY GROUPS (junipernetworks.junos doesnt do by default)
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
+						if 'groups' in _FACTS['ansible_net_config'].keys():
+							for group in  _FACTS['ansible_net_config']['groups']:
+								if 'interfaces' in group.keys():
+									groupIntfName = group['interfaces']['interface']['name']
+									for i in range(len(_FACTS['ansible_net_config']['interfaces']['interface'])):
+										netIntf = _FACTS['ansible_net_config']['interfaces']['interface'].pop(i); # pop
+										old_name = netIntf['name']
+										if old_name == groupIntfName or wc.lsearchAllInline2(groupIntfName, [old_name]) != []:
+											netIntf = wc.Merge(group['interfaces']['interface'], netIntf)
+											wc.pairprint('Merged group:' + group['name'], old_name)
+											netIntf['name'] = old_name; # make sure name is not regex
+										_FACTS['ansible_net_config']['interfaces']['interface'].append(netIntf); # re-append
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
 					elif 'icx' in interesting['ansible_net_system'] or 'ruckus' in interesting['ansible_net_system']:
