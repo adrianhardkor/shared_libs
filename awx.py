@@ -323,7 +323,6 @@ class AWX():
 						# two = wc.xml_loads2(_FACTS['ansible_net_config'])
 						_FACTS['ansible_net_config'] = wc.xml_loads2(_FACTS['ansible_net_config'])
 						_FACTS['ansible_net_config'] =  _FACTS['ansible_net_config']['configuration']
-						# if host['name'] == 'ARCNDEVHUHBBR02':wc.jd(two); exit(0)
 						interesting['ansible_net_interfaces_config'] = {}
 						for ancii in _FACTS['ansible_net_config']['interfaces']['interface']:
 							# convert to name = data
@@ -337,21 +336,33 @@ class AWX():
 
 						# APPLY GROUPS (junipernetworks.junos doesnt do by default)
 						interesting['ansible_net_interfaces'] = _FACTS['ansible_net_interfaces']
+						interesting['ansible_net_interfaces_list'] = {}
+						interfaces_list_index = 0
+						for intf in _FACTS['ansible_net_config']['interfaces']['interface']:
+							# list
+							interesting['ansible_net_interfaces_list'][intf['name']] = interfaces_list_index
+							interfaces_list_index = interfaces_list_index + 1
 						if 'groups' in _FACTS['ansible_net_config'].keys():
 							for group in  _FACTS['ansible_net_config']['groups']:
 								if 'interfaces' in group.keys():
 									groupIntfName = group['interfaces']['interface']['name']
-									for i in range(len(_FACTS['ansible_net_config']['interfaces']['interface'])):
-										netIntf = _FACTS['ansible_net_config']['interfaces']['interface'].pop(i); # pop
-										old_name = netIntf['name']
-										if old_name == groupIntfName or wc.lsearchAllInline2(groupIntfName, [old_name]) != []:
-											netIntf = wc.Merge(group['interfaces']['interface'], netIntf)
-											wc.pairprint('Merged group:' + group['name'], old_name)
-											netIntf['name'] = old_name; # make sure name is not regex
-										_FACTS['ansible_net_config']['interfaces']['interface'].append(netIntf); # re-append
+									if groupIntfName in interesting['ansible_net_interfaces_list'].keys():
+										# merge - old is index of ansible_net_interfaces list
+										old = _FACTS['ansible_net_config']['interfaces']['interface'].pop(interesting['ansible_net_interfaces_list'][groupIntfName])
+										new = wc.Merge(group['interfaces']['interface'], old)
+										new['name'] = old['name']; # make sure name is not regex
+										print('\t'.join(['','MERGE',group['name'],host['name'],groupIntfName]))
+									else:
+										print('\t'.join(['','NEW  ',group['name'],host['name'],groupIntfName]))
+										new = group['interfaces']['interface']
+										# add new intf to _list
+										interesting['ansible_net_interfaces_list'][new['name']] = len(interesting['ansible_net_interfaces_list']) - 1
+									_FACTS['ansible_net_config']['interfaces']['interface'].append(new); # re-apply
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
+						# if host['name'] == 'ARCNDEVHUHCOR01': exit(0)
 					elif 'icx' in interesting['ansible_net_system'] or 'ruckus' in interesting['ansible_net_system']:
+						_FACTS = _FACTS['ansible_net_config2']['ansible_facts']
 						intf_locs = {}
 						for parent in ['ansible_net_model', 'network_os', 'ansible_net_image', 'ansible_net_interfaces', 'ansible_hostname', 'ansible_net_hostname', 'ansible_net_version', 'ansible_net_serialnum', 'ansible_net_interfaces', 'ansible_net_memfree_mb', 'ansible_net_memtotal_mb']:
 							if parent in _FACTS.keys():
@@ -398,6 +409,20 @@ class AWX():
 								l3port = intf_locs[clean[2]]
 								parentLine = cfgLine
 								intf_config = {cfgLine: []}
+							elif cfgLine.startswith('ip address'):
+								mgmts = wc.lsearchAllInline('mgmt', list(interesting['ansible_net_interfaces_config'].keys()))
+								if mgmts != []:
+									for mgmt in mgmts:
+										interesting['ansible_net_interfaces_config'][mgmt].append({'ip':' '.join(clean[2:4])})
+								else: 
+									mgmts = wc.lsearchAllInline('mgmt', list(_FACTS['ansible_net_interfaces'].keys()))
+									for mgmt in mgmts:
+										if mgmt not in interesting['ansible_net_interfaces_config'].keys():
+											interesting['ansible_net_interfaces_config'][mgmt] = []
+										interesting['ansible_net_interfaces_config'][mgmt].append({'ip':' '.join(clean[2:4])})
+								# wc.pairprint('intf', wc.lsearchAllInline('mgmt', list(_FACTS['ansible_net_interfaces'].keys())))
+								# wc.pairprint('intf_config', wc.lsearchAllInline('mgmt', list(interesting['ansible_net_interfaces_config'].keys())))
+								wc.pairprint('[WARN]   ' + host['name'], 'had non-primaryIpInt config')
 							elif 'ip' in clean and 'address' in clean:
 								# interface ethernet 1/1/4\n ip address 192.168.0.166 255.255.255.0 dynamic
 								intf_config['ip'] = ' '.join(clean[2:4])
