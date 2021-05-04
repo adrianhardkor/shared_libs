@@ -28,28 +28,36 @@ class NCS():
 			for f in d['fields'].keys():
 				out[ID][f] = d['fields'][f]['value']
 		return(out)
-	def REST_POST(self, endpoint, args={}):
+	def REST_POST(self, endpoint, args=''):
+		if args != '':
+			a = wc.cleanLine(args)
+			args = {'criteria': {a[0]: {'operator': a[1], 'data': str(a[2])}}}
+		else: args = {}
+		wc.jd(args)
 		s = Session()
 		base_api_url = self.url + endpoint
 		json_payload = json.dumps(args)
 		hmac_key = self.secret_hmac
 		digest = self.make_digest(self.url + endpoint, hmac_key)
 		self.headers['HMAC'] = digest
-		wc.jd(self.headers)
 		data = s.post(self.url + endpoint, headers=self.headers, json=json_payload)
 		return(data.json())
 	def LoadTables(self):
-		multiplexer_manufacturers = self.REST_POST('/multiplexer_manufacturers/list')
-		multiplexer_manufacturers = self.format(multiplexer_manufacturers)
-		wc.jd(multiplexer_manufacturers)
+		self.Tables = {}
+		self.Tables['multiplexer_manufacturers'] = self.Format(self.REST_POST('/multiplexer_manufacturers/list'))
 	def GetInventory(self, site_location_id):
-		data = self.REST_POST('/multiplexers/list', args={'criteria':{'site_location_id':{'operator':'=','data':str(site_location_id)}}})
+		data = self.REST_POST('/multiplexers/list', args='site_location_id = ' + site_location_id)
 		data = self.Format(data)
+		print('network_element_id\tid\tsite_location_id')
+		for device in data.keys():
+			print('\t'.join([data[device]['network_element_tid'], str(device), str(data[device]['site_location_id'])])) 
 		return(data)
-
+key = wc.argv_dict['KEY']
+myhmac = wc.argv_dict['SECRET']
 N = NCS('wow-sandbox.n-c-s.net', key=key, secret_hmac=myhmac)
-wc.jd(N.GetInventory('61325'))
-
+# N.LoadTables()
+print('START')
+N.GetInventory('61325')
 
 ##!/usr/bin/python3
 #from requests import Session
