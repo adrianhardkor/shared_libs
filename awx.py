@@ -360,7 +360,7 @@ class AWX():
 									_FACTS['ansible_net_config']['interfaces']['interface'].append(new); # re-apply
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
-						# if host['name'] == 'ARCNDEVHUHCOR01': exit(0)
+						# if host['name'] == 'ARCUAT1HUHCMR01': wc.jd(_FACTS['ansible_net_config']); exit(0)
 					elif 'icx' in interesting['ansible_net_system'] or 'ruckus' in interesting['ansible_net_system']:
 						_FACTS = _FACTS['ansible_net_config2']['ansible_facts']
 						intf_locs = {}
