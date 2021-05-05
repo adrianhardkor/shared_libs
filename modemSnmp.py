@@ -16,7 +16,9 @@ class MODEMSNMP():
 		self.translations = {}
 		self.ifTypes = {}
 		self.Modem = {'intfs':{}, 'chassis':{}}
-		self.ianaiftype = json.loads(wc.REST_GET('https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib'))['response.body']
+		self.ianaiftype = json.loads(wc.REST_GET('https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib'))
+		if 'response.body' in self.ianaiftype.keys(): self.ianaiftype = self.ianaiftype['response.body']
+		else: wc.jd(self.ianaiftype)
 	def ValidateModemIP(self, ip, cmac):
 		cmac = cmac.replace(':','').upper().strip()
 		allmacs = {}
