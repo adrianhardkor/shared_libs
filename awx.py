@@ -550,8 +550,11 @@ class AWX():
 								else: continue
 							# ['interface']['cable-bundle']; # for SG services
 						# docs-mac-domain
-						for loop in wc.lsearchAllInline2('loop', _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['interface'].keys()):
+						for loop in wc.lsearchAllInline('loop', _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['interface'].keys()):
 							interesting['ansible_net_interfaces'][loop.split(':')[-1]] = _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['interface'][loop]
+							interesting['ansible_net_interfaces'][loop.split(':')[-1]]['var'] = 'ports'
+							interesting['ansible_net_interfaces'][loop.split(':')[-1]]['shutdown'] = False; # if reachable facts then obviously up/up 
+							# wc.jd(list(interesting['ansible_net_interfaces'].keys())); exit(0)
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''

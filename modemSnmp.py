@@ -158,9 +158,9 @@ class MODEMSNMP():
 		for MIB in MIBS:
 			timer2 = wc.timer_index_start()
 			free = '\t' + str(wc.exec2('free -m').split('\n'))
+			self.bulkwalkSystem(ip, MIB)
 			free = ''
 			wc.pairprint(ip, MIB + free)
-			self.bulkwalkSystem(ip, MIB)
 			# wc.pairprint(MIB, wc.timer_index_since(timer2))
 		# wc.pairprint('[INFO] modemSnmp.PySnmp for ' + ip, wc.timer_index_since(timer))
 		return(self.Modem)
