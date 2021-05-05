@@ -16,6 +16,7 @@ class MODEMSNMP():
 		self.translations = {}
 		self.ifTypes = {}
 		self.Modem = {'intfs':{}, 'chassis':{}}
+		self.ianaiftype = json.loads(wc.REST_GET('https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib'))['response.body']
 	def ValidateModemIP(self, ip, cmac):
 		cmac = cmac.replace(':','').upper().strip()
 		allmacs = {}
@@ -40,8 +41,7 @@ class MODEMSNMP():
 				self.Modem['intfs'][intf]['portGroup'] = 'PacketCable'
 			else: self.Modem['intfs'][intf]['portGroup'] = self.Modem['intfs'][intf]['ifType']
 	def GetIfTypes(self):
-		data = json.loads(wc.REST_GET('https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib'))['response.body']
-		for line in data.split('\n'):
+		for line in self.ianaiftype.split('\n'):
 			cline = wc.cleanLine(line)
 			if cline == []: continue
 			elif '(' in line and ')' in line:

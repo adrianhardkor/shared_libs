@@ -550,6 +550,8 @@ class AWX():
 								else: continue
 							# ['interface']['cable-bundle']; # for SG services
 						# docs-mac-domain
+						for loop in wc.lsearchAllInline2('loop', _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['interface'].keys()):
+							interesting['ansible_net_interfaces'][loop.split(':')[-1]] = _FACTS['ansible_net_configuration']['data']['ccapproxy:ccap']['interface'][loop]
 					elif 'none' in interesting['ansible_net_system']:
 						result[ip]['ids'][host['id']]['facts_timestamp'] = ''
 						result[ip]['ids'][host['id']]['facts_gathered'] = ''
