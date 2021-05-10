@@ -1142,12 +1142,17 @@ def load_env():
 		env_dict[index] = '='.join(line)
 	return(env_dict)	
 
+global labs
+global markets
+global services
+global functions
 def validateHostname(hostname):
     hostname = hostname.replace(' ','').replace('-','')
     # print(hostname)
     global labs
     global markets
-    # global services
+    global services
+    global functions
     labs = ['ARC']
     markets = ['UAT1', 'UAT2', 'VDC1', 'MDEV', 'NDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS', 'EDGE']
     services = ['UAT', 'EDG', 'HUB', 'HUA', 'HUC', 'HUH', 'VDC', 'CLD']
