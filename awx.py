@@ -174,6 +174,7 @@ class AWX():
 								# if service not in wc.services??
 								continue
 							if 'hosts' not in data[a]['children'][group]['children'][market]['children'][service].keys(): continue
+							if data[a]['children'][group]['children'][market]['children'][service]['hosts'] == None: continue
 							for hostname in data[a]['children'][group]['children'][market]['children'][service]['hosts'].keys():
 								valid_host = wc.validateHostname(hostname)
 								valid_path = hostname_path_compare(valid_host, {'lab':group,'market':market,'service':service})
@@ -343,7 +344,12 @@ class AWX():
 							interesting['ansible_net_interfaces_list'][intf['name']] = interfaces_list_index
 							interfaces_list_index = interfaces_list_index + 1
 						if 'groups' in _FACTS['ansible_net_config'].keys():
+							# wc.pairprint('groups', type(_FACTS['ansible_net_config']['groups']))
+							# adrian
+							if type(_FACTS['ansible_net_config']['groups']) == dict: 
+								_FACTS['ansible_net_config']['groups'] = [_FACTS['ansible_net_config']['groups']]
 							for group in  _FACTS['ansible_net_config']['groups']:
+								wc.pairprint(host['name'],group['name'])
 								if 'interfaces' in group.keys():
 									groupIntfName = group['interfaces']['interface']['name']
 									if groupIntfName in interesting['ansible_net_interfaces_list'].keys():
@@ -351,16 +357,16 @@ class AWX():
 										old = _FACTS['ansible_net_config']['interfaces']['interface'].pop(interesting['ansible_net_interfaces_list'][groupIntfName])
 										new = wc.Merge(group['interfaces']['interface'], old)
 										new['name'] = old['name']; # make sure name is not regex
-										print('\t'.join(['','MERGE',group['name'],host['name'],groupIntfName]))
+										# print('\t'.join(['','MERGE',group['name'],host['name'],groupIntfName]))
 									else:
-										print('\t'.join(['','NEW  ',group['name'],host['name'],groupIntfName]))
+										# print('\t'.join(['','NEW  ',group['name'],host['name'],groupIntfName]))
 										new = group['interfaces']['interface']
 										# add new intf to _list
 										interesting['ansible_net_interfaces_list'][new['name']] = len(interesting['ansible_net_interfaces_list']) - 1
 									_FACTS['ansible_net_config']['interfaces']['interface'].append(new); # re-apply
 						#for ansible_attr in wc.lsearchAllInline2('ansible_.*', _FACTS.keys()):
 							#interesting[ansible_attr] = _FACTS[ansible_attr]
-						# if host['name'] == 'ARCUAT1HUHCMR01': wc.jd(_FACTS['ansible_net_config']); exit(0)
+						# if host['name'] == 'ARCBKBNEDGDRR01': wc.jd(_FACTS['ansible_net_config']); exit(0)
 					elif 'icx' in interesting['ansible_net_system'] or 'ruckus' in interesting['ansible_net_system']:
 						_FACTS = _FACTS['ansible_net_config2']['ansible_facts']
 						intf_locs = {}
