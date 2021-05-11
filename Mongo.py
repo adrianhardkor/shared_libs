@@ -453,6 +453,28 @@ class Router(MONGO.M.Document):
 	rack = MONGO.M.StringField()
 	pass
 
+class Firewall(MONGO.M.Document):
+	name = MONGO.M.StringField(); # ansible inventory name
+	device_name = MONGO.M.StringField(); # name on device
+	vendor = MONGO.M.StringField()
+	model = MONGO.M.StringField()
+	ipAddress = MONGO.M.StringField()
+	sn = MONGO.M.StringField()
+	protocols = MONGO.M.ListField()
+	ansible_net_system = MONGO.M.ListField()
+	ansible_inventories = MONGO.M.DictField()
+	ansible_host_vars = MONGO.M.DictField()
+	ansible_ready = MONGO.M.DictField()
+	# ansible host/group vars?
+	ports = MONGO.M.ListField(MONGO.M.EmbeddedDocumentField(Port, dbref=True))
+	velocityARC = MONGO.M.EmbeddedDocumentField(velDevice, dbref=True)
+	IPAM = MONGO.M.DictField(); # {'10.88.48.0/23':fxp0}
+	# NCS = MONGO.M.EmbeddedDocumentField(mNCS, dbref=True); # rack-loc?
+	timestamp = MONGO.M.StringField()
+	_templateName = MONGO.M.StringField()
+	rack = MONGO.M.StringField()
+	pass
+
 class Server(MONGO.M.Document):
 	name = MONGO.M.StringField(); # ansible inventory name
 	device_name = MONGO.M.StringField(); # name on device
