@@ -1276,6 +1276,7 @@ def GetMapping(connection, L, V):
 				sys.exit(1)
 			lepton_far_port = mapping[0]
 			# pairprint('[INFO]  ' + reserved_stc_port, list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0].split('_'))
+			wc.jd(list(V.INV['lepton01']['ports'].keys()))
 			return(list(V.INV['lepton01']['ports'][lepton_far_port]['connections'].keys())[0])
 
 def StcGetCSV(MH, iteration='', care=''):
