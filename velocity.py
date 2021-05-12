@@ -567,11 +567,11 @@ class VELOCITY():
 		for d in [str(device1), str(device2)]:
 			if d not in self.INV.keys():
 				wc.pairprint('Connection Failed:  ' + connection_name, str(d) + '  not in V.INV')
-				return()
+				return(str(d))
 		for d2,p2 in {device1:port1,device2:port2}.items():
 			if p2 not in self.INV[d2]['ports'].keys(): 
 				wc.pairprint('Connection Failed:  ' + connection_name, str(p2) + '  not in ' + str(d2) + ' V.INV ports')
-				return()
+				return(str(d2) + '/' + str(p2))
 		# SEE IF CONNECTION ALREADY EXISTS
 		if connection_name in self.INV[device1]['ports'][port1]['connections'].keys() and \
 		connection_name in self.INV[device2]['ports'][port2]['connections'].keys():
