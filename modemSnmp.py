@@ -155,7 +155,7 @@ class MODEMSNMP():
 		if not wc.is_pingable(ip): wc.pairprint(ip, 'not_pingable'); return(self.Modem)
 		self.GetIfTypes()
 		MIBS = ['IF-MIB::ifDescr', 'IF-MIB::ifAdminStatus', 'IF-MIB::ifOperStatus', 'IF-MIB::ifMtu', 'IF-MIB::ifType', 'IF-MIB::ifPhysAddress', 'IF-MIB::ifSpeed', 'IF-MIB::ifConnectorPresent', 'IF-MIB::ifPromiscuousMode', 'IP-MIB::ipNetToMediaPhysAddress']
-		print('\t' + ip + ':  ')
+		print('\t' + ip + ':  ', end='')
 		for MIB in MIBS:
 			timer2 = wc.timer_index_start()
 			free = '\t' + str(wc.exec2('free -m').split('\n'))
