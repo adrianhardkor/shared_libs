@@ -129,6 +129,8 @@ class VELOCITY():
 		timer = wc.timer_index_start()
 		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
 		if topology != '':
+			tops = self.GetTopologies()
+			if topology in tops.keys(): wc.jd(tops[topology['activeRes'])
 			if topology in self.ALL_TOPOLOGIES.keys(): args['topologyId'] = self.ALL_TOPOLOGIES[topology]['id']
 		data = self.REST_POST('/ito/executions/v1/executions', args=args)
 		if 'executionState' not in data.keys():
