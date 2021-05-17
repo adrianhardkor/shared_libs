@@ -130,8 +130,14 @@ class VELOCITY():
 		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
 		if topology != '':
 			tops = self.GetTopologies()
-			if topology in tops.keys(): wc.jd(tops[topology]['activeRes']); exit(0)
-			if topology in self.ALL_TOPOLOGIES.keys(): args['topologyId'] = self.ALL_TOPOLOGIES[topology]['id']
+			wc.jd(tops[topology]); exit(0)
+			if topology in tops.keys(): 
+				# FOUND EXISTING RESERVATION
+				args['reservationId'] = tops[topology]['activeRes']['id']
+				MongoLoggerHandler('!! Found Exising Reservation: ' + tops[topology]['activeRes']['name'] + ',  by:' + wc.mcsplit(tops[topology]['activeRes']['creatorId'], ['(',')'])[1] + ', with enddate:' + tops[topology]['activeRes']['end'])
+			elif topology in self.ALL_TOPOLOGIES.keys():
+				MongoLoggerHandler('!! Wrapping TestRun in a new Reservation.  Will un-reserve on completion')
+				args['topologyId'] = self.ALL_TOPOLOGIES[topology]['id']
 		data = self.REST_POST('/ito/executions/v1/executions', args=args)
 		if 'executionState' not in data.keys():
 			data['html_report'] = wc.bytes_str(data['response.body'])
