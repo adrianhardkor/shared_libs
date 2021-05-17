@@ -130,8 +130,8 @@ class VELOCITY():
 		args = {'testPath':testPath, 'detailLevel':'ALL_ISSUES_ALL_STEPS', 'parametersList':parameters}
 		if topology != '':
 			tops = self.GetTopologies()
-			wc.jd(tops[topology]); exit(0)
-			if topology in tops.keys(): 
+			# wc.jd(tops[topology]); exit(0)
+			if tops[topology]['activeRes'] != {}:
 				# FOUND EXISTING RESERVATION
 				args['reservationId'] = tops[topology]['activeRes']['id']
 				MongoLoggerHandler('!! Found Exising Reservation: ' + tops[topology]['activeRes']['name'] + ',  by:' + wc.mcsplit(tops[topology]['activeRes']['creatorId'], ['(',')'])[1] + ', with enddate:' + tops[topology]['activeRes']['end'])
