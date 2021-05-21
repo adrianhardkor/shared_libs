@@ -135,30 +135,53 @@ def flask_runtimelogger():
 				return(json.dumps({'err':str(err)}))
 		else: return(flask.jsonify(vagent_getter())); # [GET]
 
+def ParseSettingsYML(url):
+	settings = json.loads(wc.REST_GET(url))['response.body']
+	s = {}
+	for line in settings.split('\n'):
+		if line.startswith('  '):
+			sline = line.split(':')
+			index = sline.pop(0).strip()
+			value = ':'.join(sline).strip()
+			value = wc.mcsplit(value, ['"',"'"])
+			if len(value) == 1: value = value[0]
+			else: value = value[1]
+			s[path][index] = value
+		else:
+			path = line.strip(':')
+			s[path] = {}
+	return(s)
+
 def flask_AIEngine():
 	@Mongo.MONGO.app.route('/aie', methods = ['GET'])
 	def engine():
-		wc.rmf('./settings.tmp')
-		wc.log_fname(json.loads(wc.REST_GET('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml'))['response.body'], './settings.tmp')
-		wc.jd(wc.read_yaml('./settings.tmp'))
+		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		result = {}
 		wc.pairprint('method', flask.request.method)
 		args = dictFlask(flask.request.args)
 		payload = dictFlask(flask.request.get_json())
 		timer = int(time.time())
-		k = paramiko.RSAKey.from_private_key_file("/opt/paramiko-test-key")
+		k = paramiko.RSAKey.from_private_key_file(settings[args['settings']]['private_key_file'])
 		c = paramiko.SSHClient()
 		c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-		print("connecting")
-		c.connect( hostname = args['hostname'], username = "ADMIN", pkey = k )
-		print("connected")
+		wc.pairprint(settings[args['settings']]['username'], settings[args['settings']]['private_key_file'])
+		c.connect( hostname = args['hostname'], username = settings[args['settings']]['username'], pkey = k )
 		commands = [ args['cmd'].replace('_',' ') + ' | display json | no-more' ]
 		for command in commands:
 			stdin , stdout, stderr = c.exec_command(command)
-			stdout = json.loads(str(stdout.read().decode('utf-8')))
-			stderr = ''
-			# stderr = json.loads(str(stderr.read().decode('utf-8')))
-			result[command] = {'stdout':stdout, 'stderr':stderr}
+			try:
+				stdin = json.loads(str(stdin.read().decode('utf-8')))
+			except Exception:
+				stdin = ''
+			try:
+				stdout = json.loads(str(stdout.read().decode('utf-8')))
+			except Exception:
+				stdout = ''
+			try:
+				stderr = json.loads(str(stderr.read().decode('utf-8')))
+			except Exception:
+				stderr = ''
+			result[command] = {'stdout':stdout, 'stderr':stderr, 'stdin':stdin}
 		try:
 			c.close()
 		except Exception:
