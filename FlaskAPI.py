@@ -155,21 +155,24 @@ def ParseSettingsYML(url):
 def flask_AIEngine():
 	@Mongo.MONGO.app.route('/aie', methods = ['GET'])
 	def engine():
-		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
+		timer = int(time.time())
 		result = {}
-		wc.pairprint('method', flask.request.method)
 		args = dictFlask(flask.request.args)
 		payload = dictFlask(flask.request.get_json())
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
-		wc.jd(settings)
 		wc.jd(settings[args['settings']])
-		timer = int(time.time())
-		k = paramiko.RSAKey.from_private_key_file(settings[args['settings']]['private_key_file'])
-		c = paramiko.SSHClient()
-		c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-		wc.pairprint(settings[args['settings']]['username'], settings[args['settings']]['private_key_file'])
-		c.connect( hostname = args['hostname'], username = settings[args['settings']]['username'], pkey = k )
-		commands = [ args['cmd'].replace('_',' ') + ' | display json | no-more' ]
+		if settings[args['settings']]['private_key_file'].endswith('.txt'):
+			return(flask.jsonify({'stdout_lines': wc.PARA_CMD_LIST([ args['cmd'].replace('_',' ') ], args['hostname'], args['settings'], username = settings[args['settings']]['username'], password = wc.read_file(settings[args['settings']]['private_key_file']), quiet=False,ping=False).split('\r\n')}))
+		else:
+			c = paramiko.SSHClient()
+			paramiko.util.log_to_file('ssh.log')
+			c.set_missing_host_key_policy(paramiko.AutoAddPolicy())		
+			# ssh-key
+			key = True
+			k = paramiko.RSAKey.from_private_key_file(settings[args['settings']]['private_key_file'])
+			c.connect( hostname = args['hostname'], username = settings[args['settings']]['username'], pkey = k )
+		commands = [ args['cmd'].replace('_',' ') ]
+		if settings[args['settings']]['vendor'] == 'junos': commands[0] = commands[0]  + ' | display json | no-more'
 		for command in commands:
 			stdin , stdout, stderr = c.exec_command(command)
 			try:
@@ -186,7 +189,8 @@ def flask_AIEngine():
 				stderr = ''
 			result[command] = {'stdout':stdout, 'stderr':stderr, 'stdin':stdin}
 		try:
-			c.close()
+			# c.close()
+			pass
 		except Exception:
 			pass
 		result['runtime'] = int(time.time()) - timer

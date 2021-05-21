@@ -684,12 +684,14 @@ def run_commands_paramiko(commands, IP, driver, remote_conn, quiet):
 def device_buffering_commands(driver):
     commands = []
     if driver == "cisco_ios": commands = ['term len 0', '']
+    elif driver == 'commscope': commands = ['terminal length 0']
     elif driver == "cisco_nxos": commands.insert(0, 'terminal length 0')
     elif driver == "juniper_junos": commands.insert(0, 'set cli screen-length 0')
     elif driver == 'mrvTS': commands.insert(0,'no pause')
     elif driver == 'mrv_mcc':
         commands.insert(0,'term width 512')
         commands.insert(0,'term len 0')
+    else: pairprint(driver, 'device_buffering_commands')
     return(commands)
 
 def device_prompt(tn, driver):
@@ -715,6 +717,8 @@ def get_prompt():
     errorPrompt = {}
     prompt['cisco_ios'] = "([a-zA-Z0-9\-\.\(\)\_]*[>#])"
     errorPrompt['cisco_ios'] = "(nable to get configuratio)"
+    prompt['commscope'] = "([a-zA-Z0-9\-\.\(\)\_]*[># ])"
+    errorPrompt['commscope'] = errorPrompt['cisco_ios']
     prompt['cisco_nxos'] = "([a-zA-Z0-9\-\.\(\)\_]*[># ])"
     errorPrompt['cisco_nxos'] = default
     prompt['juniper_junos'] = "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
