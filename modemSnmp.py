@@ -169,6 +169,6 @@ class MODEMSNMP():
 		return(self.Modem)
 
 # M = MODEMSNMP(wc.env_dict['ARC_SNMP_COMM'])
-# out = M.GetModemPorts('10.88.16.2')
+# out = M.GetModemPorts('10.88.17.16')
 # wc.jd(out)
 

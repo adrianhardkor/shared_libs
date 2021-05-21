@@ -148,6 +148,26 @@ class MDB():
 MONGO = MDB('localhost', 27017, 'admin')
 # SCALE ALL FURTHER CLASSES/DOCUMENTS IN ORDER OF CALLS/REFERENCES
 
+class ITSM(MONGO.M.EmbeddedDocument):
+	primaryV4 = MONGO.M.StringField()
+	vendor = MONGO.M.StringField()
+
+class DCIM(MONGO.M.EmbeddedDocument):
+	deviceType = MONGO.M.StringField()
+	rack = MONGO.M.IntField()
+	row = MONGO.M.StringField()
+	lowestRU = MONGO.M.IntField()
+	power = MONGO.M.StringField()
+	descr = MONGO.M.StringField()
+	consoleA = MONGO.M.DictField()
+	consoleB = MONGO.M.DictField()
+
+class Device(MONGO.M.Document):
+	apiVersion = MONGO.M.StringField(required=True)
+	name = MONGO.M.StringField(required=True)
+	DCIM = MONGO.M.EmbeddedDocumentField(DCIM, dbref=True)
+	ITSM = MONGO.M.EmbeddedDocumentField(ITSM, dbref=True)
+
 class rduModem(MONGO.M.Document):
 	cmac = MONGO.M.StringField(required=True)
 	access = MONGO.M.StringField()

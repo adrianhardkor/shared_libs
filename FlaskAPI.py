@@ -7,10 +7,13 @@ from werkzeug.utils import secure_filename
 import json
 import re
 import skinny
-import cablemedic
+# import cablemedic
 import velocity
 import flask
 import Mongo; # shared_libs
+import time
+import paramiko
+
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
 wc.jd(wc.wcheader)
 # Mongo.TryDeleteDocuments(Mongo.runner)
@@ -119,6 +122,7 @@ def flask_runtimelogger():
 	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
 	def run():
 		wc.pairprint('method', flask.request.method)
+		body = dictFlask(flask.request.get_json())
 		if flask.request.method != 'GET':
 			args = dictFlask(flask.request.args)
 			payload = dictFlask(flask.request.get_json())
@@ -131,6 +135,36 @@ def flask_runtimelogger():
 				return(json.dumps({'err':str(err)}))
 		else: return(flask.jsonify(vagent_getter())); # [GET]
 
+def flask_AIEngine():
+	@Mongo.MONGO.app.route('/aie', methods = ['GET'])
+	def engine():
+		result = {}
+		wc.pairprint('method', flask.request.method)
+		args = dictFlask(flask.request.args)
+		payload = dictFlask(flask.request.get_json())
+		timer = int(time.time())
+		k = paramiko.RSAKey.from_private_key_file("/opt/paramiko-test-key")
+		c = paramiko.SSHClient()
+		c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+		print("connecting")
+		c.connect( hostname = args['hostname'], username = "ADMIN", pkey = k )
+		print("connected")
+		commands = [ args['cmd'].replace('_',' ') + ' | display json | no-more' ]
+		for command in commands:
+			stdin , stdout, stderr = c.exec_command(command)
+			stdout = json.loads(str(stdout.read().decode('utf-8')))
+			stderr = ''
+			# stderr = json.loads(str(stderr.read().decode('utf-8')))
+			result[command] = {'stdout':stdout, 'stderr':stderr}
+		try:
+			c.close()
+		except Exception:
+			pass
+		result['runtime'] = int(time.time()) - timer
+		return(flask.jsonify(result))
+
+
+
 # FLASK WEB-API
 def flask_default():
 	@Mongo.MONGO.app.route('/', methods=['GET'])
@@ -142,6 +176,7 @@ if  __name__ == "__main__":
 	flask_default()
 	flask_RDU(); # /rdu
 	flask_uploader()
+	flask_AIEngine(); # /aie?hostname=10.88.240.26
 	flask_downloader()
 	flask_AIS(); # /ais
 	flask_NewCall(); # /new_call

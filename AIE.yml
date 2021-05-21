@@ -1,0 +1,22 @@
+junos:
+  username: "admin"
+  private_key_file: "/opt/paramiko-test-key"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: junos
+  prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
+  buffering: 'set cli screen-length 0'
+lx:
+  username: "arcuser"
+  private_key_file: "/opt/lx.arcuser.txt"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: mrvTS
+  prompt: "([a-zA-Z0-9\-\_]+[0-9\:\ ]+[>])"
+  buffering: 'no pause'
+ndev:
+  username: "ansible"
+  private_key_file: "/opt/NetDev-key"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: junos
+  prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
+  buffering: 'set cli screen-length 0'
+
