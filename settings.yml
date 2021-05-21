@@ -19,4 +19,9 @@ ndev:
   vendor: junos
   prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
   buffering: 'set cli screen-length 0'
-
+commscope:
+  username: "root"
+  private_key_file: "/opt/commscope.txt"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: commscope
+  prompt: "([a-zA-Z0-9\-\.\(\)\_]*[>#])"
