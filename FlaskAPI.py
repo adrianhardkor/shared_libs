@@ -162,7 +162,9 @@ def flask_AIEngine():
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		wc.jd(settings[args['settings']])
 		if settings[args['settings']]['private_key_file'].endswith('.txt'):
-			return(flask.jsonify({'stdout_lines': wc.PARA_CMD_LIST([ args['cmd'].replace('_',' ') ], args['hostname'], args['settings'], username = settings[args['settings']]['username'], password = wc.read_file(settings[args['settings']]['private_key_file']), quiet=False,ping=False).split('\r\n')}))
+			lines =  wc.PARA_CMD_LIST([ args['cmd'].replace('_',' ') ], args['hostname'], args['settings'], username = settings[args['settings']]['username'], password = wc.read_file(settings[args['settings']]['private_key_file']), quiet=False,ping=False).split('\r\n')
+
+			return(flask.jsonify({'stdout_lines': lines, 'runtime': int(time.time()) - timer}))
 		else:
 			c = paramiko.SSHClient()
 			paramiko.util.log_to_file('ssh.log')
