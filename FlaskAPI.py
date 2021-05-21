@@ -138,6 +138,9 @@ def flask_runtimelogger():
 def flask_AIEngine():
 	@Mongo.MONGO.app.route('/aie', methods = ['GET'])
 	def engine():
+		wc.rmf('./settings.tmp')
+		wc.log_fname(json.loads(wc.REST_GET('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml'))['response.body'], './settings.tmp')
+		wc.jd(wc.read_yaml('./settings.tmp'))
 		result = {}
 		wc.pairprint('method', flask.request.method)
 		args = dictFlask(flask.request.args)
