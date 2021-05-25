@@ -732,7 +732,7 @@ def get_prompt():
     errorPrompt['mrv_mcc'] = errorPrompt['cisco_ios']
     return()
 
-def mgmt_login_paramiko(ip, username, driver, quiet, password='', ping=True):
+def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', ping=True):
     global login_diff
     login_time = timer_index_start()
     global wow_time
@@ -760,10 +760,16 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', ping=True):
     remote_conn_pre = paramiko.SSHClient()
     remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     if not quiet: echo_param({'IP': ip, 'port': port, 'username': username, 'pre-commands': commands})
-    try:
-        remote_conn_pre.connect(ip, port=port, username=username, password=password, look_for_keys=False, allow_agent=False)
-    except Exception:
-        return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
+    if key != '':
+        try:
+            remote_conn_pre.connect(ip, port=port, username=username, pkey = paramiko.RSAKey.from_private_key_file(key_fname))
+        except Exception:
+            return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
+    else:        
+        try:
+            remote_conn_pre.connect(ip, port=port, username=username, password=password, look_for_keys=False, allow_agent=False)
+        except Exception:
+            return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
     print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))
 
     remote_conn = remote_conn_pre.invoke_shell()
@@ -901,7 +907,7 @@ def is_pingable(IP):
             result = False
     return(result)
 
-def PARA_CMD_LIST(commands, ip, driver, username, password='', quiet=False,ping=True):
+def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', quiet=False,ping=True):
     global passwords
     global wow_time
     global login_diff

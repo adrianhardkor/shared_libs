@@ -152,53 +152,34 @@ def ParseSettingsYML(url):
 			s[path] = {}
 	return(s)
 
+def PullCmds(args):
+	result = []
+	for a in sorted(wc.lsearchAllInline(args.keys(), 'cmd')):
+		# &cmd1=blah&cmd2=blah
+		result.append(args[a].replace('_',' '))
+	return(result)
+
 def flask_AIEngine():
 	@Mongo.MONGO.app.route('/aie', methods = ['GET'])
 	def engine():
 		timer = int(time.time())
+		paramiko_args = {}
 		result = {}
 		args = dictFlask(flask.request.args)
 		payload = dictFlask(flask.request.get_json())
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
-		wc.jd(settings[args['settings']])
-		if settings[args['settings']]['private_key_file'].endswith('.txt'):
-			lines =  wc.PARA_CMD_LIST([ args['cmd'].replace('_',' ') ], args['hostname'], args['settings'], username = settings[args['settings']]['username'], password = wc.read_file(settings[args['settings']]['private_key_file']), quiet=False,ping=False).split('\r\n')
-
-			return(flask.jsonify({'stdout_lines': lines, 'runtime': int(time.time()) - timer}))
-		else:
-			c = paramiko.SSHClient()
-			paramiko.util.log_to_file('ssh.log')
-			c.set_missing_host_key_policy(paramiko.AutoAddPolicy())		
-			# ssh-key
-			key = True
-			k = paramiko.RSAKey.from_private_key_file(settings[args['settings']]['private_key_file'])
-			c.connect( hostname = args['hostname'], username = settings[args['settings']]['username'], pkey = k )
-		commands = [ args['cmd'].replace('_',' ') ]
-		if settings[args['settings']]['vendor'] == 'junos': commands[0] = commands[0]  + ' | display json | no-more'
-		for command in commands:
-			stdin , stdout, stderr = c.exec_command(command)
-			try:
-				stdin = json.loads(str(stdin.read().decode('utf-8')))
-			except Exception:
-				stdin = ''
-			try:
-				stdout = json.loads(str(stdout.read().decode('utf-8')))
-			except Exception:
-				stdout = ''
-			try:
-				stderr = json.loads(str(stderr.read().decode('utf-8')))
-			except Exception:
-				stderr = ''
-			result[command] = {'stdout':stdout, 'stderr':stderr, 'stdin':stdin}
-		try:
-			# c.close()
-			pass
-		except Exception:
-			pass
-		result['runtime'] = int(time.time()) - timer
-		return(flask.jsonify(result))
-
-
+		settings_name = args['settings']
+		settings = settings[settings_name]
+		CMDS = PullCmds(args)
+		if settings['private_key_file'].endswith('.txt'): paramiko_args['password'] = wc.read_file(settings['private_key_file'])
+		else: paramiko_args['key_fname'] = settings['private_key_file']
+ 
+		paramiko_args['commands'] = CMDS
+		paramiko_args['ip'] = args['hostname']
+		paramiko_args['driver'] = settings_name
+		paramiko_args['username'] = settings['username']
+		lines = wc.PARA_CMD_LIST(**paramiko_args)
+		return(flask.jsonify({'stdout_lines': lines}))
 
 # FLASK WEB-API
 def flask_default():
