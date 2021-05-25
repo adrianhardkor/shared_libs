@@ -167,6 +167,7 @@ def flask_AIEngine():
 		result = {}
 		args = dictFlask(flask.request.args)
 		payload = dictFlask(flask.request.get_json())
+		# INVENTORY = RAW.INVENTORY.YML?
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		settings_name = args['settings']
 		settings = settings[settings_name]
@@ -179,7 +180,7 @@ def flask_AIEngine():
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		lines = wc.PARA_CMD_LIST(**paramiko_args)
-		return(flask.jsonify({'stdout_lines': lines}))
+		return(flask.jsonify(lines)); # {'command': 'output'}
 
 # FLASK WEB-API
 def flask_default():
