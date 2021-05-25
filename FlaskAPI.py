@@ -176,7 +176,7 @@ def flask_AIEngine():
  
 		paramiko_args['commands'] = CMDS
 		paramiko_args['ip'] = args['hostname']
-		paramiko_args['driver'] = settings_name
+		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		lines = wc.PARA_CMD_LIST(**paramiko_args)
 		return(flask.jsonify({'stdout_lines': lines}))

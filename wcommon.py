@@ -746,7 +746,7 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     global prompt
     global passwords
     global result
-    result = []
+    result = {}
     paramiko_buffer = 65535
     # driver-less
     commands = device_buffering_commands(driver)
@@ -774,7 +774,8 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
 
     remote_conn = remote_conn_pre.invoke_shell()
     output = remote_conn.recv(paramiko_buffer)
-    result.append(bytes_str(output))
+
+    result['_'] = bytes_str(output)
 
     # pre-commands
     paramiko_send_expect(commands, ip, remote_conn, driver, quiet)
@@ -812,7 +813,9 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
     global paramiko_buffer
     thisPrompt = '.*%s$' % prompt[driver]
     regexPrompt = re.compile(thisPrompt)
+    commandIndex = 1
     for command in commands:
+        result[str(commandIndex) + command] = []
         timer_index_start()
         output = ''
         check = 0
@@ -829,11 +832,14 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
             output += buff
             time.sleep(0.2)
             prompt_status = regexPrompt.search(output)
-        result.append(output)
+
+        result[str(commandIndex) + command].append(output)
+        result[str(commandIndex) + command] = s.join(result[str(commandIndex) + command])
         if not quiet: print(output)
         print("DONE: '%s', took '%s'" % (command, timer_index_since()))
+        commandIndex = commandIndex + 1
     runcommands_diff = timer_index_since(diff)
-    return(s.join(result))
+    return(result)
 
 def humanSize(fileSize):
     fileSize = float(fileSize)
@@ -936,8 +942,7 @@ def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', quiet
     print(" TOTAL Took: %s @ %s" % (float("{0:.2f}".format(sumIs)), timer_index_since(wow_time)))
 
     if string_match(errorPrompt[driver], output): return_code_error('Unknown Error on Switch: %s' % output)
-
-    return output
+    return(output)
 
 def grep_until(begin, ending, data):
     # 'show run', 'end', list(output) 
