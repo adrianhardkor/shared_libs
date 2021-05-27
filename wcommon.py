@@ -761,11 +761,13 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     if not quiet: echo_param({'IP': ip, 'port': port, 'username': username, 'pre-commands': commands})
     if key_fname != '':
+        pairprint('using key', key_fname)
         try:
             remote_conn_pre.connect(ip, port=port, username=username, pkey = paramiko.RSAKey.from_private_key_file(key_fname))
         except Exception:
             return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
     else:        
+        pairprint('not using key', password)
         try:
             remote_conn_pre.connect(ip, port=port, username=username, password=password, look_for_keys=False, allow_agent=False)
         except Exception:
@@ -921,7 +923,7 @@ def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', key_f
     global errorPrompt
     global prompt
     get_prompt(); # regex list 'global prompt'
-    spawnID = mgmt_login_paramiko(ip, username, driver, quiet, key_fname='', password=password, ping=ping)
+    spawnID = mgmt_login_paramiko(ip, username, driver, quiet, password, key_fname, ping=ping)
     if spawnID == -1:
         return('')
     timer_index_start()

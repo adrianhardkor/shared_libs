@@ -180,7 +180,8 @@ def flask_AIEngine():
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
-		paramiko_args['quiet'] = True
+		paramiko_args['quiet'] = False
+		wc.jd(paramiko_args)
 		lines = wc.PARA_CMD_LIST(**paramiko_args)
 		return(flask.jsonify(lines)); # {'command': 'output'}
 
