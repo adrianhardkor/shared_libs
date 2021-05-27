@@ -154,7 +154,7 @@ def ParseSettingsYML(url):
 
 def PullCmds(args):
 	result = []
-	for a in sorted(wc.lsearchAllInline(args.keys(), 'cmd')):
+	for a in sorted(wc.lsearchAllInline('cmd', list(args.keys()))):
 		# &cmd1=blah&cmd2=blah
 		result.append(args[a].replace('_',' '))
 	return(result)
@@ -179,6 +179,8 @@ def flask_AIEngine():
 		paramiko_args['ip'] = args['hostname']
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
+		paramiko_args['ping'] = False
+		paramiko_args['quiet'] = True
 		lines = wc.PARA_CMD_LIST(**paramiko_args)
 		return(flask.jsonify(lines)); # {'command': 'output'}
 

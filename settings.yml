@@ -4,11 +4,11 @@ linux:
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: linux
   prompt: "$"
-junos:
+juniper_junos:
   username: "ADMIN"
   private_key_file: "/opt/paramiko-test-key"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
-  vendor: junos
+  vendor: juniper_junos
   prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
   buffering: 'set cli screen-length 0'
 lx:
@@ -22,7 +22,7 @@ ndev:
   username: "ansible"
   private_key_file: "/opt/NetDev-key"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
-  vendor: junos
+  vendor: juniper_junos
   prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
   buffering: 'set cli screen-length 0'
 commscope:
