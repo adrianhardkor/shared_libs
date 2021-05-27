@@ -180,9 +180,16 @@ def flask_AIEngine():
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
-		paramiko_args['quiet'] = False
+		paramiko_args['quiet'] = True
 		wc.jd(paramiko_args)
 		lines = wc.PARA_CMD_LIST(**paramiko_args)
+		wc.jd(lines)
+		for cmd in lines.keys():
+			if 'json' in wc.cleanLine(cmd): 
+				# wc.jd(lines[cmd].split('\r\n')[0:-2])
+				lines[cmd] = '\n'.join(lines[cmd].split('\r\n')[0:-2])
+				lines[cmd] = json.loads(lines[cmd])
+			else: lines[cmd] = lines[cmd].split('\r\n')
 		return(flask.jsonify(lines)); # {'command': 'output'}
 
 # FLASK WEB-API

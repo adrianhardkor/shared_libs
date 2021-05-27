@@ -836,7 +836,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
             prompt_status = regexPrompt.search(output)
 
         result[str(commandIndex) + command].append(output)
-        result[str(commandIndex) + command] = s.join(result[str(commandIndex) + command])
+        result[str(commandIndex) + command] = s.join(result[str(commandIndex) + command]).lstrip(command)
         if not quiet: print(output)
         print("DONE: '%s', took '%s'" % (command, timer_index_since()))
         commandIndex = commandIndex + 1
