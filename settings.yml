@@ -17,7 +17,7 @@ ruckus:
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: ruckus
   prompt: "([@]+[a-zA-Z0-9\.\-\_\ \(\)]+[>#%])"
-  buffering: 'skip-page-display'
+  buffering: 'en,skip-page-display'
 lx:
   username: "arcuser"
   private_key_file: "/opt/lx.arcuser.txt"
