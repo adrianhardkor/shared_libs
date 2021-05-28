@@ -11,6 +11,13 @@ juniper_junos:
   vendor: juniper_junos
   prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
   buffering: 'set cli screen-length 0'
+ruckus:
+  username: "admin"
+  private_key_file: "/opt/gainspeed.txt"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: ruckus
+  prompt: "([@]+[a-zA-Z0-9\.\-\_\ \(\)]+[>#%])"
+  buffering: 'skip-page-display'
 lx:
   username: "arcuser"
   private_key_file: "/opt/lx.arcuser.txt"
