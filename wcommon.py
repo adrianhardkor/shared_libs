@@ -789,7 +789,8 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
 def prompt_check(output, remote_conn, IP, prompt_status, quiet):
     # paramiko_ready(remote_conn, prompt_status, quiet)
     last_line = output.split('\n')
-    print("prompt_check '%s'" % last_line)
+    # print("prompt_check '%s'" % last_line[-1])
+    print('.', end='')
     if string_match("assword", last_line[-1]):
         global passwords
         password = passwords[IP]
@@ -815,7 +816,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
     global paramiko_buffer
     thisPrompt = '.*%s$' % prompt[driver]
     regexPrompt = re.compile(thisPrompt)
-    commandIndex = 0
+    commandIndex = 1
     for command in commands:
         result[str(commandIndex) + command] = []
         timer_index_start()
@@ -832,12 +833,16 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
             if check: prompt_check(output, remote_conn, IP, prompt_status, quiet)
             buff = bytes_str(remote_conn.recv(paramiko_buffer))
             output += buff
-            time.sleep(0.2)
+            time.sleep(0.3)
             prompt_status = regexPrompt.search(output)
 
         result[str(commandIndex) + command].append(output)
         result[str(commandIndex) + command] = s.join(result[str(commandIndex) + command]).lstrip(command)
         if not quiet: print(output)
+        try:
+            result['_'][str(commandIndex) + command] = timer_index_since()
+        except KeyError:
+            pass
         print("DONE: '%s', took '%s'" % (command, timer_index_since()))
         commandIndex = commandIndex + 1
     runcommands_diff = timer_index_since(diff)

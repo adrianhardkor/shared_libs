@@ -186,7 +186,7 @@ def flask_AIEngine():
 		paramiko_args['quiet'] = True
 		paramiko_args['buffering'] = settings['buffering']
 		paramiko_args['settings_prompt'] = settings['prompt']
-		wc.jd(paramiko_args)
+		# wc.jd(paramiko_args)
 		raw = wc.PARA_CMD_LIST(**paramiko_args)
 		for cmd in raw.keys():
 			if cmd == "_": pass
@@ -197,7 +197,6 @@ def flask_AIEngine():
 				raw[cmd] = json.loads(raw[cmd])
 			elif 'xml' in wc.cleanLine(cmd):
 				raw[cmd] = '\n'.join(raw[cmd].split('\r\n')[0:-2])
-				print(raw[cmd])
 				raw[cmd] = wc.xml_loads(raw[cmd])
 			elif type(raw[cmd]) == dict: pass
 			else: raw[cmd] = raw[cmd].split('\r\n')
