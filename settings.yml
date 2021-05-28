@@ -38,4 +38,4 @@ gainspeed:
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: gainspeed
   prompt: "<show_config_|_match_prompt>"
-  buffering: ''
+  buffering: 'set paginate false'
