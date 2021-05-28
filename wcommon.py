@@ -732,7 +732,7 @@ def get_prompt():
     errorPrompt['mrv_mcc'] = errorPrompt['cisco_ios']
     return()
 
-def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', ping=True):
+def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', ping=True, buffering=''):
     global login_diff
     login_time = timer_index_start()
     global wow_time
@@ -749,7 +749,8 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     result = {}
     paramiko_buffer = 65535
     # driver-less
-    commands = device_buffering_commands(driver)
+    if buffering != '': commands = buffering.split(',')
+    else: commands = device_buffering_commands(driver)
 
 #    if password == '':
 #        # global via dict/json
@@ -767,23 +768,22 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
         except Exception:
             return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
     else:        
-        pairprint('not using key', password)
+        print('not using key')
         try:
             remote_conn_pre.connect(ip, port=port, username=username, password=password, look_for_keys=False, allow_agent=False)
         except Exception:
             return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
-    print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))
+    # print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))
 
     remote_conn = remote_conn_pre.invoke_shell()
-    output = remote_conn.recv(paramiko_buffer)
-
-    result['_'] = bytes_str(output)
+    init = remote_conn.recv(paramiko_buffer)
 
     # pre-commands
-    paramiko_send_expect(commands, ip, remote_conn, driver, quiet)
+    result = {'_':{'_': bytes_str(init)}, '_buffering': paramiko_send_expect(commands, ip, remote_conn, driver, quiet)}
 
     if not quiet: print(result)
     login_diff = timer_index_since(login_time)
+    result['_']['login'] = login_diff
     return(remote_conn)
 
 def prompt_check(output, remote_conn, IP, prompt_status, quiet):
@@ -815,12 +815,12 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
     global paramiko_buffer
     thisPrompt = '.*%s$' % prompt[driver]
     regexPrompt = re.compile(thisPrompt)
-    commandIndex = 1
+    commandIndex = 0
     for command in commands:
         result[str(commandIndex) + command] = []
         timer_index_start()
         output = ''
-        check = 0
+        check = 1
         if string_match('enable', command) and string_match('cisco_ios', driver): check = 1
 
         remote_conn.send(command + '\n')
@@ -915,17 +915,35 @@ def is_pingable(IP):
             result = False
     return(result)
 
-def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', key_fname='', quiet=False,ping=True):
+def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering=''):
     global passwords
     global wow_time
     global login_diff
     global runcommands_diff
-    global errorPrompt
+    # global errorPrompt
     global prompt
-    get_prompt(); # regex list 'global prompt'
-    spawnID = mgmt_login_paramiko(ip, username, driver, quiet, password, key_fname, ping=ping)
+
+    if windowing == False:
+        c = paramiko.SSHClient()
+        c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        if key_fname != '':
+            k = paramiko.RSAKey.from_private_key_file(key_fname)
+            c.connect( hostname = ip, username = username, pkey = k )
+        else:
+            c.connect( hostname=ip, username=username, password=password)
+        o = []
+        for command in commands:
+            stdin , stdout, stderr = c.exec_command(command)
+            o.append(bytes_str(stdout.read()))
+        c.close()
+        return(o)
+
+    if settings_prompt != '': prompt = {driver: settings_prompt}
+    else: get_prompt(); # regex list 'global prompt'
+    spawnID = mgmt_login_paramiko(ip, username, driver, quiet, password, key_fname, ping=ping, buffering=buffering)
     if spawnID == -1:
         return('')
+
     timer_index_start()
     output = run_commands_paramiko(commands, ip, driver, spawnID, quiet)
     # command_time = timer_index_since()
@@ -943,7 +961,7 @@ def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', key_f
     sumIs = login_diff + runcommands_diff + disconnect_time
     print(" TOTAL Took: %s @ %s" % (float("{0:.2f}".format(sumIs)), timer_index_since(wow_time)))
 
-    if string_match(errorPrompt[driver], output): return_code_error('Unknown Error on Switch: %s' % output)
+    # if string_match(errorPrompt[driver], output): return_code_error('Unknown Error on Switch: %s' % output)
     return(output)
 
 def grep_until(begin, ending, data):

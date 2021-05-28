@@ -174,23 +174,34 @@ def flask_AIEngine():
 		CMDS = PullCmds(args)
 		if settings['private_key_file'].endswith('.txt'): paramiko_args['password'] = wc.read_file(settings['private_key_file'])
 		else: paramiko_args['key_fname'] = settings['private_key_file']
- 
+		if settings['vendor'] == 'gainspeed':
+			blind = {'commands':['show config | match prompt'],'ip':args['hostname'],'username':settings['username'],'password':wc.read_file(settings['private_key_file']),'windowing':False}
+			prompt = wc.cleanLine(wc.PARA_CMD_LIST(**blind)[0])
+			settings['prompt'] = '|'.join([ prompt[1].split(';')[0],  prompt[3].split(';')[0] ])
 		paramiko_args['commands'] = CMDS
 		paramiko_args['ip'] = args['hostname']
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
 		paramiko_args['quiet'] = True
+		paramiko_args['buffering'] = settings['buffering']
+		paramiko_args['settings_prompt'] = settings['prompt']
 		wc.jd(paramiko_args)
-		lines = wc.PARA_CMD_LIST(**paramiko_args)
-		wc.jd(lines)
-		for cmd in lines.keys():
-			if 'json' in wc.cleanLine(cmd): 
-				# wc.jd(lines[cmd].split('\r\n')[0:-2])
-				lines[cmd] = '\n'.join(lines[cmd].split('\r\n')[0:-2])
-				lines[cmd] = json.loads(lines[cmd])
-			else: lines[cmd] = lines[cmd].split('\r\n')
-		return(flask.jsonify(lines)); # {'command': 'output'}
+		raw = wc.PARA_CMD_LIST(**paramiko_args)
+		for cmd in raw.keys():
+			if cmd == "_": pass
+			elif 'json' in wc.cleanLine(cmd): 
+				# JUNIPER
+				# wc.jd(raw[cmd].split('\r\n')[0:-2])
+				raw[cmd] = '\n'.join(raw[cmd].split('\r\n')[0:-2])
+				raw[cmd] = json.loads(raw[cmd])
+			elif 'xml' in wc.cleanLine(cmd):
+				raw[cmd] = '\n'.join(raw[cmd].split('\r\n')[0:-2])
+				print(raw[cmd])
+				raw[cmd] = wc.xml_loads(raw[cmd])
+			elif type(raw[cmd]) == dict: pass
+			else: raw[cmd] = raw[cmd].split('\r\n')
+		return(flask.jsonify(raw)); # {'command': 'output'}
 
 # FLASK WEB-API
 def flask_default():
