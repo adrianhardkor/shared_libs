@@ -31,4 +31,11 @@ commscope:
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: commscope
   prompt: "([a-zA-Z0-9\-\.\(\)\_]*[># ])"
-  buffering: 'terminal length 0'
+  buffering: 'terminal length 0'  
+commscope:
+  username: "root"
+  private_key_file: "/opt/gainspeed.txt"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: commscope
+  prompt: "<show_config_|_match_prompt>"
+  buffering: ''
