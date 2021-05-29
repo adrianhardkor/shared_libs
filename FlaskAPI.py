@@ -143,9 +143,9 @@ def ParseSettingsYML(url):
 			sline = line.split(':')
 			index = sline.pop(0).strip()
 			value = ':'.join(sline).strip()
-			value = wc.mcsplit(value, ['"',"'"])
-			if len(value) == 1: value = value[0]
-			else: value = value[1]
+			# value = wc.mcsplit(value, ['"',"'"])
+			# if len(value) == 1: value = value[0]
+			# else: value = value[1]
 			s[path][index] = value
 		else:
 			path = line.strip(':')
@@ -171,6 +171,7 @@ def flask_AIEngine():
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		settings_name = args['settings']
 		settings = settings[settings_name]
+		return(flask.jsonify(settings))
 		CMDS = PullCmds(args)
 		if settings['private_key_file'].endswith('.txt'): paramiko_args['password'] = wc.read_file(settings['private_key_file'])
 		else: paramiko_args['key_fname'] = settings['private_key_file']
@@ -183,7 +184,7 @@ def flask_AIEngine():
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
-		paramiko_args['quiet'] = True
+		paramiko_args['quiet'] = False
 		paramiko_args['buffering'] = settings['buffering']
 		paramiko_args['settings_prompt'] = settings['prompt']
 		# wc.jd(paramiko_args)
