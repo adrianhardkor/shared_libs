@@ -3,7 +3,7 @@ linux:
   private_key_file: "/opt/paramiko-test-key"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: linux
-  prompt: "([@]+[a-zA-Z0-9\.\-\_]+[:]+[a-zA-Z0-9\.\-\_]+[#$]+[ ])"
+  prompt: "([@]+[a-zA-Z0-9\.\-\_\:\ \~\]]+[#$\ ]+[ ])"
   buffering: ""
 juniper_junos:
   username: "ADMIN"
