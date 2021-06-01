@@ -4,6 +4,7 @@ linux:
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: linux
   prompt: "$"
+  buffering: ""
 juniper_junos:
   username: "ADMIN"
   private_key_file: "/opt/paramiko-test-key"
