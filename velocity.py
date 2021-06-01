@@ -137,8 +137,9 @@ class VELOCITY():
 				MongoLoggerHandler('!! Found Exising Reservation: ' + tops[topology]['activeRes']['name'] + ',  by:' + wc.mcsplit(tops[topology]['activeRes']['creatorId'], ['(',')'])[1] + ', with enddate:' + tops[topology]['activeRes']['end'])
 			elif topology in self.ALL_TOPOLOGIES.keys():
 				# Found Topology but not Reservation
-				MongoLoggerHandler('!! Wrapping TestRun in a new Reservation.  Will un-reserve on completion')
+				MongoLoggerHandler('!! No longer doing on-demand reservations! Please pre-reserve')
 				args['topologyId'] = self.ALL_TOPOLOGIES[topology]['id']
+				exit(5)
 		data = self.REST_POST('/ito/executions/v1/executions', args=args)
 		if 'executionState' not in data.keys():
 			data['html_report'] = wc.bytes_str(data['response.body'])

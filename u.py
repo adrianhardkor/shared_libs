@@ -5,6 +5,19 @@ import wcommon as wc
 import json
 import re
 
-wc.PARA_CMD_LIST(['show chassis hardware | display json | no-more'], '10.88.245.10', 'juniper_junos', 'ansible', password='An5!bleAXEss', quiet=False,ping=False)
 
-# wc.PARA_CMD_LIST(['show cable modem detail', 'show cable modem noise', 'show cable modem phy'], '10.88.232.16', 'commscope', 'root', password='wowlabs12', quiet=False,ping=False)
+import paramiko
+k = paramiko.RSAKey.from_private_key_file("/opt/paramiko-test-key")
+c = paramiko.SSHClient()
+c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+c.connect( hostname = "10.88.232.24", username = "admin", password = 'admin') 
+# pkey = k 
+commands = [ 'set paginate false', 'show config | match prompt']
+for command in commands:
+	print("Executing {}".format( command ))
+	stdin , stdout, stderr = c.exec_command(command)
+	print(wc.bytes_str(stdout.read()))
+	print( "Errors")
+	print(stderr.read())
+c.close()
+
