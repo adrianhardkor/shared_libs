@@ -181,7 +181,6 @@ def flask_AIEngine():
 		CMDS = PullCmds(args)
 		if settings['private_key_file'].endswith('.txt'): paramiko_args['password'] = wc.read_file(settings['private_key_file'])
 		else: paramiko_args['key_fname'] = settings['private_key_file']
-		wc.jd(settings)
 		if settings['vendor'] == 'gainspeed':
 			blind = {'commands':['show config | match prompt'],'ip':args['hostname'],'username':settings['username'],'password':wc.read_file(settings['private_key_file']),'windowing':False,'ping':False,'quiet':False}
 			prompt = wc.cleanLine(wc.PARA_CMD_LIST(**blind)[0])

@@ -47,3 +47,10 @@ gainspeed:
   vendor: 'gainspeed'
   prompt: "<show_config_|_match_prompt>"
   buffering: 'set paginate false'
+ciena:
+  username: "admin"
+  private_key_file: "/opt/ciena.txt"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: 'ciena'
+  prompt: "([a-zA-Z0-9\-\.\(\)\_]*[>#])"
+  buffering: 'terminal length 0'
