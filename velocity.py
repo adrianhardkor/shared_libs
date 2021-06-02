@@ -133,7 +133,7 @@ class VELOCITY():
 			# wc.jd(tops[topology]); exit(0)
 			if tops[topology]['activeRes'] != {}:
 				# FOUND EXISTING RESERVATION
-				args['reservationId'] = tops[topology]['activeRes']['id']
+				args['reservationID'] = tops[topology]['activeRes']['id']
 				MongoLoggerHandler('!! Found Exising Reservation: ' + tops[topology]['activeRes']['name'] + ',  by:' + wc.mcsplit(tops[topology]['activeRes']['creatorId'], ['(',')'])[1] + ', with enddate:' + tops[topology]['activeRes']['end'])
 			elif topology in self.ALL_TOPOLOGIES.keys():
 				# Found Topology but not Reservation
