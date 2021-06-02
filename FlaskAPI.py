@@ -184,7 +184,7 @@ def flask_AIEngine():
 			# u/p/p
 			upp = wc.read_file(settings['private_key_file']).split('\n')
 			paramiko_args['password'] = upp[0]
-			paramiko_args['become'] = upp[1]
+			if len(upp) > 1: paramiko_args['become'] = upp[1]
 		else: paramiko_args['key_fname'] = settings['private_key_file']
 		if settings['vendor'] == 'gainspeed':
 			blind = {'commands':['show config | match prompt'],'ip':args['hostname'],'username':settings['username'],'password':wc.read_file(settings['private_key_file']),'windowing':False,'ping':False,'quiet':False}
@@ -195,7 +195,7 @@ def flask_AIEngine():
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
-		paramiko_args['quiet'] = False
+		paramiko_args['quiet'] = True
 		if 'buffering' in settings.keys(): paramiko_args['buffering'] = settings['buffering']
 		paramiko_args['settings_prompt'] = settings['prompt']
 		# wc.jd(paramiko_args)
