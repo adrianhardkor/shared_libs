@@ -134,7 +134,7 @@ class VELOCITY():
 			if tops[topology]['activeRes'] != {}:
 				# FOUND EXISTING RESERVATION
 				args['reservationID'] = tops[topology]['activeRes']['id']
-				MongoLoggerHandler('!! Found Exising Reservation: ' + tops[topology]['activeRes']['name'] + ',  by:' + wc.mcsplit(tops[topology]['activeRes']['creatorId'], ['(',')'])[1] + ', with enddate:' + tops[topology]['activeRes']['end'])
+				MongoLoggerHandler('!! Found Exising Reservation: ' + tops[topology]['activeRes']['name'] + ',  by:' + wc.mcsplit(tops[topology]['activeRes']['creatorId'], ['(',')'])[1] + 'self:' = self.user + ', with enddate:' + tops[topology]['activeRes']['end'])
 			elif topology in self.ALL_TOPOLOGIES.keys():
 				# Found Topology but not Reservation
 				MongoLoggerHandler('!! No longer doing on-demand reservations! Please pre-reserve')
