@@ -822,7 +822,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
         timer_index_start()
         output = ''
         check = 1
-        if string_match('enable', command) and string_match('cisco_ios', driver): check = 1
+        if string_match('enable', command): check = 1
 
         remote_conn.send(command + '\n')
         time.sleep(.6)
@@ -832,6 +832,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
         while prompt_status is None:
             if check: prompt_check(output, remote_conn, IP, prompt_status, quiet)
             buff = bytes_str(remote_conn.recv(paramiko_buffer))
+            if not quiet: print(buff)
             output += buff
             time.sleep(0.3)
             prompt_status = regexPrompt.search(output)
@@ -920,8 +921,12 @@ def is_pingable(IP):
             result = False
     return(result)
 
-def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering=''):
+def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering=''):
     global passwords
+    try:
+        passwords[ip] = become; # BECOME = priv15 is global 
+    except NameError:
+        passwords = {ip:become}
     global wow_time
     global login_diff
     global runcommands_diff
