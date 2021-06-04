@@ -92,7 +92,7 @@ def flask_AIS():
 			CMTSs = Mongo.MONGO._GETJSON(Mongo.CMTS, criteria=flask.request.args)
 			modems = Mongo.MONGO._GETJSON(Mongo.Modem, criteria=flask.request.args)
 			SGs = Mongo.MONGO._GETJSON(Mongo.SG, criteria=flask.request.args)
-			Firewalls = Mongo._GETJSON(Mongo.Firewall, criteria=flask.request.args)
+			Firewalls = Mongo.MONGO._GETJSON(Mongo.Firewall, criteria=flask.request.args)
 			wc.jd(flask.request.args)
 		for deviceTypeObj in [routers, servers, CMTSs, modems, SGs]:
 			for deviceObject in deviceTypeObj:
