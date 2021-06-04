@@ -85,7 +85,7 @@ def flask_AIS():
 			CMTSs = Mongo.MONGO._GETJSON(Mongo.CMTS)
 			modems = Mongo.MONGO._GETJSON(Mongo.Modem)
 			SGs = Mongo.MONGO._GETJSON(Mongo.SG)
-			Firewalls = Mongo.MONGO_GETJSON(Mongo.Firewall)
+			Firewalls = Mongo.MONGO._GETJSON(Mongo.Firewall)
 		else:
 			routers = Mongo.MONGO._GETJSON(Mongo.Router, criteria=flask.request.args)
 			servers = Mongo.MONGO._GETJSON(Mongo.Server, criteria=flask.request.args)
