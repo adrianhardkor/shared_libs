@@ -1,0 +1,16 @@
+<h1>{{adrian_test}}</h1>
+<p><a href="{{link}}"><img alt="Embedded Image" src="data:image/png;base64,{{ img_str }}" /></a></p>
+<ul>
+  <li>{{myUUID}}.dcim.yml:</li>
+      {% for item1 in dcim %}
+          <br>{{item1}}</br>
+      {% endfor %}
+  <li><a href="https://github.com/adrianhardkor/shared_libs/blob/main/settings.yml" target="_blank">{{myUUID}}.itsm.yml:</a></li>
+      {% for item2 in itsm %}
+          <br>{{item2}}</br>
+      {% endfor %}
+  <li>{{myUUID}}.cable.yml:</li>
+      {% for item3 in cable %}
+          <br>{{item3}}</br>
+      {% endfor %}
+</ul>

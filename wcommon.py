@@ -233,9 +233,11 @@ def decode(s):
     return(un)
 
 
-def genUUID(identifyer):
+def genUUID(identifyer=''):
     # convert from input, so UUID always same, if same input
-    myUUID = uuid.uuid3(uuid.NAMESPACE_X500, identifyer)
+    if identifyer != '':
+        myUUID = uuid.uuid3(uuid.NAMESPACE_X500, identifyer)
+    else: myUUID = str(uuid.uuid4())
     # myUUID = ''
     # pairprint(identifyer, myUUID)
     return(str(myUUID))

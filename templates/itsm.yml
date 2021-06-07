@@ -1,0 +1,5 @@
+  ip: 1.1.1.1
+  settings: juniper_junos
+  cname: ARCUAT1HUHCMR01
+  console_ip: 10.88.240.99
+  console_port: 1

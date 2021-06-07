@@ -1,0 +1,15 @@
+  item: "Router"
+  CLLI: "myCLLI"
+  JIRA: "AARC-0001"
+  ServiceNow: '12345-12345-12345-12345'
+  UbersmithInstall: "u12345"
+  serial: "JN1266DB3AJC"
+  Manufacturer: "Juniper"
+  model: "ptx3000"
+  rackLocation: "RR.X.64"
+  RU: 29
+  rackAvailablePowerAc: "30A"
+  psu1_watts: 1400
+  psu2_watts: 1400
+  ac_dc: "ac"
+  power_utilization: "10A"
