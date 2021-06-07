@@ -2,9 +2,11 @@
 <p><a href="{{link}}"><img alt="Embedded Image" src="data:image/png;base64,{{ img_str }}" /></a></p>
 <ul>
   <li>{{myUUID}}.dcim.yml:</li>
+      <p display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 0px; margin-inline-end: 0px; display: flex; justify-content: center;>
       {% for item1 in dcim %}
           <br>{{item1}}</br>
       {% endfor %}
+      </p>
   <li><a href="https://github.com/adrianhardkor/shared_libs/blob/main/settings.yml" target="_blank">{{myUUID}}.itsm.yml:</a></li>
       {% for item2 in itsm %}
           <br>{{item2}}</br>
