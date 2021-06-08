@@ -13,7 +13,7 @@ def MongoLoggerHandler(data):
         except Exception:
                 pass
 
-def LogSequencerLoop(stc, MH, RUNTIME_SEC): 
+def LogSequencerLoop(stc, MH, RUNTIME_SEC):
     current_command = ''
     current_step = ''
     sequencer = stc.get('system1', 'children-sequencer')
