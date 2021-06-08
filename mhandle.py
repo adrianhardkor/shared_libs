@@ -27,7 +27,7 @@ class mHANDLE():
 				# wc.jd(self.payload[myID])
 		if myID not in self.payload.keys():
 			# NEW POST
-			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(potential['Response']), 'ForceUpdate:' + str(ForceUpdate), str(preamble) + str(data)]}
+			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(potential['response.request.body']), 'ForceUpdate:' + str(ForceUpdate), str(preamble) + str(data)]}
 			self.payload[myID]['runId'] = myID
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		else:
