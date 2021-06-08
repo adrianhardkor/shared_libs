@@ -87,9 +87,9 @@ class LEPTON():
 #{'Port': '3.1', 'Mode': 'Online', 'PhyLink': ['UP', 'UP', 'UP', 'UP'], 'Ingress': ['3.2'], 'Egress': [['3.2']]}
 #{'Port': '3.2', 'Mode': 'Online', 'PhyLink': ['UP', 'UP', 'UP', 'UP'], 'Ingress': ['3.1'], 'Egress': [['3.1']]}
 
-# LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-# status = LEP.GetStatus()
-# wc.jd(status)
+LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
+status = LEP.GetStatus()
+wc.jd(status)
 
 # 
 # # Apply LEPTON class to VELOCITY-INVENTORY-LEPTON
