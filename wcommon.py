@@ -1332,9 +1332,10 @@ def StcGetCSV(MH, iteration='', care=''):
 	# MH logger
 	try:
 		data = exec2('find ./ -name *.csv')
-		MH._LOGGER('AllFiles: ' + data.replace('\n','  '))
-		pairprint('[INFO] exec', data.replace('\n','  '))
+		# MH._LOGGER('AllFiles: ' + data.replace('\n','  '))
+		# pairprint('[INFO] exec', data.replace('\n','  '))
 		for fname in str(data).split('\n'):
+			MH._LOGGER('Filename: ' + fname + '  with careTag:"' + care + '" = ' + str(bool(care in fname)))
 			if care != '':
 				if care not in fname: continue; # fnames we dont care about
 			localname = str(fname.split('/')[-1]).replace('+','').replace('-','').replace('_','')
