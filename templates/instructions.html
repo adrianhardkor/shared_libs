@@ -3,10 +3,12 @@
   <li>dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</li>
   <li>dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</li>
   <li>restart machine</li>
+  <li>Login or Create a Windows Account during reboot</li>
   <li><a href='http://10.88.48.21:5000/download?fname=wsl_update_x64.msi'>http://10.88.48.21:5000/download?fname=wsl_update_x64.msi</a></li>
   <li>Install wsl.msi package</li>
   <li>Open PowerShell as Administrator, and execute:</li>
   <li>wsl --set-default-version 2</li>
+  <li>Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1604 -OutFile Ubuntu.appx -UseBasicParsing</li>
   <li>bash</li>
   <li>git</li>
   <li>if all steps complete, then you've fully installed BASH on your local machine for git.</li>
