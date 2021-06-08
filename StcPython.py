@@ -13,7 +13,7 @@ def MongoLoggerHandler(data):
         except Exception:
                 pass
 
-def LogSequencerLoop(stc, MH, RUNTIME_SEC):
+def LogSequencerLoop(stc, MH, RUNTIME_SEC, care='123456789123456789123456789'):
     current_command = ''
     current_step = ''
     sequencer = stc.get('system1', 'children-sequencer')
@@ -36,7 +36,7 @@ def LogSequencerLoop(stc, MH, RUNTIME_SEC):
                     CURRENT['Status'][attr] = sub[attr]
                 if int(CURRENT['Status']['CurrentIteration']) > int(iteration):
                     # when CurrentIteration becomes 2, then log csv_upload for iteration1
-                    if iteration > 0: wc.StcGetCSV(MH, iteration=iteration, care='TVPlusData'); # name = old iteration
+                    if iteration > 0: wc.StcGetCSV(MH, iteration=iteration, care=care); # name = old iteration
                     iteration = int(CURRENT['Status']['CurrentIteration'])
                     try:
                        MH._LOGGER('  '.join([str(CURRENT['ProgressCurrentStepName']), str(CURRENT['Name']), str(CURRENT['State']), str(CURRENT['Status'])]))
