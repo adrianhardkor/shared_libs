@@ -548,7 +548,8 @@ class runner(MONGO.M.Document):
 # MONGO._DELETE(Router, criteria={}, force=True)
 # MONGO._DELETE(CMTS, criteria={}, force=True)
 # MONGO._DELETE(Server, criteria={}, force=True)
-# MONGO._DELETE(SG, criteria={}, force=True)
+# MONGO._DELETE(runner, criteria={}, force=True)
+
 
 def TryDeleteDocuments(obj):
 	try:

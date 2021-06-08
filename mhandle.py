@@ -14,7 +14,9 @@ class mHANDLE():
 		self.__name__ = 'mHANDLE'
 		self.payload = {}
 	def GetRun(self, myID):
-		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID)))
+		headers = {}
+		headers['Content-Type'] = headers['Accept'] = 'application/json'
+		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID), headers=headers))
 		return(data)
 	def UpdateRun(self, myID, preamble, data, ForceUpdate=False):
 		myID = str(myID).strip()
@@ -66,6 +68,8 @@ class mHANDLE():
 		return(data)
 
 # MH = mHANDLE(flaskIP='10.88.48.21', flaskPort='5000')
+# wc.jd(MH.GetRun('jenkins-2GCPE-19'))
 # wc.jd(dir(MH))
 # wc.jd(MH._UPLOAD('adrian.csv'))
+# wc.jd(json.loads(wc.REST_GET('http://10.88.48.21:5001/runner')))
 

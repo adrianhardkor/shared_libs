@@ -19,7 +19,7 @@ import base64
 from io import BytesIO
 
 flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
-wc.jd(wc.wcheader)
+# wc.jd(wc.wcheader)
 # Mongo.TryDeleteDocuments(Mongo.runner)
 
 def dictFlask(input1):
@@ -125,9 +125,8 @@ def flask_RunJenkinsPipeline():
 def flask_runtimelogger():
 	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
 	def run():
-		wc.pairprint('method', flask.request.method)
-		body = dictFlask(flask.request.get_json())
-		if flask.request.method != 'GET':
+		wc.pairprint('runner:   method', flask.request.method)
+		if str(flask.request.method) != 'GET':
 			args = dictFlask(flask.request.args)
 			payload = dictFlask(flask.request.get_json())
 			# wc.jd(args)
@@ -137,7 +136,9 @@ def flask_runtimelogger():
 				return(flask.jsonify(vagent_getter()))
 			except Exception as err:
 				return(json.dumps({'err':str(err)}))
-		else: return(flask.jsonify(vagent_getter())); # [GET]
+		else:
+			wc.jd(vagent_getter())
+			return(flask.jsonify(vagent_getter())); # [GET]
 
 def GenQR_PNG(url):
 	img = qrcode.make(url, image_factory=PymagingImage)
