@@ -17,16 +17,17 @@ class mHANDLE():
 		data = json.loads(wc.REST_GET(self.url + '/runner?runId=' + str(myID)))
 		return(data)
 	def UpdateRun(self, myID, preamble, data, ForceUpdate=False):
+		potential = {}
 		if self.payload == {} or ForceUpdate == True:
 			# diff call-class will re-init self.payload
 			potential = self.GetRun(myID)
 			if myID in potential.keys():
 				self.payload[myID] = potential[myID]
-				wc.pairprint('[INFO] potential:' + str(ForceUpdate) + str(myID), str(potential.keys()))
-				wc.jd(self.payload[myID])
+				wc.pairprint('[INFO] update:' + str(ForceUpdate) + str(myID), str(potential.keys()))
+				# wc.jd(self.payload[myID])
 		if myID not in self.payload.keys():
 			# NEW POST
-			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), 'ForceUpdate:' + str(ForceUpdate), str(preamble) + str(data)]}
+			self.payload[myID] = {'stdout_lines': [str(time.ctime(time.time())), str(potential.keys()), 'ForceUpdate:' + str(ForceUpdate), str(preamble) + str(data)]}
 			self.payload[myID]['runId'] = myID
 			data = json.loads(wc.REST_POST(self.url + '/runner?runId=' + str(myID), verify=False, args=self.payload[myID], convert_args=True))
 		else:
