@@ -1239,16 +1239,25 @@ def getFnameScaffolding(fname_list, directory=''):
 			result[sf[2]][sf[3]] = read_yaml(directory + f)
 	return(result)
 
-def validateDCIM(fname_list, directory=''):
+def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
 	result = {}
 	data = getFnameScaffolding(fname_list,directory=directory)
 	for device in data.keys():
 		result[device] = {}
 		result[device]['data'] = data[device]
+		itsm = data[device]['itsm']
+		for k in itsm.keys():
+			itsm[k.lower()] = itsm.pop(k); # lower all keys
 		result[device]['valid'] = {}
 		result[device]['valid']['allFilesExist'] = True
 		for fname in ['dcim', 'itsm', 'cable']:
 			if data[device][fname] == None: result[device]['valid']['allFilesExist'] = False
+		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
+			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
+			result[device]['valid']['itsm:settings Worked'] = False
+		else:
+			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm[ip] in wc.IP_get(CIDR)[1]
+			result[device]['valid']['itsm:settings Worked'] = json.loads(wc.REST_GET('https://10.88.48.21:5000/aie?settings=%s&ip=%s&cmd=show_ver' % (itsm[settings],itsm[ip])))
 	return(result)
 
 
