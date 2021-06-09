@@ -122,6 +122,14 @@ def flask_RunJenkinsPipeline():
 		wc.pairprint('monitor', monitor)
 		return(flask.jsonify({'monitor':'http://10.88.48.21:' + str(wc.argv_dict['port']) + '/runner?runId=' + str(monitor)}))
 
+def flask_validate():
+	@Mongo.MONGO.app.route('/validate', methods = ['GET'])
+	def validate():
+		args = dictFlask(flask.request.args)
+		wc.jd(args)
+		repos = wc.exec2('cd ..; git pull origin akrygows;')
+		return(flask.jsonify(repos.split('\n')))
+
 def flask_runtimelogger():
 	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
 	def run():
@@ -252,6 +260,7 @@ if  __name__ == "__main__":
 	flask_uploader()
 	flask_AIEngine(); # /aie?hostname=10.88.240.26
 	flask_downloader()
+	flask_validate() # /validate
 	flask_AIS(); # /ais
 	flask_NewCall(); # /new_call
 	flask_RunJenkinsPipeline()
