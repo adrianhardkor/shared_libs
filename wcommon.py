@@ -1248,7 +1248,7 @@ def validateDCIM(fname_list, directory=''):
 		result[device]['valid'] = {}
 		result[device]['valid']['allFilesExist'] = True
 		for fname in ['dcim', 'itsm', 'cable']:
-			if fname not in data[device].keys(): result[device]['valid']['allFilesExist'] = False
+			if data[device][fname] == None: result[device]['valid']['allFilesExist'] = False
 	return(result)
 
 
