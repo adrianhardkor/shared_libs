@@ -1235,7 +1235,7 @@ def getFnameScaffolding(fname_list, directory=''):
 		lf = f.lower()
 		sf = mcsplit(lf, ['.','/'])
 		if 'yml' in sf and ('dcim' in sf or 'itsm' in sf or 'cable' in sf) and len(f.split('-')) >= 5:
-			if sf[2] not in result.keys(): result[sf[2]] = {}
+			if sf[2] not in result.keys(): result[sf[2]] = {'dcim':None,'itsm':None,'cable':None}
 			result[sf[2]][sf[3]] = read_yaml(directory + f)
 	return(result)
 
