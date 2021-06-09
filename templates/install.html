@@ -1,6 +1,7 @@
 <ol type="1">
   <li>Open PowerShell as Administrator, and execute:</li>
   <li>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</li>
+  <li>When ask to reboot, please reboot</li>
   <li>(New-Object Net.WebClient).DownloadFile("https://aka.ms/wslubuntu2004", "Ubuntu2004.appx")</li>
   <li>Start-Process -FilePath "Ubuntu2004.appx"</li>
   <li>Launch</li>
