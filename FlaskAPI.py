@@ -155,7 +155,7 @@ def flask_qr():
 		link = 'http://10.88.48.21:5000/ais?uuid=' + myUUID
 		args = dictFlask(flask.request.args)
 		if 'instructions' in args.keys():
-			return(flask.render_template('instructions.html'))
+			return(flask.render_template(args['instructions'] + '.html'))
 		img_str = GenQR_PNG(link)
 		result = flask.render_template('qr_page.html', adrian_test=str(args), img_str=img_str, link=link, myUUID=myUUID, dcim=wc.read_file('templates/dcim.yml').split("\n"), itsm=wc.read_file('templates/itsm.yml').split("\n"), cable=wc.read_file('templates/cable.yml').split("\n"))
 		return(result)
