@@ -127,12 +127,9 @@ def flask_validate():
 	def validate():
 		validate = wc.timer_index_start()
 		args = dictFlask(flask.request.args)
-		repos = wc.exec2('cd ../asset-data/; git checkout %s; git pull origin %s; find ./;' % (args['branch'],args['branch']))
-		out = wc.lsearchAllInline('branch is', repos.split('\n'))
-		for asset in repos.split('\n'):
-			out.append(wc.lsearchAllInline('.dcim.yml', repos.split('\n')))                   
-			out.append(wc.lsearchAllInline('.itsm.yml', repos.split('\n')))
-			out.append(wc.lsearchAllInline('.cable.yml', repos.split('\n')))
+		repos = wc.exec2('cd ../asset-data/; git checkout %s; git pull origin %s; find ./;' % (args['branch'],args['branch'])).split('\n')
+		out = wc.lsearchAllInline('branch is', repos)
+		out.append(wc.validateDCIM(repos)
 		out.append('runtime:' + str(wc.timer_index_since(validate)))
 		return(flask.jsonify(wc.lunique(out)))
 
