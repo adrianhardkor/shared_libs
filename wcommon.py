@@ -1248,8 +1248,8 @@ def intfListCmd(itsm):
 		for intfs in attempt['1show interface terse | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
 				for name in intf['name']: name = name['data']
-				for admin in intf['admin']: admin = admin['data']			
-				for oper in intf['oper']: oper = oper['data']
+				for admin in intf['admin-status']: admin = admin['data']			
+				for oper in intf['oper-status']: oper = oper['data']
 				intfList.append({name: '/'.join([admin,oper])})
 	return(True,intfList)
 
