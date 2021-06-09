@@ -132,7 +132,8 @@ def flask_validate():
 		for asset in repos.split('\n'):
  			out.append(wc.lsearchAllInline('.dcim.yml', repos.split('\n')))                   
  			out.append(wc.lsearchAllInline('.itsm.yml', repos.split('\n')))
- 			out.append(wc.lsearchAllInline('.cable.yml', repos.split('\n')))
+			out.append(wc.lsearchAllInline('.cable.yml', repos.split('\n')))
+		out.append('runtime:' + wc.timer_index_since(validate))
 		return(flask.jsonify(wc.lunique(out)))
 
 def flask_runtimelogger():
