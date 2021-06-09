@@ -1256,8 +1256,8 @@ def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
 			result[device]['valid']['itsm:settings Worked'] = False
 		else:
-			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in wc.IP_get(CIDR)[1])
-			result[device]['valid']['itsm:settings Worked'] = json.loads(wc.REST_GET('https://10.88.48.21:5000/aie?settings=%s&ip=%s&cmd=show_ver' % (itsm[settings],itsm[ip])))
+			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
+			result[device]['valid']['itsm:settings Worked'] = json.loads(REST_GET('https://10.88.48.21:5000/aie?settings=%s&ip=%s&cmd=show_ver' % (itsm[settings],itsm[ip])))
 	return(result)
 
 
