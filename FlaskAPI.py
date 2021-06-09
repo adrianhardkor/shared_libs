@@ -22,17 +22,20 @@ flaskIP = wc.cleanLine(wc.grep('10.88', wc.exec2('ifconfig')))[1]
 # wc.jd(wc.wcheader)
 # Mongo.TryDeleteDocuments(Mongo.runner)
 
-def dictFlask(input1):
-	# rebuild flask.request objects as dict -- ugly but works
-	out = {}
-	if input1 == None: return(out)
-	for k in input1.keys():
-		out[k] = input1[k]
-	return(out)
+def flaskArgsPayload():
+	try:
+		args = {k: v for k, v in flask.request.args.items()}
+	except Exception:
+		args = {}
+	try:
+		payload = {k: v for k, v in flask.request.get_json().items()}
+	except Exception:
+		payload = {}
+	return(args,payload)
 
 def vagent_getter():
 	response = {}
-	args = dictFlask(flask.request.args)
+	args,payload = flaskArgsPayload()
 	if args == {}: objects = Mongo.MONGO._GETJSON(Mongo.runner)
 	else: objects = Mongo.MONGO._GETJSON(Mongo.runner, criteria=args)
 	fake = 1
@@ -61,10 +64,7 @@ def flask_downloader():
 def flask_uploader():
 	@Mongo.MONGO.app.route('/upload', methods = ['POST'])
 	def upload_file():
-		args = dictFlask(flask.request.args)
-		payload = dictFlask(flask.request.get_json())
-		wc.jd(args)
-		wc.jd(payload)
+		args,payload = flaskArgsPayload()
 		Mongo.MONGO.app.config['UPLOAD_FOLDER'] = './'
 		_FNAME = str(flask.request.files['file']).split("'")[1]
 		wc.pairprint(_FNAME, os.path.exists('./' + _FNAME)) 
@@ -112,10 +112,7 @@ def flask_NewCall():
 def flask_RunJenkinsPipeline():
 	@Mongo.MONGO.app.route('/jenkins/runPipe', methods=['POST'])
 	def pipeline():
-		# args = dictFlask(flask.request.args)
-		# wc.jd(args)
-		body = dictFlask(flask.request.get_json())
-		wc.jd(body)
+		args,body = flaskArgsPayload()
 		import jenkins
 		J = jenkins.JENKINS(body.pop('JEN_IP'), body.pop('username'), body.pop('token'))
 		monitor = J.RunPipeline(body['Pipe'], body)
@@ -126,7 +123,7 @@ def flask_validate():
 	@Mongo.MONGO.app.route('/validate', methods = ['GET'])
 	def validate():
 		validate = wc.timer_index_start()
-		args = dictFlask(flask.request.args)
+		args,payload = flaskArgsPayload()
 		repos = wc.exec2('cd ../asset-data/; git checkout %s; git pull origin %s; find ./;' % (args['branch'],args['branch'])).split('\n')
 		out = wc.lsearchAllInline('branch is', repos)
 		out.append(wc.validateITSM(repos, directory='../asset-data/', CIDR='10.88.0.0/16'))
@@ -138,10 +135,7 @@ def flask_runtimelogger():
 	def run():
 		wc.pairprint('runner:   method', flask.request.method)
 		if str(flask.request.method) != 'GET':
-			args = dictFlask(flask.request.args)
-			payload = dictFlask(flask.request.get_json())
-			# wc.jd(args)
-			# wc.jd(payload)
+			args,payload = flaskArgsPayload()
 			try:
 				Mongo.MONGO._UPDATE(Mongo.runner, args, payload)
 				return(flask.jsonify(vagent_getter()))
@@ -164,7 +158,7 @@ def flask_qr():
 		# wc.rmf('templates/' + qr_fname)
 		myUUID = wc.genUUID(); # if identifyer='' then random
 		link = 'http://10.88.48.21:5000/ais?uuid=' + myUUID
-		args = dictFlask(flask.request.args)
+		args,payload = flaskArgsPayload()
 		if 'instructions' in args.keys():
 			return(flask.render_template(args['instructions'] + '.html'))
 		img_str = GenQR_PNG(link)
@@ -207,8 +201,7 @@ def flask_AIEngine():
 		timer = int(time.time())
 		paramiko_args = {}
 		result = {}
-		args = dictFlask(flask.request.args)
-		payload = dictFlask(flask.request.get_json())
+		args,payload = flaskArgsPayload()
 		# INVENTORY = RAW.INVENTORY.YML?
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		settings_name = args['settings']
@@ -235,7 +228,10 @@ def flask_AIEngine():
 		if 'buffering' in settings.keys(): paramiko_args['buffering'] = settings['buffering']
 		paramiko_args['settings_prompt'] = settings['prompt']
 		# wc.jd(paramiko_args)
-		raw = wc.PARA_CMD_LIST(**paramiko_args)
+		try:
+			raw = wc.PARA_CMD_LIST(**paramiko_args)
+		except Exception as err:
+			return(flask.jsonify({'err': str(err)}))
 		for cmd in raw.keys():
 			if cmd == "_": pass
 			elif 'json' in wc.cleanLine(cmd): 
