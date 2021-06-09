@@ -129,7 +129,7 @@ def flask_validate():
 		args = dictFlask(flask.request.args)
 		repos = wc.exec2('cd ../asset-data/; git checkout %s; git pull origin %s; find ./;' % (args['branch'],args['branch'])).split('\n')
 		out = wc.lsearchAllInline('branch is', repos)
-		out.append(wc.validateDCIM(repos))
+		out.append(wc.validateDCIM(repos, directory='../asset-data/'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)))
 		return(flask.jsonify(wc.lunique(out)))
 

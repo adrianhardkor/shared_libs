@@ -1229,18 +1229,18 @@ def validateHostname(hostname):
         pass
     return(components)
 
-def getFnameScaffolding(fname_list):
+def getFnameScaffolding(fname_list, directory=''):
 	result = {}
 	for f in fname_list:
 		lf = f.lower()
 		sf = mcsplit(lf, ['.','/'])
 		if 'yml' in sf and ('dcim' in sf or 'itsm' in sf or 'cable' in sf) and len(f.split('-')) >= 5:
 			if sf[2] not in result.keys(): result[sf[2]] = {}
-			result[sf[2]][sf[3]] = read_yaml(f)
+			result[sf[2]][sf[3]] = read_yaml(directory + f)
 	return(result)
 
-def validateDCIM(fname_list):
-	parse_files = getFnameScaffolding(fname_list)
+def validateDCIM(fname_list, directory=''):
+	parse_files = getFnameScaffolding(fname_list,directory=directory)
 	return(parse_files)
 
 def jenkins_header():
