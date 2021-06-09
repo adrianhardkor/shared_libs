@@ -1,0 +1,63 @@
+{
+  "InitializingTime": "482.35ms",
+  "Runtime": "Mon, 26 Apr 2021 12:56:53 GMT",
+  "hostname": "wopr-sb",
+  "packages": {
+    "ipaddress": "1.0.23",
+    "paramiko": "2.7.2",
+    "requests": "2.25.0",
+    "urllib3": "1.26.2",
+    "uuid": "1.30"
+  },
+  "paths": {
+    "pwd": "/opt/FlaskAPI/shared_libs/ScreenLogs",
+    "pyExec": "/etc/.pyenv/versions/3.6.8/bin/python3",
+    "pyVer": "3.6.8",
+    "runfile": "/opt/FlaskAPI/shared_libs/FlaskAPI.py"
+  },
+  "platform": {
+    "machine": "x86_64",
+    "os": "Linux-5.4.0-58-generic-x86_64-with-debian-bullseye-sid",
+    "processor": "x86_64"
+  },
+  "whoami": "root"
+}
+Timestamp = '771.96ms'
+
+
+ * Serving Flask app "Mongo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+ * Running on http://10.88.48.21:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+{
+  "InitializingTime": "218.84ms",
+  "Runtime": "Mon, 26 Apr 2021 12:56:54 GMT",
+  "hostname": "wopr-sb",
+  "packages": {
+    "ipaddress": "1.0.23",
+    "paramiko": "2.7.2",
+    "requests": "2.25.0",
+    "urllib3": "1.26.2",
+    "uuid": "1.30"
+  },
+  "paths": {
+    "pwd": "/opt/FlaskAPI/shared_libs/ScreenLogs",
+    "pyExec": "/etc/.pyenv/versions/3.6.8/bin/python3",
+    "pyVer": "3.6.8",
+    "runfile": "/opt/FlaskAPI/shared_libs/FlaskAPI.py"
+  },
+  "platform": {
+    "machine": "x86_64",
+    "os": "Linux-5.4.0-58-generic-x86_64-with-debian-bullseye-sid",
+    "processor": "x86_64"
+  },
+  "whoami": "root"
+}
+Timestamp = '439.14ms'
+
+
+ * Debugger is active!
+ * Debugger PIN: 362-018-857

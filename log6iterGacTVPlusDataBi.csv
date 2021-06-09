@@ -1,0 +1,73 @@
+/tmp/agent/itest_velagent/runtime1618597017439/workspace-b9017ee7-c626-4e03-8e10-5036fb145857/docsisScheduler/AARC89410GTVPlusGacDataBi_2021-05-19_11-01-52/GacTVPlusDataBi.csv for periodic results
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #1
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,24275,24275,0,0.0,2514.1704,0.0,16253.44,0.0,0.0,0.0,61028973.44,0.0,0,24275,0,65540,65540,
+Project 1,TV+ C2 US,24275,24275,0,0.0,2522.8731,0.0,17525.76,0.0,0.0,0.0,61240222.48,0.0,0,24275,0,65541,65541,
+Project 1,TV+ C3 US,24275,24275,0,0.0,2318.7707,0.0,19356.16,0.0,0.0,0.0,56285840.88,0.0,0,24275,0,65542,65542,
+Project 1,TV+ C1 DS,145768,144822,0,0.0,25.2962,0.0,794.0,0.0,0.0,0.0,3663419.0,0.0,0,144822,0,131076,131076,
+Project 1,TV+ C2 DS,145768,144822,0,0.0,23.5653,0.0,1484.96,0.0,0.0,0.0,3412753.48,0.0,0,144822,0,131077,131077,
+Project 1,TV+ C3 DS,145768,144822,0,0.0,22.0623,0.0,1353.76,0.0,0.0,0.0,3195089.6,0.0,0,144822,0,131078,131078,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #2
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,24276,24276,0,0.0,2498.6457,0.0,17056.0,0.0,0.0,0.0,60654625.44,0.0,0,24276,0,65540,65540,
+Project 1,TV+ C2 US,24276,24276,0,0.0,2517.0248,0.0,17502.72,0.0,0.0,0.0,61100777.36,0.0,0,24276,0,65541,65541,
+Project 1,TV+ C3 US,24276,24276,0,0.0,2327.2542,0.0,18323.2,0.0,0.0,0.0,56494094.88,0.0,0,24276,0,65542,65542,
+Project 1,TV+ C1 DS,145845,145845,0,0.0,28.9028,0.0,574.68,0.0,0.0,0.0,4215297.6,0.0,0,145845,0,131076,131076,
+Project 1,TV+ C2 DS,145845,145845,0,0.0,27.8102,0.0,592.36,0.0,0.0,0.0,4055943.64,0.0,0,145845,0,131077,131077,
+Project 1,TV+ C3 DS,145845,145845,0,0.0,26.7586,0.0,563.28,0.0,0.0,0.0,3902577.0,0.0,0,145845,0,131078,131078,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #3
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,24276,24276,0,0.0,2507.4801,0.0,15682.56,0.0,0.0,0.0,60869079.44,0.0,0,24276,0,65540,65540,
+Project 1,TV+ C2 US,24276,24276,0,0.0,2491.6296,0.0,16514.56,0.0,0.0,0.0,60484308.08,0.0,0,24276,0,65541,65541,
+Project 1,TV+ C3 US,24276,24276,0,0.0,2310.9195,0.0,16412.16,0.0,0.0,0.0,56097570.0,0.0,0,24276,0,65542,65542,
+Project 1,TV+ C1 DS,146034,146034,0,0.0,30.6834,0.0,592.88,0.0,0.0,0.0,4480785.8,0.0,0,146034,0,131076,131076,
+Project 1,TV+ C2 DS,146034,146034,0,0.0,29.1949,0.0,572.96,0.0,0.0,0.0,4263424.36,0.0,0,146034,0,131077,131077,
+Project 1,TV+ C3 DS,146034,146034,0,0.0,28.05,0.0,573.04,0.0,0.0,0.0,4096227.0,0.0,0,146034,0,131078,131078,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #4
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,24276,24276,0,0.0,2498.9301,0.0,15740.16,0.0,0.0,0.0,60661527.44,0.0,0,24276,0,65540,65540,
+Project 1,TV+ C2 US,24276,24276,0,0.0,2500.3521,0.0,19279.36,0.0,0.0,0.0,60696046.96,0.0,0,24276,0,65541,65541,
+Project 1,TV+ C3 US,24276,24276,0,0.0,2322.4263,0.0,19278.08,0.0,0.0,0.0,56376898.16,0.0,0,24276,0,65542,65542,
+Project 1,TV+ C1 DS,146034,146034,0,0.0,30.9014,0.0,510.4,0.0,0.0,0.0,4512630.4,0.0,0,146034,0,131076,131076,
+Project 1,TV+ C2 DS,146034,146034,0,0.0,29.1657,0.0,534.44,0.0,0.0,0.0,4259157.72,0.0,0,146034,0,131077,131077,
+Project 1,TV+ C3 DS,146034,146034,0,0.0,28.6249,0.0,534.68,0.0,0.0,0.0,4180186.24,0.0,0,146034,0,131078,131078,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #5
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,24276,24276,0,0.0,2497.1097,0.0,18055.68,0.0,0.0,0.0,60617337.04,0.0,0,24276,0,65540,65540,
+Project 1,TV+ C2 US,24276,24276,0,0.0,2499.2866,0.0,18054.4,0.0,0.0,0.0,60670182.48,0.0,0,24276,0,65541,65541,
+Project 1,TV+ C3 US,24276,24276,0,0.0,2291.3781,0.0,18720.0,0.0,0.0,0.0,55623202.4,0.0,0,24276,0,65542,65542,
+Project 1,TV+ C1 DS,145236,145236,0,0.0,28.8358,0.0,515.0,0.0,0.0,0.0,4187972.52,0.0,0,145236,0,131076,131076,
+Project 1,TV+ C2 DS,145236,145236,0,0.0,27.3453,0.0,570.68,0.0,0.0,0.0,3971489.92,0.0,0,145236,0,131077,131077,
+Project 1,TV+ C3 DS,145236,145236,0,0.0,26.6215,0.0,553.84,0.0,0.0,0.0,3866373.28,0.0,0,145236,0,131078,131078,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #6
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,24277,24277,0,0.0,2517.6582,0.0,26293.76,0.0,0.0,0.0,61118670.0,0.0,0,24277,0,65540,65540,
+Project 1,TV+ C2 US,24277,24277,0,0.0,2500.0876,0.0,26293.76,0.0,0.0,0.0,60692126.96,0.0,0,24277,0,65541,65541,
+Project 1,TV+ C3 US,24277,24277,0,0.0,2325.6997,0.0,26293.76,0.0,0.0,0.0,56458685.04,0.0,0,24277,0,65542,65542,
+Project 1,TV+ C1 DS,145901,145901,0,0.0,27.2167,0.0,530.16,0.0,0.0,0.0,3970923.32,0.0,0,145901,0,131076,131076,
+Project 1,TV+ C2 DS,145901,145901,0,0.0,27.0885,0.0,554.0,0.0,0.0,0.0,3952218.36,0.0,0,145901,0,131077,131077,
+Project 1,TV+ C3 DS,145901,145901,0,0.0,26.6961,0.0,553.96,0.0,0.0,0.0,3894954.96,0.0,0,145901,0,131078,131078,

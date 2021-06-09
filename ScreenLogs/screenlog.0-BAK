@@ -1,0 +1,700 @@
+{
+  "InitializingTime": "281.76ms",
+  "Runtime": "Mon, 26 Apr 2021 12:03:16 GMT",
+  "hostname": "wopr-sb",
+  "packages": {
+    "ipaddress": "1.0.23",
+    "paramiko": "2.7.2",
+    "requests": "2.25.0",
+    "urllib3": "1.26.2",
+    "uuid": "1.30"
+  },
+  "paths": {
+    "pwd": "/etc/systemd/system",
+    "pyExec": "/etc/.pyenv/versions/3.6.8/bin/python3",
+    "pyVer": "3.6.8",
+    "runfile": "/opt/FlaskAPI/shared_libs/FlaskAPI.py"
+  },
+  "platform": {
+    "machine": "x86_64",
+    "os": "Linux-5.4.0-58-generic-x86_64-with-debian-bullseye-sid",
+    "processor": "x86_64"
+  },
+  "whoami": "root"
+}
+Timestamp = '523.08ms'
+
+
+ * Serving Flask app "Mongo" (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: on
+ * Running on http://10.88.48.21:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+{
+  "InitializingTime": "239.44ms",
+  "Runtime": "Mon, 26 Apr 2021 12:03:17 GMT",
+  "hostname": "wopr-sb",
+  "packages": {
+    "ipaddress": "1.0.23",
+    "paramiko": "2.7.2",
+    "requests": "2.25.0",
+    "urllib3": "1.26.2",
+    "uuid": "1.30"
+  },
+  "paths": {
+    "pwd": "/etc/systemd/system",
+    "pyExec": "/etc/.pyenv/versions/3.6.8/bin/python3",
+    "pyVer": "3.6.8",
+    "runfile": "/opt/FlaskAPI/shared_libs/FlaskAPI.py"
+  },
+  "platform": {
+    "machine": "x86_64",
+    "os": "Linux-5.4.0-58-generic-x86_64-with-debian-bullseye-sid",
+    "processor": "x86_64"
+  },
+  "whoami": "root"
+}
+Timestamp = '471.15ms'
+
+
+ * Debugger is active!
+ * Debugger PIN: 362-018-857
+method = 'GET'
+10.88.48.21 - - [26/Apr/2021 12:08:26] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'POST'
+Mongo._POST     {'runId': 'jenkins-AARC-894_DocsisScheduler-174'} = 'dict_keys(['stdout_lines', 'runId'])'
+10.88.48.21 - - [26/Apr/2021 12:08:26] "[37mPOST /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-174'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:08:30] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-174'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:08:36] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:08:39] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:08:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:08:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:08:42] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-173 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-174'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:08:48] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-174'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:08:49] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-174 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.21 - - [26/Apr/2021 12:18:24] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'POST'
+Mongo._POST     {'runId': 'jenkins-AARC-894_DocsisScheduler-175'} = 'dict_keys(['stdout_lines', 'runId'])'
+10.88.48.21 - - [26/Apr/2021 12:18:24] "[37mPOST /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-175'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:18:28] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-175'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:18:33] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:18:37] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:18:37] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:18:37] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-175'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:18:45] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-175'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:18:46] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-175 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.21 - - [26/Apr/2021 12:22:01] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'POST'
+Mongo._POST     {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = 'dict_keys(['stdout_lines', 'runId'])'
+10.88.48.21 - - [26/Apr/2021 12:22:01] "[37mPOST /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:05] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:11] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:15] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:19] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:23] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:27] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:31] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:22:39] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:22:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:22:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:22:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:23:34] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:23:34] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:23:34] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:26:13] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:26:13] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:26:13] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:19] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:24] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:26:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:26:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:26:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:46] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:26:52] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '1457282.96ms'
+
+
+{}
+Timestamp = '1457283.09ms'
+
+
+E6KTVPlusDataUS.csv = 'False'
+
+
+
+
+E6KTVPlusDataUS.csv = 'E6KTVPlusDataUS.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '1457338.0ms'
+
+
+{}
+Timestamp = '1457338.29ms'
+
+
+AARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv = 'False'
+
+
+
+
+AARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv = 'AARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '1457422.4ms'
+
+
+{}
+Timestamp = '1457422.53ms'
+
+
+AARC89410GTVPlusE6KDataUS0002txstreamresults.csv = 'False'
+
+
+
+
+AARC89410GTVPlusE6KDataUS0002txstreamresults.csv = 'AARC89410GTVPlusE6KDataUS0002txstreamresults.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:27:35] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.21 - - [26/Apr/2021 12:41:16] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-177 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:41:20] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-177 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:41:24] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-177 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:41:25] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-177 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:41:32] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-177 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:42:40] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:42:40] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:42:40] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:42:46] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:42:52] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:43:08] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:43:08] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:43:08] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:43:08] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:43:08] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:43:08] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:43:13] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:43:19] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '2443582.0ms'
+
+
+{}
+Timestamp = '2443582.33ms'
+
+
+E6KTVPlusDataUS.csv = 'True'
+
+
+
+
+E6KTVPlusDataUS.csv = 'E6KTVPlusDataUS.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '2443635.28ms'
+
+
+{}
+Timestamp = '2443635.53ms'
+
+
+AARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv = 'True'
+
+
+
+
+AARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv = 'AARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '2443691.52ms'
+
+
+{}
+Timestamp = '2443691.86ms'
+
+
+AARC89410GTVPlusE6KDataUS0002txstreamresults.csv = 'True'
+
+
+
+
+AARC89410GTVPlusE6KDataUS0002txstreamresults.csv = 'AARC89410GTVPlusE6KDataUS0002txstreamresults.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-176'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:01] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-176 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.21 - - [26/Apr/2021 12:44:06] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'POST'
+Mongo._POST     {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = 'dict_keys(['stdout_lines', 'runId'])'
+10.88.48.21 - - [26/Apr/2021 12:44:06] "[37mPOST /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:44:09] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:44:10] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:44:11] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:44:13] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:44:16] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:44:16] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.48.30 - - [26/Apr/2021 12:44:19] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:44:19] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:44:19] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:25] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:31] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:44:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:44:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+10.88.48.30 - - [26/Apr/2021 12:44:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:53] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:44:58] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:44:58] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '2542012.36ms'
+
+
+{}
+Timestamp = '2542012.48ms'
+
+
+log2iterAARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv = 'False'
+
+
+
+
+log2iterAARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv = 'log2iterAARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '2542070.38ms'
+
+
+{}
+Timestamp = '2542070.52ms'
+
+
+log2iterAARC89410GTVPlusE6KDataUS0002txstreamresults.csv = 'False'
+
+
+
+
+log2iterAARC89410GTVPlusE6KDataUS0002txstreamresults.csv = 'log2iterAARC89410GTVPlusE6KDataUS0002txstreamresults.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+{}
+Timestamp = '2542116.3ms'
+
+
+{}
+Timestamp = '2542116.45ms'
+
+
+log2iterE6KTVPlusDataUS.csv = 'False'
+
+
+
+
+log2iterE6KTVPlusDataUS.csv = 'log2iterE6KTVPlusDataUS.csv'
+
+
+
+
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPOST /upload HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:45:39] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:46:00] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:46:00] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:46:04] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:46:20] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:46:20] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:46:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:46:41] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:46:44] "[35m[1mGET /download?fname=log2iterAARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/opt/FlaskAPI/shared_libs/FlaskAPI.py", line 50, in downloadFile
+    return(flask.send_file('./' + fname, as_attachment=True))
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/helpers.py", line 629, in send_file
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/opt/FlaskAPI/shared_libs/./log2iterAARC89410GTVPlusE6KDataUS0001rxstreamsummaryresults.csv'
+10.88.200.12 - - [26/Apr/2021 12:46:45] "[37mGET /download?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:46:45] "[37mGET /download?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:46:45] "[37mGET /download?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:46:46] "[37mGET /download?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:46:46] "[37mGET /download?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:47:02] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:47:02] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:47:02] "[35m[1mGET /download?fname=log2iterE6KTVPlusDataUS.csv HTTP/1.1[0m" 500 -
+Traceback (most recent call last):
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2464, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2450, in wsgi_app
+    response = self.handle_exception(e)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1867, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask_cors/extension.py", line 165, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/opt/FlaskAPI/shared_libs/FlaskAPI.py", line 50, in downloadFile
+    return(flask.send_file('./' + fname, as_attachment=True))
+  File "/etc/.pyenv/versions/3.6.8/lib/python3.6/site-packages/flask/helpers.py", line 629, in send_file
+    file = open(filename, "rb")
+FileNotFoundError: [Errno 2] No such file or directory: '/opt/FlaskAPI/shared_libs/./log2iterE6KTVPlusDataUS.csv'
+10.88.200.12 - - [26/Apr/2021 12:47:02] "[37mGET /download?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:47:03] "[37mGET /download?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:47:03] "[37mGET /download?__debugger__=yes&cmd=resource&f=jquery.js HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:47:04] "[37mGET /download?__debugger__=yes&cmd=resource&f=ubuntu.ttf HTTP/1.1[0m" 200 -
+10.88.200.12 - - [26/Apr/2021 12:47:04] "[37mGET /download?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:47:23] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:47:23] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:47:44] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:47:44] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:48:04] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:48:04] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:48:26] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:48:26] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:48:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:48:47] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:02] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:06] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:07] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:07] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:09] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:13] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:23] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:28] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:28] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:37] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:50] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:50] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:51] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:51] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:51] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.30 - - [26/Apr/2021 12:49:51] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:49:58] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:49:58] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'PUT'
+Mongo._PUT:  {'runId': 'jenkins-AARC-894_DocsisScheduler-178'} = '['stdout_lines']'
+10.88.48.21 - - [26/Apr/2021 12:49:59] "[37mPUT /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:50:01] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:50:41] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
+method = 'GET'
+10.88.200.12 - - [26/Apr/2021 12:52:08] "[37mGET /runner?runId=jenkins-AARC-894_DocsisScheduler-178 HTTP/1.1[0m" 200 -
