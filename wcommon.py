@@ -1239,6 +1239,17 @@ def getFnameScaffolding(fname_list, directory=''):
 			result[sf[2]][sf[3]] = read_yaml(directory + f)
 	return(result)
 
+def intfListCmd(itsm):
+	intfList = []
+	if settings == 'juniper_junos':
+		cmd = 'show_interfaces_terse_|_display_json'
+		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
+		if 'err' in attempt.keys(): return(False,intfList)
+		for intfs in attempt['1show interface terse | display json']['interface-information']:
+			for intf in intfs['physical-interface']:
+				intfList.append(intf['name'])
+	return(True,intfList)
+
 def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
 	result = {}
 	data = getFnameScaffolding(fname_list,directory=directory)
@@ -1259,8 +1270,9 @@ def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
 		else:
 			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
-			attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=show_ver' % (itsm['settings'],itsm['ip'])))
-			result[device]['valid']['itsm:settings Worked'] = {str(bool('err' not in attempt.keys())): attempt}
+			worked,intfList = intfListCmd(itsm)
+			result[device]['valid']['itsm:settings Worked'] = worked
+			result[device]['valid']['itsm:intfList'] = intfList
 	return(result)
 
 
