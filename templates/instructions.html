@@ -1,5 +1,6 @@
 <ol type="1">
   <li>Open PowerShell as Administrator, and execute:</li>
+  <li>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux</li>
   <li>dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart</li>
   <li>dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart</li>
   <li>restart machine</li>
