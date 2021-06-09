@@ -9,12 +9,14 @@
   <li>Install wsl.msi package</li>
   <li>Open PowerShell as Administrator, and execute:</li>
   <li>wsl --set-default-version 2</li>
-  <li>Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile Ubuntu.appx -UseBasicParsing</li>
+  <li>Invoke-WebRequest -Uri https://aka.ms/wslubuntu2004 -OutFile Ubuntu2004.appx -UseBasicParsing</li>
   <li>Start-Process -FilePath "Ubuntu2004.appx"</li>
   <li>Launch</li>
   <li>any key to continue...</li>
-  <li>bash</li>
-  <li>git</li>
+  <li>create username:  same as brach:akrygows</li>
+  <li>password can be anything</li>
+  <li>when finished:  exit</li>
+  <li>back to Powershell window:  bash</li>
   <li>if all steps complete, then you've fully installed BASH on your local machine for git.</li>
   </ol>
 
