@@ -1240,8 +1240,16 @@ def getFnameScaffolding(fname_list, directory=''):
 	return(result)
 
 def validateDCIM(fname_list, directory=''):
-	parse_files = getFnameScaffolding(fname_list,directory=directory)
-	return(parse_files)
+	result = {}
+	data = getFnameScaffolding(fname_list,directory=directory)
+	for device in data.keys():
+		result[device]['data'] = data[device]
+		result[device]['valid'] = {}
+		result[device]['valid']['allFilesExist'] = True
+		for fname in ['dcim', 'itsm', 'cable']:
+			if fname not in data[device].keys(): result[device]['valid']['allFilesExist'] = False
+	return(result)
+
 
 def jenkins_header():
 	global env_dict
