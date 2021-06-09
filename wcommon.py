@@ -1243,6 +1243,7 @@ def validateDCIM(fname_list, directory=''):
 	result = {}
 	data = getFnameScaffolding(fname_list,directory=directory)
 	for device in data.keys():
+		result[device] = {}
 		result[device]['data'] = data[device]
 		result[device]['valid'] = {}
 		result[device]['valid']['allFilesExist'] = True
