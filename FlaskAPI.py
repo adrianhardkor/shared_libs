@@ -125,10 +125,15 @@ def flask_RunJenkinsPipeline():
 def flask_validate():
 	@Mongo.MONGO.app.route('/validate', methods = ['GET'])
 	def validate():
+		validate = wc.timer_index_start()
 		args = dictFlask(flask.request.args)
-		wc.jd(args)
-		repos = wc.exec2('cd ..; git pull origin akrygows;')
-		return(flask.jsonify(repos.split('\n')))
+		repos = wc.exec2('cd ../asset-data/; git checkout %s; git pull origin %s; find ./;' % (args['branch'],args['branch']))
+		out = wc.lsearchAllInline('branch is', repos.split('\n'))
+		for asset in repos.split('\n'):
+ 			out.append(wc.lsearchAllInline('.dcim.yml', repos.split('\n')))                   
+ 			out.append(wc.lsearchAllInline('.itsm.yml', repos.split('\n')))
+ 			out.append(wc.lsearchAllInline('.cable.yml', repos.split('\n')))
+		return(flask.jsonify(wc.lunique(out)))
 
 def flask_runtimelogger():
 	@Mongo.MONGO.app.route('/runner', methods = ['POST', 'GET', 'PUT'])
@@ -145,7 +150,7 @@ def flask_runtimelogger():
 			except Exception as err:
 				return(json.dumps({'err':str(err)}))
 		else:
-			wc.jd(vagent_getter())
+			# wc.jd(vagent_getter())
 			return(flask.jsonify(vagent_getter())); # [GET]
 
 def GenQR_PNG(url):
