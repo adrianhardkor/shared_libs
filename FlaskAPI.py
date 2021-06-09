@@ -129,7 +129,7 @@ def flask_validate():
 		args = dictFlask(flask.request.args)
 		repos = wc.exec2('cd ../asset-data/; git checkout %s; git pull origin %s; find ./;' % (args['branch'],args['branch'])).split('\n')
 		out = wc.lsearchAllInline('branch is', repos)
-		out.append(wc.validateITSM(repos, directory='../asset-data/'), CIDR='10.88.0.0/16')
+		out.append(wc.validateITSM(repos, directory='../asset-data/', CIDR='10.88.0.0/16'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)) + ' ms')
 		return(flask.jsonify(wc.lunique(out)))
 
