@@ -1254,10 +1254,13 @@ def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
 			if data[device][fname] == None: result[device]['valid']['allFilesExist'] = False
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
+			result[device]['valid']['itsm:ip pingable'] = False
 			result[device]['valid']['itsm:settings Worked'] = False
 		else:
+			result[device]['valid']['itsm:ip pingable'] = wc.is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
-			result[device]['valid']['itsm:settings Worked'] = json.loads(REST_GET('http://10.88.48.21:5001/aie?settings=%s&hostname=%s&cmd=show_ver' % (itsm['settings'],itsm['ip'])))
+			attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=show_ver' % (itsm['settings'],itsm['ip'])))
+			result[device]['valid']['itsm:settings Worked'] = bool('err' not in attempt)
 	return(result)
 
 
