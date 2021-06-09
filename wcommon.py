@@ -1243,12 +1243,14 @@ def intfListCmd(itsm):
 	intfList = []
 	if itsm['settings'] == 'juniper_junos':
 		cmd = 'show_interface_terse_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:5001/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
+		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
 		if 'err' in attempt.keys(): return(False,intfList)
 		for intfs in attempt['1show interface terse | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
-				for name in intf['name']:
-					intfList.append(name['data'])
+				for name in intf['name']: name = name['data']
+				for admin in intf['admin']: admin = admin['data']			
+				for oper in intf['oper']: oper = oper['data']
+				intfList.append({name: '/'.join([admin,oper])})
 	return(True,intfList)
 
 def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
