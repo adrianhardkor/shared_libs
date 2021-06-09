@@ -1229,12 +1229,13 @@ def validateHostname(hostname):
         pass
     return(components)
 
-def getFnameScaffolding(fname_list, directory=''):
+def getFnameScaffolding(fname_list, uuid='', directory=''):
 	result = {}
 	for f in fname_list:
 		lf = f.lower()
 		sf = mcsplit(lf, ['.','/'])
 		if 'yml' in sf and ('dcim' in sf or 'itsm' in sf or 'cable' in sf) and len(f.split('-')) >= 5:
+			if uuid != '' and uuid != sf[2]: continue; # find specific uuid/devices
 			if sf[2] not in result.keys(): result[sf[2]] = {'dcim':None,'itsm':None,'cable':None}
 			result[sf[2]][sf[3]] = read_yaml(directory + f)
 	return(result)
@@ -1253,9 +1254,9 @@ def intfListCmd(itsm):
 				intfList.append({name: '/'.join([admin,oper])})
 	return(True,intfList)
 
-def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
+def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result = {}
-	data = getFnameScaffolding(fname_list,directory=directory)
+	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	for device in data.keys():
 		result[device] = {}
 		result[device]['data'] = data[device]
