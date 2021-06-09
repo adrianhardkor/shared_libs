@@ -1247,7 +1247,8 @@ def intfListCmd(itsm):
 		if 'err' in attempt.keys(): return(False,intfList)
 		for intfs in attempt['1show interface terse | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
-				intfList.append(intf['name'])
+				for name in intf['name']:
+					intfList.append(name['data'])
 	return(True,intfList)
 
 def validateITSM(fname_list, directory='', CIDR='10.88.0.0/16'):
