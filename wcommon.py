@@ -1236,7 +1236,7 @@ def getFnameScaffolding(fname_list):
 		sf = mcsplit(lf, ['.','/'])
 		if 'yml' in sf and ('dcim' in sf or 'itsm' in sf or 'cable' in sf) and len(f.split('-')) >= 5:
 			if sf[2] not in result.keys(): result[sf[2]] = {'dcim':None,'itsm':None,'cable':None}
-			result[str(sf)][sf[3]] = read_yaml(sf[3])
+			result[sf[2]][sf[3]] = read_yaml(f)
 	return(result)
 
 def validateDCIM(fname_list):
