@@ -1242,8 +1242,8 @@ def getFnameScaffolding(fname_list, directory=''):
 def intfListCmd(itsm):
 	intfList = []
 	if itsm['settings'] == 'juniper_junos':
-		cmd = 'show_interfaces_terse_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
+		cmd = 'show_interface_terse_|_display_json'
+		attempt = json.loads(REST_GET('http://10.88.48.21:5001/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
 		if 'err' in attempt.keys(): return(False,intfList)
 		for intfs in attempt['1show interface terse | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
