@@ -1238,7 +1238,7 @@ def getFnameScaffolding(fname_list, uuid='', directory=''):
 			if uuid != '' and uuid != sf[2]: continue; # find specific uuid/devices
 			if sf[2] not in result.keys(): result[sf[2]] = {'dcim':None,'itsm':None,'cable':None}
 			# result[sf[2]][sf[3]] = read_yaml(directory + f)
-			result[str(sf)] = {f:f}
+			result[str(sf)][str(sf)] = {f:f}
 	return(result)
 
 def intfListCmd(itsm):
