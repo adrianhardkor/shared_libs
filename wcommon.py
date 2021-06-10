@@ -1234,11 +1234,11 @@ def getFnameScaffolding(fname_list, uuid='', directory=''):
 	for f in fname_list:
 		f = f.strip()
 		lf = f.lower()
-		sf = mcsplit(lf, ['.','/'])
+		sf = mcsplit(lf, ['.'])
 		if 'yml' in sf and ('dcim' in sf or 'itsm' in sf or 'cable' in sf) and len(f.split('-')) >= 5:
-			if uuid != '' and uuid != sf[2]: continue; # find specific uuid/devices
-			if sf[2] not in result.keys(): result[sf[2]] = {'dcim':None,'itsm':None,'cable':None}
-			result[sf[2]][sf[3]] = read_yaml(directory + f)
+			if uuid != '' and uuid != sf[0]: continue; # find specific uuid/devices
+			if sf[0] not in result.keys(): result[sf[0]] = {'dcim':None,'itsm':None,'cable':None}
+			result[sf[0]][sf[1]] = read_yaml(directory + f)
 			# result[str(sf)][str(sf)] = {f:f}
 	return(result)
 
