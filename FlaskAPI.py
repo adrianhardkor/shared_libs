@@ -127,7 +127,7 @@ def flask_validate():
 		uuid = ''
 		if 'uuid' in args.keys():  uuid = args['uuid']
 
-		repos = wc.exec2('export GIT_SSH_COMMAND="ssh -i /opt/gitlab_root"; cd ../asset-data/; rm *.yml; git checkout %s; git pull; find ./;' % (args['branch'])).split('\n')
+		repos = wc.exec2('export GIT_SSH_COMMAND="ssh -i /opt/gitlab_root"; cd ../asset-data/; rm *.yml; git checkout %s; git reset --hard; find ./;' % (args['branch'])).split('\n')
 		out = wc.lsearchAllInline('branch is', repos)
 		out.append(wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)) + ' ms')
