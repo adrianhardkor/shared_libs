@@ -129,7 +129,6 @@ def flask_validate():
 
 		repos = wc.exec2('export GIT_SSH_COMMAND="ssh -i /opt/gitlab_root"; cd ../asset-data/; git checkout %s; git pull; find ./;' % (args['branch'])).split('\n')
 		out = wc.lsearchAllInline('branch is', repos)
-		out.append(repos)
 		out.append(wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)) + ' ms')
 		return(flask.jsonify(wc.lunique(out)))
