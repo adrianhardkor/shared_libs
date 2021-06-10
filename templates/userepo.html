@@ -5,7 +5,17 @@ ADDING DEVICES, CABLINGS, EDITING:
 <li>cd /mnt/c/git/asset-data</li>
 <li>git checkout akrygows</li>
 <li>git pull</li>
-<li>/mnt/c/Program\ Files/Notead++/notepad++.exe README.md</li>
+<li>http://10.88.48.21:5000/qrservice</li>
+<li>Print QR code, stick on physical hardware, for iPhone scanner</li>
+<li>cp any existing uuid.*.yml to new uuid found on qrservice page</li>
+    <ul>
+      <li>cp d3c59657-94fd-47d0-8029-7212f9612ed6.itsm.yml __NEW_UUID__.itsm.yml</li>
+    </ul>
+<li>/mnt/c/Program\ Files/Notead++/notepad++.exe __NEW_UUID__.itsm.yml</li>
+    <ul>
+      <li>or /mnt/c/Program\ Files\ \(x86\)/Notepad++/notepad++.exe __NEW_UUID__.itsm.yml</li>
+    </ul>
+<li>dont forget to save!</li>
 <li>git add .</li>
 <li>git commit -m 'why did you make changes'</li>
 <li>git push --set-upstream origin akrygows</li>
