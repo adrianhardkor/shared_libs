@@ -1268,7 +1268,7 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			itsm[k.lower()] = itsm.pop(k); # lower all keys
 		result[device]['valid'] = {}
 		result[device]['valid']['allFilesExist'] = True
-		for fname in ['dcim', 'itsm', 'cable']:
+		for fname in ['dcim', 'itsm']:
 			if data[device][fname] == None: result[device]['valid']['allFilesExist'] = False
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
