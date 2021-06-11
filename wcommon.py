@@ -1259,6 +1259,7 @@ def intfListCmd(itsm):
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result = {}
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
+	Duplicates = {}
 	for device in data.keys():
 		result[device] = {}
 		result[device]['data'] = data[device]
@@ -1275,6 +1276,12 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			result[device]['valid']['itsm:settings Worked'] = False
 			result[device]['valid']['itsm:intfList'] = []
 		else:
+			if itsm['ip'] in Duplicates.keys():
+				result[device]['valid']['itsm:duplicateIP'] = Duplicates[itsm['ip']]
+				result[Duplicates[itsm['ip']]]['valid']['itsm:duplicateIP'] = device
+			else:
+				Duplicates[itsm['ip']] = device; # add
+				result[device]['valid']['itsm:duplicateIP'] = False
 			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
 			worked,intfList = intfListCmd(itsm)
