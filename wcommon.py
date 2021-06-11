@@ -1277,8 +1277,10 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			result[device]['valid']['itsm:intfList'] = []
 		else:
 			if itsm['ip'] in Duplicates.keys():
+				result[device]['valid'] = result[Duplicates[itsm['ip']]]['valid']
 				result[device]['valid']['itsm:duplicateIP'] = Duplicates[itsm['ip']]
 				result[Duplicates[itsm['ip']]]['valid']['itsm:duplicateIP'] = device
+				continue; # no need to re-validate
 			else:
 				Duplicates[itsm['ip']] = device; # add
 				result[device]['valid']['itsm:duplicateIP'] = False
