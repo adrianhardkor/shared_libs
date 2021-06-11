@@ -1273,12 +1273,13 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
 			result[device]['valid']['itsm:ip pingable'] = False
 			result[device]['valid']['itsm:settings Worked'] = False
+			result[device]['valid']['itsm:intfList'] = []
 		else:
 			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
 			worked,intfList = intfListCmd(itsm)
 			result[device]['valid']['itsm:settings Worked'] = worked
-			result[device]['valid']['itsm:intfList'] = intfList
+			result[device]['valid']['itsm:intfList'] = str(intfList)
 	return(result)
 
 
