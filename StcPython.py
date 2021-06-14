@@ -135,6 +135,9 @@ excluding 3.5 variants')
         return self.stcInt.salDisconnect(svec)
 
     def get(self, handle, *args):
+        if str(handle) == '':
+            MongoLoggerHandler('stc.get for empty handle is broken')
+            raise Exception('stc.get for handle='' is broken')
         svec = StcPython._unpackArgs(*args)
         svecDashes = []
         for i, attName in enumerate(svec):
