@@ -9,7 +9,7 @@ global MH; # mongo logger for WOPR
 def MongoLoggerHandler(data):
         global MH; # velocity.MH, velocity.MH.who, velocity.MH.runId
         try:
-                MH._LOGGER(data)
+                MH._LOGGER(data, ForceUpdate=True)
         except Exception:
                 pass
 
@@ -48,13 +48,15 @@ def LogSequencerLoop(stc, MH, RUNTIME_SEC, care='123456789123456789123456789'):
             MH._LOGGER(str(CURRENT['Name']))
             oldCURRENT = CURRENT
 
+
+
 class StcPython(object):
 
     def __init__(self):
         self.stcInt = None
-        if sys.hexversion < 0x020605F0 or sys.hexversion > 0x030608F0 \
-        or (sys.hexversion > 0x030404F0 and sys.hexversion < 0x030509F0):
-             print('[WARN]  This version of STC requires Python version 2.6.5 upto 3.6.9 \
+        if sys.hexversion < 0x020605F0 or sys.hexversion > 0x30902f0 \
+        or (sys.hexversion > 0x030404F0 and sys.hexversion < 0x030508F0):
+             raise ImportError('This version of STC requires Python version 2.6.5 upto 3.9.2 \
 excluding 3.5 variants')
         # STC_PRIVATE_INSTALL_DIR may either be set as a system environment
         # variable or directly in the script.
@@ -87,17 +89,20 @@ excluding 3.5 variants')
         os.environ['STC_AUTOMATION_LANGUAGE_VERSION'] = python_version()
 
         if hex(sys.hexversion).startswith('0x2060'):
-            self.stcInt = __import__('StcIntPython')
             MongoLoggerHandler('stcInt = StcIntPython')
+            self.stcInt = __import__('StcIntPython')
         elif hex(sys.hexversion).startswith('0x207'):
-            self.stcInt = __import__('StcIntPython27')
             MongoLoggerHandler('stcInt = StcIntPython27')
+            self.stcInt = __import__('StcIntPython27')
         elif hex(sys.hexversion).startswith('0x304'):
-            self.stcInt = __import__('StcIntPython34')
             MongoLoggerHandler('stcInt = StcIntPython34')
-        else:
-            self.stcInt = __import__('StcIntPython36')
+            self.stcInt = __import__('StcIntPython34')
+        elif hex(sys.hexversion).startswith('0x306'):
             MongoLoggerHandler('stcInt = StcIntPython36')
+            self.stcInt = __import__('StcIntPython36')
+        else:
+            MongoLoggerHandler('stcInt = StcIntPython39')
+            self.stcInt = __import__('StcIntPython39')
 
         os.chdir(runningDir)
 
@@ -130,9 +135,6 @@ excluding 3.5 variants')
         return self.stcInt.salDisconnect(svec)
 
     def get(self, handle, *args):
-        if str(handle) == '':
-            MongoLoggerHandler('stc.get for empty handle is broken')
-            raise Exception('stc.get for handle='' is broken')
         svec = StcPython._unpackArgs(*args)
         svecDashes = []
         for i, attName in enumerate(svec):
