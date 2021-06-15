@@ -1,6 +1,44 @@
 <html>
 <head>
 <style>
+body {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+  url(https://images.squarespace-cdn.com/content/v1/5470d846e4b0a5a15075b8c2/1605723069887-X5YYAG7UH6Y1L627ZP1Z/ke17ZwdGBToddI8pDm48kNvT88LknE-K9M4pGNO0Iqd7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UbeDbaZv1s3QfpIA4TYnL5Qao8BosUKjCVjCf8TKewJIH3bqxw7fF48mhrq5Ulr0Hg/Non+POS+Inventory+Background.png?format=1500w);
+  background-repeat: no-repeat;
+  background-size:cover;
+  z-index: -1;
+}
+* {
+    font-size: 20px;
+    font-weight: 600;
+}
+h1 {
+    justify-content: center;
+    display: flex;
+    font-weight: 900;
+    font-size: 140px;
+    object-fit: contain;
+    border: 5px solid #010F18;
+    border-radius: 20px;
+    margin-bottom: 200px;
+    -webkit-box-shadow: 5px 5px 15px 5px #000000;
+    box-shadow: 5px 5px 15px 5px #000000;
+}
+div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+span {
+}
+li {
+    font-size: 25px;
+    font-weight: 800;
+    margin-top: 40px;
+    list-style: none;
+    padding: 5px;
+    border: solid 2px #040404;
+}
 p {
 display: flex;
 margin-block-start: 1em;
@@ -13,8 +51,9 @@ align-items: center;
 </style>
 </head>
 <body>
-<h1>{{adrian_test}}</h1>
+<h1>QR Scanner Inventory</h1>
 <p><a href="{{link}}"><img alt="Embedded Image" src="data:image/png;base64,{{ img_str }}" /></a></p>
+<div>
 <ul>
   <li>{{myUUID}}.dcim.yml:</li>
       {% for item1 in dcim %}
@@ -29,5 +68,6 @@ align-items: center;
           <br>{{item3}}</br>
       {% endfor %}
 </ul>
+</div>
 </body>
 </html>

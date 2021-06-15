@@ -758,27 +758,27 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
 #        # global via dict/json
 #        password = passwords[ip]
 
+    # connect(hostname, port=22, username=None, password=None, pkey=None, key_filename=None, timeout=None, allow_agent=True, look_for_keys=True, compress=False, sock=None, gss_auth=False, gss_kex=False, gss_deleg_creds=True, gss_host=None, banner_timeout=None, auth_timeout=None, gss_trust_dns=True, passphrase=None, disabled_algorithms=None)
     port = 22
     sleep_interval = .6
     remote_conn_pre = paramiko.SSHClient()
     remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    if not quiet: echo_param({'IP': ip, 'port': port, 'username': username, 'pre-commands': commands})
-    if key_fname != '':
-        pairprint('using key', key_fname)
-        try:
-            remote_conn_pre.connect(ip, port=port, username=username, pkey = paramiko.RSAKey.from_private_key_file(key_fname))
-        except Exception:
-            return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
-    else:        
-        print('not using key')
-        try:
-            remote_conn_pre.connect(ip, port=port, username=username, password=password, look_for_keys=False, allow_agent=False)
-        except Exception:
-            return_code_error("\n\nUnexpected error, user %s: %s" % (username, sys.exc_info()[0]))
+    connect_settings = {'hostname':ip, 'port':str(port), 'username':str(username), 'look_for_keys':False, 'allow_agent':False, 'banner_timeout':10}
+    if not quiet: echo_param(connect_settings)
+    if key_fname != '': connect_settings['pkey'] = paramiko.RSAKey.from_private_key_file(key_fname)
+    else: connect_settings['password'] = password
+
+    try:
+        remote_conn_pre.connect(**connect_settings)
+        if not quiet: print('connected')
+    except Exception as err:
+        return_code_error("\n\nUnexpected error, user %s: %s %s    %s" % (username, sys.exc_info()[0], str(err), str(connect_settings)))
     # print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))
 
     remote_conn = remote_conn_pre.invoke_shell()
+    if not quiet: print('shell invoked')
     init = remote_conn.recv(paramiko_buffer)
+    if not quiet: print('init received')
 
     # pre-commands
     result = {'_':{'_': bytes_str(init)}, '_buffering': paramiko_send_expect(commands, ip, remote_conn, driver, quiet)}
