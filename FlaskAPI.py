@@ -160,13 +160,14 @@ def GenQR_PNG(url):
 def flask_qr():
 	@Mongo.MONGO.app.route('/qrservice', methods = ['GET'])
 	def qr():
-		qr_fname = 'qr.png'
-		# wc.rmf('templates/' + qr_fname)
-		myUUID = wc.genUUID(); # if identifyer='' then random
-		link = 'http://10.88.48.21:5000/ais?uuid=' + myUUID
 		args,payload = flaskArgsPayload()
 		if 'instructions' in args.keys():
 			return(flask.render_template(args['instructions'] + '.html'))
+		qr_fname = 'qr.png'
+		# wc.rmf('templates/' + qr_fname)
+		if 'uuid' in args.keys(): myUUID = args['uuid']
+		else: myUUID = wc.genUUID()
+		link = 'http://10.88.48.21:5000/ais?uuid=' + myUUID
 		img_str = GenQR_PNG(link)
 		result = flask.render_template('qr_page.html', adrian_test=str(args), img_str=img_str, link=link, myUUID=myUUID, dcim=wc.read_file('templates/dcim.yml').split("\n"), itsm=wc.read_file('templates/itsm.yml').split("\n"), cable=wc.read_file('templates/cable.yml').split("\n"))
 		return(result)
