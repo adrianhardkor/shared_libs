@@ -834,10 +834,10 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
         while prompt_status is None:
             if check: prompt_check(output, remote_conn, IP, prompt_status, quiet)
             buff = remote_conn.recv(paramiko_buffer)
-            if not quiet: print(command); print(buff); print(bytes_str(buff)); print();
+            if not quiet: print(); print(command); print(buff); print(bytes_str(buff)); print();
             buff = bytes_str(buff)
             output += buff
-            if command.lower() in ['exit', 'y', 'yes'] and buff == '':
+            if command.strip().lower() in ['exit', 'y', 'yes'] and buff == '':
                 if exits >= 3: break;
                 else: exits += 1;
             time.sleep(0.3)
