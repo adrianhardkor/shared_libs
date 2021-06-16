@@ -52,7 +52,7 @@ gainspeed:
   vendor: 'gainspeed'
   prompt: "<show_config_|_match_prompt>"
   buffering: 'set paginate false'
-  exit: "exit"
+  exit: "exit,exit"
 ciena:
   username: "admin"
   private_key_file: "/opt/ciena.txt"
@@ -60,7 +60,7 @@ ciena:
   vendor: 'ciena'
   prompt: "([a-zA-Z0-9\-\.\(\)\_]*[>#])"
   buffering: 'terminal length 0'
-  exit: "exit"
+  exit: "exit,exit"
 a10t:
   username: "admin"
   private_key_file: "/opt/a10.txt"
@@ -68,4 +68,4 @@ a10t:
   vendor: 'a10t'
   prompt: "([a-zA-Z0-9\-\.\(\)\_\ ]+[\[\/\]0-9]+[>#])"
   buffering: ',enable,,terminal length 0'
-  exit: "exit,"
+  exit: "exit,y"

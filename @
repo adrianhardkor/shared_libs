@@ -803,7 +803,7 @@ def prompt_check(output, remote_conn, IP, prompt_status, quiet):
 
 def paramiko_ready(remote_conn, command, quiet, check):
     time.sleep(.4)
-    while remote_conn.recv_ready() is False and remote_conn.exit_status_ready() is False:
+    while remote_conn.recv_ready() is False:
         # Not Ready
         time.sleep(0)
     if not quiet: print("\n\nReady/Sending:  '%s' = %r" % (command, remote_conn.recv_ready()))
@@ -965,7 +965,7 @@ def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', becom
     # command_time = timer_index_since()
 
     discontime = timer_index_start()
-    # spawnID.disconnect(); # kills process, doesnt kill session
+    spawnID.disconnect(); # kills process, doesnt kill session
     # spawnID.send('exit' + '\n'); # kills session
     disconnect_time = timer_index_since(discontime)
 

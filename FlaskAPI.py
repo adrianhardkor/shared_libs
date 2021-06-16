@@ -233,6 +233,9 @@ def flask_AIEngine():
 		paramiko_args['ping'] = False
 		paramiko_args['quiet'] = False
 		if 'buffering' in settings.keys(): paramiko_args['buffering'] = settings['buffering']
+		if 'exit' in settings.keys():
+			for e in settings['exit'].split(','):
+				paramiko_args['commands'].append(e)
 		paramiko_args['settings_prompt'] = settings['prompt']
 		# wc.jd(paramiko_args)
 		try:
