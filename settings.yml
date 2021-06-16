@@ -66,6 +66,6 @@ a10t:
   private_key_file: "/opt/a10.txt"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: 'a10t'
-  prompt: "([a-zA-Z0-9\-\.\(\)\_\ ]+[\[\/\]0-9]+[>#])"
+  prompt: "(N/Y)?: |([a-zA-Z0-9\-\.\(\)\_\ ]+[\[\/\]0-9]+[>#])"
   buffering: ',enable,,terminal length 0'
-  exit: "exit,exit\ry"
+  exit: "exit,exit,y"
