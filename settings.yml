@@ -68,4 +68,4 @@ a10t:
   vendor: 'a10t'
   prompt: "([a-zA-Z0-9\-\.\(\)\_\ ]+[\[\/\]0-9]+[>#])"
   buffering: ',enable,,terminal length 0'
-  exit: "exit,y"
+  exit: "exit\ry"
