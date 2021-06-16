@@ -19,6 +19,14 @@ class LEPTON():
 		return(json.loads(wc.REST_POST(self.IP + url, user=self.user, pword=self.pword, verify=False, args=args, headers=headers, convert_args=True)))
 	def REST_GET(self, url):
 		return(json.loads(wc.REST_GET(self.IP + url, user=self.user, pword=self.pword,verify=False)))
+	def MapPorts(self, endpoint, A, B):
+		out = self.REST_POST('/chassis/do/' + endpoint, args={'Direction':'TwoWay', 'Pairs':[{'A':A,'B':B}]})
+		if (endpoint == 'unmap' and out['response.status_code'] == '204') or out["Response"] ==  "<Response [204]>":
+			out = {'response.body': {'Success': '%s %s:  Response 204' % (A,B)}}
+		elif 'response.body' in out.keys():
+			# wc.jd(out)
+			if str(out['response.body']).strip() != '': out['response.body'] = json.loads(out['response.body'])
+		return(out)
 	def GetStatus(self):
 		_DO_SHOW_FLOW_PORTS = []
 		version = LEPTON.REST_GET(self, '/system/do/version')
@@ -87,9 +95,12 @@ class LEPTON():
 #{'Port': '3.1', 'Mode': 'Online', 'PhyLink': ['UP', 'UP', 'UP', 'UP'], 'Ingress': ['3.2'], 'Egress': [['3.2']]}
 #{'Port': '3.2', 'Mode': 'Online', 'PhyLink': ['UP', 'UP', 'UP', 'UP'], 'Ingress': ['3.1'], 'Egress': [['3.1']]}
 
-#LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
-#status = LEP.GetStatus()
-#wc.jd(status)
+# LEP = LEPTON(wc.argv_dict['IP'], wc.argv_dict['user'], wc.argv_dict['pass'])
+# status = LEP.GetStatus()
+# for p in status['ports'].keys():
+#	wc.pairprint(p, wc.lunique(status['ports'][p]['PhyLink']))
+
+# wc.jd(status['ports']['1.64'])
 
 # 
 # # Apply LEPTON class to VELOCITY-INVENTORY-LEPTON
