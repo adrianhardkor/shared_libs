@@ -60,7 +60,7 @@ ciena:
   vendor: 'ciena'
   prompt: "([a-zA-Z0-9\-\.\(\)\_]*[>#])"
   buffering: 'terminal length 0'
-  exit: "exit,exit"
+  exit: "exit"
 a10t:
   username: "admin"
   private_key_file: "/opt/a10.txt"
