@@ -97,12 +97,13 @@ excluding 3.5 variants')
         elif hex(sys.hexversion).startswith('0x304'):
             MongoLoggerHandler('stcInt = StcIntPython34')
             self.stcInt = __import__('StcIntPython34')
-        elif hex(sys.hexversion).startswith('0x306'):
+#        elif hex(sys.hexversion).startswith('0x306'):
+         else:
             MongoLoggerHandler('stcInt = StcIntPython36')
             self.stcInt = __import__('StcIntPython36')
-        else:
-            MongoLoggerHandler('stcInt = StcIntPython39')
-            self.stcInt = __import__('StcIntPython39')
+#        else:
+#            MongoLoggerHandler('stcInt = StcIntPython39')
+#            self.stcInt = __import__('StcIntPython39')
 
         os.chdir(runningDir)
 
