@@ -761,27 +761,42 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     # connect(hostname, port=22, username=None, password=None, pkey=None, key_filename=None, timeout=None, allow_agent=True, look_for_keys=True, compress=False, sock=None, gss_auth=False, gss_kex=False, gss_deleg_creds=True, gss_host=None, banner_timeout=None, auth_timeout=None, gss_trust_dns=True, passphrase=None, disabled_algorithms=None)
     port = 22
     sleep_interval = .6
-    remote_conn_pre = paramiko.SSHClient()
-    remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     connect_settings = {'hostname':ip, 'port':str(port), 'username':str(username), 'look_for_keys':False, 'allow_agent':False, 'banner_timeout':10}
     if not quiet: echo_param(connect_settings)
     if key_fname != '': connect_settings['pkey'] = paramiko.RSAKey.from_private_key_file(key_fname)
     else: connect_settings['password'] = password
 
-    try:
-        remote_conn_pre.connect(**connect_settings)
-        if not quiet: print('connected')
-    except Exception as err:
-        return_code_error("\n\nUnexpected error, user %s: %s %s    %s" % (username, sys.exc_info()[0], str(err), str(connect_settings)))
-    # print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))
+    attempts = 1
+    while attempts <= 25:
+        remote_conn_pre = paramiko.SSHClient()
+        remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        try:
+            remote_conn_pre.connect(**connect_settings)
+            if not quiet: print('connected')
+            break
+        except EOFError as e:
+            print(e)
+            time.sleep(sleep_interval * 2)
+        except Exception as err:
+            print(err)
+            time.sleep(sleep_interval * 2)
 
+        # cleanup each if fail
+        try:
+            pairprint('CLOSED', remote_conn_pre.close())
+        except Exception as e2:
+            print(e2)
+        attempts += 1
+
+    if attempts == 25: print('couldnt connect to ' + ip); exit(4)
+    print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))    
     remote_conn = remote_conn_pre.invoke_shell()
     if not quiet: print('shell invoked')
     init = remote_conn.recv(paramiko_buffer)
     if not quiet: print('init received')
 
     # pre-commands
-    result = {'_':{'_': bytes_str(init)}, '_buffering': paramiko_send_expect(commands, ip, remote_conn, driver, quiet)}
+    result = {'_':{'_': bytes_str(init)}, '_buffering': paramiko_send_expect(commands, ip, remote_conn, driver, quiet, exit=[])}
 
     if not quiet: print(result)
     login_diff = timer_index_since(login_time)
@@ -789,7 +804,6 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     return(remote_conn)
 
 def prompt_check(output, remote_conn, IP, prompt_status, quiet):
-    # paramiko_ready(remote_conn, prompt_status, quiet)
     last_line = output.split('\n')
     # print("prompt_check '%s'" % last_line[-1])
     print('.', end='')
@@ -808,7 +822,8 @@ def paramiko_ready(remote_conn, command, quiet, check):
         time.sleep(0)
     if not quiet: print("\n\nReady/Sending:  '%s' = %r" % (command, remote_conn.recv_ready()))
 
-def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
+def paramiko_send_expect(commands, IP, remote_conn, driver, quiet, exit):
+    exit.append('y'); exit.append('yes'); # if exits and buffer clean then close
     global runcommands_diff
     diff = timer_index_start()
     s = '\n'
@@ -818,6 +833,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
     global paramiko_buffer
     thisPrompt = '.*%s$' % prompt[driver]
     regexPrompt = re.compile(thisPrompt)
+    closedPrompt = re.compile('.* closed.')
     commandIndex = 1
     for command in commands:
         result[str(commandIndex) + command] = []
@@ -831,15 +847,18 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet):
         paramiko_ready(remote_conn, command, quiet, check)
         exits = 0
         prompt_status = regexPrompt.search(output)
-        while prompt_status is None:
+        while prompt_status is None and closedPrompt.search(output) is None:
             if check: prompt_check(output, remote_conn, IP, prompt_status, quiet)
             buff = remote_conn.recv(paramiko_buffer)
             if not quiet: print(); print(command); print(buff); print(bytes_str(buff)); print();
             buff = bytes_str(buff)
             output += buff
-            if command.strip().lower() in ['exit', 'y', 'yes'] and buff == '':
-                if exits >= 3: break;
+            if command.strip() in exit and buff == '':
+                if exits >= 3:
+                    remote_conn.close()
+                    break;
                 else: exits += 1;
+                # if not quiet: pairprint(str(command) + buff + '\t' + str(exit), exits)
             time.sleep(0.3)
             prompt_status = regexPrompt.search(output)
 
@@ -927,7 +946,7 @@ def is_pingable(IP):
             result = False
     return(result)
 
-def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering=''):
+def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering='', exit=[]):
     global passwords
     try:
         passwords[ip] = become; # BECOME = priv15 is global 
@@ -961,11 +980,14 @@ def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', becom
         return('')
 
     timer_index_start()
-    output = run_commands_paramiko(commands, ip, driver, spawnID, quiet)
+    output = paramiko_send_expect(commands, ip, spawnID, driver, quiet, exit)
     # command_time = timer_index_since()
 
     discontime = timer_index_start()
-    # spawnID.disconnect(); # kills process, doesnt kill session
+    try:
+        spawnID.disconnect(); # kills process, doesnt kill session
+    except Exception:
+        pass
     # spawnID.send('exit' + '\n'); # kills session
     disconnect_time = timer_index_since(discontime)
 
