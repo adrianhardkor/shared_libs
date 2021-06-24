@@ -21,7 +21,7 @@ def GetLports(status, speed):
 special = wc.read_yaml('./special.yml')
 # for lcType in special.keys():
 
-wc.jd(LEP.MapPorts('unmap', '1.61', '1.64'))
+wc.jd(LEP.MapPorts('unmap', '1.60', '1.64'))
 wc.jd(LEP.MapPorts('map', '1.62', '1.64')); exit(0)
 
 for speed in [10.3125]:

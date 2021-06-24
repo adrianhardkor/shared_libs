@@ -1289,7 +1289,7 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	for device in data.keys():
 		result[device] = {}
 		result[device]['data'] = data[device]
-		itsm = data[device]['itsm']
+		itsm = data[device]['dcim']
 		for k in itsm.keys():
 			itsm[k.lower()] = itsm.pop(k); # lower all keys
 		result[device]['valid'] = {}
