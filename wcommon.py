@@ -850,7 +850,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet, exit):
         while prompt_status is None and closedPrompt.search(output) is None:
             if check: prompt_check(output, remote_conn, IP, prompt_status, quiet)
             buff = remote_conn.recv(paramiko_buffer)
-            if not quiet: print(); print(command); print(buff); print(bytes_str(buff)); print();
+            if not quiet: print(exits); print(command); print(buff); print(bytes_str(buff)); print(str(exit) + '\n');
             buff = bytes_str(buff)
             output += buff
             if command.strip() in exit and buff == '':
@@ -1272,7 +1272,7 @@ def intfListCmd(itsm):
 	intfList = []
 	if itsm['settings'] == 'juniper_junos':
 		cmd = 'show_interface_terse_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
+		attempt = json.loads(REST_GET('http://10.88.48.21:5001/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
 		if 'err' in attempt.keys(): return(False,intfList)
 		for intfs in attempt['1show interface terse | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
@@ -1287,6 +1287,7 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	Duplicates = {}
 	for device in data.keys():
+		jd(data[device])
 		result[device] = {}
 		result[device]['data'] = data[device]
 		itsm = data[device]['dcim']

@@ -1,0 +1,13 @@
+/tmp/agent/itest_velagent/runtime1618597017439/workspace-38ada79b-a119-41bb-a286-7ae438ff74d4/docsisScheduler/AARC89410GTVPlusGacDataBi_2021-06-14_13-39-43/GacTVPlusDataBi.csv for periodic results
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5,streamblock6,streamblock7,streamblock12,streamblock13,streamblock14 LIMIT 50
+Record #1
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 US,2384,2384,0,0.0,2350.4601,0.0,9333.76,0.0,0.0,0.0,5601146.32,0.0,0,2384,0,65539,65539,
+Project 1,TV+ C2 US,2384,2384,0,0.0,2332.4587,0.0,10356.48,0.0,0.0,0.0,5558249.04,0.0,0,2384,0,65540,65540,
+Project 1,TV+ C3 US,2384,2384,0,0.0,1858.1474,0.0,10244.48,0.0,0.0,0.0,4427965.28,0.0,0,2384,0,65541,65541,
+Project 1,TV+ C1 DS,14364,13270,0,0.0,24.4704,0.0,882.0,0.0,0.0,0.0,324697.12,0.0,0,13270,0,131075,131075,
+Project 1,TV+ C2 DS,14364,13269,0,0.0,22.6728,0.0,958.56,0.0,0.0,0.0,300822.24,0.0,0,13269,0,131076,131076,
+Project 1,TV+ C3 DS,14364,13269,0,0.0,21.5046,0.0,1011.68,0.0,0.0,0.0,285323.4,0.0,0,13269,0,131077,131077,

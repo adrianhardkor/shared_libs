@@ -1,0 +1,37 @@
+/tmp/agent/itest_velagent/runtime1618597017439/workspace-81333ddf-2d7f-4f6a-a5bc-813f9c5c5644/docsisScheduler/AARC89410GTVPlusE6KDataBi_2021-06-16_21-37-10/E6KTVPlusDataBi.csv for periodic results
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock1,streamblock2,streamblock3,streamblock8,streamblock9,streamblock10 LIMIT 50
+Record #1
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 DS,13034,12046,0,0.0,220.2408,0.0,3815.04,0.0,0.0,0.0,2652800.72,0.0,0,12046,0,65536,65536,
+Project 1,TV+ C2 DS,13034,12044,0,0.0,150.2512,0.0,3598.4,0.0,0.0,0.0,1809475.64,0.0,0,12044,0,65537,65537,
+Project 1,TV+ C3 DS,13034,12043,0,0.0,143.544,0.0,4574.72,0.0,0.0,0.0,1728556.88,0.0,0,12043,0,65538,65538,
+Project 1,TV+ C1 US,2189,2189,0,0.0,2312.8282,0.0,12627.2,0.0,0.0,0.0,5060468.16,0.0,0,2189,0,131072,131072,
+Project 1,TV+ C2 US,2189,2189,0,0.0,2308.8592,0.0,6213.12,0.0,0.0,0.0,5051784.0,0.0,0,2189,0,131073,131073,
+Project 1,TV+ C3 US,2189,2189,0,0.0,2292.814,0.0,14594.56,0.0,0.0,0.0,5016677.12,0.0,0,2189,0,131074,131074,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock1,streamblock2,streamblock3,streamblock8,streamblock9,streamblock10 LIMIT 50
+Record #2
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 DS,13230,13230,0,0.0,258.3938,0.0,2720.0,0.0,0.0,0.0,3418291.6,0.0,0,13230,0,65536,65536,
+Project 1,TV+ C2 DS,13230,13230,0,0.0,184.1006,0.0,2095.36,0.0,0.0,0.0,2435466.68,0.0,0,13230,0,65537,65537,
+Project 1,TV+ C3 DS,13230,13230,0,0.0,170.7561,0.0,1970.24,0.0,0.0,0.0,2258932.32,0.0,0,13230,0,65538,65538,
+Project 1,TV+ C1 US,2189,2189,0,0.0,2462.703,0.0,11744.0,0.0,0.0,0.0,5388394.24,0.0,0,2189,0,131072,131072,
+Project 1,TV+ C2 US,2189,2189,0,0.0,2454.1629,0.0,12701.44,0.0,0.0,0.0,5369708.48,0.0,0,2189,0,131073,131073,
+Project 1,TV+ C3 US,2189,2189,0,0.0,2444.1246,0.0,6229.12,0.0,0.0,0.0,5347744.64,0.0,0,2189,0,131074,131074,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock1,streamblock2,streamblock3,streamblock8,streamblock9,streamblock10 LIMIT 50
+Record #3
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,TV+ C1 DS,13167,13167,0,0.0,266.9996,0.0,4065.6,0.0,0.0,0.0,3515316.96,0.0,0,13167,0,65536,65536,
+Project 1,TV+ C2 DS,13167,13167,0,0.0,191.5183,0.0,4740.48,0.0,0.0,0.0,2521530.56,0.0,0,13167,0,65537,65537,
+Project 1,TV+ C3 DS,13167,13167,0,0.0,186.6963,0.0,4490.88,0.0,0.0,0.0,2458042.96,0.0,0,13167,0,65538,65538,
+Project 1,TV+ C1 US,2189,2189,0,0.0,2512.0029,0.0,6504.32,0.0,0.0,0.0,5496262.4,0.0,0,2189,0,131072,131072,
+Project 1,TV+ C2 US,2189,2189,0,0.0,2451.7119,0.0,7615.36,0.0,0.0,0.0,5364345.6,0.0,0,2189,0,131073,131073,
+Project 1,TV+ C3 US,2189,2189,0,0.0,2443.8163,0.0,7615.36,0.0,0.0,0.0,5347070.08,0.0,0,2189,0,131074,131074,

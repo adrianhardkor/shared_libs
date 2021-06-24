@@ -213,6 +213,7 @@ def flask_AIEngine():
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		settings_name = args['settings']
 		settings = settings[settings_name]
+		print(settings)
 		# return(flask.jsonify(settings))
 		CMDS = PullCmds(args)
 		if settings['private_key_file'].endswith('.txt'):
@@ -236,6 +237,7 @@ def flask_AIEngine():
 		if 'exit' in settings.keys():
 			for e in settings['exit'].split(','):
 				paramiko_args['commands'].append(e)
+			paramiko_args['exit'] = settings['exit'].split(',')
 		paramiko_args['settings_prompt'] = settings['prompt']
 		# wc.jd(paramiko_args)
 		try:

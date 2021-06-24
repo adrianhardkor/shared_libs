@@ -1,0 +1,15 @@
+/tmp/agent/itest_velagent/runtime1618597017439/workspace-582968c3-dfd0-47df-a705-10a7646e776f/2GCPE/PIE3209_2021-06-09_18-00-16/PIE3209AllJensen.csv for periodic results
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock1,streamblock2,streamblock3,streamblock4 LIMIT 50
+Record #1
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,1044 DS,19007,2180,12,0.55,680.6548,0.0,8151.04,0.0,0.0,0.0,1483146.72,0.0,0,2180,0,65536,65536,
+
+================== Periodic Results: 
+ SELECT Project.Name,StreamBlock.Name,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock1,streamblock2,streamblock3,streamblock4 LIMIT 50
+Record #2
+Project Name,StreamBlock Name,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+Project 1,1044 DS,33459,2242,0,0.0,834.2187,0.0,8151.04,0.0,0.0,0.0,1869484.16,0.0,0,2242,0,65536,65536,
