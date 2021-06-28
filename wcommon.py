@@ -1263,13 +1263,14 @@ def getFnameScaffolding(fname_list, uuid='', directory=''):
 		sf = mcsplit(lf, ['.'])
 		if 'yml' in sf and ('dcim' in sf or 'itsm' in sf or 'cable' in sf) and len(f.split('-')) >= 5:
 			if uuid != '' and uuid != sf[0]: continue; # find specific uuid/devices
-			if sf[0] not in result.keys(): result[sf[0]] = {'dcim':None,'itsm':None,'cable':None}
+			if sf[0] not in result.keys(): result[sf[0]] = {'dcim':{},'itsm':{},'cable':{}}
 			result[sf[0]][sf[1]] = read_yaml(directory + f)
 			# result[str(sf)][str(sf)] = {f:f}
 	return(result)
 
 def intfListCmd(itsm):
 	intfList = []
+	add = {}
 	if itsm['settings'] == 'juniper_junos':
 		cmd = 'show_interface_|_display_json'
 		attempt = json.loads(REST_GET('http://10.88.48.21:5001/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
@@ -1279,35 +1280,51 @@ def intfListCmd(itsm):
 				for name in intf['name']: name = name['data']
 				for admin in intf['admin-status']: admin = admin['data']			
 				for oper in intf['oper-status']: oper = oper['data']
+				if 'logical-interface' not in intf.keys(): continue
+				for logical in intf['logical-interface']:
+					if 'address-family' not in logical.keys(): continue
+					for address in logical['address-family']:
+						if 'interface-address' not in address.keys(): continue
+						for intf_address in address['interface-address']:
+							for ifa_local in intf_address['ifa-local']: add[ifa_local['data']] = name
 				intfList.append({name: '/'.join([admin,oper])})
-	return(True,intfList)
+	return(True,intfList,add)
 
+global cllis
+cllis = {}
 def identifyFields(device):
-	for arch in device.keys():
+	# jd(device)
+	global cllis
+	for arch in list(device.keys()):
 		# dcim, itsm, cable
-		for k in device[arch].keys():
+		for k in list(device[arch].keys()):
 			device[arch][k.lower()] = device[arch].pop(k); # lower all fields
-			k = k.lower()
+		for k in list(device[arch].keys()):
 			if k in ['ip', 'settings']: device['itsm'][k] = device[arch].pop(k)
 			elif k in ['cable']: device['cable'][k] = device[arch].pop(k)
 			else: device['dcim'][k] = device[arch].pop(k)
+			if k == 'clli': cllis[device[arch][k]] = str(arch)
 	return(device)
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
+	global cllis
 	result = {}
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	Duplicates = {}
 	for device in data.keys():
 		# jd(data[device])
-		result[device] = {'data': identifyFields(data[device])}
+		data[device] = identifyFields(data[device])
+		result[device] = {'data': data[device]}
 		itsm = data[device]['itsm']
 		result[device]['valid'] = {}
 		result[device]['valid']['allFilesExist'] = True
-		for fname in data[device]['dcim']:
-			if data[device][fname] == None: result[device]['valid']['allFilesExist'] = False
+		for fname in ['dcim', 'itsm']:
+			if data[device][fname] == {}: result[device]['valid']['allFilesExist'] = False
 		if 'dcim' in data[device].keys():
 			if 'clli' not in data[device]['dcim']: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
-			else: result[device]['valid']['dcim:CLLI correct format'] = str(wc.validateHostname(data[device]['dcim']['clli']))
+			elif len(lsearchAllInline2(data[device]['dcim']['clli'], list(cllis.keys()))) > 1:
+				result[device]['valid']['dcim:CLLI correct format'] = 'Duplicate CLLI: ' + str(cllis[data[device]['dcim']['clli']])
+			else: result[device]['valid']['dcim:CLLI correct format'] = str(validateHostname(data[device]['dcim']['clli']))
 		else: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
@@ -1325,9 +1342,11 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 				result[device]['valid']['itsm:duplicateIP'] = False
 			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
-			worked,intfList = intfListCmd(itsm)
+			worked,intfList,addressList = intfListCmd(itsm)
 			result[device]['valid']['itsm:settings Worked'] = worked
 			# result[device]['valid']['itsm:intfList'] = str(intfList)
+			# result[device]['valid']['itsm:l3_List'] = addressList
+			result[device]['valid']['itsm:ip on the correct mgmt interface'] = addressList[itsm['ip']]
 	return(result)
 
 
