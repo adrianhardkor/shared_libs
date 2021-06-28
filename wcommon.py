@@ -1274,7 +1274,7 @@ def intfListCmd(itsm):
 	if itsm['settings'] == 'juniper_junos':
 		cmd = 'show_interface_|_display_json'
 		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
-		if '1show interface | display json' not in attempt.keys(): return(False,[attempt])
+		if '1show interface | display json' not in attempt.keys(): return(False,[attempt],{})
 		for intfs in attempt['1show interface | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
 				for name in intf['name']: name = name['data']
@@ -1288,6 +1288,7 @@ def intfListCmd(itsm):
 						for intf_address in address['interface-address']:
 							for ifa_local in intf_address['ifa-local']: add[ifa_local['data']] = name
 				intfList.append({name: '/'.join([admin,oper])})
+	else: return(False,['JUNIPER_NOT_CODED SEE ADRIAN'],{})
 	return(True,intfList,add)
 
 global cllis
@@ -1346,7 +1347,10 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			result[device]['valid']['itsm:settings Worked'] = worked
 			# result[device]['valid']['itsm:intfList'] = str(intfList)
 			# result[device]['valid']['itsm:l3_List'] = addressList
-			result[device]['valid']['itsm:ip on the correct mgmt interface'] = addressList[itsm['ip']]
+			try:
+				result[device]['valid']['itsm:ip on the correct mgmt interface'] = addressList[itsm['ip']]
+			except Exception:
+				result[device]['valid']['itsm:ip on the correct mgmt interface'] = 'FAILED TO VALIDATE MGMT INTERGFACE'
 	return(result)
 
 
