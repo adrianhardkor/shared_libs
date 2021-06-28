@@ -1271,10 +1271,10 @@ def getFnameScaffolding(fname_list, uuid='', directory=''):
 def intfListCmd(itsm):
 	intfList = []
 	if itsm['settings'] == 'juniper_junos':
-		cmd = 'show_interface_terse_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
-		if 'err' in attempt.keys(): return(False,intfList)
-		for intfs in attempt['1show interface terse | display json']['interface-information']:
+		cmd = 'show_interface_|_display_json'
+		attempt = json.loads(REST_GET('http://10.88.48.21:5001/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
+		if '1show interface | display json' not in attempt.keys(): return(False,[attempt])
+		for intfs in attempt['1show interface | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
 				for name in intf['name']: name = name['data']
 				for admin in intf['admin-status']: admin = admin['data']			
@@ -1282,21 +1282,33 @@ def intfListCmd(itsm):
 				intfList.append({name: '/'.join([admin,oper])})
 	return(True,intfList)
 
+def identifyFields(device):
+	for arch in device.keys():
+		# dcim, itsm, cable
+		for k in device[arch].keys():
+			device[arch][k.lower()] = device[arch].pop(k); # lower all fields
+			k = k.lower()
+			if k in ['ip', 'settings']: device['itsm'][k] = device[arch].pop(k)
+			elif: k in ['cable']: device['cable'][k] = device[arch].pop(k)
+			else: device['dcim'][k] = device[arch].pop(k)
+	return(device)
+
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result = {}
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	Duplicates = {}
 	for device in data.keys():
-		jd(data[device])
-		result[device] = {}
-		result[device]['data'] = data[device]
-		itsm = data[device]['dcim']
-		for k in itsm.keys():
-			itsm[k.lower()] = itsm.pop(k); # lower all keys
+		# jd(data[device])
+		result[device] = {'data': identifyFields(data[device])}
+		itsm = data[device]['itsm']
 		result[device]['valid'] = {}
 		result[device]['valid']['allFilesExist'] = True
-		for fname in ['dcim', 'itsm']:
+		for fname in data[device]['dcim']:
 			if data[device][fname] == None: result[device]['valid']['allFilesExist'] = False
+		if 'dcim' in data[device].keys():
+			if 'clli' not in data[device]['dcim']: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
+			else: result[device]['valid']['dcim:CLLI correct format'] = str(wc.validateHostname(data[device]['dcim']['clli']))
+		else: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
 			result[device]['valid']['itsm:ip pingable'] = False
@@ -1315,7 +1327,7 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
 			worked,intfList = intfListCmd(itsm)
 			result[device]['valid']['itsm:settings Worked'] = worked
-			result[device]['valid']['itsm:intfList'] = str(intfList)
+			# result[device]['valid']['itsm:intfList'] = str(intfList)
 	return(result)
 
 
