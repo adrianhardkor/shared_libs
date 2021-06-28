@@ -28,24 +28,118 @@ wiki_page_urls = [
     "https://en.wikipedia.org/wiki/Shark",
 ]
 
-
-# 'fn': RUNNER, 'attr'=attr
-
-
-
-def THREADER(fn, mylist, attr):
-    result = {}
+def THREADER(fn, mylist, attr, max_workers=3):
+    timer = wc.timer_index_start()
+    result = {'Results':{}}
+    mylistKEY = list(mylist.keys())[0]; # only 1 supported
     _FN = attr
     _FN['fn'] = fn
 #    for l in mylist.keys():
 #        _FN[l] = mylist[l]
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = []
-        for l in mylist:
-            _FN[mylist.keys()[0]] = mylist[mylist.keys()[0]]; # for each in mylist, run as arg
-            futures.append(executor.submit(_FN))
-        for future in concurrent.futures.as_completed(futures):
-            print(future.result())
-            print(dir(future))
+    # ThreadPoolExecutor for I/O processing
+    # ProcessPoolExecutor for CPU processing 
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+        for l in mylist[mylistKEY]:
+            _FN[mylistKEY] = l; # for each in mylist, run as arg
+            pairings = {executor.submit(**_FN): url for url in mylist[mylistKEY]}
+        for mythread in concurrent.futures.as_completed(pairings):
+            _id = pairings[mythread] 
+            result['Results'][_id] = mythread.result()
+    result['runtime'] = wc.timer_index_since(timer)
+    return(result)
 
-THREADER(get_wiki_page_existence, {'wiki_page_url':wiki_page_urls})
+def worker(IP):
+    print('Starting ' + str(threading.currentThread().getName()))
+    print(wc.is_pingable(IP))
+
+# CLASS THAT NEEDS ITS OWN HANDLER THREADER.IS_PINGABLE AND VALIDATE
+def THREADER2(fn, mylist, attr):
+	threadArgs = {'target': fn}
+	results = {}
+	mylistKEY = list(mylist.keys())[0]; # only 1 supported
+	timer = wc.timer_index_start()
+	threads = {}
+	for looper in mylist[mylistKEY]:
+		threadArgs['args'] = [looper]
+		thread = threading.Thread(**threadArgs)
+		thread.start()
+		# threads[looper] = {'thread': thread}
+		results[looper] = thread.join()
+	results['timer'] = wc.timer_index_since(timer)
+	return(results)
+
+	print('took ' + str(wc.timer_index_since(timer)))
+	is_alive = True
+	wc.jd(dict(vars(thread))); exit()
+	wc.pairprint(i, twrv.join())
+	results[i] = thread.join()
+
+	while is_alive:
+		is_alive = False 
+		for l in list(threads.keys()):
+			t = threads[l]['thread']
+			if t.is_alive:
+				is_alive = True
+				threads[l]['is_alive'] = t.is_alive
+			else: threads.pop(l)
+		print(list(threads.keys()))
+	wc.pairprint('THREADER2', wc.timer_index_since(timer))
+
+# wc.jd(THREADER(get_wiki_page_existence, {'wiki_page_url':wiki_page_urls}, {'timeout':10}))
+
+IPs = {'IP':['10.88.240.23','10.88.240.32','10.88.240.47', '10.88.240.53','10.88.240.54','10.88.240.20', '10.88.240.26','10.88.240.29','10.88.240.41', '10.88.240.44','10.88.240.50','10.88.240.65']}
+# wc.jd(THREADER(wc.is_pingable, IPs, {}, max_workers=5))
+
+# vars(class)
+ 
+
+
+serial = {}
+timer = wc.timer_index_start()
+for i in IPs['IP']: serial[i] = wc.is_pingable(i)
+serial['runtime'] = wc.timer_index_since(timer)
+wc.jd(serial)
+
+
+
+# wc.jd(THREADER2(wc.is_pingable, IPs, {}))
+print("NEXT")
+
+
+
+#from threading import Thread
+#class ThreadWithReturnValue(Thread):
+#    def __init__(self, group=None, target=None, name=None,
+#                 args=(), kwargs={}, Verbose=None):
+#        Thread.__init__(self, group, target, name, args, kwargs)
+#        self._return = None
+#    def run(self):
+#        # print(type(self._target))
+#        if self._target is not None:
+#            self._return = self._target(*self._args, **self._kwargs)
+#    def join(self, *args):
+#        Thread.join(self, *args)
+#        return self._return
+#
+#timer = wc.timer_index_start()
+#for i in IPs['IP']:
+#    twrv = ThreadWithReturnValue(target=wc.is_pingable, args=(i,))
+#    twrv.start()
+#    wc.pairprint(i, twrv.join())
+#wc.pairprint('Thread3', wc.timer_index_since(timer))
+
+def two2one(foo, bar):
+    results = {}
+    for f, b in zip(foo, bar):
+        results[f] = b
+    return(results)
+
+t = wc.timer_index_start()
+results = {}
+import multiprocessing
+pool = multiprocessing.Pool()
+pool = multiprocessing.Pool(processes=6)
+outputs = pool.map(wc.is_pingable, IPs['IP'])
+results = two2one(IPs['IP'],outputs)
+results['timer'] = wc.timer_index_since(t)
+wc.jd(results)
