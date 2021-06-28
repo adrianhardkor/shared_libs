@@ -1289,7 +1289,7 @@ def identifyFields(device):
 			device[arch][k.lower()] = device[arch].pop(k); # lower all fields
 			k = k.lower()
 			if k in ['ip', 'settings']: device['itsm'][k] = device[arch].pop(k)
-			elif: k in ['cable']: device['cable'][k] = device[arch].pop(k)
+			elif k in ['cable']: device['cable'][k] = device[arch].pop(k)
 			else: device['dcim'][k] = device[arch].pop(k)
 	return(device)
 
