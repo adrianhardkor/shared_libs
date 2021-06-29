@@ -1337,11 +1337,7 @@ def identifyFields(device):
 			if k == 'clli': cllis[device[arch][k]] = str(arch)
 	return(device)
 
-def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
-	global cllis
-	result = {}
-	data = getFnameScaffolding(fname_list,uuid,directory=directory)
-	Duplicates = {}
+def validateSUB(device, data, Duplicates, result): 
 	for device in data.keys():
 		# jd(data[device])
 		data[device] = identifyFields(data[device])
@@ -1382,6 +1378,15 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 			except Exception:
 				result[device]['valid']['itsm:ip on the correct mgmt interface'] = 'FAILED TO VALIDATE MGMT INTERGFACE'
 	return(result)
+
+def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
+	global cllis
+	result = {}
+	data = getFnameScaffolding(fname_list,uuid,directory=directory)
+	Duplicates = {}
+	#  wc.jd(MULTIPROCESS(wc.is_pingable, IPs['IP'], {'adrian':'non-rotating-args'}))
+	return(MULTIPROCESS(validateSUB, list(data.keys()), {'data':data,'Duplicates':{},result:{}}))
+
 
 
 def jenkins_header():
