@@ -1303,7 +1303,7 @@ def intfListCmd(itsm):
 	add = {}
 	if itsm['settings'] == 'juniper_junos':
 		cmd = 'show_interface_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:5000/aie?settings=%s&hostname=%s&cmd=%s' % (itsm['settings'],itsm['ip'], cmd)))
+		attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(wc.argv_dict['port']), itsm['settings'],itsm['ip'], cmd)))
 		if '1show interface | display json' not in attempt.keys(): return(False,[attempt],{})
 		for intfs in attempt['1show interface | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
