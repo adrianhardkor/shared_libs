@@ -38,15 +38,6 @@ def THREADER(fn, mylist, attr, max_workers=3):
 #        _FN[l] = mylist[l]
     # ThreadPoolExecutor for I/O processing
     # ProcessPoolExecutor for CPU processing 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
-        for l in mylist[mylistKEY]:
-            _FN[mylistKEY] = l; # for each in mylist, run as arg
-            pairings = {executor.submit(**_FN): url for url in mylist[mylistKEY]}
-        for mythread in concurrent.futures.as_completed(pairings):
-            _id = pairings[mythread] 
-            result['Results'][_id] = mythread.result()
-    result['runtime'] = wc.timer_index_since(timer)
-    return(result)
 
 def worker(IP):
     print('Starting ' + str(threading.currentThread().getName()))
@@ -96,7 +87,7 @@ IPs = {'IP':['10.88.240.23','10.88.240.32','10.88.240.47', '10.88.240.53','10.88
 
 serial = {}
 timer = wc.timer_index_start()
-for i in IPs['IP']: serial[i] = wc.is_pingable(i)
+# for i in IPs['IP']: serial[i] = wc.is_pingable(i)
 serial['runtime'] = wc.timer_index_since(timer)
 wc.jd(serial)
 
@@ -128,18 +119,39 @@ print("NEXT")
 #    wc.pairprint(i, twrv.join())
 #wc.pairprint('Thread3', wc.timer_index_since(timer))
 
+def is_pingable(IP, adrian):
+	return({'adrian':adrian,'pingable':wc.is_pingable(IP)})
+
+
+
+
+
+
 def two2one(foo, bar):
+    # one = [i1 i2 i3]
+    # two = [v1 v2 v4]
+    # result = {i1:v1, i2:v2, i3:v3}
     results = {}
     for f, b in zip(foo, bar):
         results[f] = b
     return(results)
 
-t = wc.timer_index_start()
-results = {}
+import inspect
 import multiprocessing
-pool = multiprocessing.Pool()
-pool = multiprocessing.Pool(processes=6)
-outputs = pool.map(wc.is_pingable, IPs['IP'])
-results = two2one(IPs['IP'],outputs)
-results['timer'] = wc.timer_index_since(t)
-wc.jd(results)
+from functools import partial
+
+def MULTIPROCESS(funct, mylist, non_rotating_args, processes=5):
+    # args must match funct-args
+    results = {}
+    t = wc.timer_index_start()
+    pool = multiprocessing.Pool()
+    pool = multiprocessing.Pool(processes=processes)
+    outputs = pool.map(partial(funct, **non_rotating_args), mylist)
+    results = two2one(mylist,outputs)
+    results['timer'] = wc.timer_index_since(t)
+    return(results)
+
+IIPs = {'IP':[], 'adrian':[]}
+for i in IPs['IP']: IIPs['IP'].append(i); IIPs['adrian'].append(1)
+wc.jd(MULTIPROCESS(wc.is_pingable, IPs['IP'], {'adrian':'non-rotating-args'}))
+ 

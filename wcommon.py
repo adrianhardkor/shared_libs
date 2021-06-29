@@ -22,6 +22,10 @@ import urllib3
 from bs4 import BeautifulSoup
 import deepdiff
 import yaml
+import inspect
+import multiprocessing
+from functools import partial
+
 urllib3.disable_warnings()
 
 def import_or_install(package):
@@ -1254,6 +1258,32 @@ def validateHostname(hostname):
         # pairprint('Invalid: ' + hostname, INVALID)
         pass
     return(components)
+
+
+
+def two2one(foo, bar):
+    # one = [i1 i2 i3]
+    # two = [v1 v2 v4]
+    # result = {i1:v1, i2:v2, i3:v3}
+    results = {}
+    for f, b in zip(foo, bar):
+        results[f] = b
+    return(results)
+
+def MULTIPROCESS(funct, mylist, non_rotating_args, processes=5):
+    # args must match funct-args
+    # wc.jd(MULTIPROCESS(wc.is_pingable, IPs['IP'], {'adrian':'non-rotating-args'})) 
+    results = {}
+    t = wc.timer_index_start()
+    pool = multiprocessing.Pool()
+    pool = multiprocessing.Pool(processes=processes)
+    outputs = pool.map(partial(funct, **non_rotating_args), mylist)
+    results = two2one(mylist,outputs)
+    results['timer'] = wc.timer_index_since(t)
+    return(results)
+
+
+
 
 def getFnameScaffolding(fname_list, uuid='', directory=''):
 	result = {}
