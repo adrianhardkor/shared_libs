@@ -773,6 +773,7 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     attempts = 1
     while attempts <= 25:
         remote_conn_pre = paramiko.SSHClient()
+        remote_conn_pre.load_system_host_keys()
         remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
             remote_conn_pre.connect(**connect_settings)
@@ -1272,14 +1273,14 @@ def two2one(foo, bar):
 
 def MULTIPROCESS(funct, mylist, non_rotating_args, processes=5):
     # args must match funct-args
-    # wc.jd(MULTIPROCESS(wc.is_pingable, IPs['IP'], {'adrian':'non-rotating-args'})) 
+    # jd(MULTIPROCESS(is_pingable, IPs['IP'], {'adrian':'non-rotating-args'})) 
     results = {}
-    t = wc.timer_index_start()
+    t = timer_index_start()
     pool = multiprocessing.Pool()
     pool = multiprocessing.Pool(processes=processes)
     outputs = pool.map(partial(funct, **non_rotating_args), mylist)
     results = two2one(mylist,outputs)
-    results['timer'] = wc.timer_index_since(t)
+    results['timer'] = timer_index_since(t)
     return(results)
 
 
@@ -1299,11 +1300,12 @@ def getFnameScaffolding(fname_list, uuid='', directory=''):
 	return(result)
 
 def intfListCmd(itsm):
+	global argv_dict
 	intfList = []
 	add = {}
 	if itsm['settings'] == 'juniper_junos':
 		cmd = 'show_interface_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(wc.argv_dict['port']), itsm['settings'],itsm['ip'], cmd)))
+		attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(argv_dict['port']), itsm['settings'],itsm['ip'], cmd)))
 		if '1show interface | display json' not in attempt.keys(): return(False,[attempt],{})
 		for intfs in attempt['1show interface | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
@@ -1337,7 +1339,8 @@ def identifyFields(device):
 			if k == 'clli': cllis[device[arch][k]] = str(arch)
 	return(device)
 
-def validateSUB(device, data, Duplicates, result): 
+def validateSUB(device, data, Duplicates, result, CIDR): 
+	global cllis
 	for device in data.keys():
 		# jd(data[device])
 		data[device] = identifyFields(data[device])
@@ -1380,12 +1383,10 @@ def validateSUB(device, data, Duplicates, result):
 	return(result)
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
-	global cllis
 	result = {}
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
-	Duplicates = {}
 	#  wc.jd(MULTIPROCESS(wc.is_pingable, IPs['IP'], {'adrian':'non-rotating-args'}))
-	return(MULTIPROCESS(validateSUB, list(data.keys()), {'data':data,'Duplicates':{},result:{}}))
+	return(MULTIPROCESS(validateSUB, list(data.keys()), {'data':data, 'Duplicates':{}, 'result':{},'CIDR':CIDR}))
 
 
 
@@ -1449,8 +1450,8 @@ def Format_iTest_ssv(issue, out, _id):
         return(out)
 
 def Format_iTest_xml(fname):
-    data = wc.xml_loads2(wc.read_file(fname))
-    # wc.jd(data); exit()
+    data = xml_loads2(read_file(fname))
+    # jd(data); exit()
     out = {'steps': {}, 'items':{}}
     if 'iTestTestReport' in data.keys():
         # NOT RAW
@@ -1505,8 +1506,8 @@ def Format_iTest_xml(fname):
                                 # wc.jd(out['steps'][_id]['body'])
                             else: out['steps'][_id]['body'][line2] = None
                     elif line == None: pass
-                    else: wc.jd(line); exit()
-            else: wc.jd(body['issue']); exit()
+                    else: jd(line); exit()
+            else: jd(body['issue']); exit()
             if 'item' in body.keys():
                 out['steps'][_id]['item'] = body['item']
         else: out['steps'][_id]['body'] = ''
