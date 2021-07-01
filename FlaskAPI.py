@@ -213,7 +213,7 @@ def flask_AIEngine():
 		settings = ParseSettingsYML('https://raw.githubusercontent.com/adrianhardkor/shared_libs/main/settings.yml')
 		settings_name = args['settings']
 		settings = settings[settings_name]
-		print(settings)
+		# print(settings)
 		# return(flask.jsonify(settings))
 		CMDS = PullCmds(args)
 		if settings['private_key_file'].endswith('.txt'):
@@ -233,17 +233,17 @@ def flask_AIEngine():
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
 		paramiko_args['quiet'] = True
-		if 'buffering' in settings.keys(): paramiko_args['buffering'] = settings['buffering']
+		if 'buffering' in settings.keys(): paramiko_args['buffering'] = settings['buffering'].split(',')
 		if 'exit' in settings.keys():
 			for e in settings['exit'].split(','):
 				paramiko_args['commands'].append(e)
 			paramiko_args['exit'] = settings['exit'].split(',')
 		paramiko_args['settings_prompt'] = settings['prompt']
-		# wc.jd(paramiko_args)
-		try:
-			raw = wc.PARA_CMD_LIST(**paramiko_args)
-		except Exception as err:
-			return(flask.jsonify({'err': str(err)}))
+		wc.jd(paramiko_args)
+		#try:
+		raw = wc.PARA_CMD_LIST(**paramiko_args)
+#		except Exception as err:
+#			return(flask.jsonify({'errFlask': str(err)}))
 		for cmd in raw.keys():
 			if cmd == "_": pass
 			elif 'json' in wc.cleanLine(cmd): 

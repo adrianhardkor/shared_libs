@@ -10,6 +10,44 @@ import time
 import requests
 import concurrent.futures
 
+IPs = {'IP':['10.88.240.23','10.88.240.32','10.88.240.47', '10.88.232.12','10.88.240.20', '10.88.240.26','10.88.240.29','10.88.240.41', '10.88.240.44','10.88.240.65']}
+# IPs = {'IP': ['10.88.240.47', '10.88.240.44']}
+
+#juniper_junos:
+#  username: "ADMIN"
+#  private_key_file: "/opt/paramiko-test-key"
+#  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+#  vendor: 'juniper_junos'
+#  prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
+#  buffering: 'set cli screen-length 0'
+#  exit: "exit"
+#def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering='', exit=[])
+
+def AIEmulti(ip, settings):
+	if settings == 'juniper_junos': cmd = 'show_interfaces_|_display_json'
+	else: return({})
+	attempt = json.loads(wc.REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(wc.argv_dict['port']), settings, ip, cmd)))
+	return(str(attempt.keys()))
+
+wc.jd(wc.MULTIPROCESS(AIEmulti, IPs['IP'], {'settings':'juniper_junos'})); exit()
+
+
+wc.jd(wc.MULTIPROCESS(wc.PARA_CMD_LIST, IPs['IP'], {'commands':['show 1'], 'driver':'', 'username':'ADMIN', 'become':True, 'key_fname':'/opt/paramiko-test-key', 'ping':True, 'settings_prompt':"([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])", 'exit':['exit']}, processes=6)); exit()
+
+
+print(wc.PARA_CMD_LIST(commands=['show 1'], ip='10.88.240.32', driver='juniper_junos', username='ADMIN', become=True, key_fname='/opt/paramiko-test-key', ping=False, settings_prompt="([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])", exit=['exit'] )); exit()
+
+
+
+
+
+
+
+
+
+
+
+
 def get_wiki_page_existence(wiki_page_url, timeout=10):
     response = requests.get(url=wiki_page_url, timeout=timeout)
 

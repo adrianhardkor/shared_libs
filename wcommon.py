@@ -684,7 +684,7 @@ def send_email_single(dest, subject, data, source='wopr-sb@arc.ninjaneers.net'):
 
 # SSH
 def run_commands_paramiko(commands, IP, driver, remote_conn, quiet):
-    result = paramiko_send_expect(commands, IP, remote_conn, driver, quiet)
+    result = paramiko_send_expect({}, commands, IP, remote_conn, driver, quiet)
     return(result)
 
 def device_buffering_commands(driver):
@@ -744,19 +744,17 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     global wow_time
     if ping:
         ping_result = is_pingable(ip)
-        print('PING %s:  %r @ %s' % (ip, ping_result, timer_index_since(WOW_time)))
-        if ping_result == False:
-            return_code_error("\n\nUnexpected error:\nPing:%s" % ping_result)
+        print('PING %s:  %r @ %s' % (ip, ping_result, timer_index_since(wow_time)))
+        if ping_result == False: login_err = 'ping:' + str(ping_result); return(-1,{'login_err':login_err})
+        # return_code_error("\n\nUnexpected error:\nPing:%s" % ping_result)
     global paramiko_buffer
     global sleep_interval
     global prompt
     global passwords
-    global result
-    result = {}
     paramiko_buffer = 65535
     # driver-less
-    if buffering != '': commands = buffering.split(',')
-    else: commands = device_buffering_commands(driver)
+    # if buffering != '': commands = buffering.split(',')
+    # else: commands = device_buffering_commands(driver)
 
 #    if password == '':
 #        # global via dict/json
@@ -765,48 +763,54 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     # connect(hostname, port=22, username=None, password=None, pkey=None, key_filename=None, timeout=None, allow_agent=True, look_for_keys=True, compress=False, sock=None, gss_auth=False, gss_kex=False, gss_deleg_creds=True, gss_host=None, banner_timeout=None, auth_timeout=None, gss_trust_dns=True, passphrase=None, disabled_algorithms=None)
     port = 22
     sleep_interval = .6
-    connect_settings = {'hostname':ip, 'port':str(port), 'username':str(username), 'look_for_keys':False, 'allow_agent':False, 'banner_timeout':600, 'timeout':200, 'auth_timeout':200}
-    if not quiet: echo_param(connect_settings)
+    connect_settings = {'hostname':ip, 'port':str(port), 'username':str(username), 'look_for_keys':False, 'allow_agent':False, 'banner_timeout':600, 'timeout':10}
+    echo_param(connect_settings)
     if key_fname != '': connect_settings['pkey'] = paramiko.RSAKey.from_private_key_file(key_fname)
     else: connect_settings['password'] = password
-
+    ee = '<unkown>'
     attempts = 1
-    while attempts <= 25:
+    total_attempts = 2
+    while attempts <= total_attempts:
         remote_conn_pre = paramiko.SSHClient()
         remote_conn_pre.load_system_host_keys()
         remote_conn_pre.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
-            remote_conn_pre.connect(**connect_settings)
-            if not quiet: print('connected')
+            blah = remote_conn_pre.connect(**connect_settings)
+            if not quiet: print('connected: ' + str(ip))
+            time.sleep(0.1)
             break
         except EOFError as e:
-            print(e)
-            time.sleep(sleep_interval * 2)
-        except Exception as err:
-            print(err)
-            time.sleep(sleep_interval * 2)
-
+            pairprint(e,ip)
+            time.sleep(sleep_interval)
+            ee = str(e)
+        except Exception as e:
+            pairprint(e,ip)
+            time.sleep(sleep_interval)
+            ee = str(e)
         # cleanup each if fail
         try:
-            pairprint('CLOSED', remote_conn_pre.close())
+            remote_conn_pre.close()
         except Exception as e2:
-            print(e2)
+            pairprint('CLOSED', e2)
         attempts += 1
 
-    if attempts == 25: print('couldnt connect to ' + ip); exit(4)
+    if attempts >= total_attempts: login_err = str(ee) + ' - couldnt connect to ' + ip; return(-1,{'login_err':login_err})
     print('Connection Built.. DONE:%s @ %s' % (timer_index_since(login_time), timer_index_since(wow_time)))    
     remote_conn = remote_conn_pre.invoke_shell()
+    time.sleep(0.1)
     if not quiet: print('shell invoked')
     init = remote_conn.recv(paramiko_buffer)
     if not quiet: print('init received')
+    time.sleep(0.1)
 
     # pre-commands
-    result = {'_':{'_': bytes_str(init)}, '_buffering': paramiko_send_expect(commands, ip, remote_conn, driver, quiet, exit=[])}
+    result = {'_':{'_': bytes_str(init)}, '_buffering': paramiko_send_expect({}, buffering, ip, remote_conn, driver, quiet, exit=[])}
 
     if not quiet: print(result)
+    time.sleep(0.1)
     login_diff = timer_index_since(login_time)
     result['_']['login'] = login_diff
-    return(remote_conn)
+    return(remote_conn,result)
 
 def prompt_check(output, remote_conn, IP, prompt_status, quiet):
     last_line = output.split('\n')
@@ -824,16 +828,15 @@ def paramiko_ready(remote_conn, command, quiet, check):
     time.sleep(.4)
     while remote_conn.recv_ready() is False and remote_conn.exit_status_ready() is False:
         # Not Ready
-        time.sleep(0)
+        time.sleep(0.1)
     if not quiet: print("\n\nReady/Sending:  '%s' = %r" % (command, remote_conn.recv_ready()))
 
-def paramiko_send_expect(commands, IP, remote_conn, driver, quiet, exit):
+def paramiko_send_expect(PARAresult, commands, IP, remote_conn, driver, quiet, exit):
     exit.append('y'); exit.append('yes'); # if exits and buffer clean then close
     global runcommands_diff
     diff = timer_index_start()
     s = '\n'
     global sleep_interval
-    global result
     global prompt
     global paramiko_buffer
     thisPrompt = '.*%s$' % prompt[driver]
@@ -841,7 +844,7 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet, exit):
     closedPrompt = re.compile('.* closed.')
     commandIndex = 1
     for command in commands:
-        result[str(commandIndex) + command] = []
+        PARAresult[str(commandIndex) + command] = []
         timer_index_start()
         output = ''
         check = 1
@@ -867,17 +870,18 @@ def paramiko_send_expect(commands, IP, remote_conn, driver, quiet, exit):
             time.sleep(0.3)
             prompt_status = regexPrompt.search(output)
 
-        result[str(commandIndex) + command].append(output)
-        result[str(commandIndex) + command] = s.join(result[str(commandIndex) + command]).lstrip(command)
+        PARAresult[str(commandIndex) + command].append(output)
+        PARAresult[str(commandIndex) + command] = s.join(PARAresult[str(commandIndex) + command]).lstrip(command)
         if not quiet: print(output)
+        time.sleep(0.1)
         try:
-            result['_'][str(commandIndex) + command] = timer_index_since()
+            PARAresult['_'][str(commandIndex) + command] = timer_index_since()
         except KeyError:
             pass
         print("DONE: '%s', took '%s'" % (command, timer_index_since()))
         commandIndex = commandIndex + 1
     runcommands_diff = timer_index_since(diff)
-    return(result)
+    return(PARAresult)
 
 def humanSize(fileSize):
     fileSize = float(fileSize)
@@ -951,7 +955,7 @@ def is_pingable(IP):
             result = False
     return(result)
 
-def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering='', exit=[]):
+def PARA_CMD_LIST(ip='', commands=[], driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering='', exit=[]):
     global passwords
     try:
         passwords[ip] = become; # BECOME = priv15 is global 
@@ -980,12 +984,12 @@ def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', becom
 
     if settings_prompt != '': prompt = {driver: settings_prompt}
     else: get_prompt(); # regex list 'global prompt'
-    spawnID = mgmt_login_paramiko(ip, username, driver, quiet, password, key_fname, ping=ping, buffering=buffering)
+    spawnID,result = mgmt_login_paramiko(ip, username, driver, quiet, password, key_fname, ping=ping, buffering=buffering)
     if spawnID == -1:
-        return('')
+        return(result)
 
     timer_index_start()
-    output = paramiko_send_expect(commands, ip, spawnID, driver, quiet, exit)
+    output = paramiko_send_expect(result, commands, ip, spawnID, driver, quiet, exit)
     # command_time = timer_index_since()
 
     discontime = timer_index_start()
@@ -1339,9 +1343,10 @@ def identifyFields(device):
 			if k == 'clli': cllis[device[arch][k]] = str(arch)
 	return(device)
 
-def validateSUB(device, data, Duplicates, result, CIDR): 
+def validateSUB(devices, data, Duplicates, result, CIDR): 
 	global cllis
-	for device in data.keys():
+	AIE_check = {}
+	for device in devices:
 		# jd(data[device])
 		data[device] = identifyFields(data[device])
 		result[device] = {'data': data[device]}
@@ -1372,21 +1377,36 @@ def validateSUB(device, data, Duplicates, result, CIDR):
 				result[device]['valid']['itsm:duplicateIP'] = False
 			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
-			worked,intfList,addressList = intfListCmd(itsm)
-			result[device]['valid']['itsm:settings Worked'] = worked
+
+			if itsm['settings'] not in AIE_check.keys(): AIE_check[itsm['settings']] = []
+			AIE_check[itsm['settings']].append({itsm['ip']:device}); # IP = UUID 
+			# worked,intfList,addressList = intfListCmd(itsm)
+			# result[device]['valid']['itsm:settings Worked'] = worked
 			# result[device]['valid']['itsm:intfList'] = str(intfList)
 			# result[device]['valid']['itsm:l3_List'] = addressList
-			try:
-				result[device]['valid']['itsm:ip on the correct mgmt interface'] = addressList[itsm['ip']]
-			except Exception:
-				result[device]['valid']['itsm:ip on the correct mgmt interface'] = 'FAILED TO VALIDATE MGMT INTERGFACE'
-	return(result)
+			#try:
+			#	result[device]['valid']['itsm:ip on the correct mgmt interface'] = addressList[itsm['ip']]
+			#except Exception:
+			#	result[device]['valid']['itsm:ip on the correct mgmt interface'] = 'FAILED TO VALIDATE MGMT INTERGFACE'
+	return(result,AIE_check)
+
+def AIEmulti(ip, settings):
+	if settings == 'juniper_junos': cmd = 'show_interfaces_|_display_json'
+	elif settings == 'a10t': cmd = 'show_ip_interfaces'
+	else: return({})
+	attempt = json.loads(wc.REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(wc.argv_dict['port']), settings, ip, cmd)))
+	return(str(attempt.keys()))
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result = {}
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
-	#  wc.jd(MULTIPROCESS(wc.is_pingable, IPs['IP'], {'adrian':'non-rotating-args'}))
-	return(MULTIPROCESS(validateSUB, list(data.keys()), {'data':data, 'Duplicates':{}, 'result':{},'CIDR':CIDR}))
+	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
+	for per_setting in AIE_check.keys():
+		setting_data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting})
+		for d in setting_data.keys():
+			# translate multiprocess per IP-list to correlating UUID
+			result[AIE_check[per_setting][d]] = setting_data[d]
+	return(result)
 
 
 
