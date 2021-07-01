@@ -1393,11 +1393,12 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 			#	result[device]['valid']['itsm:ip on the correct mgmt interface'] = 'FAILED TO VALIDATE MGMT INTERGFACE'
 	return(result,AIE_check)
 
-def AIEmulti(ip, settings):
-	if settings == 'juniper_junos': cmd = 'show_interfaces_|_display_json'
-	elif settings == 'a10t': cmd = 'show_ip_interfaces'
+def AIEmulti(ip, settings, params):
+	if settings == 'juniper_junos':pass; #  cmd = 'show_interfaces_|_display_json'
+	elif settings == 'a10t': pass; # cmd = 'show_ip_interfaces'
 	else: return({})
-	attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(argv_dict['port']), settings, ip, cmd)))
+	# jd(params)
+	attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s' % (str(argv_dict['port']), settings, ip), params=params))
 	return(attempt)
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
@@ -1406,7 +1407,8 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
 	for per_setting in AIE_check.keys():
-		setting_data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting})
+		params = {'cmd': json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % per_settings))['response.body'].split('\n')}
+		setting_data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'params':params})
 		runtime = setting_data.pop('timer')
 		for d in setting_data.keys():
 			# translate multiprocess per IP-list to correlating UUID

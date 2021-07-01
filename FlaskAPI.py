@@ -195,11 +195,15 @@ def ParseSettingsYML(url):
 			s[path] = {}
 	return(s)
 
-def PullCmds(args):
+def PullCmds(args,payload):
 	result = []
-	for a in sorted(wc.lsearchAllInline('cmd', list(args.keys()))):
-		# &cmd1=blah&cmd2=blah
-		result.append(args[a].replace('_',' '))
+	commands = sorted(wc.lsearchAllInline('cmd', list(args.keys())))
+	if commands == [] and payload != {}:
+		return(payload['cmd'])
+	else: 
+		for a in commands:
+			# &cmd1=blah&cmd2=blah
+			result.append(args[a].replace('_',' '))
 	return(result)
 
 def flask_AIEngine():
@@ -215,7 +219,7 @@ def flask_AIEngine():
 		settings = settings[settings_name]
 		# print(settings)
 		# return(flask.jsonify(settings))
-		CMDS = PullCmds(args)
+		CMDS = PullCmds(args,payload)
 		if settings['private_key_file'].endswith('.txt'):
 			# first line
 			# u/p/p

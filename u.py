@@ -10,6 +10,11 @@ import time
 import requests
 import concurrent.futures
 
+settings = 'juniper_junos'
+params = {'cmd': json.loads(wc.REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % settings))['response.body'].split('\n')}
+wc.jd(params)
+exit()
+
 IPs = {'IP':['10.88.240.23','10.88.240.32','10.88.240.47', '10.88.232.12','10.88.240.20', '10.88.240.26','10.88.240.29','10.88.240.41', '10.88.240.44','10.88.240.65']}
 # IPs = {'IP': ['10.88.240.47', '10.88.240.44']}
 
