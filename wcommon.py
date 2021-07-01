@@ -1407,7 +1407,7 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
 	for per_setting in AIE_check.keys():
-		params = {'cmd': json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % per_settings))['response.body'].split('\n')}
+		params = {'cmd': json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % per_setting))['response.body'].split('\n')}
 		setting_data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'params':params})
 		runtime = setting_data.pop('timer')
 		for d in setting_data.keys():
