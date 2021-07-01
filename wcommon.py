@@ -1359,7 +1359,10 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 			if 'clli' not in data[device]['dcim']: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 			elif len(lsearchAllInline2(data[device]['dcim']['clli'], list(cllis.keys()))) > 1:
 				result[device]['valid']['dcim:CLLI correct format'] = 'Duplicate CLLI: ' + str(cllis[data[device]['dcim']['clli']])
-			else: result[device]['valid']['dcim:CLLI correct format'] = str(validateHostname(data[device]['dcim']['clli']))
+			else:
+				valid = validateHostname(data[device]['dcim']['clli'])
+				if valid['INVALID'] == []: result[device]['valid']['dcim:CLLI correct format'] = True
+				else: result[device]['valid']['dcim:CLLI correct format'] = valid 
 		else: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
@@ -1378,8 +1381,8 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
 
-			if itsm['settings'] not in AIE_check.keys(): AIE_check[itsm['settings']] = []
-			AIE_check[itsm['settings']].append({itsm['ip']:device}); # IP = UUID 
+			if itsm['settings'] not in AIE_check.keys(): AIE_check[itsm['settings']] = {}
+			AIE_check[itsm['settings']][itsm['ip']] = device; # IP = UUID
 			# worked,intfList,addressList = intfListCmd(itsm)
 			# result[device]['valid']['itsm:settings Worked'] = worked
 			# result[device]['valid']['itsm:intfList'] = str(intfList)
@@ -1394,18 +1397,22 @@ def AIEmulti(ip, settings):
 	if settings == 'juniper_junos': cmd = 'show_interfaces_|_display_json'
 	elif settings == 'a10t': cmd = 'show_ip_interfaces'
 	else: return({})
-	attempt = json.loads(wc.REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(wc.argv_dict['port']), settings, ip, cmd)))
-	return(str(attempt.keys()))
+	attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(argv_dict['port']), settings, ip, cmd)))
+	return(attempt)
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result = {}
+	t = timer_index_start()
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
 	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
 	for per_setting in AIE_check.keys():
 		setting_data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting})
+		runtime = setting_data.pop('timer')
 		for d in setting_data.keys():
 			# translate multiprocess per IP-list to correlating UUID
-			result[AIE_check[per_setting][d]] = setting_data[d]
+			if 'login_err' in setting_data[d].keys(): result[AIE_check[per_setting][d]]['valid']['AIE'] = setting_data[d]
+			else: result[AIE_check[per_setting][d]]['valid']['AIE'] = list(setting_data[d].keys())
+	result['runtime'] = timer_index_since(t)
 	return(result)
 
 
@@ -1455,18 +1462,18 @@ def Format_iTest_ssv(issue, out, _id):
                         for ooo in o:
                                 headers[h] = ooo
                                 h += 1
-                        # wc.jd(headers)
+                        # jd(headers)
                         # print(headers)
                 else:
                         # VALUES
                         v = 0
-                        # wc.pairprint(len(o), o)
+                        # pairprint(len(o), o)
                         out['steps'][_id]['body'][o[0]] = {}
                         for vvv in o:
-                                # wc.pairprint(o, vvv)
+                                # pairprint(o, vvv)
                                 out['steps'][_id]['body'][o[0]][headers[v]] = o[v]
                                 v += 1
-                        # wc.jd(out['steps'][_id]['body'][o[0]])
+                        # jd(out['steps'][_id]['body'][o[0]])
         return(out)
 
 def Format_iTest_xml(fname):
@@ -1508,8 +1515,8 @@ def Format_iTest_xml(fname):
                         line2 = line2.split(':')
                         index = line2.pop(0).strip()
                         out['steps'][_id]['body'][index] = ':'.join(line2).strip()
-                        # wc.pairprint(str(_id) + '\t' + index, line2)
-                        # wc.jd(out['steps'][_id]['body']); exit()
+                        # pairprint(str(_id) + '\t' + index, line2)
+                        # jd(out['steps'][_id]['body']); exit()
                     else: out['steps'][_id]['body'][line2] = None
             elif type(body['issue']) == list:
                 for line in body['issue']:
@@ -1522,8 +1529,8 @@ def Format_iTest_xml(fname):
                                 line2 = line2.split(':')
                                 index = line2.pop(0).strip()
                                 out['steps'][_id]['body'][index] = ':'.join(line2).strip()
-                                # wc.pairprint(index, line2)
-                                # wc.jd(out['steps'][_id]['body'])
+                                # pairprint(index, line2)
+                                # jd(out['steps'][_id]['body'])
                             else: out['steps'][_id]['body'][line2] = None
                     elif line == None: pass
                     else: jd(line); exit()
