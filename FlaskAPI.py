@@ -198,8 +198,9 @@ def ParseSettingsYML(url):
 def PullCmds(args,payload):
 	result = []
 	commands = sorted(wc.lsearchAllInline('cmd', list(args.keys())))
-	if commands == [] and payload != {}:
-		return(payload['cmd'])
+	if payload != {}:
+		for a in payload['cmd']:
+			result.append(a.strip())
 	else: 
 		for a in commands:
 			# &cmd1=blah&cmd2=blah
@@ -207,7 +208,7 @@ def PullCmds(args,payload):
 	return(result)
 
 def flask_AIEngine():
-	@Mongo.MONGO.app.route('/aie', methods = ['GET'])
+	@Mongo.MONGO.app.route('/aie', methods = ['GET', 'PUT'])
 	def engine():
 		timer = int(time.time())
 		paramiko_args = {}
@@ -236,14 +237,13 @@ def flask_AIEngine():
 		paramiko_args['driver'] = settings['vendor']
 		paramiko_args['username'] = settings['username']
 		paramiko_args['ping'] = False
-		paramiko_args['quiet'] = True
+		paramiko_args['quiet'] = False
 		if 'buffering' in settings.keys(): paramiko_args['buffering'] = settings['buffering'].split(',')
 		if 'exit' in settings.keys():
 			for e in settings['exit'].split(','):
 				paramiko_args['commands'].append(e)
 			paramiko_args['exit'] = settings['exit'].split(',')
 		paramiko_args['settings_prompt'] = settings['prompt']
-		wc.jd(paramiko_args)
 		#try:
 		raw = wc.PARA_CMD_LIST(**paramiko_args)
 #		except Exception as err:

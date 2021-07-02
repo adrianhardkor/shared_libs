@@ -11,12 +11,11 @@ import requests
 import concurrent.futures
 
 settings = 'juniper_junos'
-params = {'cmd': json.loads(wc.REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % settings))['response.body'].split('\n')}
-wc.jd(params)
-exit()
+cmds = json.loads(wc.REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % settings))['response.body'].split('\n')
+# wc.jd(cmds); exit()
 
 IPs = {'IP':['10.88.240.23','10.88.240.32','10.88.240.47', '10.88.232.12','10.88.240.20', '10.88.240.26','10.88.240.29','10.88.240.41', '10.88.240.44','10.88.240.65']}
-# IPs = {'IP': ['10.88.240.47', '10.88.240.44']}
+IPs = {'IP': ['10.88.240.47', '10.88.240.44']}
 
 #juniper_junos:
 #  username: "ADMIN"
@@ -28,14 +27,14 @@ IPs = {'IP':['10.88.240.23','10.88.240.32','10.88.240.47', '10.88.232.12','10.88
 #  exit: "exit"
 #def PARA_CMD_LIST(commands=[], ip='', driver='', username='', password='', become='', key_fname='', quiet=False,ping=True,windowing=True, settings_prompt='', buffering='', exit=[])
 
-def AIEmulti(ip, settings):
-	if settings == 'juniper_junos': cmd = 'show_interfaces_|_display_json'
-	else: return({})
-	attempt = json.loads(wc.REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(wc.argv_dict['port']), settings, ip, cmd)))
-	return(str(attempt.keys()))
+def AIEmulti(ip, settings, cmds):
+	wc.jd({'cmd':cmds})
+	attempt = json.loads(wc.REST_PUT('http://10.88.48.21:%s/aie?settings=%s&hostname=%s' % (str(wc.argv_dict['port']), settings, ip), verify=False, convert_args=True, args={'cmd':cmds}))
+	return(attempt)
 
-wc.jd(wc.MULTIPROCESS(AIEmulti, IPs['IP'], {'settings':'juniper_junos'})); exit()
+wc.jd(wc.MULTIPROCESS(AIEmulti, IPs['IP'], {'settings':'juniper_junos', 'cmds':cmds})); exit()
 
+# REST_PUT(url, headers={"Content-Type": "application/json", "Accept": "application/json"}, user='', pword='', args={},verify=False,convert_args=False)
 
 wc.jd(wc.MULTIPROCESS(wc.PARA_CMD_LIST, IPs['IP'], {'commands':['show 1'], 'driver':'', 'username':'ADMIN', 'become':True, 'key_fname':'/opt/paramiko-test-key', 'ping':True, 'settings_prompt':"([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])", 'exit':['exit']}, processes=6)); exit()
 

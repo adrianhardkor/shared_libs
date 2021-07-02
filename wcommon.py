@@ -857,16 +857,21 @@ def paramiko_send_expect(PARAresult, commands, IP, remote_conn, driver, quiet, e
         prompt_status = regexPrompt.search(output)
         while prompt_status is None and closedPrompt.search(output) is None:
             if check: prompt_check(output, remote_conn, IP, prompt_status, quiet)
-            buff = remote_conn.recv(paramiko_buffer)
-            if not quiet: print(exits); print(command); print(buff); print(bytes_str(buff)); print(str(exit) + '\n');
-            buff = bytes_str(buff)
+            #    while self.shell.recv_ready():
+            #       response += self.shell.recv(4096).decode('utf-8').encode('utf-8')
+            buff = ''
+            while remote_conn.recv_ready():
+                buff += bytes_str(remote_conn.recv(4096))
+            # buff = remote_conn.recv(paramiko_buffer)
+            # if not quiet: print(exits); print(command); print(buff); print(bytes_str(buff)); print(str(exit) + '\n');
+            # buff = bytes_str(buff)
             output += buff
             if command.strip() in exit and buff == '':
                 if exits >= 3:
                     remote_conn.close()
                     break;
                 else: exits += 1;
-                # if not quiet: pairprint(str(command) + buff + '\t' + str(exit), exits)
+                if not quiet: pairprint(str(command) + buff + '\t' + str(exit), exits)
             time.sleep(0.3)
             prompt_status = regexPrompt.search(output)
 
