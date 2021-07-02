@@ -1405,7 +1405,7 @@ def AIEmulti(ip, settings, cmds):
 	add = {}
 	attempt = json.loads(REST_PUT('http://10.88.48.21:%s/aie?settings=%s&hostname=%s' % (str(argv_dict['port']), settings, ip), verify=False, convert_args=True, args={'cmd':cmds}))
 	if settings == 'juniper_junos':
-		if '1show interface | display json' not in attempt.keys(): return(attempt,False,intf,add)
+		if '1show interface | display json' not in attempt.keys(): return([attempt,False,intf,add])
 		for intfs in attempt['1show interface | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
 				for name in intf['name']: name = name['data']
@@ -1426,7 +1426,7 @@ def AIEmulti(ip, settings, cmds):
 	else:
 		intf[settings] = add[settings] = 'not parsed'
 		works = False
-	return(attempt,works,intf,add)
+	return([attempt,works,intf,add])
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result = {}
@@ -1435,7 +1435,8 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
 	for per_setting in AIE_check.keys():
 		cmds = json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % per_setting))['response.body'].split('\n')
-		setting_data,works,intf,add = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'cmds':cmds})
+		data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'cmds':cmds})
+		setting_data = data[0]; works = data[1]; intf = data[2]; add = data[3]
 		runtime = setting_data.pop('timer')
 		for d in setting_data.keys():
 			# translate multiprocess per IP-list to correlating UUID
