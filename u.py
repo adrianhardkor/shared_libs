@@ -10,6 +10,8 @@ import time
 import requests
 import concurrent.futures
 
+wc.jd(wc.IP_get('1.1.1.1/30')); exit()
+
 settings = 'juniper_junos'
 cmds = json.loads(wc.REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % settings))['response.body'].split('\n')
 # wc.jd(cmds); exit()

@@ -259,7 +259,7 @@ def IP_get(n):
     # 24
     n = n.strip()
     cidr_split = mcsplit(n, '/ ')
-    cidr = ipaddress.IPv4Network((cidr_split[0],cidr_split[1])).prefixlen
+    cidr = ipaddress.IPv4Network((cidr_split[0],cidr_split[1]), strict=False).prefixlen
     try:
         addr4 = ipaddress.ip_interface(n)
     except ValueError:
@@ -1435,11 +1435,13 @@ def AIEmulti(ip, settings, cmds):
 			intf[name]['mac'] = line10[6]
 			intf[name]['arp'] = line10[8]
 			intf[name]['name'] = ' '.join(line10[9:])
+			# print(line10)
 			if line10[7] == '0.0.0.0/0': continue; # no 'add' parsing
 			try:
 				valid = IP_get(line10[7])
-				add[line10[7].split('/')[0]] = line10[0]
-			except Exception:
+				add[line10[7].split('/')[0]] = name
+			except Exception as err:
+				add[line10[7].split('/')[0]] = str(err)
 				pass
 	else:
 		intf[settings] = add[settings] = 'not parsed'
