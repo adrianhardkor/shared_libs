@@ -1406,8 +1406,8 @@ def AIEmulti(ip, settings, cmds):
 	works = True
 	attempt = json.loads(REST_PUT('http://10.88.48.21:%s/aie?settings=%s&hostname=%s' % (str(argv_dict['port']), settings, ip), verify=False, convert_args=True, args={'cmd':cmds}))
 	if settings == 'juniper_junos':
-		if '1show interface | display json' not in attempt.keys(): return({'attempt':attempt,'works':False,'intf':intf,'add':add})
-		for intfs in attempt['1show interface | display json']['interface-information']:
+		if '1show interfaces | display json' not in attempt.keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
+		for intfs in attempt['1show interfaces | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
 				for name in intf['name']: name = name['data']
 				for admin in intf['admin-status']: admin = admin['data']			
@@ -1421,12 +1421,29 @@ def AIEmulti(ip, settings, cmds):
 							for ifa_local in intf_address['ifa-local']: add[ifa_local['data']] = name
 				intf[name] = '/'.join([admin,oper])
 	elif settings == 'a10t':
-		jd(attempt)
-		intf[settings] = add[settings] = 'not parsed'
-		works = False
+		if '1show interfaces brief' not in attempt.keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
+		for line10 in attempt['1show interfaces brief']:
+			line10 = cleanLine(line10)
+			if len(line10) < 9 or line10[0] == 'Port': continue
+			name = line10[0]
+			if name not in intf.keys(): intf[name] = {}
+			intf[name]['link'] = line10[1]
+			intf[name]['duplex'] = line10[2]
+			intf[name]['speed'] = line10[3]
+			intf[name]['trunk'] = line10[4]
+			intf[name]['vlan'] = line10[5]
+			intf[name]['mac'] = line10[6]
+			intf[name]['arp'] = line10[8]
+			intf[name]['name'] = ' '.join(line10[9:])
+			if line10[7] == '0.0.0.0/0': continue; # no 'add' parsing
+			try:
+				valid = IP_get(line10[7])
+				add[line10[7].split('/')[0]] = line10[0]
+			except Exception:
+				pass
 	else:
 		intf[settings] = add[settings] = 'not parsed'
-		works = False
+		works = "false_vendor_not_coded"
 	return({'attempt':attempt,'works':works,'intf':intf,'add':add})
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
@@ -1436,19 +1453,21 @@ def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
 	for per_setting in AIE_check.keys():
 		cmds = json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % per_setting))['response.body'].split('\n')
-		data = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'cmds':cmds})
-		runtime = data['setting_data'].pop('timer')
-		for d in data['setting_data'].keys():
-			# translate multiprocess per IP-list to correlating UUID
-			if 'login_err' in data['setting_data'][d].keys(): result[AIE_check[per_setting][d]]['valid']['AIE'] = data['setting_data'][d]
+		multi = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'cmds':cmds}, processes=8)
+		batchTime = multi.pop('timer')
+		for ip in multi.keys():
+			uuiD = AIE_check[per_setting][ip]
+			result[uuiD]['valid']['itsm:settings Worked'] = multi[ip]['works']
+			result[uuiD]['interfaces_to_cable'] = str(multi[ip]['intf'])
+			if ip not in multi[ip]['add'].keys():
+				result[uuiD]['valid']['itsm:ip on the correct mgmt interface'] = list(multi[ip]['add'].keys())
 			else:
-				result[AIE_check[per_setting][d]]['valid']['AIE'] = list(data['setting_data'][d].keys())
-				# works
-				# intf
-				# add
+				result[uuiD]['valid']['itsm:ip on the correct mgmt interface'] = multi[ip]['add'][ip]
+			# translate multiprocess per IP-list to correlating UUID
+			result[uuiD]['timer'] = batchTime
 	result['runtime'] = timer_index_since(t)
 	return(result)
-
+# MULTI = {uuid: {attempt,works,intf,add}}
 
 
 def jenkins_header():
