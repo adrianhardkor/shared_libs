@@ -1,6 +1,7 @@
 node() {
     def os = System.properties['os.name'].toLowerCase()
     try {
+        notifyBuild('STARTED')
         def HUDSON_URL = "${env.HUDSON_URL}"
         def SERVER_JENKINS = ""
         if (HUDSON_URL.contains("10.88.48.21")) {
@@ -23,12 +24,12 @@ node() {
     }
     catch(e) {
         // If there was an exception thrown, the build failed
-        // currentBuild.result = "FAILED"
+        currentBuild.result = "FAILED"
         throw e
     } finally {
         // Success or failure, always send notifications
         echo "I AM HERE"
-        // notifyBuild(currentBuild.result)
+        notifyBuild(currentBuild.result)
         echo currentBuild.result
         sendEmail(currentBuild.result)
     }
