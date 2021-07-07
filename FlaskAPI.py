@@ -124,13 +124,16 @@ def flask_validate():
 	def validate():
 		validate = wc.timer_index_start()
 		args,payload = flaskArgsPayload()
+		branch = args['branch']
 		uuid = ''
 		if 'uuid' in args.keys():  uuid = args['uuid']
-
-		repos = wc.exec2('export GIT_SSH_COMMAND="ssh -i /opt/gitlab_root"; cd ../asset-data/; rm *.yml; git checkout %s; git stash; git pull;' % (args['branch'])).split('\n')
+		master = wc.exec2('export GIT_SSH_COMMAND="ssh -i /opt/gitlab_root"; cd ../asset-data/; rm *.yml; git checkout master; git branch --set-upstream-to=origin/master master; git stash; git pull; ls;').split('\n')
+		wc.LoadMasterDevices4Duplicates('../asset-data/')
+		repos = wc.exec2('export GIT_SSH_COMMAND="ssh -i /opt/gitlab_root"; cd ../asset-data/; rm *.yml; git checkout %s; git branch --set-upstream-to=origin/%s %s; git stash; git pull; ls;' % (branch,branch,branch)).split('\n')
 		out = wc.lsearchAllInline('branch is', repos)
 		if out == []: return(flask.jsonify({'err':repos}))
 		repos = wc.exec2('cd ../asset-data/; ls -1;').split('\n')
+		# return(flask.jsonify({'master':master,'repos':repos,'Duplicates':wc.Duplicates, 'cllis':wc.cllis}))
 		# out.append(repos)
 		out.append(wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)) + ' ms')

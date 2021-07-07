@@ -160,7 +160,11 @@ def compareList(old,new):
 	else: return(False)
 
 def read_yaml(fname):
-    return(yaml.load(read_file(fname), Loader=yaml.FullLoader))
+    try:
+        result = yaml.load(read_file(fname), Loader=yaml.FullLoader)
+    except Exception:
+        result = None
+    return(result)
 
 def log_yaml(data, fname):
     with open(fname, 'w') as file:
@@ -1334,7 +1338,8 @@ def intfListCmd(itsm):
 	return(True,intfList,add)
 
 global cllis
-cllis = {}
+global Duplicates
+
 def identifyFields(device):
 	# jd(device)
 	global cllis
@@ -1346,13 +1351,15 @@ def identifyFields(device):
 			if k in ['ip', 'settings']: device['itsm'][k] = device[arch].pop(k)
 			elif k in ['cable']: device['cable'][k] = device[arch].pop(k)
 			else: device['dcim'][k] = device[arch].pop(k)
-			if k == 'clli': cllis[device[arch][k]] = str(arch)
+			if k == 'clli': cllis[device[arch][k]] = str(arch); # clli = dcim
 	return(device)
 
 def validateSUB(devices, data, Duplicates, result, CIDR): 
 	global cllis
 	AIE_check = {}
 	for device in devices:
+		if device == 'template': continue
+		flag = True; # AIE and PING
 		# jd(data[device])
 		data[device] = identifyFields(data[device])
 		result[device] = {'data': data[device]}
@@ -1364,6 +1371,7 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 		if 'dcim' in data[device].keys():
 			if 'clli' not in data[device]['dcim']: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 			elif len(lsearchAllInline2(data[device]['dcim']['clli'], list(cllis.keys()))) > 1:
+				flag = False; # no AIE or PING
 				result[device]['valid']['dcim:CLLI correct format'] = 'Duplicate CLLI: ' + str(cllis[data[device]['dcim']['clli']])
 			else:
 				valid = validateHostname(data[device]['dcim']['clli'])
@@ -1371,24 +1379,27 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 				else: result[device]['valid']['dcim:CLLI correct format'] = valid 
 		else: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
-			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = False
-			result[device]['valid']['itsm:ip pingable'] = False
-			result[device]['valid']['itsm:settings Worked'] = False
+			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = 'missing'
+			result[device]['valid']['itsm:ip pingable'] = 'missing'
+			result[device]['valid']['itsm:settings Worked'] = 'missing'
 			result[device]['valid']['itsm:intfList'] = []
 		else:
 			if itsm['ip'] in Duplicates.keys():
+				flag = False; # no AIE or PING
 				result[device]['valid'] = result[Duplicates[itsm['ip']]]['valid']
 				result[device]['valid']['itsm:duplicateIP'] = Duplicates[itsm['ip']]
 				result[Duplicates[itsm['ip']]]['valid']['itsm:duplicateIP'] = device
-				continue; # no need to re-validate
 			else:
 				Duplicates[itsm['ip']] = device; # add
 				result[device]['valid']['itsm:duplicateIP'] = False
-			result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
 			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
 
-			if itsm['settings'] not in AIE_check.keys(): AIE_check[itsm['settings']] = {}
-			AIE_check[itsm['settings']][itsm['ip']] = device; # IP = UUID
+			if flag == True: 
+				result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])
+				if itsm['settings'] not in AIE_check.keys(): AIE_check[itsm['settings']] = {}
+				AIE_check[itsm['settings']][itsm['ip']] = device; # IP = UUID
+			else:
+				result[device]['valid']['itsm:ip pingable'] = 'duplicate'
 			# worked,intfList,addressList = intfListCmd(itsm)
 			# result[device]['valid']['itsm:settings Worked'] = worked
 			# result[device]['valid']['itsm:intfList'] = str(intfList)
@@ -1448,13 +1459,27 @@ def AIEmulti(ip, settings, cmds):
 		works = "false_vendor_not_coded"
 	return({'attempt':attempt,'works':works,'intf':intf,'add':add})
 
+def LoadMasterDevices4Duplicates(path):
+	global Duplicates
+	global cllis
+	Duplicates = {}; # ip = device
+	cllis = {}; # clli = master
+	for fname in exec2('ls -1 %s;' % path).split('\n'):
+		data = read_yaml(path + fname)
+		if data == None: continue
+		for k in data.keys(): data[k.lower()] = data.pop(k) 		
+		if 'ip' in data.keys(): Duplicates[data['ip']] = fname.split('.')[0]
+		if 'clli' in data.keys(): cllis[data['clli']] = 'master'
+
+
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
+	global Duplicates
 	result = {}
 	t = timer_index_start()
 	data = getFnameScaffolding(fname_list,uuid,directory=directory)
-	result,AIE_check = validateSUB(list(data.keys()), data, {}, {}, CIDR)
+	result,AIE_check = validateSUB(list(data.keys()), data, Duplicates, {}, CIDR)
 	for per_setting in AIE_check.keys():
-		cmds = json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/baseconfigs/raw/master/%s.j2' % per_setting))['response.body'].split('\n')
+		cmds = json.loads(REST_GET('https://pl-acegit01.as12083.net/wopr/validateDCIM/raw/master/%s.j2' % per_setting))['response.body'].split('\n')
 		multi = MULTIPROCESS(AIEmulti, list(AIE_check[per_setting].keys()), {'settings':per_setting, 'cmds':cmds}, processes=8)
 		batchTime = multi.pop('timer')
 		for ip in multi.keys():
