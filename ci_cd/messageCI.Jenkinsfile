@@ -20,6 +20,7 @@ node() {
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
             // echo "EMAIL ATTEMPTED 1:" + env.EMAIL
+           emailext body: 'Test Message', subject: 'Test Subject', to: "${env.mailRecipients}"
         }
     }
     catch(e) {
