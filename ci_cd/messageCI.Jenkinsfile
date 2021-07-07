@@ -11,16 +11,11 @@ node() {
         }
         stage("EMAIL") {
             echo "*** Prepare Workspace ***"
-            cleanWs()
-            // sh "ls -l; pwd"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()
-            // checkout scm
-            // env.EMAIL = sh(returnStdout: true, script: "python3 -c \"import wcommon as wc; wc.sendmail('${env.mailRecipients}', 'try', 'data'); exit()\"").trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
-            // echo "EMAIL ATTEMPTED 1:" + env.EMAIL
-           emailext body: 'Test Message', subject: 'Test Subject', to: "${env.mailRecipients}"
+            emailext body: "${env.mailBody}", subject: "${env.mailSubject}", to: "${env.mailRecipients}"
         }
     }
     catch(e) {
