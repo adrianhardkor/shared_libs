@@ -32,7 +32,6 @@ node() {
         echo "I AM HERE"
         notifyBuild(currentBuild.result)
         echo currentBuild.result
-        sendEmail(currentBuild.result)
     }
 }
 def formatXray(input_string, String delimiter = "\n") {
