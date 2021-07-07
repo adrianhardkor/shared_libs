@@ -14,11 +14,11 @@ node() {
             // sh "ls -l; pwd"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()
             checkout scm
-            env.EMAIL = sh(returnStdout: true, script: "python3 -c \"import wcommon as wc; wc.sendmail('${env.mailRecipients}', 'try', 'data'); exit()\"").trim() 
+            // env.EMAIL = sh(returnStdout: true, script: "python3 -c \"import wcommon as wc; wc.sendmail('${env.mailRecipients}', 'try', 'data'); exit()\"").trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
-            echo "EMAIL ATTEMPTED 1:" + env.EMAIL
+            // echo "EMAIL ATTEMPTED 1:" + env.EMAIL
         }
     }
     catch(e) {
@@ -29,6 +29,7 @@ node() {
         // Success or failure, always send notifications
         echo "I AM HERE"
         // notifyBuild(currentBuild.result)
+        echo currentBuild.result
         sendEmail(currentBuild.result)
     }
 }
