@@ -15,7 +15,7 @@ node() {
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
-            emailext body: "${env.mailBody}", subject: "${env.mailSubject}", to: "${env.mailRecipients}", mimeType:'HTML/text'
+            emailext body: "${env.mailBody}", mimeType: "text/html", subject: "${env.mailSubject}", to: "${env.mailRecipients}"
         }
     }
     catch(e) {
