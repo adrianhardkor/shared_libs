@@ -13,6 +13,7 @@ node() {
             cleanWs()
             // sh "ls -l; pwd"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()
+            checkout scm
             env.EMAIL = sh(returnStdout: true, script: 'ls -l;').trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
