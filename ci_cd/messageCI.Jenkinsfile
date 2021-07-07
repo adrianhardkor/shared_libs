@@ -15,8 +15,8 @@ node() {
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
-            env.mailBody = env.mailBody + "<BR>SERVER_JENKINS = ${env.HUDSON_URL}<BR>BUILD_TIMESTMAP = ${env.BUILD_TIMESTAMP}<BR>JOB = ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
-            emailext body: "${env.mailBody}", mimeType: "text/html", subject: "${env.mailSubject}", to: "${env.mailRecipients}", replyTo: "${env.mailRecipients}"
+            env.mailBody1 = "${env.mailBody} <BR><BR>SERVER_JENKINS = ${env.HUDSON_URL} <BR>BUILD_TIMESTMAP = ${env.BUILD_TIMESTAMP} <BR>JOB = ${env.JOB_NAME} ${env.BUILD_NUMBER} <BR>"
+            emailext body: "${env.mailBody1}", mimeType: "text/html", subject: "${env.mailSubject}", to: "${env.mailRecipients}", replyTo: "${env.mailRecipients}"
         }
     }
     catch(e) {
