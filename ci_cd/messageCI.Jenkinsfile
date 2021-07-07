@@ -5,7 +5,7 @@ node() {
         def HUDSON_URL = "${env.HUDSON_URL}"
         def SERVER_JENKINS = ""
         if (HUDSON_URL.contains("10.88.48.21")) {
-            SERVER_JENKINS = "WOPR-SB"
+            SERVER_JENKINS = "WOPR-SB 10.88.48.21"
         } else {
             SERVER_JENKINS = "WOPR-PROD-JENKINS"
         }
@@ -15,7 +15,7 @@ node() {
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
-            env.mailBody1 = "${env.mailBody} <BR><BR>SERVER_JENKINS = ${env.HUDSON_URL} <BR>BUILD_TIMESTMAP = ${env.BUILD_TIMESTAMP} <BR>JOB = ${env.JOB_NAME} ${env.BUILD_NUMBER} <BR>"
+            env.mailBody1 = "${env.mailBody} <BR><BR>SERVER_JENKINS = ${SERVER_JENKINS} <BR>BUILD_TIMESTMAP = ${env.BUILD_TIMESTAMP} <BR>JOB = ${env.JOB_NAME} ${env.BUILD_NUMBER} <BR>"
             echo env.mailBody1
             emailext body: "${env.mailBody1}", mimeType: "text/html", subject: "${env.mailSubject}", to: "${env.mailRecipients}", replyTo: "${env.mailRecipients}"
         }
