@@ -14,7 +14,7 @@ node() {
             // sh "ls -l; pwd"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()
             checkout scm
-            env.EMAIL = sh(returnStdout: true, script: 'python3 -c "import sys,os; sys.path.insert(1,'./shared_libs/'); import wcommon as wc; wc.jd(wc.wcheader)').trim() 
+            env.EMAIL = sh(returnStdout: true, script: 'python3 -c "import wcommon as wc; wc.jd(wc.wcheader);"').trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
