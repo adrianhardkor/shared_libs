@@ -9,12 +9,12 @@ node() {
         } else {
             SERVER_JENKINS = "WOPR-PROD-JENKINS"
         }
-        stage("Prepare Workspace") {
+        stage("EMAIL") {
             echo "*** Prepare Workspace ***"
             cleanWs()
             // sh "ls -l; pwd"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()
-            checkout scm
+            // checkout scm
             // env.EMAIL = sh(returnStdout: true, script: "python3 -c \"import wcommon as wc; wc.sendmail('${env.mailRecipients}', 'try', 'data'); exit()\"").trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
