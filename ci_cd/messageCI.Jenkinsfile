@@ -13,9 +13,11 @@ node() {
             cleanWs()
             // sh "ls -l; pwd"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()
+            env.EMAIL = sh(returnStdout: true, script: 'ls -l;').trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
             echo "Workspace set to:" + env.WORKSPACE_LOCAL
             echo "Build time:" + env.BUILD_TIME
+            echo "EMAIL ATTEMPTED 1:" + env.EMAIL
         }
     }
     catch(e) {
