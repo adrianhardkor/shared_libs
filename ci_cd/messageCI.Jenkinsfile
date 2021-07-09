@@ -9,6 +9,12 @@ node() {
         } else {
             SERVER_JENKINS = "WOPR-PROD-JENKINS"
         }
+        stage("VALIDATE") {
+          if (env.branch = "") {} else {
+            env.validated = sh(returnStdout: true, script: "python3 -c 'import json,requests; print(json.dumps(json.loads(requests.get('https://10.88.48.21:5000/validated?branch=${env.branch}',verify=False)) indent=4));'").replaceAll("\n","<BR>").trim()
+            env.mailBody = "${env.mailBody} <BR>${env.validated}"
+          }
+        }
         stage("EMAIL") {
             echo "*** Prepare Workspace ***"
             env.WORKSPACE_LOCAL = sh(returnStdout: true, script: 'pwd').trim()

@@ -1379,7 +1379,7 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 				else: result[device]['valid']['dcim:CLLI correct format'] = valid 
 		else: result[device]['valid']['dcim:CLLI correct format'] = 'missing'
 		if 'ip' not in itsm.keys() or 'settings' not in itsm.keys():
-			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = 'missing'
+			result[device]['valid']['itsm:ip in CIDR:' + CIDR.replace('.',' ')] = 'missing'
 			result[device]['valid']['itsm:ip pingable'] = 'missing'
 			result[device]['valid']['itsm:settings Worked'] = 'missing'
 			result[device]['valid']['itsm:intfList'] = []
@@ -1392,7 +1392,7 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 			else:
 				Duplicates[itsm['ip']] = device; # add
 				result[device]['valid']['itsm:duplicateIP'] = False
-			result[device]['valid']['itsm:ip in CIDR:' + CIDR] = bool(itsm['ip'] in IP_get(CIDR)[1])
+			result[device]['valid']['itsm:ip in CIDR:' + CIDR.replace('.',' ')] = bool(itsm['ip'] in IP_get(CIDR)[1])
 
 			if flag == True: 
 				result[device]['valid']['itsm:ip pingable'] = is_pingable(itsm['ip'])

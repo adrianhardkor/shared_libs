@@ -119,6 +119,13 @@ def flask_RunJenkinsPipeline():
 		wc.pairprint('monitor', monitor)
 		return(flask.jsonify({'monitor':'http://10.88.48.21:' + str(wc.argv_dict['port']) + '/runner?runId=' + str(monitor)}))
 
+def flask_validated():
+	@Mongo.MONGO.app.route('/validated', methods = ['GET'])
+	def validated():
+		args,payload = flaskArgsPayload()
+		branch = args['branch']
+		return(flask.jsonify(Mongo.MONGO._GETJSON(Mongo.validationDevice, criteria={'branch':branch})))
+
 def flask_validate():
 	@Mongo.MONGO.app.route('/validate', methods = ['GET'])
 	def validate():
@@ -138,7 +145,7 @@ def flask_validate():
 		VALIDATION = wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16')
 		Mongo.MONGO._DELETE(Mongo.validationDevice, criteria={'branch':branch}, force=True)
 		for uu in VALIDATION.keys():
-			if VALIDATION[uu] == 'runtime': continue
+			if uu == 'runtime' or VALIDATION[uu] == 'runtime': continue
 			DEVICE = {'uuid':uu,'branch':branch,'valid':VALIDATION[uu]['valid']}
 			for blah in ['itsm','dcim','cable']:
 				DEVICE[blah] = VALIDATION[uu]['data'][blah]
@@ -288,7 +295,8 @@ if  __name__ == "__main__":
 	flask_uploader()
 	flask_AIEngine(); # /aie?hostname=10.88.240.26
 	flask_downloader()
-	flask_validate() # /validate
+	flask_validate(); # /validate
+	flask_validated(); # /validated - get validate results
 	flask_AIS(); # /ais
 	flask_NewCall(); # /new_call
 	flask_RunJenkinsPipeline()

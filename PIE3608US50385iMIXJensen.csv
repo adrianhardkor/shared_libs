@@ -1,0 +1,43 @@
+/tmp/agent/itest_velagent/runtime1623960589223/workspace-8d612cd3-e253-4f6b-be2b-6ecbe8bc4bba/2GCPE/PIE3608US50385iMIX_2021-07-08_16-00-55/PIE3608US50385iMIXJensen.csv for periodic results
+
+================== Periodic Results: 
+ SELECT StreamBlock.Name,StreamBlock.TxBitRate,StreamBlock.RxBitRate,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5 LIMIT 50
+Record #1
+StreamBlock Name,Tx Rate (bps) ,Rx Rate (bps) ,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+1041 US,47578504,47113648,418741,424453,0,0.0,113.6789,0.0,7290.24,0.0,0.0,0.0,48251239.28,0.0,0,424453,0,131072,131072,
+
+================== Periodic Results: 
+ SELECT StreamBlock.Name,StreamBlock.TxBitRate,StreamBlock.RxBitRate,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5 LIMIT 50
+Record #2
+StreamBlock Name,Tx Rate (bps) ,Rx Rate (bps) ,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+1041 US,47571888,46975760,418799,424665,0,0.0,112.8776,0.0,7317.12,0.0,0.0,0.0,47935073.52,0.0,0,424665,0,131072,131072,
+
+================== Periodic Results: 
+ SELECT StreamBlock.Name,StreamBlock.TxBitRate,StreamBlock.RxBitRate,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5 LIMIT 50
+Record #3
+StreamBlock Name,Tx Rate (bps) ,Rx Rate (bps) ,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+1041 US,47576056,47022184,416000,421770,0,0.0,112.8928,0.0,8252.8,0.0,0.0,0.0,47614681.12,0.0,0,421770,0,131072,131072,
+
+================== Periodic Results: 
+ SELECT StreamBlock.Name,StreamBlock.TxBitRate,StreamBlock.RxBitRate,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5 LIMIT 50
+Record #4
+StreamBlock Name,Tx Rate (bps) ,Rx Rate (bps) ,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+1041 US,47688824,47270968,416578,422575,0,0.0,112.8162,0.0,8472.96,0.0,0.0,0.0,47673209.44,0.0,0,422575,0,131072,131072,
+
+================== Periodic Results: 
+ SELECT StreamBlock.Name,StreamBlock.TxBitRate,StreamBlock.RxBitRate,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5 LIMIT 50
+Record #5
+StreamBlock Name,Tx Rate (bps) ,Rx Rate (bps) ,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+1041 US,47310000,46986240,417178,422907,0,0.0,112.8085,0.0,8498.56,0.0,0.0,0.0,47707390.48,0.0,0,422907,0,131072,131072,
+
+================== Periodic Results: 
+ SELECT StreamBlock.Name,StreamBlock.TxBitRate,StreamBlock.RxBitRate,StreamBlock.TxFrameCount,StreamBlock.RxFrameCount,StreamBlock.DroppedFrameCount,StreamBlock.DroppedFramePercent,StreamBlock.AvgJitter,StreamBlock.MinJitter,StreamBlock.MaxJitter,StreamBlock.AvgLatency,StreamBlock.MinLatency,StreamBlock.MaxLatency FROM streamblock5 LIMIT 50
+Record #6
+StreamBlock Name,Tx Rate (bps) ,Rx Rate (bps) ,Tx Count (Frames) ,Rx Count (Frames) ,Dropped Count (Frames) ,Dropped Frame Percent,Avg Jitter (us) ,Min Jitter (us) ,Max Jitter (us) ,Avg Latency (us) ,Min Latency (us) ,Max Latency (us) ,StreamBlock TotalJitter,StreamBlock TotalLatency (us) ,StreamBlock InSeqFrameCount (Frames) ,StreamBlock RxSigFrameCount (Frames) ,StreamBlock InJitterModeRfc3393,StreamBlock Comp32,StreamBlock StreamId,
+
+1041 US,47523440,46863864,417265,423299,0,0.0,112.7744,0.0,16759.04,0.0,0.0,0.0,47737182.88,0.0,0,423299,0,131072,131072,
