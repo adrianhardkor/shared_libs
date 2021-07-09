@@ -10,7 +10,7 @@ node() {
             SERVER_JENKINS = "WOPR-PROD-JENKINS"
         }
         stage("VALIDATE") {
-          if (env.branch == "") {} else if (env.branch == "main") {} else if (env.branch == "master") {} else {
+          if (env.branch == "") {System.exit(0)} else if (env.branch == "main") {System.exit(0)} else if (env.branch == "master") {System.exit(0)} else {
 
 // env.EMAIL = sh(returnStdout: true, script: "python3 -c \"import wcommon as wc; wc.sendmail('${env.mailRecipients}', 'try', 'data'); exit()\"").trim() 
             env.BUILD_TIME = "${BUILD_TIMESTAMP}"
