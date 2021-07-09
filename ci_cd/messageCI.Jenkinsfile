@@ -59,7 +59,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
     def colorCode = '#FF0000'
     def summary = "${env.mailSubject}"
     def details = "https://pl-acegit01.as12083.net/arc-lab/asset-data/merge_requests/new?merge_request%5Bsource_branch%5D=${env.branch}"
-    def subject = "CHECKIN: ${env.branch} ran validation       ${summary}        ${details}"
+    def subject = "CHECKIN TO BRANCH=${env.branch} ran validation       ${summary}        ${details}"
     def msg = "${subject}"
       // Override default values based on build status
       if (buildStatus == 'STARTED') {
