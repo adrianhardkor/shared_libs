@@ -17,7 +17,7 @@ node() {
 
 
 
-            env.validated = sh(returnStdout: true, script: "python3 -c \"import json,requests,yaml; print(yaml.dump(requests.get('http://10.88.48.21:5000/validated?branch=${env.branch}',verify=False).json()));\"").replaceAll("\n","<BR>").trim()
+            env.validated = sh(returnStdout: true, script: "python3 -c \"import json,requests,yaml; print(yaml.dump(requests.get('http://10.88.48.21:5000/validated?branch=${env.branch}',verify=False).json()));\"").replaceAll("\n","<BR>^").trim()
             env.mailBody = "${env.mailBody} <BR>${env.validated}"
           }
         }
