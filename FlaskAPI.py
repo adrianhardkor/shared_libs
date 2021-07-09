@@ -135,7 +135,17 @@ def flask_validate():
 		repos = wc.exec2('cd ../asset-data/; ls -1;').split('\n')
 		# return(flask.jsonify({'master':master,'repos':repos,'Duplicates':wc.Duplicates, 'cllis':wc.cllis}))
 		# out.append(repos)
-		out.append(wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16'))
+		VALIDATION = wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16')
+		Mongo.MONGO._DELETE(Mongo.validationDevice, criteria={'branch':branch}, force=True)
+		for uu in VALIDATION.keys():
+			if VALIDATION[uu] == 'runtime': continue
+			DEVICE = {'uuid':uu,'branch':branch,'valid':VALIDATION[uu]['valid']}
+			for blah in ['itsm','dcim','cable']:
+				DEVICE[blah] = VALIDATION[uu]['data'][blah]
+			for blah2 in ['timer','interfaces_to_cable']:
+				if blah2 in VALIDATION[uu].keys(): DEVICE[blah2] = str(VALIDATION[uu][blah2])
+			Mongo.MONGO._UPDATE(Mongo.validationDevice, {'uuid':uu}, DEVICE)
+		# out.append(wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)) + ' ms')
 		return(flask.jsonify(wc.lunique(out)))
 

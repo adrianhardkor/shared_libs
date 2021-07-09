@@ -141,10 +141,10 @@ def FormatRDU_Modem(cmac, bac):
 
 
 
-# BAC = BACSOAP(PWS=wc.argv_dict['PWS'], RDU=wc.argv_dict['RDU'], username=wc.argv_dict['username'], password=wc.argv_dict['password'])
-# if 'mac' in wc.argv_dict.keys():
-#     BAC.DeviceSearchByDeviceIdPatternType(macAddressPattern=wc.argv_dict['mac']); # 1,6,00:00:ca:de:7f:f4
-# else:
-#     BAC.DeviceSearchByDeviceIdPatternType()
-# BAC.closeSession()
+#BAC = BACSOAP(PWS=wc.argv_dict['PWS'], RDU=wc.argv_dict['RDU'], username=wc.argv_dict['username'], password=wc.argv_dict['password'])
+#if 'mac' in wc.argv_dict.keys():
+#    BAC.DeviceSearchByDeviceIdPatternType(macAddressPattern=wc.argv_dict['mac']); # 1,6,00:00:ca:de:7f:f4
+#else:
+#    BAC.DeviceSearchByDeviceIdPatternType()
+#BAC.closeSession()
 

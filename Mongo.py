@@ -148,6 +148,16 @@ class MDB():
 MONGO = MDB('localhost', 27017, 'admin')
 # SCALE ALL FURTHER CLASSES/DOCUMENTS IN ORDER OF CALLS/REFERENCES
 
+class validationDevice(MONGO.M.Document):
+	branch = MONGO.M.StringField()
+	cable = MONGO.M.DictField()
+	dcim = MONGO.M.DictField()
+	itsm = MONGO.M.DictField()
+	valid = MONGO.M.DictField()
+	uuid = MONGO.M.StringField()
+	timer = MONGO.M.StringField()
+	interfaces_to_cable = MONGO.M.StringField()
+	
 class ITSM(MONGO.M.EmbeddedDocument):
 	primaryV4 = MONGO.M.StringField()
 	vendor = MONGO.M.StringField()
