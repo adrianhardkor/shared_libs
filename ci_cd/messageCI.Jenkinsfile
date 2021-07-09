@@ -59,7 +59,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
     def colorCode = '#FF0000'
     def summary = "${env.mailSubject}"
     def details = "https://pl-acegit01.as12083.net/arc-lab/asset-data/merge_requests/new?merge_request%5Bsource_branch%5D=${env.branch}"
-    def subject = "CHECKIN TO BRANCH=${env.branch} ran validation       ${summary}        ${details}"
+    def subject = "CHECKIN TO BRANCH=${env.branch} ran validation       ${summary}        ${details}                     PLEASE GO SEE VALIDATION AT:  http://10.88.48.21:5000/validated?branch=${env.branch}"
     def msg = "${subject}"
       // Override default values based on build status
       if (buildStatus == 'STARTED') {
@@ -71,8 +71,8 @@ def notifyBuild(String buildStatus = 'STARTED') {
         colorCode = '#FFFF00'
         msg = "Build: ${env.JOB_NAME} was listed as unstable. Look at ${env.BUILD_URL} and Report: ${env.BUILD_URL}/cucumber-html-reports/overview-features.html"
       } else if (buildStatus == 'SUCCESSFUL') {
-        color = 'GREEN'
-        colorCode = '#00FF00'
+        color = 'YELLOW'
+        colorCode = '#FFFF00'
       } else {
         color = 'RED'
         colorCode = '#FF0000'
