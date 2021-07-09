@@ -59,7 +59,8 @@ def notifyBuild(String buildStatus = 'STARTED') {
     def colorCode = '#FF0000'
     def summary = "${env.mailSubject}"
     def details = "https://pl-acegit01.as12083.net/arc-lab/asset-data/merge_requests/new?merge_request%5Bsource_branch%5D=${env.branch}"
-    def subject = "<p>CHECKIN: ${env.branch} ran validation</p><p>${summary}</p><p>${details}</p>"
+    def subject = "CHECKIN: ${env.branch} ran validation       ${summary}        ${details}"
+    def msg = "${subject}"
       // Override default values based on build status
       if (buildStatus == 'STARTED') {
         color = 'BLUE'
@@ -72,11 +73,9 @@ def notifyBuild(String buildStatus = 'STARTED') {
       } else if (buildStatus == 'SUCCESSFUL') {
         color = 'GREEN'
         colorCode = '#00FF00'
-        msg = "${subject}"
       } else {
         color = 'RED'
         colorCode = '#FF0000'
-        msg = "${subject}"
       }
     // Send notifications
     slackSend baseUrl: 'https://hooks.slack.com/services/', 
