@@ -1,7 +1,7 @@
 node() {
     def os = System.properties['os.name'].toLowerCase()
     try {
-        notifyBuild('STARTED')
+        // notifyBuild('STARTED')
         def HUDSON_URL = "${env.HUDSON_URL}"
         def SERVER_JENKINS = ""
         if (HUDSON_URL.contains("10.88.48.21")) {
@@ -57,10 +57,9 @@ def notifyBuild(String buildStatus = 'STARTED') {
     // Default values
     def colorName = 'RED'
     def colorCode = '#FF0000'
-    def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-    def summary = "${subject} (${env.BUILD_URL})"
-    def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-      <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    def subject = "CHECKIN: ${env.branch} ran validation"
+    def summary = "${env.mailSubject}"
+    def details = "https://pl-acegit01.as12083.net/arc-lab/asset-data/merge_requests/new?merge_request%5Bsource_branch%5D=${env.branch}"
       // Override default values based on build status
       if (buildStatus == 'STARTED') {
         color = 'BLUE'
@@ -73,11 +72,11 @@ def notifyBuild(String buildStatus = 'STARTED') {
       } else if (buildStatus == 'SUCCESSFUL') {
         color = 'GREEN'
         colorCode = '#00FF00'
-        msg = "Build: ${env.JOB_NAME} Completed Successfully ${env.BUILD_URL} Report: ${env.BUILD_URL}/cucumber-html-reports/overview-features.html"
+        msg = "${subject}"
       } else {
         color = 'RED'
         colorCode = '#FF0000'
-        msg = "Build: ${env.JOB_NAME} had an issue ${env.BUILD_URL}/console"
+        msg = "${subject}"
       }
     // Send notifications
     slackSend baseUrl: 'https://hooks.slack.com/services/', 
