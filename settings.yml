@@ -31,7 +31,7 @@ lx:
   buffering: 'no pause'
 ndev:
   username: "ansible"
-  private_key_file: "/opt/NetDev-key"
+  private_key_file: "/opt/ndev.txt"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: 'juniper_junos'
   prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
