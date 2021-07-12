@@ -1,6 +1,6 @@
 linux:
   username: "ADMIN"
-  private_key_file: "/opt/paramiko-test-key"
+  private_key_file: "/opt/juniper_junos.txt"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: 'linux'
   prompt: "([@]+[a-zA-Z0-9\.\-\_\:\ \~\]]+[#$\ ]+[ ])"
@@ -56,6 +56,14 @@ gainspeed:
 ciena:
   username: "admin"
   private_key_file: "/opt/ciena.txt"
+  ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
+  vendor: 'ciena'
+  prompt: "([a-zA-Z0-9\-\.\(\)\_]*[>#])"
+  buffering: 'terminal length 0'
+  exit: "exit"
+cienaTransport:
+  username: "ADMIN"
+  private_key_file: "/opt/cienaTransport.txt"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: 'ciena'
   prompt: "([a-zA-Z0-9\-\.\(\)\_]*[>#])"

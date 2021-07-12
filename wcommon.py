@@ -768,10 +768,10 @@ def mgmt_login_paramiko(ip, username, driver, quiet, password='', key_fname='', 
     port = 22
     sleep_interval = .6
     connect_settings = {'hostname':ip, 'port':str(port), 'username':str(username), 'look_for_keys':False, 'allow_agent':False, 'banner_timeout':600, 'timeout':10}
-    echo_param(connect_settings)
     if key_fname != '': connect_settings['pkey'] = paramiko.RSAKey.from_private_key_file(key_fname)
     else: connect_settings['password'] = password
     ee = '<unkown>'
+    pairprint(ip, connect_settings.keys())
     attempts = 1
     total_attempts = 2
     while attempts <= total_attempts:
