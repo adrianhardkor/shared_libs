@@ -1245,8 +1245,8 @@ def validateHostname(hostname):
     global services
     global functions
     labs = ['ARC']
-    markets = ['UAT1', 'UAT2', 'VDC1', 'MDEV', 'NDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS', 'EDGE']
-    services = ['UAT', 'EDG', 'HUB', 'HUA', 'HUC', 'HUH', 'VDC', 'CLD', 'BKB', 'CMT']
+    markets = ['UAT1', 'UAT2', 'VDC1', 'MDEV', 'NDEV', 'SIT1', 'CLOD', 'BKBN', 'PODS', 'EDGE', 'TEST']
+    services = ['UAT', 'EDG', 'HUB', 'HUA', 'HUC', 'HUH', 'VDC', 'CLD', 'BKB', 'CMT', 'DAA', 'CIN', 'OTN']
     # services = '%s%s%s'
     functions = ['COR', 'LBD', 'CIN', 'BBR', 'EPR', 'VAR', 'DAR', 'DRR', 'CMR', 'MSR', 'AGS', 'SWI', 'POD', 'BAR', 'OTN', 'CMT', 'VCE', 'FRW', 'TRM', 'L1S', 'TST', 'STC', 'W1S', 'VEL', 'AWX', 'DNS', 'K8M', 'K8W']
     # iterations = '%d%d'
