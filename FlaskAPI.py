@@ -151,7 +151,12 @@ def flask_validate():
 				DEVICE[blah] = VALIDATION[uu]['data'][blah]
 			for blah2 in ['timer','interfaces_to_cable']:
 				if blah2 in VALIDATION[uu].keys(): DEVICE[blah2] = str(VALIDATION[uu][blah2])
-			Mongo.MONGO._UPDATE(Mongo.validationDevice, {'uuid':uu}, DEVICE)
+			try:
+				Mongo.MONGO._UPDATE(Mongo.validationDevice, {'uuid':uu}, DEVICE)
+			except Exception as err:
+				wc.jd(DEVICE)
+				print(err)
+				Mongo.MONGO._UPDATE(Mongo.validationDevice, {'uuid':uu}, DEVICE)
 		# out.append(wc.validateITSM(repos, uuid, directory='../asset-data/', CIDR='10.88.0.0/16'))
 		out.append('runtime:' + str(wc.timer_index_since(validate)) + ' ms')
 		return(flask.jsonify(wc.lunique(out)))
@@ -274,10 +279,13 @@ def flask_AIEngine():
 				# JUNIPER
 				# wc.jd(raw[cmd].split('\r\n')[0:-2])
 				raw[cmd] = '\n'.join(raw[cmd].split('\r\n')[0:-2])
-				raw[cmd] = json.loads(raw[cmd])
+				try:
+					raw[cmd] = json.loads(raw[cmd])
+				except Exception:
+					raw[cmd] = raw[cmd].split('\n')
 			elif 'xml' in wc.cleanLine(cmd):
 				raw[cmd] = '\n'.join(raw[cmd].split('\r\n')[0:-2])
-				raw[cmd] = wc.xml_loads(raw[cmd])
+				raw[cmd] = wc.xml_loads2(raw[cmd])
 			elif type(raw[cmd]) == dict: pass
 			else: raw[cmd] = raw[cmd].split('\r\n')
 		return(flask.jsonify(raw)); # {'command': 'output'}

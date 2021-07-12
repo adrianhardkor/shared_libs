@@ -1313,31 +1313,6 @@ def getFnameScaffolding(fname_list, uuid='', directory=''):
 			# result[str(sf)][str(sf)] = {f:f}
 	return(result)
 
-def intfListCmd(itsm):
-	# DEPRECATED: SEE AIEmulti
-	global argv_dict
-	intfList = []
-	add = {}
-	if itsm['settings'] in ['juniper_junos','ndev']:
-		cmd = 'show_interface_|_display_json'
-		attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(argv_dict['port']), itsm['settings'],itsm['ip'], cmd)))
-		if '1show interface | display json' not in attempt.keys(): return(false,[attempt],{})
-		for intfs in attempt['1show interface | display json']['interface-information']:
-			for intf in intfs['physical-interface']:
-				for name in intf['name']: name = name['data']
-				for admin in intf['admin-status']: admin = admin['data']			
-				for oper in intf['oper-status']: oper = oper['data']
-				if 'logical-interface' not in intf.keys(): continue
-				for logical in intf['logical-interface']:
-					if 'address-family' not in logical.keys(): continue
-					for address in logical['address-family']:
-						if 'interface-address' not in address.keys(): continue
-						for intf_address in address['interface-address']:
-							for ifa_local in intf_address['ifa-local']: add[ifa_local['data']] = name
-				intflist.append({name: '/'.join([admin,oper])})
-	else: return(False,['JUNIPER_NOT_CODED SEE ADRIAN'],{})
-	return(True,intfList,add)
-
 global cllis
 global Duplicates
 global UUIDS
@@ -1442,20 +1417,26 @@ def AIEmulti(ip, settings, cmds):
 	works = True
 	attempt = json.loads(REST_PUT('http://10.88.48.21:%s/aie?settings=%s&hostname=%s' % (str(argv_dict['port']), settings, ip), verify=False, convert_args=True, args={'cmd':cmds}))
 	if settings in ['juniper_junos','ndev']:
-		if '1show interfaces | display json' not in attempt.keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
-		for intfs in attempt['1show interfaces | display json']['interface-information']:
-			for intf in intfs['physical-interface']:
-				for name in intf['name']: name = name['data']
-				for admin in intf['admin-status']: admin = admin['data']			
-				for oper in intf['oper-status']: oper = oper['data']
-				if 'logical-interface' not in intf.keys(): continue
-				for logical in intf['logical-interface']:
-					if 'address-family' not in logical.keys(): continue
-					for address in logical['address-family']:
-						if 'interface-address' not in address.keys(): continue
-						for intf_address in address['interface-address']:
-							for ifa_local in intf_address['ifa-local']: add[ifa_local['data']] = name
-				intf[name] = '/'.join([admin,oper])
+		if '1show interfaces | display xml' not in attempt.keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
+		if 'interface-information' not in attempt['1show interfaces | display xml']['rpc-reply'].keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
+		intfs = attempt['1show interfaces | display xml']['rpc-reply']['interface-information']
+		if type(intfs) != dict:
+			print(intfs); print('\n\n\n')
+		for intf in intfs['physical-interface']:
+			name = intf['name']
+			admin = intf['admin-status']['@junos:format']
+			oper = intf['oper-status']
+			if 'logical-interface' not in intf.keys(): continue
+			if type(intf['logical-interface']) != list: intf['logical-interface'] = [intf['logical-interface']]
+			for logical in intf['logical-interface']:
+				if 'address-family' not in logical.keys(): continue
+				elif type(logical['address-family']) != list: logical['address-family'] = [logical['address-family']]
+				for address in logical['address-family']:
+					if 'interface-address' not in address.keys(): continue
+					elif type(address['interface-address']) != list: address['interface-address'] = [address['interface-address']]
+					for intf_address in address['interface-address']:
+						if 'ifa-local' in intf_address.keys(): add[intf_address['ifa-local']] = name
+			intf[name] = '/'.join([admin,oper])
 	elif settings == 'a10t':
 		if '1show interfaces brief' not in attempt.keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
 		for line10 in attempt['1show interfaces brief']:
