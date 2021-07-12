@@ -140,8 +140,8 @@ def jd(mydict):
     print('\n')
     return(out)
 
-def compareDict(old,new):
-	out = deepdiff.DeepDiff(old,new)
+def compareDict(old,new, ignore=False):
+	out = deepdiff.DeepDiff(old,new, ignore_string_case=ignore, ignore_string_type_changes=ignore)
 	out = json.dumps(str(out))
 	out = json.loads(out)
 	return(out)
@@ -1294,6 +1294,7 @@ def MULTIPROCESS(funct, mylist, non_rotating_args, processes=5):
     outputs = pool.map(partial(funct, **non_rotating_args), mylist)
     results = two2one(mylist,outputs)
     results['timer'] = timer_index_since(t)
+    pool.close()
     return(results)
 
 
@@ -1317,7 +1318,7 @@ def intfListCmd(itsm):
 	global argv_dict
 	intfList = []
 	add = {}
-	if itsm['settings'] == 'juniper_junos':
+	if itsm['settings'] in ['juniper_junos','ndev']:
 		cmd = 'show_interface_|_display_json'
 		attempt = json.loads(REST_GET('http://10.88.48.21:%s/aie?settings=%s&hostname=%s&cmd=%s' % (str(argv_dict['port']), itsm['settings'],itsm['ip'], cmd)))
 		if '1show interface | display json' not in attempt.keys(): return(false,[attempt],{})
@@ -1339,14 +1340,19 @@ def intfListCmd(itsm):
 
 global cllis
 global Duplicates
+global UUIDS
 
+def lowerDictKeys(mydict):
+	for k in dict(mydict).keys():
+		mydict[str(k).lower()] = mydict.pop(k)
+	return(mydict)
+	
 def identifyFields(device):
 	# jd(device)
 	global cllis
 	for arch in list(device.keys()):
 		# dcim, itsm, cable
-		for k in list(device[arch].keys()):
-			device[arch][k.lower()] = device[arch].pop(k); # lower all fields
+		device[arch] = lowerDictKeys(device[arch])
 		for k in list(device[arch].keys()):
 			if k in ['ip', 'settings']: device['itsm'][k] = device[arch].pop(k)
 			elif k in ['cable']: device['cable'][k] = device[arch].pop(k)
@@ -1354,17 +1360,35 @@ def identifyFields(device):
 			if k == 'clli': cllis[device[arch][k]] = str(arch); # clli = dcim
 	return(device)
 
+def compareDeviceMasterVbranch(UUIDS,data,uuid):
+	result = False
+	if uuid in UUIDS.keys():
+		UUIDS[uuid] = json.loads(json.dumps(lowerDictKeys(UUIDS[uuid]),sort_keys=True))
+		data[uuid]['dcim'] = json.loads(json.dumps(lowerDictKeys(data[uuid]['dcim']),sort_keys=True))
+		if UUIDS[uuid] == data[uuid]['dcim']:
+			result = True
+		else:
+			print("EDITING MASTER/MAIN DEVICE")
+			print(UUIDS[uuid])
+			print(data[uuid]['dcim'])
+			print(compareDict(UUIDS[uuid], data[uuid]['dcim'], ignore=True))
+			print('\n')
+	return(result)
+
 def validateSUB(devices, data, Duplicates, result, CIDR): 
 	global cllis
+	global UUIDS
 	AIE_check = {}
 	for device in devices:
 		if device == 'template': continue
+		if compareDeviceMasterVbranch(UUIDS, data, device): continue; # branch=master data = no update
 		flag = True; # AIE and PING
 		# jd(data[device])
 		data[device] = identifyFields(data[device])
 		result[device] = {'data': data[device]}
 		itsm = data[device]['itsm']
 		result[device]['valid'] = {}
+		result[device]['valid']['device in main_master is edit'] = bool(device in UUIDS.keys())
 		result[device]['valid']['allFilesExist'] = True
 		for fname in ['dcim', 'itsm']:
 			if data[device][fname] == {}: result[device]['valid']['allFilesExist'] = False
@@ -1386,6 +1410,7 @@ def validateSUB(devices, data, Duplicates, result, CIDR):
 		else:
 			if itsm['ip'] in Duplicates.keys():
 				flag = False; # no AIE or PING
+				pairprint(device,Duplicates[itsm['ip']])
 				result[device]['valid'] = result[Duplicates[itsm['ip']]]['valid']
 				result[device]['valid']['itsm:duplicateIP'] = Duplicates[itsm['ip']]
 				result[Duplicates[itsm['ip']]]['valid']['itsm:duplicateIP'] = device
@@ -1416,7 +1441,7 @@ def AIEmulti(ip, settings, cmds):
 	add = {}
 	works = True
 	attempt = json.loads(REST_PUT('http://10.88.48.21:%s/aie?settings=%s&hostname=%s' % (str(argv_dict['port']), settings, ip), verify=False, convert_args=True, args={'cmd':cmds}))
-	if settings == 'juniper_junos':
+	if settings in ['juniper_junos','ndev']:
 		if '1show interfaces | display json' not in attempt.keys(): return({'attempt':attempt,'works':attempt,'intf':intf,'add':add})
 		for intfs in attempt['1show interfaces | display json']['interface-information']:
 			for intf in intfs['physical-interface']:
@@ -1462,6 +1487,8 @@ def AIEmulti(ip, settings, cmds):
 def LoadMasterDevices4Duplicates(path):
 	global Duplicates
 	global cllis
+	global UUIDS
+	UUIDS = {}; # uu = DATA FROM YML
 	Duplicates = {}; # ip = device
 	cllis = {}; # clli = master
 	for fname in exec2('ls -1 %s;' % path).split('\n'):
@@ -1470,7 +1497,7 @@ def LoadMasterDevices4Duplicates(path):
 		for k in data.keys(): data[k.lower()] = data.pop(k) 		
 		if 'ip' in data.keys(): Duplicates[data['ip']] = fname.split('.')[0]
 		if 'clli' in data.keys(): cllis[data['clli']] = 'master'
-
+		UUIDS[fname.split('.')[0]] = data
 
 def validateITSM(fname_list, uuid, directory='', CIDR='10.88.0.0/16'):
 	global Duplicates
