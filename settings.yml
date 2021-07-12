@@ -1,6 +1,6 @@
 linux:
   username: "ADMIN"
-  private_key_file: "/opt/juniper_junos.txt"
+  private_key_file: "/opt/paramiko-test-key"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: 'linux'
   prompt: "([@]+[a-zA-Z0-9\.\-\_\:\ \~\]]+[#$\ ]+[ ])"
@@ -8,7 +8,7 @@ linux:
   exit: "exit"
 juniper_junos:
   username: "ADMIN"
-  private_key_file: "/opt/paramiko-test-key"
+  private_key_file: "/opt/juniper_junos.txt"
   ansible_ssh_common_args: '-okexalgorithms=+diffie-hellman-group1-sha1 '
   vendor: 'juniper_junos'
   prompt: "([@]+[a-zA-Z0-9\.\-\_]+[>#%]+[ ])"
